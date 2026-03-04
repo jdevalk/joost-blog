@@ -22,7 +22,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **URL-02**: All existing page URLs work (/about-me/, /contact-me/, /plugins/, etc.)
 - [ ] **URL-03**: /feed/ redirects to /rss.xml via Cloudflare Pages _redirects
 - [ ] **URL-04**: /cms/* and /cms-market-share/* URL space reserved for future use
-- [ ] **URL-05**: Video page URLs preserved at /videos/video-slug/
+- [x] **URL-05**: Video page URLs preserved at /videos/video-slug/
 
 ### Theme and Branding
 
@@ -36,11 +36,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **BLOG-01**: Blog post listing page with pagination
 - [x] **BLOG-02**: Individual post pages with date, category, reading time
-- [ ] **BLOG-03**: Category archive pages for all 10 categories
+- [x] **BLOG-03**: Category archive pages for all 10 categories
 - [x] **BLOG-04**: Related posts displayed at bottom of each article (category-based, limit 3)
 - [x] **BLOG-05**: RSS feed generated at /rss.xml
 - [x] **BLOG-06**: XML sitemap generated automatically
-- [ ] **BLOG-07**: Custom 404 page
+- [x] **BLOG-07**: Custom 404 page
 
 ### SEO
 
@@ -113,7 +113,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | URL-02 | Phase 3: Routing and Core Pages | Complete |
 | URL-03 | Phase 6: Deployment and Verification | Pending |
 | URL-04 | Phase 6: Deployment and Verification | Pending |
-| URL-05 | Phase 3: Routing and Core Pages | Pending |
+| URL-05 | Phase 3: Routing and Core Pages | Complete |
 | THEME-01 | Phase 1: Project Scaffolding and Theme Setup | Complete |
 | THEME-02 | Phase 1: Project Scaffolding and Theme Setup | Complete |
 | THEME-03 | Phase 1: Project Scaffolding and Theme Setup | Complete |
@@ -121,11 +121,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | THEME-05 | Phase 1: Project Scaffolding and Theme Setup | Complete |
 | BLOG-01 | Phase 3: Routing and Core Pages | Complete |
 | BLOG-02 | Phase 3: Routing and Core Pages | Complete |
-| BLOG-03 | Phase 3: Routing and Core Pages | Pending |
+| BLOG-03 | Phase 3: Routing and Core Pages | Complete |
 | BLOG-04 | Phase 3: Routing and Core Pages | Complete |
 | BLOG-05 | Phase 3: Routing and Core Pages | Complete |
 | BLOG-06 | Phase 3: Routing and Core Pages | Complete |
-| BLOG-07 | Phase 3: Routing and Core Pages | Pending |
+| BLOG-07 | Phase 3: Routing and Core Pages | Complete |
 | SEO-01 | Phase 4: SEO and Performance | Pending |
 | SEO-02 | Phase 4: SEO and Performance | Pending |
 | SEO-03 | Phase 4: SEO and Performance | Pending |

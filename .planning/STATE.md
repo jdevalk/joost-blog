@@ -22,7 +22,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** All existing blog content must be migrated with working URLs, clean markdown, and proper metadata -- nothing gets lost in the move.
-**Current focus:** Phase 3: Routing and Core Pages -- root-level routing complete, category/tag pages and videos hub next.
+**Current focus:** Phase 3 complete. All routing and core pages done -- ready for Phase 4.
 
 ## Current Position
 
@@ -57,6 +57,7 @@ Progress: [██████████] 100% (3 of 3 plans)
 | Phase 02 P03 | 2min | 2 tasks | 0 files |
 | Phase 03 P01 | 4min | 2 tasks | 7 files |
 | Phase 03 P02 | 2min | 2 tasks | 2 files |
+| Phase 03 P03 | 2min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,9 @@ Recent decisions affecting current work:
 - [Phase 03]: Related posts: primary category first, then shared categories, then recent posts
 - [Phase 03]: Blog page title "Blog" auto-appends " | joost.blog" via BaseHead
 - [Phase 03]: Category links use primary/accent theme colors for visual consistency
+- [Phase 03]: YouTube embeds use youtube-nocookie.com for privacy-enhanced mode
+- [Phase 03]: ISO 8601 duration parsed to human-readable format for video display
+- [Phase 03]: 404 page shows 3 recent blog posts to reduce bounce rate
 
 ### Pending Todos
 
@@ -99,6 +103,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T16:01:07Z
-Stopped at: Completed 03-02-PLAN.md
-Resume file: .planning/phases/03-routing-and-core-pages/03-02-SUMMARY.md
+Last session: 2026-03-04T16:01:23Z
+Stopped at: Completed 03-03-PLAN.md
+Resume file: .planning/phases/03-routing-and-core-pages/03-03-SUMMARY.md
