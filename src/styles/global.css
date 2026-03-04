@@ -9,9 +9,9 @@
 
 @theme {
     --font-sans: 'Mona Sans Variable', sans-serif;
-    --color-primary: #0e373b;
-    --color-secondary: #3b696d;
-    --color-accent: #96e1e9;
+    --color-primary: #2563eb;
+    --color-secondary: #1d4ed8;
+    --color-accent: #60a5fa;
     --color-base: #ffffff;
     --color-tertiary: #f7f8f8;
     --shadow-avatar: 0 0 0 11px --alpha(var(--color-primary) / 15%), 0 0 0 22px --alpha(var(--color-primary) / 10%);
@@ -42,7 +42,7 @@
     .dark .prose {
         --tw-prose-body: #cbd5e1;
         --tw-prose-headings: #e2e8f0;
-        --tw-prose-links: #96e1e9;
+        --tw-prose-links: #60a5fa;
         --tw-prose-bold: #e2e8f0;
         --tw-prose-counters: #94a3b8;
         --tw-prose-bullets: #94a3b8;

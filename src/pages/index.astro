@@ -15,7 +15,7 @@ const latestPosts = posts.filter(({ data }) => !data.isFeatured).slice(0, 3);
 ---
 
 <BaseLayout description={siteConfig.description}>
-    <div class="relative bg-primary text-white" slot="header">
+    <div class="relative bg-slate-900 text-white" slot="header">
         <Header class="relative" variant="dark" />
         <Hero {...siteConfig.hero} socialLinks={siteConfig.socialLinks} variant="dark" />
     </div>
