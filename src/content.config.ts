@@ -48,4 +48,22 @@ const pages = defineCollection({
         })
 });
 
-export const collections = { blog, pages };
+const videos = defineCollection({
+    loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/videos' }),
+    schema: ({ image }) =>
+        z.object({
+            title: z.string(),
+            publishDate: z.coerce.date(),
+            youtubeId: z.string().optional(),
+            duration: z.string().optional(),
+            videoUrl: z.string().url().optional(),
+            featureImage: imageSchema(image)
+                .extend({
+                    caption: z.string().optional()
+                })
+                .optional(),
+            seo: seoSchema(image).optional()
+        })
+});
+
+export const collections = { blog, pages, videos };
