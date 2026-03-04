@@ -99,10 +99,10 @@ Plans:
   1. Blog posts display a Giscus comment section that loads comments from GitHub Discussions
   2. Users can write and submit comments via their GitHub account
   3. Navigating between pages uses view transitions for smooth, app-like feel
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 05-01: TBD
+- [ ] 05-01-PLAN.md -- Add Giscus comments to blog posts (lazy-loaded, dark mode synced) and verify view transitions
 
 ### Phase 6: Deployment and Verification
 **Goal**: The site is live on Cloudflare Pages at joost.blog with all URLs verified and redirects working
@@ -130,5 +130,5 @@ Phases execute in numeric order: 1 > 2 > 3 > 4/5 (parallel possible) > 6
 | 2. Content Migration | 3/3 | Complete   | 2026-03-04 |
 | 3. Routing and Core Pages | 3/3 | Complete   | 2026-03-04 |
 | 4. SEO and Performance | 1/2 | In progress | - |
-| 5. Engagement Features | 0/? | Not started | - |
+| 5. Engagement Features | 0/1 | Not started | - |
 | 6. Deployment and Verification | 0/? | Not started | - |
