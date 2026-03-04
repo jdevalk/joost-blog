@@ -11,8 +11,8 @@ progress:
   total_phases: 6
   completed_phases: 2
   total_plans: 5
-  completed_plans: 5
-  percent: 100
+  completed_plans: 6
+  percent: 75
 ---
 
 # Project State
@@ -22,23 +22,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** All existing blog content must be migrated with working URLs, clean markdown, and proper metadata -- nothing gets lost in the move.
-**Current focus:** Phase 2: Content Migration -- complete. Ready for Phase 3.
+**Current focus:** Phase 3: Routing and Core Pages -- root-level routing complete, category/tag pages and videos hub next.
 
 ## Current Position
 
-Phase: 2 of 6 (Content Migration) -- COMPLETE
-Current Plan: 3 of 3 (02-03 complete, Phase 2 done)
-Status: Phase 2 complete
-Last activity: 2026-03-04 -- Human-verified all migrated content, Phase 2 complete (02-03)
+Phase: 3 of 6 (Routing and Core Pages)
+Current Plan: 1 of 3 (03-01 complete)
+Status: in-progress
+Last activity: 2026-03-04 -- Root-level routing and utilities complete (03-01)
 
-Progress: [██████████] 100% (Phase 2 complete)
+Progress: [███░░░░░░░] 33% (1 of 3 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: 3.8min
-- Total execution time: 0.32 hours
+- Total plans completed: 6
+- Average duration: 3.7min
+- Total execution time: 0.37 hours
 
 **By Phase:**
 
@@ -46,14 +46,16 @@ Progress: [██████████] 100% (Phase 2 complete)
 |-------|-------|-------|----------|
 | 01 | 2 | 8min | 4min |
 | 02 | 3 | 11min | 3.7min |
+| 03 | 1 | 4min | 4min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3min), 01-02 (5min), 02-01 (5min), 02-02 (4min), 02-03 (2min)
+- Last 5 plans: 01-02 (5min), 02-01 (5min), 02-02 (4min), 02-03 (2min), 03-01 (4min)
 - Trend: Consistent
 
 *Updated after each plan completion*
 | Phase 02 P02 | 4min | 2 tasks | 234 files |
 | Phase 02 P03 | 2min | 2 tasks | 0 files |
+| Phase 03 P01 | 4min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -78,6 +80,9 @@ Recent decisions affecting current work:
 - [Phase 02]: Pre-existing Ovidius theme sample content left in place (cleanup out of migration scope)
 - [Phase 02]: Minor markdown newline issues accepted as pre-existing from WordPress conversion
 - [Phase 02]: ${1} alt text in traveling-to-peru accepted as non-blocking
+- [Phase 03]: Merged [slug].astro route for both blog posts and pages at root level
+- [Phase 03]: videos.md excluded via getStaticPaths filter, not file rename (glob loader matches underscored files)
+- [Phase 03]: Related posts: primary category first, then shared categories, then recent posts
 
 ### Pending Todos
 
@@ -91,6 +96,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T15:10:47.233Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-routing-and-core-pages/03-CONTEXT.md
+Last session: 2026-03-04T15:57:15Z
+Stopped at: Completed 03-01-PLAN.md
+Resume file: .planning/phases/03-routing-and-core-pages/03-01-SUMMARY.md

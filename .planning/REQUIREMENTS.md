@@ -18,8 +18,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### URL Preservation
 
-- [ ] **URL-01**: All existing blog post slugs work at their current URLs (root-level: /post-slug/)
-- [ ] **URL-02**: All existing page URLs work (/about-me/, /contact-me/, /plugins/, etc.)
+- [x] **URL-01**: All existing blog post slugs work at their current URLs (root-level: /post-slug/)
+- [x] **URL-02**: All existing page URLs work (/about-me/, /contact-me/, /plugins/, etc.)
 - [ ] **URL-03**: /feed/ redirects to /rss.xml via Cloudflare Pages _redirects
 - [ ] **URL-04**: /cms/* and /cms-market-share/* URL space reserved for future use
 - [ ] **URL-05**: Video page URLs preserved at /videos/video-slug/
@@ -37,9 +37,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **BLOG-01**: Blog post listing page with pagination
 - [ ] **BLOG-02**: Individual post pages with date, category, reading time
 - [ ] **BLOG-03**: Category archive pages for all 10 categories
-- [ ] **BLOG-04**: Related posts displayed at bottom of each article (category-based, limit 3)
-- [ ] **BLOG-05**: RSS feed generated at /rss.xml
-- [ ] **BLOG-06**: XML sitemap generated automatically
+- [x] **BLOG-04**: Related posts displayed at bottom of each article (category-based, limit 3)
+- [x] **BLOG-05**: RSS feed generated at /rss.xml
+- [x] **BLOG-06**: XML sitemap generated automatically
 - [ ] **BLOG-07**: Custom 404 page
 
 ### SEO
@@ -109,8 +109,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONT-04 | Phase 2: Content Migration | Complete |
 | CONT-05 | Phase 2: Content Migration | Complete |
 | CONT-06 | Phase 2: Content Migration | Complete |
-| URL-01 | Phase 3: Routing and Core Pages | Pending |
-| URL-02 | Phase 3: Routing and Core Pages | Pending |
+| URL-01 | Phase 3: Routing and Core Pages | Complete |
+| URL-02 | Phase 3: Routing and Core Pages | Complete |
 | URL-03 | Phase 6: Deployment and Verification | Pending |
 | URL-04 | Phase 6: Deployment and Verification | Pending |
 | URL-05 | Phase 3: Routing and Core Pages | Pending |
@@ -122,9 +122,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BLOG-01 | Phase 3: Routing and Core Pages | Pending |
 | BLOG-02 | Phase 3: Routing and Core Pages | Pending |
 | BLOG-03 | Phase 3: Routing and Core Pages | Pending |
-| BLOG-04 | Phase 3: Routing and Core Pages | Pending |
-| BLOG-05 | Phase 3: Routing and Core Pages | Pending |
-| BLOG-06 | Phase 3: Routing and Core Pages | Pending |
+| BLOG-04 | Phase 3: Routing and Core Pages | Complete |
+| BLOG-05 | Phase 3: Routing and Core Pages | Complete |
+| BLOG-06 | Phase 3: Routing and Core Pages | Complete |
 | BLOG-07 | Phase 3: Routing and Core Pages | Pending |
 | SEO-01 | Phase 4: SEO and Performance | Pending |
 | SEO-02 | Phase 4: SEO and Performance | Pending |
