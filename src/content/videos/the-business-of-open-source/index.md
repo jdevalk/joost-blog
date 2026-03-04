@@ -2,6 +2,9 @@
 title: The Business of Open Source
 publishDate: 2022-08-16T00:00:00.000Z
 videoUrl: 'https://wordpress.tv/2018/12/27/joost-de-valk-the-business-of-open-source/'
+featureImage:
+  src: ./images/thumbnail.png
+  alt: 'The Business of Open Source - WordCamp US Nashville 2018'
 ---
 This page features a video discussion about open source software sustainability and monetization strategies. Joost de Valk and Marieke van de Rakt presented on this topic, exploring why business models matter for open source project longevity.
 

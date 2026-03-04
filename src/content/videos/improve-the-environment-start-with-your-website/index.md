@@ -4,6 +4,9 @@ publishDate: 2022-12-11T00:00:00.000Z
 videoUrl: >-
   https://wordpress.tv/2022/11/17/joost-de-valk-improve-the-environment-start-with-your-website/
 videoPressId: KhUXgJTl
+featureImage:
+  src: ./images/thumbnail.png
+  alt: 'Improve the environment - Start with your website'
 ---
 Your website runs on a server that consumes electricity. Optimizing website efficiency and reducing unnecessary bot visits can decrease power consumption and potentially lower hosting costs. The talk emphasizes that these environmental improvements also benefit search engine rankings.
 

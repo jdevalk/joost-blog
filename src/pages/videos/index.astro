@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CustomImage from '../../components/CustomImage.astro';
 
 const allVideos = await getCollection('videos');
 const videos = allVideos.sort(
@@ -28,25 +29,16 @@ function formatDuration(isoDuration: string | undefined): string | null {
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {videos.map((video) => {
                     const duration = formatDuration(video.data.duration);
-                    const thumbnail = video.data.youtubeId
-                        ? `https://img.youtube.com/vi/${video.data.youtubeId}/maxresdefault.jpg`
-                        : null;
                     return (
                         <a href={`/videos/${video.id}/`} class="group block">
                             <div class="relative overflow-hidden rounded-lg">
-                                {thumbnail ? (
-                                    <img
-                                        src={thumbnail}
-                                        alt={video.data.title}
+                                {video.data.featureImage?.src && (
+                                    <CustomImage
+                                        {...video.data.featureImage}
                                         class="w-full aspect-video object-cover transition-transform duration-300 group-hover:scale-105"
                                         loading="lazy"
+                                        widths={[400, 600]}
                                     />
-                                ) : (
-                                    <div class="w-full aspect-video bg-slate-200 dark:bg-slate-700 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-                                        <svg class="w-16 h-16 text-slate-400 dark:text-slate-500" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M8 5v14l11-7z"/>
-                                        </svg>
-                                    </div>
                                 )}
                                 {duration && (
                                     <span class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
