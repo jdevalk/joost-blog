@@ -12,7 +12,7 @@ Migrate joost.blog from WordPress to a static Astro site using the Ovidius theme
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Project Scaffolding and Theme Setup** - Working Astro project with Ovidius theme, branding, navigation, and homepage
+- [x] **Phase 1: Project Scaffolding and Theme Setup** - Working Astro project with Ovidius theme, branding, navigation, and homepage
 - [ ] **Phase 2: Content Migration** - All blog posts, pages, videos, and images migrated as validated Astro content collections
 - [ ] **Phase 3: Routing and Core Pages** - All content rendered at correct URLs with blog listing, categories, and video pages
 - [ ] **Phase 4: SEO and Performance** - Production-quality SEO metadata, feeds, sitemap, and optimized asset delivery
@@ -35,7 +35,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md -- Clone Ovidius theme, swap font to Mona Sans, update brand colors, configure Shiki dual themes
-- [ ] 01-02-PLAN.md -- Configure hero/nav/social links, download profile photo, build dark mode toggle with FOUC prevention
+- [x] 01-02-PLAN.md -- Configure hero/nav/social links, download profile photo, build dark mode toggle with FOUC prevention
 
 ### Phase 2: Content Migration
 **Goal**: All 66 blog posts, static pages, 8 video pages, and all images exist as validated Astro content collections with clean markdown and correct frontmatter
@@ -47,11 +47,12 @@ Plans:
   3. All 8 video pages exist as a separate content collection with YouTube embed data
   4. All images are downloaded locally and referenced with relative paths (no WordPress URLs remain)
   5. Running `astro build` succeeds with zero content validation errors against Zod schemas
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md -- Build Node.js migration script and add videos collection schema to content.config.ts
+- [ ] 02-02-PLAN.md -- Execute migration for all 85 content files, download ~166 images, validate against Astro schemas
+- [ ] 02-03-PLAN.md -- Generate migration audit report and human review of content quality
 
 ### Phase 3: Routing and Core Pages
 **Goal**: Every piece of migrated content renders at its correct URL, with blog listing, category archives, video pages, and a custom 404
@@ -125,7 +126,7 @@ Phases execute in numeric order: 1 > 2 > 3 > 4/5 (parallel possible) > 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Project Scaffolding and Theme Setup | 2/2 | Complete | 2026-03-04 |
-| 2. Content Migration | 0/? | Not started | - |
+| 2. Content Migration | 0/3 | Not started | - |
 | 3. Routing and Core Pages | 0/? | Not started | - |
 | 4. SEO and Performance | 0/? | Not started | - |
 | 5. Engagement Features | 0/? | Not started | - |
