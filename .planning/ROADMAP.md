@@ -57,7 +57,7 @@ Plans:
 ### Phase 3: Routing and Core Pages
 **Goal**: Every piece of migrated content renders at its correct URL, with blog listing, category archives, video pages, and a custom 404
 **Depends on**: Phase 2
-**Requirements**: URL-01, URL-02, URL-03, URL-04, URL-05, BLOG-01, BLOG-02, BLOG-03, BLOG-04, BLOG-05, BLOG-06, BLOG-07
+**Requirements**: URL-01, URL-02, URL-05, BLOG-01, BLOG-02, BLOG-03, BLOG-04, BLOG-05, BLOG-06, BLOG-07
 **Success Criteria** (what must be TRUE):
   1. Every blog post is accessible at its original WordPress slug (e.g., /post-slug/)
   2. Every static page is accessible at its original URL (e.g., /about-me/, /contact-me/, /plugins/)
