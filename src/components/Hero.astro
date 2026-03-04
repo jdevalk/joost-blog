@@ -5,9 +5,11 @@ import SocialLink from './SocialLink.astro';
 
 type Props = HeroProps & {
     socialLinks?: SocialLinkProps[];
+    variant?: 'dark' | 'light';
 };
 
-const { title, text, avatar, backgroundImage, socialLinks } = Astro.props;
+const { title, text, avatar, backgroundImage, socialLinks, variant } = Astro.props;
+const isDark = variant === 'dark';
 ---
 
 {
@@ -29,7 +31,7 @@ const { title, text, avatar, backgroundImage, socialLinks } = Astro.props;
                         <div class="p-6 mb-6">
                             <CustomImage
                                 {...avatar}
-                                class="object-cover w-32 border-2 rounded-full border-primary shadow-avatar aspect-square"
+                                class:list={["object-cover w-32 border-2 rounded-full aspect-square", isDark ? "border-white/30 shadow-lg" : "border-primary shadow-avatar"]}
                                 width={128}
                                 height={128}
                                 widths={[128, 256]}
@@ -39,12 +41,12 @@ const { title, text, avatar, backgroundImage, socialLinks } = Astro.props;
                             />
                         </div>
                     )}
-                    {title && <h1 class="text-4xl font-bold text-slate-900 dark:text-slate-100 sm:text-5xl">{title}</h1>}
-                    {text && <p class:list={['text-slate-700 dark:text-slate-300 sm:text-lg', { 'mt-4': title }]}>{text}</p>}
+                    {title && <h1 class:list={["text-4xl font-bold sm:text-5xl", isDark ? "text-white" : "text-slate-900 dark:text-slate-100"]}>{title}</h1>}
+                    {text && <p class:list={['sm:text-lg', isDark ? 'text-white/80 [&_a]:text-accent [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-white' : 'text-slate-700 dark:text-slate-300', { 'mt-4': title }]} set:html={text} />}
                     {socialLinks && socialLinks.length > 0 && (
                         <div class:list={['flex flex-wrap justify-center gap-x-4 gap-y-3', { 'mt-8': title || text }]}>
                             {socialLinks.map((link) => (
-                                <SocialLink {...link} class="bg-white hover:bg-primary hover:shadow-button text-slate-700 hover:text-white dark:bg-slate-800 dark:text-slate-200" />
+                                <SocialLink {...link} class:list={[isDark ? "bg-white/10 hover:bg-white/20 text-white hover:text-white" : "bg-white hover:bg-primary hover:shadow-button text-slate-700 hover:text-white dark:bg-slate-800 dark:text-slate-200"]} />
                             ))}
                         </div>
                     )}

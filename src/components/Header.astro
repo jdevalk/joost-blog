@@ -6,7 +6,8 @@ import CustomImage from './CustomImage.astro';
 
 const primaryNavLinks = siteConfig.primaryNavLinks ?? [];
 
-const { class: className } = Astro.props;
+const { class: className, variant } = Astro.props;
+const isDark = variant === 'dark';
 ---
 
 <header class:list={['flex items-center justify-between gap-6 px-4 py-4 sm:px-8 sm:py-6', className]}>
@@ -16,7 +17,7 @@ const { class: className } = Astro.props;
                 <CustomImage class="max-h-12" {...siteConfig.logo} loading="eager" fetchpriority="high" />
             </a>
         ) : (
-            <a class="text-xl font-bold sm:text-2xl dark:text-slate-100" href="/">
+            <a class:list={["text-xl font-bold sm:text-2xl", isDark ? "text-white" : "dark:text-slate-100"]} href="/">
                 {siteConfig.title}
             </a>
         )
@@ -28,7 +29,7 @@ const { class: className } = Astro.props;
                 <nav class="hidden md:flex items-center gap-6" aria-label="Primary navigation">
                     {primaryNavLinks.map((link) => (
                         <HeaderNavLink
-                            class="relative text-sm font-semibold tracking-wide uppercase transition duration-300 text-slate-700 hover:text-primary dark:text-slate-200 dark:hover:text-accent"
+                            class:list={["relative text-sm font-semibold tracking-wide uppercase transition duration-300", isDark ? "text-white/80 hover:text-white" : "text-slate-700 hover:text-primary dark:text-slate-200 dark:hover:text-accent"]}
                             href={link.href}
                         >
                             {link.text}
