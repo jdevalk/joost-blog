@@ -1,0 +1,200 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import CustomImage from '../components/CustomImage.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Subscribe from '../components/Subscribe.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { sortPostsByDateDesc, slugify, getReadingTime, getRelatedPosts } from '../utils/post-utils';
+
+export async function getStaticPaths() {
+    const posts = (await getCollection('blog')).sort(sortPostsByDateDesc);
+    const pages = await getCollection('pages');
+
+    const blogPaths = posts.map((post) => ({
+        params: { slug: post.id },
+        props: {
+            entry: post,
+            type: 'blog' as const,
+            relatedPosts: getRelatedPosts(post, posts),
+            readingTime: getReadingTime(post.body ?? '')
+        }
+    }));
+
+    const pagePaths = pages
+        .filter((page) => page.id !== 'videos')
+        .map((page) => ({
+            params: { slug: page.id },
+            props: {
+                entry: page,
+                type: 'page' as const
+            }
+        }));
+
+    return [...blogPaths, ...pagePaths];
+}
+
+const { entry, type, relatedPosts, readingTime } = Astro.props;
+const { Content } = await render(entry);
+const { href } = Astro.url;
+
+// Extract typed data for blog posts
+const isBlog = type === 'blog';
+const blogData = isBlog ? (entry as CollectionEntry<'blog'>).data : null;
+const pageData = !isBlog ? (entry as CollectionEntry<'pages'>).data : null;
+
+const seoTitle = isBlog
+    ? (blogData!.seo?.title ?? blogData!.title)
+    : (pageData!.seo?.title ?? pageData!.title);
+const seoDescription = isBlog
+    ? (blogData!.seo?.description ?? blogData!.excerpt)
+    : pageData!.seo?.description;
+const seoImage = isBlog
+    ? (blogData!.seo?.image ?? blogData!.featureImage)
+    : (pageData!.seo?.image ?? pageData!.featureImage);
+---
+
+{isBlog ? (
+<BaseLayout title={seoTitle} description={seoDescription} image={seoImage} pageType="article">
+    <main class="px-4 py-12 grow sm:px-8 sm:py-16">
+        <article class="max-w-6xl mx-auto mb-12 sm:mb-16">
+            <header class="max-w-3xl mx-auto mb-6 sm:mb-8">
+                <div class="mb-3 text-sm tracking-wider uppercase text-slate-500 dark:text-slate-400">
+                    {blogData!.isFeatured && (
+                        <Fragment>
+                            <span class="text-primary">Featured</span>
+                            {' / '}
+                        </Fragment>
+                    )}
+                    <FormattedDate date={blogData!.publishDate} />
+                    {blogData!.updatedDate && (
+                        <Fragment>
+                            {' '}
+                            <span>
+                                (Updated on <FormattedDate date={blogData!.updatedDate} />)
+                            </span>
+                        </Fragment>
+                    )}
+                    {readingTime && (
+                        <Fragment>
+                            {' / '}
+                            <span>{readingTime} min read</span>
+                        </Fragment>
+                    )}
+                </div>
+                <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 sm:text-4xl md:text-5xl">{blogData!.title}</h1>
+                {blogData!.categories && blogData!.categories.length > 0 && (
+                    <div class="mt-3 text-sm text-slate-600 dark:text-slate-400">
+                        {blogData!.categories.map((cat: string, i: number) => (
+                            <Fragment>
+                                {i > 0 && ', '}
+                                <a href={`/category/${slugify(cat)}/`} class="transition duration-300 text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300">{cat}</a>
+                            </Fragment>
+                        ))}
+                    </div>
+                )}
+            </header>
+            {blogData!.featureImage?.src && (
+                <figure class="my-6 sm:my-8 lg:my-12">
+                    <CustomImage
+                        {...blogData!.featureImage}
+                        class="w-full rounded-lg"
+                        widths={[480, 640, 768, 960, 1200, 1600]}
+                        sizes="(min-width: 1216px) 1152px, calc(100vw - 32px)"
+                    />
+                    {blogData!.featureImage.caption && <figcaption class="mt-1.5 text-xs sm:text-sm">{blogData!.featureImage.caption}</figcaption>}
+                </figure>
+            )}
+            <div class="max-w-3xl mx-auto">
+                <div class="prose prose-slate sm:prose-lg max-w-none">
+                    <Content />
+                </div>
+                <div class="flex flex-wrap mt-8 text-sm gap-x-3 gap-y-1 sm:mt-12 sm:text-base">
+                    <span class="font-semibold">Share:</span>
+                    <a
+                        class="transition duration-300 text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300"
+                        href={`https://bsky.app/intent/compose?text=${encodeURIComponent(blogData!.title + ' ' + href)}`}
+                        target="_blank"
+                        rel="noopener noreferer"
+                        aria-label="Share on Bluesky">Bluesky</a>
+                    <a
+                        class="transition duration-300 text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300"
+                        href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(href)}&text=${encodeURIComponent(blogData!.title)}`}
+                        target="_blank"
+                        rel="noopener noreferer"
+                        aria-label="Share on X">X/Twitter</a>
+                    <a
+                        class="transition duration-300 text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300"
+                        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(href)}`}
+                        target="_blank"
+                        rel="noopener noreferer"
+                        aria-label="Share on Facebook">Facebook</a>
+                    <a
+                        class="transition duration-300 text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300"
+                        href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(href)}&summary=${encodeURIComponent(blogData!.title)}`}
+                        target="_blank"
+                        rel="noopener noreferer"
+                        aria-label="Share on LinkedIn">LinkedIn</a>
+                </div>
+            </div>
+        </article>
+        {relatedPosts && relatedPosts.length > 0 && (
+            <div class="max-w-3xl mx-auto mb-12 sm:mb-16">
+                <h2 class="after:bg-primary mb-8 text-sm tracking-wider text-slate-900 dark:text-slate-100 uppercase after:mt-4 after:block after:h-px after:w-16 after:content-[''] sm:mb-12">
+                    Related Posts
+                </h2>
+                {relatedPosts.map((relPost) => (
+                    <article class="flex flex-col mb-12 gap-x-8 gap-y-6 sm:flex-row">
+                        <header class="grow">
+                            <div class="mb-2 text-sm tracking-wider uppercase text-slate-500 dark:text-slate-400">
+                                <FormattedDate date={relPost.data.publishDate} />
+                            </div>
+                            <h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                                <a href={`/${relPost.id}/`}>{relPost.data.title}</a>
+                            </h3>
+                        </header>
+                        {relPost.data.featureImage?.src && (
+                            <figure class="shrink-0 sm:w-40">
+                                <a href={`/${relPost.id}/`}>
+                                    <CustomImage
+                                        {...relPost.data.featureImage}
+                                        class="w-full rounded-md"
+                                        widths={[160, 320, 480, 640]}
+                                        sizes="(min-width: 640px) 160px, calc(100vw - 32px)"
+                                    />
+                                </a>
+                            </figure>
+                        )}
+                    </article>
+                ))}
+            </div>
+        )}
+        <Subscribe class="mt-16 mb-12 sm:mt-24 sm:mb-16" />
+    </main>
+</BaseLayout>
+) : (
+<BaseLayout title={seoTitle} description={seoDescription} image={seoImage}>
+    <main class="px-4 py-12 grow sm:px-8 sm:py-16">
+        <article class="max-w-6xl mx-auto">
+            <header class="max-w-3xl mx-auto mb-9">
+                <h1 class="text-4xl font-bold text-slate-900 dark:text-slate-100 sm:text-5xl">{pageData!.title}</h1>
+            </header>
+            {pageData!.featureImage?.src && (
+                <figure class="mb-9">
+                    <CustomImage
+                        {...pageData!.featureImage}
+                        class="w-full rounded-md"
+                        widths={[480, 640, 768, 960, 1200, 1600]}
+                        sizes="(min-width: 1216px) 1152px, calc(100vw - 32px)"
+                    />
+                    {pageData!.featureImage.caption && <figcaption class="mt-1.5 text-xs">{pageData!.featureImage.caption}</figcaption>}
+                </figure>
+            )}
+            <div class="max-w-3xl mx-auto">
+                <div class="prose prose-slate sm:prose-lg max-w-none">
+                    <Content />
+                </div>
+            </div>
+        </article>
+    </main>
+</BaseLayout>
+)}
