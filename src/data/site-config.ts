@@ -30,7 +30,7 @@ const siteConfig: SiteConfig = {
             alt: 'Joost de Valk'
         }
     },
-    postsPerPage: 5
+    postsPerPage: 10
 };
 
 export default siteConfig;
