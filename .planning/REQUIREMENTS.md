@@ -1,7 +1,7 @@
 # Requirements: joost.blog
 
 **Defined:** 2026-03-04
-**Core Value:** All existing blog content must be migrated with working URLs, clean markdown, and proper metadata — nothing gets lost in the move.
+**Core Value:** All existing blog content must be migrated with working URLs, clean markdown, and proper metadata -- nothing gets lost in the move.
 
 ## v1 Requirements
 
@@ -103,13 +103,49 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (populated during roadmap creation) | | |
+| CONT-01 | Phase 2: Content Migration | Pending |
+| CONT-02 | Phase 2: Content Migration | Pending |
+| CONT-03 | Phase 2: Content Migration | Pending |
+| CONT-04 | Phase 2: Content Migration | Pending |
+| CONT-05 | Phase 2: Content Migration | Pending |
+| CONT-06 | Phase 2: Content Migration | Pending |
+| URL-01 | Phase 3: Routing and Core Pages | Pending |
+| URL-02 | Phase 3: Routing and Core Pages | Pending |
+| URL-03 | Phase 6: Deployment and Verification | Pending |
+| URL-04 | Phase 6: Deployment and Verification | Pending |
+| URL-05 | Phase 3: Routing and Core Pages | Pending |
+| THEME-01 | Phase 1: Project Scaffolding and Theme Setup | Pending |
+| THEME-02 | Phase 1: Project Scaffolding and Theme Setup | Pending |
+| THEME-03 | Phase 1: Project Scaffolding and Theme Setup | Pending |
+| THEME-04 | Phase 1: Project Scaffolding and Theme Setup | Pending |
+| THEME-05 | Phase 1: Project Scaffolding and Theme Setup | Pending |
+| BLOG-01 | Phase 3: Routing and Core Pages | Pending |
+| BLOG-02 | Phase 3: Routing and Core Pages | Pending |
+| BLOG-03 | Phase 3: Routing and Core Pages | Pending |
+| BLOG-04 | Phase 3: Routing and Core Pages | Pending |
+| BLOG-05 | Phase 3: Routing and Core Pages | Pending |
+| BLOG-06 | Phase 3: Routing and Core Pages | Pending |
+| BLOG-07 | Phase 3: Routing and Core Pages | Pending |
+| SEO-01 | Phase 4: SEO and Performance | Pending |
+| SEO-02 | Phase 4: SEO and Performance | Pending |
+| SEO-03 | Phase 4: SEO and Performance | Pending |
+| SEO-04 | Phase 4: SEO and Performance | Pending |
+| SEO-05 | Phase 4: SEO and Performance | Pending |
+| SEO-06 | Phase 4: SEO and Performance | Pending |
+| PERF-01 | Phase 2: Content Migration | Pending |
+| PERF-02 | Phase 4: SEO and Performance | Pending |
+| PERF-03 | Phase 4: SEO and Performance | Pending |
+| ENG-01 | Phase 5: Engagement Features | Pending |
+| ENG-02 | Phase 5: Engagement Features | Pending |
+| DEPLOY-01 | Phase 6: Deployment and Verification | Pending |
+| DEPLOY-02 | Phase 6: Deployment and Verification | Pending |
+| DEPLOY-03 | Phase 6: Deployment and Verification | Pending |
 
 **Coverage:**
-- v1 requirements: 30 total
-- Mapped to phases: 0
-- Unmapped: 30 ⚠️
+- v1 requirements: 37 total
+- Mapped to phases: 37
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-04*
-*Last updated: 2026-03-04 after initial definition*
+*Last updated: 2026-03-04 after roadmap creation*
