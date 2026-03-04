@@ -1,0 +1,43 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostPreview from '../../components/PostPreview.astro';
+import { slugify, sortPostsByDateDesc } from '../../utils/post-utils';
+
+export async function getStaticPaths() {
+    const allPosts = await getCollection('blog');
+    const categoryMap = new Map<string, { name: string; posts: CollectionEntry<'blog'>[] }>();
+
+    for (const post of allPosts) {
+        const categories = post.data.categories ?? [];
+        for (const category of categories) {
+            const slug = slugify(category);
+            if (!categoryMap.has(slug)) {
+                categoryMap.set(slug, { name: category, posts: [] });
+            }
+            categoryMap.get(slug)!.posts.push(post);
+        }
+    }
+
+    return Array.from(categoryMap.entries()).map(([slug, { name, posts }]) => ({
+        params: { slug },
+        props: {
+            categoryName: name,
+            posts: posts.sort(sortPostsByDateDesc)
+        }
+    }));
+}
+
+const { categoryName, posts } = Astro.props;
+---
+
+<BaseLayout title={`${categoryName} - joost.blog`} description={`Posts in the ${categoryName} category`}>
+    <main class="grow px-4 py-12 sm:px-8">
+        <div class="max-w-3xl mx-auto xl:max-w-6xl">
+            <h1 class="text-4xl font-bold mb-12 text-slate-900 dark:text-slate-100">{categoryName}</h1>
+            {posts.map((post) => (
+                <PostPreview post={post} />
+            ))}
+        </div>
+    </main>
+</BaseLayout>
