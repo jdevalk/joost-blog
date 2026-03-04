@@ -55,6 +55,18 @@ const videoSchema = video.data.youtubeId ? {
                     <YouTubeEmbed youtubeId={video.data.youtubeId} title={video.data.title} />
                 </div>
             )}
+            {!video.data.youtubeId && video.data.videoUrl && (
+                <div class="mb-8">
+                    <div class="aspect-video w-full">
+                        <iframe
+                            src={`${video.data.videoUrl.replace(/\/$/, '')}/embed/`}
+                            title={video.data.title}
+                            class="w-full h-full"
+                            allowfullscreen
+                        ></iframe>
+                    </div>
+                </div>
+            )}
             <div class="prose prose-slate dark:prose-invert max-w-none">
                 <Content />
             </div>
