@@ -1,0 +1,72 @@
+<section id="comments" class="max-w-3xl mx-auto mt-12">
+  <h2 class="after:bg-primary mb-8 text-sm tracking-wider text-slate-900 dark:text-slate-100 uppercase after:mt-4 after:block after:h-px after:w-16 after:content-[''] sm:mb-12">
+    Comments
+  </h2>
+  <div class="giscus"></div>
+</section>
+
+<script is:inline>
+  function getGiscusTheme() {
+    return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+  }
+
+  function loadGiscus() {
+    const container = document.querySelector('.giscus');
+    if (!container || container.querySelector('iframe')) return;
+
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', 'joostdevalk/joost.blog');
+    script.setAttribute('data-repo-id', 'REPO_ID');
+    script.setAttribute('data-category', 'Blog Comments');
+    script.setAttribute('data-category-id', 'CATEGORY_ID');
+    script.setAttribute('data-mapping', 'pathname');
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'top');
+    script.setAttribute('data-theme', getGiscusTheme());
+    script.setAttribute('data-lang', 'en');
+    script.setAttribute('data-loading', 'lazy');
+    script.crossOrigin = 'anonymous';
+    script.async = true;
+    container.appendChild(script);
+  }
+
+  function updateGiscusTheme() {
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: getGiscusTheme() } } },
+      'https://giscus.app'
+    );
+  }
+
+  function setupGiscusObserver() {
+    const target = document.getElementById('comments');
+    if (!target) return;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        loadGiscus();
+        observer.disconnect();
+      }
+    }, { rootMargin: '200px' });
+    observer.observe(target);
+  }
+
+  // Initial setup
+  setupGiscusObserver();
+
+  // Dark mode sync: watch for class changes on <html>
+  const mo = new MutationObserver(updateGiscusTheme);
+  mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+  // View transition reinitialization
+  document.addEventListener('astro:page-load', () => {
+    const container = document.querySelector('.giscus');
+    if (container) {
+      container.innerHTML = '';
+      setupGiscusObserver();
+    }
+  });
+</script>

@@ -4,6 +4,7 @@ import CustomImage from '../components/CustomImage.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import JsonLd from '../components/JsonLd.astro';
 import Subscribe from '../components/Subscribe.astro';
+import Giscus from '../components/Giscus.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { sortPostsByDateDesc, slugify, getReadingTime, getRelatedPosts } from '../utils/post-utils';
 
@@ -153,6 +154,7 @@ const articleSchema = isBlog ? {
                         aria-label="Share on LinkedIn">LinkedIn</a>
                 </div>
             </div>
+            <Giscus />
         </article>
         {relatedPosts && relatedPosts.length > 0 && (
             <div class="max-w-3xl mx-auto mb-12 sm:mb-16">
