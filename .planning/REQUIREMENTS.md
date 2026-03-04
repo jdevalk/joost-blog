@@ -13,8 +13,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **CONT-02**: All relevant pages migrated (about, contact, plugins, videos hub, privacy, comment policy, work with me, Alfred Quix, embedded playground)
 - [ ] **CONT-03**: All 8 video pages migrated as a content collection with YouTube embeds
 - [ ] **CONT-04**: All images downloaded from WordPress and stored locally for Astro optimization
-- [ ] **CONT-05**: Frontmatter metadata mapped to Astro content collection schema (title, date, excerpt, categories, featured image)
-- [ ] **CONT-06**: WordPress shortcodes, block comments, and special formatting cleaned up in all markdown files
+- [x] **CONT-05**: Frontmatter metadata mapped to Astro content collection schema (title, date, excerpt, categories, featured image)
+- [x] **CONT-06**: WordPress shortcodes, block comments, and special formatting cleaned up in all markdown files
 
 ### URL Preservation
 
@@ -107,8 +107,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONT-02 | Phase 2: Content Migration | Pending |
 | CONT-03 | Phase 2: Content Migration | Pending |
 | CONT-04 | Phase 2: Content Migration | Pending |
-| CONT-05 | Phase 2: Content Migration | Pending |
-| CONT-06 | Phase 2: Content Migration | Pending |
+| CONT-05 | Phase 2: Content Migration | Complete |
+| CONT-06 | Phase 2: Content Migration | Complete |
 | URL-01 | Phase 3: Routing and Core Pages | Pending |
 | URL-02 | Phase 3: Routing and Core Pages | Pending |
 | URL-03 | Phase 6: Deployment and Verification | Pending |

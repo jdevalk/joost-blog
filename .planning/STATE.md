@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Phase 1 approved
-stopped_at: Phase 2 context gathered
-last_updated: "2026-03-04T13:54:45.496Z"
-last_activity: 2026-03-04 -- Phase 1 approved after visual verification and color refinement
+status: Phase 2 in progress
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-03-04T14:39:00Z"
+last_activity: 2026-03-04 -- Migration script and videos schema built (02-01)
 progress:
   total_phases: 6
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
-  percent: 100
+  total_plans: 5
+  completed_plans: 3
+  percent: 60
 ---
 
 # Project State
@@ -21,32 +21,33 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** All existing blog content must be migrated with working URLs, clean markdown, and proper metadata -- nothing gets lost in the move.
-**Current focus:** Phase 1 complete. Ready for Phase 2: Content Migration.
+**Current focus:** Phase 2: Content Migration -- migration script built, ready to execute migration.
 
 ## Current Position
 
-Phase: 1 of 6 (Project Scaffolding and Theme Setup) -- COMPLETE
-Next: Phase 2 of 6 (Content Migration)
-Status: Phase 1 approved
-Last activity: 2026-03-04 -- Phase 1 approved after visual verification and color refinement
+Phase: 2 of 6 (Content Migration)
+Current Plan: 2 of 3 (02-01 complete, 02-02 next)
+Status: Phase 2 in progress
+Last activity: 2026-03-04 -- Migration script and videos schema built (02-01)
 
-Progress: [██████████] 100% (Phase 1)
+Progress: [██████----] 60% (Plan 02-01 of 3 in Phase 2)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 4min
-- Total execution time: 0.13 hours
+- Total plans completed: 3
+- Average duration: 4.3min
+- Total execution time: 0.22 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01 | 2 | 8min | 4min |
+| 02 | 1 | 5min | 5min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3min), 01-02 (5min)
+- Last 5 plans: 01-01 (3min), 01-02 (5min), 02-01 (5min)
 - Trend: Consistent
 
 *Updated after each plan completion*
@@ -66,6 +67,9 @@ Recent decisions affecting current work:
 - [Phase 01]: Dark mode uses CSS variable overrides for prose, inline scripts for FOUC prevention
 - [Phase 01]: Deviated from original teal palette to blue-slate palette for better dark mode cohesion
 - [Phase 01]: Hero background changed from bg-primary to bg-slate-900 to match slate palette
+- [Phase 02]: Two-phase body cleanup in migration script: extract images before converting internal URLs
+- [Phase 02]: Linked images simplified to keep full-size URL only (drop thumbnail)
+- [Phase 02]: Contact page form HTML stripped entirely (replacement is Phase 3+ concern)
 
 ### Pending Todos
 
@@ -79,6 +83,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T13:54:45.494Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-content-migration/02-CONTEXT.md
+Last session: 2026-03-04T14:39:00Z
+Stopped at: Completed 02-01-PLAN.md
+Resume file: .planning/phases/02-content-migration/02-01-SUMMARY.md
