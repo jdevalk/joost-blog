@@ -24,7 +24,7 @@ const recentPosts = allPosts.sort(sortPostsByDateDesc).slice(0, 3);
             </a>
         </div>
         <div class="max-w-3xl mx-auto xl:max-w-6xl mt-16">
-            <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-8">Recent Posts</h3>
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-8">Recent Posts</h2>
             {recentPosts.map((post) => (
                 <PostPreview post={post} />
             ))}

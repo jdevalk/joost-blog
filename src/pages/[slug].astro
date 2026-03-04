@@ -2,6 +2,7 @@
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import CustomImage from '../components/CustomImage.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import JsonLd from '../components/JsonLd.astro';
 import Subscribe from '../components/Subscribe.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { sortPostsByDateDesc, slugify, getReadingTime, getRelatedPosts } from '../utils/post-utils';
@@ -51,10 +52,26 @@ const seoDescription = isBlog
 const seoImage = isBlog
     ? (blogData!.seo?.image ?? blogData!.featureImage)
     : (pageData!.seo?.image ?? pageData!.featureImage);
+
+const articleSchema = isBlog ? {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": blogData!.title,
+    "author": {
+        "@type": "Person",
+        "name": "Joost de Valk",
+        "url": "https://joost.blog"
+    },
+    "datePublished": blogData!.publishDate.toISOString(),
+    ...(blogData!.updatedDate && { "dateModified": blogData!.updatedDate.toISOString() }),
+    "description": blogData!.excerpt ?? blogData!.seo?.description ?? "",
+    "image": new URL(`/og/${entry.id}.png`, Astro.site).toString()
+} : null;
 ---
 
 {isBlog ? (
 <BaseLayout title={seoTitle} description={seoDescription} image={seoImage} pageType="article">
+    {articleSchema && <JsonLd schema={articleSchema} />}
     <main class="px-4 py-12 grow sm:px-8 sm:py-16">
         <article class="max-w-6xl mx-auto mb-12 sm:mb-16">
             <header class="max-w-3xl mx-auto mb-6 sm:mb-8">
