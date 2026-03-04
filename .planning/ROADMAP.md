@@ -31,11 +31,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Navigation menu includes About, Plugins, Videos, and Contact links
   4. Site colors and typography reflect Joost's brand (not Ovidius defaults)
   5. Dark mode toggle works and remembers the user's preference across page loads
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md -- Clone Ovidius theme, swap font to Mona Sans, update brand colors, configure Shiki dual themes
+- [ ] 01-02-PLAN.md -- Configure hero/nav/social links, download profile photo, build dark mode toggle with FOUC prevention
 
 ### Phase 2: Content Migration
 **Goal**: All 66 blog posts, static pages, 8 video pages, and all images exist as validated Astro content collections with clean markdown and correct frontmatter
@@ -124,7 +124,7 @@ Phases execute in numeric order: 1 > 2 > 3 > 4/5 (parallel possible) > 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Project Scaffolding and Theme Setup | 0/? | Not started | - |
+| 1. Project Scaffolding and Theme Setup | 0/2 | Planning complete | - |
 | 2. Content Migration | 0/? | Not started | - |
 | 3. Routing and Core Pages | 0/? | Not started | - |
 | 4. SEO and Performance | 0/? | Not started | - |
