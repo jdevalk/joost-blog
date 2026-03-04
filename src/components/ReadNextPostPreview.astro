@@ -9,7 +9,7 @@ const { title, publishDate, updatedDate, featureImage } = post.data;
 
 <article class="flex flex-col mb-12 gap-x-8 gap-y-6 sm:flex-row">
     <header class="grow">
-        <div class="mb-2 text-sm tracking-wider uppercase text-slate-500">
+        <div class="mb-2 text-sm tracking-wider uppercase text-slate-500 dark:text-slate-400">
             <FormattedDate date={publishDate} />
             {
                 updatedDate && (
@@ -22,7 +22,7 @@ const { title, publishDate, updatedDate, featureImage } = post.data;
                 )
             }
         </div>
-        <h3 class="text-2xl font-bold text-slate-900">
+        <h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100">
             <a href={`/blog/${post.id}/`}>{title}</a>
         </h3>
     </header>

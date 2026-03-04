@@ -15,14 +15,14 @@ const latestPosts = posts.filter(({ data }) => !data.isFeatured).slice(0, 3);
 ---
 
 <BaseLayout description={siteConfig.description}>
-    <div class="relative border-b border-slate-100 bg-slate-50" slot="header">
+    <div class="relative border-b border-slate-100 bg-slate-50 dark:bg-slate-900 dark:border-slate-700" slot="header">
         <Header class="relative" />
         <Hero {...siteConfig.hero} socialLinks={siteConfig.socialLinks} />
     </div>
     <main class="py-12 grow sm:py-16">
         {
             featuredPosts?.length > 0 && (
-                <div class="px-4 mb-12 border-b border-slate-200 sm:mb-16 sm:px-8">
+                <div class="px-4 mb-12 border-b border-slate-200 dark:border-slate-700 sm:mb-16 sm:px-8">
                     <div class="max-w-6xl mx-auto">
                         {featuredPosts.map((post) => (
                             <FeaturedPostPreview post={post} />
@@ -36,7 +36,7 @@ const latestPosts = posts.filter(({ data }) => !data.isFeatured).slice(0, 3);
                 latestPosts?.length > 0 && (
                     <>
                         <div class="max-w-3xl mx-auto mb-8 sm:mb-12">
-                            <h2 class="after:bg-primary text-sm tracking-wider text-slate-900 uppercase after:mt-4 after:block after:h-px after:w-16 after:content-['']">
+                            <h2 class="after:bg-primary text-sm tracking-wider text-slate-900 dark:text-slate-100 uppercase after:mt-4 after:block after:h-px after:w-16 after:content-['']">
                                 Latest Articles
                             </h2>
                         </div>
@@ -45,7 +45,7 @@ const latestPosts = posts.filter(({ data }) => !data.isFeatured).slice(0, 3);
                                 <PostPreview post={post} />
                             ))}
                         </div>
-                        <div class="max-w-3xl pt-8 mx-auto border-t border-slate-200 sm:pt-12">
+                        <div class="max-w-3xl pt-8 mx-auto border-t border-slate-200 dark:border-slate-700 sm:pt-12">
                             <a
                                 class="bg-primary hover:shadow-button inline-flex items-center justify-center gap-1.5 rounded-full px-8 py-2.5 font-semibold text-white transition duration-300"
                                 href="/blog"

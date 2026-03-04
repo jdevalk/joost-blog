@@ -9,7 +9,7 @@ const { title, publishDate, updatedDate, featureImage, excerpt, isFeatured } = p
 
 <article class="mb-12 post-card sm:mb-16">
     <header class="post-card-header">
-        <div class="mb-2 text-sm tracking-wider uppercase text-slate-500">
+        <div class="mb-2 text-sm tracking-wider uppercase text-slate-500 dark:text-slate-400">
             {
                 isFeatured && (
                     <>
@@ -30,7 +30,7 @@ const { title, publishDate, updatedDate, featureImage, excerpt, isFeatured } = p
                 )
             }
         </div>
-        <h2 class="text-3xl font-bold text-slate-900"><a href={`/blog/${post.id}/`}>{title}</a></h2>
+        <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100"><a href={`/blog/${post.id}/`}>{title}</a></h2>
     </header>
     {
         featureImage?.src && (

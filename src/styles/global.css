@@ -4,6 +4,9 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
+/* Dark mode via class toggle (not media query) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
     --font-sans: 'Mona Sans Variable', sans-serif;
     --color-primary: #0e373b;
@@ -31,6 +34,34 @@
         @apply bg-primary mx-auto block h-0.75 w-7.5;
         content: '';
         margin-top: 1.375em;
+    }
+}
+
+/* Dark mode prose overrides */
+@layer utilities {
+    .dark .prose {
+        --tw-prose-body: #cbd5e1;
+        --tw-prose-headings: #e2e8f0;
+        --tw-prose-links: #96e1e9;
+        --tw-prose-bold: #e2e8f0;
+        --tw-prose-counters: #94a3b8;
+        --tw-prose-bullets: #94a3b8;
+        --tw-prose-hr: #334155;
+        --tw-prose-quotes: #e2e8f0;
+        --tw-prose-quote-borders: #334155;
+        --tw-prose-captions: #94a3b8;
+        --tw-prose-code: #e2e8f0;
+        --tw-prose-pre-code: #e2e8f0;
+        --tw-prose-pre-bg: #1e293b;
+        --tw-prose-th-borders: #475569;
+        --tw-prose-td-borders: #334155;
+    }
+    .dark .prose a {
+        @apply text-accent hover:text-white;
+    }
+    .dark .prose blockquote:before,
+    .dark .prose blockquote:after {
+        @apply bg-accent;
     }
 }
 

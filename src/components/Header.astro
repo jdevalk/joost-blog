@@ -1,5 +1,6 @@
 ---
 import HeaderNavLink from './HeaderNavLink.astro';
+import ThemeToggle from './ThemeToggle.astro';
 import siteConfig from '../data/site-config';
 import CustomImage from './CustomImage.astro';
 
@@ -15,11 +16,13 @@ const { class: className } = Astro.props;
                 <CustomImage class="max-h-12" {...siteConfig.logo} loading="eager" fetchpriority="high" />
             </a>
         ) : (
-            <a class="text-xl font-bold sm:text-2xl" href="/">
+            <a class="text-xl font-bold sm:text-2xl dark:text-slate-100" href="/">
                 {siteConfig.title}
             </a>
         )
     }
+    <div class="flex items-center gap-2">
+        <ThemeToggle />
     {
         primaryNavLinks.length > 0 && (
             <nav class="relative" aria-label="Primary navigation">
@@ -31,11 +34,11 @@ const { class: className } = Astro.props;
                 >
                     <span class="relative w-1 h-1 bg-white rounded-full menu-toggle-icon" />
                 </button>
-                <ul id="menu-items" class="absolute z-10 px-8 pt-16 pb-10 border menu -top-3 -right-3 border-white/40 bg-white/75 sm:px-12 sm:pt-20 sm:pb-16">
+                <ul id="menu-items" class="absolute z-10 px-8 pt-16 pb-10 border menu -top-3 -right-3 border-white/40 bg-white/75 dark:border-slate-600/40 dark:bg-slate-800/90 sm:px-12 sm:pt-20 sm:pb-16">
                     {primaryNavLinks.map((link) => (
-                        <li class="mb-1 border-b border-slate-200/70">
+                        <li class="mb-1 border-b border-slate-200/70 dark:border-slate-600/70">
                             <HeaderNavLink
-                                class="relative block py-1 pr-6 text-lg font-bold transition duration-300 text-slate-700 hover:text-slate-500 sm:text-xl"
+                                class="relative block py-1 pr-6 text-lg font-bold transition duration-300 text-slate-700 hover:text-slate-500 dark:text-slate-200 dark:hover:text-slate-400 sm:text-xl"
                                 href={link.href}
                             >
                                 {link.text}
@@ -46,6 +49,7 @@ const { class: className } = Astro.props;
             </nav>
         )
     }
+    </div>
 </header>
 
 <style>
