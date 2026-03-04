@@ -34,8 +34,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Blog Functionality
 
-- [ ] **BLOG-01**: Blog post listing page with pagination
-- [ ] **BLOG-02**: Individual post pages with date, category, reading time
+- [x] **BLOG-01**: Blog post listing page with pagination
+- [x] **BLOG-02**: Individual post pages with date, category, reading time
 - [ ] **BLOG-03**: Category archive pages for all 10 categories
 - [x] **BLOG-04**: Related posts displayed at bottom of each article (category-based, limit 3)
 - [x] **BLOG-05**: RSS feed generated at /rss.xml
@@ -119,8 +119,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | THEME-03 | Phase 1: Project Scaffolding and Theme Setup | Complete |
 | THEME-04 | Phase 1: Project Scaffolding and Theme Setup | Complete |
 | THEME-05 | Phase 1: Project Scaffolding and Theme Setup | Complete |
-| BLOG-01 | Phase 3: Routing and Core Pages | Pending |
-| BLOG-02 | Phase 3: Routing and Core Pages | Pending |
+| BLOG-01 | Phase 3: Routing and Core Pages | Complete |
+| BLOG-02 | Phase 3: Routing and Core Pages | Complete |
 | BLOG-03 | Phase 3: Routing and Core Pages | Pending |
 | BLOG-04 | Phase 3: Routing and Core Pages | Complete |
 | BLOG-05 | Phase 3: Routing and Core Pages | Complete |

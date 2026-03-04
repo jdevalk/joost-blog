@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Project Scaffolding and Theme Setup** - Working Astro project with Ovidius theme, branding, navigation, and homepage
 - [x] **Phase 2: Content Migration** - All blog posts, pages, videos, and images migrated as validated Astro content collections (completed 2026-03-04)
-- [ ] **Phase 3: Routing and Core Pages** - All content rendered at correct URLs with blog listing, categories, and video pages
+- [x] **Phase 3: Routing and Core Pages** - All content rendered at correct URLs with blog listing, categories, and video pages (completed 2026-03-04)
 - [ ] **Phase 4: SEO and Performance** - Production-quality SEO metadata, feeds, sitemap, and optimized asset delivery
 - [ ] **Phase 5: Engagement Features** - Comments and view transitions for an interactive reading experience
 - [ ] **Phase 6: Deployment and Verification** - Live on Cloudflare Pages with custom domain and verified URL preservation
@@ -128,7 +128,7 @@ Phases execute in numeric order: 1 > 2 > 3 > 4/5 (parallel possible) > 6
 |-------|----------------|--------|-----------|
 | 1. Project Scaffolding and Theme Setup | 2/2 | Complete | 2026-03-04 |
 | 2. Content Migration | 3/3 | Complete   | 2026-03-04 |
-| 3. Routing and Core Pages | 0/3 | Not started | - |
+| 3. Routing and Core Pages | 3/3 | Complete   | 2026-03-04 |
 | 4. SEO and Performance | 0/? | Not started | - |
 | 5. Engagement Features | 0/? | Not started | - |
 | 6. Deployment and Verification | 0/? | Not started | - |
