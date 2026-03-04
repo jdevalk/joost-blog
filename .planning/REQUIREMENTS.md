@@ -26,10 +26,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Theme and Branding
 
-- [ ] **THEME-01**: Ovidius theme installed and configured as project base
+- [x] **THEME-01**: Ovidius theme installed and configured as project base
 - [ ] **THEME-02**: Homepage hero section with Joost's bio, photo, and social links
 - [ ] **THEME-03**: Navigation menu with About, Plugins, Videos, Contact links
-- [ ] **THEME-04**: Site colors and typography customized to match Joost's brand
+- [x] **THEME-04**: Site colors and typography customized to match Joost's brand
 - [ ] **THEME-05**: Dark mode toggle with localStorage preference persistence
 
 ### Blog Functionality
@@ -114,10 +114,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | URL-03 | Phase 6: Deployment and Verification | Pending |
 | URL-04 | Phase 6: Deployment and Verification | Pending |
 | URL-05 | Phase 3: Routing and Core Pages | Pending |
-| THEME-01 | Phase 1: Project Scaffolding and Theme Setup | Pending |
+| THEME-01 | Phase 1: Project Scaffolding and Theme Setup | Complete |
 | THEME-02 | Phase 1: Project Scaffolding and Theme Setup | Pending |
 | THEME-03 | Phase 1: Project Scaffolding and Theme Setup | Pending |
-| THEME-04 | Phase 1: Project Scaffolding and Theme Setup | Pending |
+| THEME-04 | Phase 1: Project Scaffolding and Theme Setup | Complete |
 | THEME-05 | Phase 1: Project Scaffolding and Theme Setup | Pending |
 | BLOG-01 | Phase 3: Routing and Core Pages | Pending |
 | BLOG-02 | Phase 3: Routing and Core Pages | Pending |

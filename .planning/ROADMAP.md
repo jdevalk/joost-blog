@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Clone Ovidius theme, swap font to Mona Sans, update brand colors, configure Shiki dual themes
+- [x] 01-01-PLAN.md -- Clone Ovidius theme, swap font to Mona Sans, update brand colors, configure Shiki dual themes
 - [ ] 01-02-PLAN.md -- Configure hero/nav/social links, download profile photo, build dark mode toggle with FOUC prevention
 
 ### Phase 2: Content Migration
@@ -124,7 +124,7 @@ Phases execute in numeric order: 1 > 2 > 3 > 4/5 (parallel possible) > 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Project Scaffolding and Theme Setup | 0/2 | Planning complete | - |
+| 1. Project Scaffolding and Theme Setup | 1/2 | In Progress | - |
 | 2. Content Migration | 0/? | Not started | - |
 | 3. Routing and Core Pages | 0/? | Not started | - |
 | 4. SEO and Performance | 0/? | Not started | - |
