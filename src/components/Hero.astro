@@ -31,11 +31,11 @@ const isDark = variant === 'dark';
                         <div class="p-6 mb-6">
                             <CustomImage
                                 {...avatar}
-                                class:list={["object-cover w-32 border-2 rounded-full aspect-square", isDark ? "border-white/30 shadow-lg" : "border-primary shadow-avatar"]}
-                                width={128}
-                                height={128}
-                                widths={[128, 256]}
-                                sizes="128px"
+                                class:list={["object-cover w-40 border-2 rounded-full aspect-square", isDark ? "border-white/30 shadow-lg" : "border-primary shadow-avatar"]}
+                                width={160}
+                                height={160}
+                                widths={[160, 320]}
+                                sizes="160px"
                                 fetchpriority="high"
                                 loading="eager"
                             />
