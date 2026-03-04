@@ -44,10 +44,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### SEO
 
-- [ ] **SEO-01**: OpenGraph meta tags on all pages (title, description, image)
-- [ ] **SEO-02**: Auto-generated OpenGraph images from post title/category at build time
-- [ ] **SEO-03**: Canonical URLs on all pages
-- [ ] **SEO-04**: Meta descriptions from post excerpts/frontmatter
+- [x] **SEO-01**: OpenGraph meta tags on all pages (title, description, image)
+- [x] **SEO-02**: Auto-generated OpenGraph images from post title/category at build time
+- [x] **SEO-03**: Canonical URLs on all pages
+- [x] **SEO-04**: Meta descriptions from post excerpts/frontmatter
 - [ ] **SEO-05**: Structured data (Article JSON-LD) on blog posts
 - [ ] **SEO-06**: Proper heading hierarchy throughout templates
 
@@ -126,10 +126,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BLOG-05 | Phase 3: Routing and Core Pages | Complete |
 | BLOG-06 | Phase 3: Routing and Core Pages | Complete |
 | BLOG-07 | Phase 3: Routing and Core Pages | Complete |
-| SEO-01 | Phase 4: SEO and Performance | Pending |
-| SEO-02 | Phase 4: SEO and Performance | Pending |
-| SEO-03 | Phase 4: SEO and Performance | Pending |
-| SEO-04 | Phase 4: SEO and Performance | Pending |
+| SEO-01 | Phase 4: SEO and Performance | Complete |
+| SEO-02 | Phase 4: SEO and Performance | Complete |
+| SEO-03 | Phase 4: SEO and Performance | Complete |
+| SEO-04 | Phase 4: SEO and Performance | Complete |
 | SEO-05 | Phase 4: SEO and Performance | Pending |
 | SEO-06 | Phase 4: SEO and Performance | Pending |
 | PERF-01 | Phase 2: Content Migration | Complete |

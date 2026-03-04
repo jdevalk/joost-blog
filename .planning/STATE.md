@@ -2,17 +2,17 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_plan: 3 of 3 (03-03 complete, Phase 3 done)
-status: completed
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-04T17:41:01.570Z"
-last_activity: 2026-03-04 -- Category archives, video pages, and 404 complete (03-03)
+current_plan: 1 of 2 (04-01 complete)
+status: in_progress
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-03-04T21:07:33Z"
+last_activity: 2026-03-04 -- Auto-generated OG images for all content (04-01)
 progress:
   total_phases: 6
   completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
-  percent: 100
+  total_plans: 10
+  completed_plans: 9
+  percent: 90
 ---
 
 # Project State
@@ -22,23 +22,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** All existing blog content must be migrated with working URLs, clean markdown, and proper metadata -- nothing gets lost in the move.
-**Current focus:** Phase 3 complete. All routing and core pages done -- ready for Phase 4.
+**Current focus:** Phase 4 in progress. OG images done, JSON-LD and remaining SEO next.
 
 ## Current Position
 
-Phase: 3 of 6 (Routing and Core Pages)
-Current Plan: 3 of 3 (03-03 complete, Phase 3 done)
-Status: completed
-Last activity: 2026-03-04 -- Category archives, video pages, and 404 complete (03-03)
+Phase: 4 of 6 (SEO and Performance)
+Current Plan: 1 of 2 (04-01 complete)
+Status: in_progress
+Last activity: 2026-03-04 -- Auto-generated OG images for all content (04-01)
 
-Progress: [██████████] 100% (3 of 3 plans)
+Progress: [█████████░] 90% (9 of 10 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: 3.7min
-- Total execution time: 0.37 hours
+- Total plans completed: 9
+- Average duration: 3.4min
+- Total execution time: 0.52 hours
 
 **By Phase:**
 
@@ -47,9 +47,10 @@ Progress: [██████████] 100% (3 of 3 plans)
 | 01 | 2 | 8min | 4min |
 | 02 | 3 | 11min | 3.7min |
 | 03 | 3 | 8min | 2.7min |
+| 04 | 1 | 4min | 4min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (5min), 02-01 (5min), 02-02 (4min), 02-03 (2min), 03-01 (4min)
+- Last 5 plans: 02-03 (2min), 03-01 (4min), 03-02 (2min), 03-03 (2min), 04-01 (4min)
 - Trend: Consistent
 
 *Updated after each plan completion*
@@ -58,6 +59,7 @@ Progress: [██████████] 100% (3 of 3 plans)
 | Phase 03 P01 | 4min | 2 tasks | 7 files |
 | Phase 03 P02 | 2min | 2 tasks | 2 files |
 | Phase 03 P03 | 2min | 2 tasks | 5 files |
+| Phase 04 P01 | 4min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -90,6 +92,10 @@ Recent decisions affecting current work:
 - [Phase 03]: YouTube embeds use youtube-nocookie.com for privacy-enhanced mode
 - [Phase 03]: ISO 8601 duration parsed to human-readable format for video display
 - [Phase 03]: 404 page shows 3 recent blog posts to reduce bounce rate
+- [Phase 04]: MonaSans-Bold.ttf static weight from GitHub releases for satori (woff2 not supported)
+- [Phase 04]: Sharp pre-resizes featured images to 1200x675 before base64 encoding for satori
+- [Phase 04]: BaseHead auto-constructs OG image URL from page slug -- no changes to page templates
+- [Phase 04]: Homepage falls back to existing og-default.jpg (no content slug)
 
 ### Pending Todos
 
@@ -103,6 +109,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T17:41:01.567Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-seo-and-performance/04-CONTEXT.md
+Last session: 2026-03-04T21:07:33Z
+Stopped at: Completed 04-01-PLAN.md
+Resume file: .planning/phases/04-seo-and-performance/04-01-SUMMARY.md
