@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostPreview from '../components/PostPreview.astro';
+import { sortPostsByDateDesc } from '../utils/post-utils';
+
+const allPosts = await getCollection('blog');
+const recentPosts = allPosts.sort(sortPostsByDateDesc).slice(0, 3);
+---
+
+<BaseLayout title="Page Not Found - joost.blog">
+    <main class="grow px-4 py-12 sm:px-8">
+        <div class="max-w-3xl mx-auto text-center">
+            <h1 class="text-8xl font-bold text-slate-300 dark:text-slate-600 mb-4">404</h1>
+            <h2 class="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Page Not Found</h2>
+            <p class="text-lg text-slate-600 dark:text-slate-400 mb-8">
+                The page you are looking for does not exist or has been moved.
+            </p>
+            <a
+                href="/"
+                class="inline-block px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            >
+                Go Home
+            </a>
+        </div>
+        <div class="max-w-3xl mx-auto xl:max-w-6xl mt-16">
+            <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-8">Recent Posts</h3>
+            {recentPosts.map((post) => (
+                <PostPreview post={post} />
+            ))}
+        </div>
+    </main>
+</BaseLayout>
