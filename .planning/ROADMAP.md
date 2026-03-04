@@ -85,11 +85,11 @@ Plans:
   5. Proper heading hierarchy (single h1, logical h2-h6) is maintained across all page templates
   6. YouTube embeds use a facade/lite pattern (no iframe loaded until user clicks)
   7. Zero unnecessary JavaScript is shipped -- only Astro islands for interactive components
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md -- Auto-generate OG images (satori + sharp) for all posts/pages, wire into BaseHead OG meta tags
+- [ ] 04-02-PLAN.md -- Add Article/VideoObject JSON-LD, replace YouTube iframes with facade, audit headings and JS
 
 ### Phase 5: Engagement Features
 **Goal**: Readers can comment on posts and experience smooth page transitions
@@ -129,6 +129,6 @@ Phases execute in numeric order: 1 > 2 > 3 > 4/5 (parallel possible) > 6
 | 1. Project Scaffolding and Theme Setup | 2/2 | Complete | 2026-03-04 |
 | 2. Content Migration | 3/3 | Complete   | 2026-03-04 |
 | 3. Routing and Core Pages | 3/3 | Complete   | 2026-03-04 |
-| 4. SEO and Performance | 0/? | Not started | - |
+| 4. SEO and Performance | 0/2 | Not started | - |
 | 5. Engagement Features | 0/? | Not started | - |
 | 6. Deployment and Verification | 0/? | Not started | - |
