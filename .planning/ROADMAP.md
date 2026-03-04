@@ -66,11 +66,12 @@ Plans:
   5. All 10 category archive pages exist and show the correct posts filtered by category
   6. RSS feed is generated at /rss.xml, XML sitemap is generated, and a custom 404 page displays
   7. Related posts (up to 3, category-based) appear at the bottom of each blog post
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md -- Rewire routing from /blog/{slug}/ to /{slug}/, add utilities (slugify, readingTime, relatedPosts), update RSS
+- [ ] 03-02-PLAN.md -- Enhance PostPreview with categories and reading time, update blog listing page
+- [ ] 03-03-PLAN.md -- Create category archives, video pages (hub + individual), YouTube embed, and 404 page
 
 ### Phase 4: SEO and Performance
 **Goal**: Every page has production-quality SEO metadata, structured data, and optimized asset delivery -- befitting the blog of the Yoast SEO founder
@@ -127,7 +128,7 @@ Phases execute in numeric order: 1 > 2 > 3 > 4/5 (parallel possible) > 6
 |-------|----------------|--------|-----------|
 | 1. Project Scaffolding and Theme Setup | 2/2 | Complete | 2026-03-04 |
 | 2. Content Migration | 3/3 | Complete   | 2026-03-04 |
-| 3. Routing and Core Pages | 0/? | Not started | - |
+| 3. Routing and Core Pages | 0/3 | Not started | - |
 | 4. SEO and Performance | 0/? | Not started | - |
 | 5. Engagement Features | 0/? | Not started | - |
 | 6. Deployment and Verification | 0/? | Not started | - |
