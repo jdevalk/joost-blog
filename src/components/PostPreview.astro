@@ -2,9 +2,11 @@
 import { type CollectionEntry } from 'astro:content';
 import CustomImage from './CustomImage.astro';
 import FormattedDate from './FormattedDate.astro';
+import { slugify, getReadingTime } from '../utils/post-utils';
 
 const { post } = Astro.props as { post: CollectionEntry<'blog'> };
-const { title, publishDate, updatedDate, featureImage, excerpt, isFeatured } = post.data;
+const { title, publishDate, updatedDate, featureImage, excerpt, isFeatured, categories } = post.data;
+const readingTime = getReadingTime(post.body ?? '');
 ---
 
 <article class="mb-12 post-card sm:mb-16">
@@ -27,6 +29,25 @@ const { title, publishDate, updatedDate, featureImage, excerpt, isFeatured } = p
                             (Updated on <FormattedDate date={updatedDate} />)
                         </span>
                     </>
+                )
+            }
+            <span> / {readingTime} min read</span>
+            {
+                categories && categories.length > 0 && (
+                    <span>
+                        {' / '}
+                        {categories.map((cat: string, i: number) => (
+                            <>
+                                <a
+                                    href={`/category/${slugify(cat)}/`}
+                                    class="text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300 transition duration-300"
+                                >
+                                    {cat}
+                                </a>
+                                {i < categories.length - 1 && ', '}
+                            </>
+                        ))}
+                    </span>
                 )
             }
         </div>
