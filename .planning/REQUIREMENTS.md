@@ -9,10 +9,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Content Migration
 
-- [ ] **CONT-01**: All 66 blog posts migrated with full content, metadata, and images
-- [ ] **CONT-02**: All relevant pages migrated (about, contact, plugins, videos hub, privacy, comment policy, work with me, Alfred Quix, embedded playground)
-- [ ] **CONT-03**: All 8 video pages migrated as a content collection with YouTube embeds
-- [ ] **CONT-04**: All images downloaded from WordPress and stored locally for Astro optimization
+- [x] **CONT-01**: All 66 blog posts migrated with full content, metadata, and images
+- [x] **CONT-02**: All relevant pages migrated (about, contact, plugins, videos hub, privacy, comment policy, work with me, Alfred Quix, embedded playground)
+- [x] **CONT-03**: All 8 video pages migrated as a content collection with YouTube embeds
+- [x] **CONT-04**: All images downloaded from WordPress and stored locally for Astro optimization
 - [x] **CONT-05**: Frontmatter metadata mapped to Astro content collection schema (title, date, excerpt, categories, featured image)
 - [x] **CONT-06**: WordPress shortcodes, block comments, and special formatting cleaned up in all markdown files
 
@@ -53,7 +53,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Performance
 
-- [ ] **PERF-01**: Images optimized at build time (WebP/AVIF, responsive sizes, lazy loading)
+- [x] **PERF-01**: Images optimized at build time (WebP/AVIF, responsive sizes, lazy loading)
 - [ ] **PERF-02**: YouTube embeds use facade pattern (lite-youtube-embed or astro-embed)
 - [ ] **PERF-03**: Zero unnecessary JavaScript shipped (Astro islands only for interactive components)
 
@@ -103,10 +103,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CONT-01 | Phase 2: Content Migration | Pending |
-| CONT-02 | Phase 2: Content Migration | Pending |
-| CONT-03 | Phase 2: Content Migration | Pending |
-| CONT-04 | Phase 2: Content Migration | Pending |
+| CONT-01 | Phase 2: Content Migration | Complete |
+| CONT-02 | Phase 2: Content Migration | Complete |
+| CONT-03 | Phase 2: Content Migration | Complete |
+| CONT-04 | Phase 2: Content Migration | Complete |
 | CONT-05 | Phase 2: Content Migration | Complete |
 | CONT-06 | Phase 2: Content Migration | Complete |
 | URL-01 | Phase 3: Routing and Core Pages | Pending |
@@ -132,7 +132,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SEO-04 | Phase 4: SEO and Performance | Pending |
 | SEO-05 | Phase 4: SEO and Performance | Pending |
 | SEO-06 | Phase 4: SEO and Performance | Pending |
-| PERF-01 | Phase 2: Content Migration | Pending |
+| PERF-01 | Phase 2: Content Migration | Complete |
 | PERF-02 | Phase 4: SEO and Performance | Pending |
 | PERF-03 | Phase 4: SEO and Performance | Pending |
 | ENG-01 | Phase 5: Engagement Features | Pending |

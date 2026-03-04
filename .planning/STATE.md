@@ -2,16 +2,17 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Phase 2 in progress
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-03-04T14:39:00Z"
-last_activity: 2026-03-04 -- Migration script and videos schema built (02-01)
+current_plan: 3 of 3 (02-02 complete, 02-03 next)
+status: executing
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-03-04T14:47:13.226Z"
+last_activity: 2026-03-04 -- All WordPress content migrated to Astro collections (02-02)
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 5
-  completed_plans: 3
-  percent: 60
+  completed_plans: 4
+  percent: 80
 ---
 
 # Project State
@@ -26,11 +27,11 @@ See: .planning/PROJECT.md (updated 2026-03-03)
 ## Current Position
 
 Phase: 2 of 6 (Content Migration)
-Current Plan: 2 of 3 (02-01 complete, 02-02 next)
+Current Plan: 3 of 3 (02-02 complete, 02-03 next)
 Status: Phase 2 in progress
-Last activity: 2026-03-04 -- Migration script and videos schema built (02-01)
+Last activity: 2026-03-04 -- All WordPress content migrated to Astro collections (02-02)
 
-Progress: [██████----] 60% (Plan 02-01 of 3 in Phase 2)
+Progress: [████████░░] 80% (Plan 02-02 of 3 in Phase 2)
 
 ## Performance Metrics
 
@@ -51,6 +52,7 @@ Progress: [██████----] 60% (Plan 02-01 of 3 in Phase 2)
 - Trend: Consistent
 
 *Updated after each plan completion*
+| Phase 02 P02 | 4min | 2 tasks | 234 files |
 
 ## Accumulated Context
 
@@ -70,6 +72,9 @@ Recent decisions affecting current work:
 - [Phase 02]: Two-phase body cleanup in migration script: extract images before converting internal URLs
 - [Phase 02]: Linked images simplified to keep full-size URL only (drop thumbnail)
 - [Phase 02]: Contact page form HTML stripped entirely (replacement is Phase 3+ concern)
+- [Phase 02]: Removed 5 broken WordPress 404 image references rather than finding replacements
+- [Phase 02]: Videos.md page rewritten with direct internal links instead of broken image thumbnails
+- [Phase 02]: Pre-existing Ovidius theme sample content left in place (cleanup out of migration scope)
 
 ### Pending Todos
 
@@ -83,6 +88,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T14:39:00Z
-Stopped at: Completed 02-01-PLAN.md
-Resume file: .planning/phases/02-content-migration/02-01-SUMMARY.md
+Last session: 2026-03-04T14:47:13.224Z
+Stopped at: Completed 02-02-PLAN.md
+Resume file: None
