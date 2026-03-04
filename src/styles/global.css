@@ -6,7 +6,11 @@
 
 @theme {
     --font-sans: 'Mona Sans Variable', sans-serif;
-    --color-primary: #02738f;
+    --color-primary: #0e373b;
+    --color-secondary: #3b696d;
+    --color-accent: #96e1e9;
+    --color-base: #ffffff;
+    --color-tertiary: #f7f8f8;
     --shadow-avatar: 0 0 0 11px --alpha(var(--color-primary) / 15%), 0 0 0 22px --alpha(var(--color-primary) / 10%);
     --shadow-button: 0 0 0 6px --alpha(var(--color-primary) / 17.5%);
 }
@@ -28,4 +32,14 @@
         content: '';
         margin-top: 1.375em;
     }
+}
+
+/* Shiki code block dark mode -- class-based, not media query */
+html.dark .astro-code,
+html.dark .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
 }
