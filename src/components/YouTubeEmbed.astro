@@ -1,4 +1,6 @@
 ---
+import { YouTube } from '@astro-community/astro-embed-youtube';
+
 interface Props {
     youtubeId: string;
     title: string;
@@ -6,14 +8,6 @@ interface Props {
 
 const { youtubeId, title } = Astro.props;
 ---
-
 <div class="aspect-video w-full">
-    <iframe
-        src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
-        title={title}
-        loading="lazy"
-        allowfullscreen
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        class="w-full h-full rounded-lg"
-    ></iframe>
+    <YouTube id={youtubeId} title={title} posterQuality="max" />
 </div>
