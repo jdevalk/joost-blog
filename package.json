@@ -16,6 +16,7 @@
         "@fontsource-variable/mona-sans": "^5.2.8",
         "@tailwindcss/vite": "^4.1.16",
         "astro": "^5.15.3",
+        "gray-matter": "^4.0.3",
         "tailwindcss": "^4.1.16"
     },
     "devDependencies": {
