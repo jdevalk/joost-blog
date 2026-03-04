@@ -1,96 +1,33 @@
-import heroAvatar from '../assets/images/avatar.jpg';
-import heroBackground from '../assets/images/hero.webp';
-import logoUrl from '../assets/images/logo.svg?url';
-import defaultSocial from '../assets/images/ovidius-preview.jpg';
 import type { SiteConfig } from '../types';
+import avatarImage from '../assets/images/joost-profile.jpg';
 
 const siteConfig: SiteConfig = {
-    logo: {
-        src: logoUrl,
-        alt: 'Ovidius logo'
-    },
-    title: 'Ovidius',
-    description: 'Astro.js and Tailwind CSS theme for blogging by justgoodui.com',
+    title: 'joost.blog',
+    description: 'Joost de Valk - internet entrepreneur, founder of Yoast, investor at Emilia Capital',
     image: {
-        src: defaultSocial,
-        alt: 'Ovidius - Astro.js and Tailwind CSS theme'
+        src: '/images/og-default.jpg',
+        alt: 'joost.blog'
     },
     primaryNavLinks: [
-        {
-            text: 'Home',
-            href: '/'
-        },
-        {
-            text: 'Blog',
-            href: '/blog'
-        },
-        {
-            text: 'About',
-            href: '/about'
-        },
-        {
-            text: 'Contact',
-            href: '/contact'
-        },
-        {
-            text: 'Download Theme',
-            href: 'https://github.com/JustGoodUI/ovidius-astro-theme'
-        }
+        { text: 'Blog', href: '/blog' },
+        { text: 'About', href: '/about-me' },
+        { text: 'Plugins', href: '/plugins' },
+        { text: 'Videos', href: '/videos' },
+        { text: 'Contact', href: '/contact-me' }
     ],
-    secondaryNavLinks: [
-        {
-            text: 'About',
-            href: '/about'
-        },
-        {
-            text: 'Terms of Service',
-            href: '/terms'
-        },
-        {
-            text: 'Contact',
-            href: '/contact'
-        },
-        {
-            text: 'Download Theme',
-            href: 'https://github.com/JustGoodUI/ovidius-astro-theme'
-        }
-    ],
+    secondaryNavLinks: [],
     socialLinks: [
-        {
-            text: 'Go to GitHub repo',
-            href: 'https://github.com/JustGoodUI/ovidius-astro-theme',
-            icon: 'github'
-        },
-        {
-            text: 'Follow on Instagram',
-            href: 'https://instagram.com/',
-            icon: 'instagram'
-        },
-        {
-            text: 'Follow on Bluesky',
-            href: 'https://bsky.app/profile/justgoodui.com',
-            icon: 'bluesky'
-        }
+        { text: 'X / Twitter', href: 'https://x.com/jdevalk', icon: 'x' },
+        { text: 'GitHub', href: 'https://github.com/jdevalk', icon: 'github' },
+        { text: 'LinkedIn', href: 'https://www.linkedin.com/in/jdevalk/', icon: 'linkedin' },
+        { text: 'Bluesky', href: 'https://bsky.app/profile/joost.blog', icon: 'bluesky' }
     ],
     hero: {
-        title: 'Hi there!',
-        text: "My name is Justin Case. I'm a freelance front-end developer, author and speaker based in Austin, TX. It's nice to meet you.",
+        title: "Hi! I'm Joost de Valk",
+        text: "Internet entrepreneur from the Netherlands. I founded Yoast, the company behind the most popular WordPress SEO plugin. Now I invest in and build digital companies through Emilia Capital, and I'm working on Progress Planner.",
         avatar: {
-            src: heroAvatar,
-            alt: 'Justin Case'
-        },
-        backgroundImage: {
-            src: heroBackground
-        }
-    },
-    subscribe: {
-        enabled: true,
-        title: 'Subscribe to Ovidius Newsletter',
-        text: 'One update per week. All the latest news directly in your inbox.',
-        form: {
-            action: 'https://justgoodthemes.us3.list-manage.com/subscribe/post?u=78f1bab16028354caeb23aecd&amp;id=4a7330d117&amp;f_id=005c48e2f0',
-            emailFieldName: 'EMAIL',
-            honeypotFieldName: 'b_78f1bab16028354caeb23aecd_4a7330d117'
+            src: avatarImage,
+            alt: 'Joost de Valk'
         }
     },
     postsPerPage: 5
