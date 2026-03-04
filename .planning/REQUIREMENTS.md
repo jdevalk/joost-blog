@@ -48,14 +48,14 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SEO-02**: Auto-generated OpenGraph images from post title/category at build time
 - [x] **SEO-03**: Canonical URLs on all pages
 - [x] **SEO-04**: Meta descriptions from post excerpts/frontmatter
-- [ ] **SEO-05**: Structured data (Article JSON-LD) on blog posts
-- [ ] **SEO-06**: Proper heading hierarchy throughout templates
+- [x] **SEO-05**: Structured data (Article JSON-LD) on blog posts
+- [x] **SEO-06**: Proper heading hierarchy throughout templates
 
 ### Performance
 
 - [x] **PERF-01**: Images optimized at build time (WebP/AVIF, responsive sizes, lazy loading)
-- [ ] **PERF-02**: YouTube embeds use facade pattern (lite-youtube-embed or astro-embed)
-- [ ] **PERF-03**: Zero unnecessary JavaScript shipped (Astro islands only for interactive components)
+- [x] **PERF-02**: YouTube embeds use facade pattern (lite-youtube-embed or astro-embed)
+- [x] **PERF-03**: Zero unnecessary JavaScript shipped (Astro islands only for interactive components)
 
 ### Engagement
 
@@ -130,11 +130,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SEO-02 | Phase 4: SEO and Performance | Complete |
 | SEO-03 | Phase 4: SEO and Performance | Complete |
 | SEO-04 | Phase 4: SEO and Performance | Complete |
-| SEO-05 | Phase 4: SEO and Performance | Pending |
-| SEO-06 | Phase 4: SEO and Performance | Pending |
+| SEO-05 | Phase 4: SEO and Performance | Complete |
+| SEO-06 | Phase 4: SEO and Performance | Complete |
 | PERF-01 | Phase 2: Content Migration | Complete |
-| PERF-02 | Phase 4: SEO and Performance | Pending |
-| PERF-03 | Phase 4: SEO and Performance | Pending |
+| PERF-02 | Phase 4: SEO and Performance | Complete |
+| PERF-03 | Phase 4: SEO and Performance | Complete |
 | ENG-01 | Phase 5: Engagement Features | Pending |
 | ENG-02 | Phase 5: Engagement Features | Pending |
 | DEPLOY-01 | Phase 6: Deployment and Verification | Pending |
