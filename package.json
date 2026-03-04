@@ -1,0 +1,27 @@
+{
+    "name": "joost-blog",
+    "type": "module",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "astro dev",
+        "start": "astro dev",
+        "build": "astro build",
+        "preview": "astro preview",
+        "astro": "astro"
+    },
+    "dependencies": {
+        "@astrojs/mdx": "^4.3.9",
+        "@astrojs/rss": "^4.0.13",
+        "@astrojs/sitemap": "^3.6.0",
+        "@fontsource-variable/mona-sans": "^5.2.8",
+        "@tailwindcss/vite": "^4.1.16",
+        "astro": "^5.15.3",
+        "tailwindcss": "^4.1.16"
+    },
+    "devDependencies": {
+        "@tailwindcss/typography": "^0.5.19",
+        "prettier": "^3.6.2",
+        "prettier-plugin-astro": "^0.14.1",
+        "prettier-plugin-tailwindcss": "^0.6.14"
+    }
+}
