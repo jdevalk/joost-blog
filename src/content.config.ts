@@ -57,6 +57,7 @@ const videos = defineCollection({
             youtubeId: z.string().optional(),
             duration: z.string().optional(),
             videoUrl: z.string().url().optional(),
+            videoPressId: z.string().optional(),
             featureImage: imageSchema(image)
                 .extend({
                     caption: z.string().optional()

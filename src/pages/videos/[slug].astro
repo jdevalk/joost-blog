@@ -55,11 +55,11 @@ const videoSchema = video.data.youtubeId ? {
                     <YouTubeEmbed youtubeId={video.data.youtubeId} title={video.data.title} />
                 </div>
             )}
-            {!video.data.youtubeId && video.data.videoUrl && (
+            {!video.data.youtubeId && video.data.videoPressId && (
                 <div class="mb-8">
                     <div class="aspect-video w-full">
                         <iframe
-                            src={`${video.data.videoUrl.replace(/\/$/, '')}/embed/`}
+                            src={`https://video.wordpress.com/embed/${video.data.videoPressId}`}
                             title={video.data.title}
                             class="w-full h-full"
                             allowfullscreen
