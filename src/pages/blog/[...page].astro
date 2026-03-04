@@ -17,9 +17,9 @@ const { page } = Astro.props as { page: Page<CollectionEntry<'blog'>> };
 const blog = page.data;
 ---
 
-<BaseLayout title="Ovidius Blog" description="Get all the latest news from Ovidius">
+<BaseLayout title="Blog" description="Articles about WordPress, SEO, open source, and more by Joost de Valk">
     <main class="px-4 py-12 grow sm:px-8 sm:py-16">
-        <h1 class="sr-only">Blog</h1>
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-8 sm:text-4xl max-w-3xl mx-auto xl:max-w-6xl">Blog</h1>
         <div class="max-w-3xl mx-auto xl:max-w-6xl">
             {blog.map((post) => <PostPreview post={post} />)}
         </div>
