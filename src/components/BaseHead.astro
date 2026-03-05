@@ -23,7 +23,7 @@ const isStaging = Astro.site?.origin !== new URL(SITE_URL).origin;
 
 // OG image resolution: prefer explicit ogImage prop, then auto-generated OG image from slug
 const slug = Astro.url.pathname.replace(/^\/|\/$/g, '');
-const autoOgImage = slug ? `/og/${slug}.png` : undefined;
+const autoOgImage = `/og/${slug || 'index'}.png`;
 const ogImageUrl = Astro.props.ogImage ?? autoOgImage;
 // OG images must point to the actual deployed site (not production canonical) so they resolve
 const ogImageBase = Astro.site?.origin ?? SITE_URL;

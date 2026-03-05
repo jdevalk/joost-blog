@@ -86,3 +86,65 @@ export async function generateOgImage(title: string, backgroundImagePath?: strin
     const png = await sharp(Buffer.from(svg)).png().toBuffer();
     return png;
 }
+
+export async function generateHomepageOgImage(): Promise<Buffer> {
+    const font = loadFont();
+
+    // Load avatar as circular image
+    const avatarPath = process.cwd() + '/src/assets/images/joost-profile.jpg';
+    const avatarSize = 180;
+    const avatarBuffer = await sharp(avatarPath)
+        .resize(avatarSize, avatarSize, { fit: 'cover' })
+        .composite([{
+            input: Buffer.from(
+                `<svg width="${avatarSize}" height="${avatarSize}"><circle cx="${avatarSize / 2}" cy="${avatarSize / 2}" r="${avatarSize / 2}" fill="white"/></svg>`
+            ),
+            blend: 'dest-in'
+        }])
+        .png()
+        .toBuffer();
+    const avatarBase64 = `data:image/png;base64,${avatarBuffer.toString('base64')}`;
+
+    // Ring sizes matching the hero's concentric circles
+    const ringOuter = avatarSize + 44;
+    const ringInner = avatarSize + 22;
+
+    const markup = html`
+        <div style="width: ${OG_WIDTH}px; height: ${OG_HEIGHT}px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); position: relative;">
+            <!-- Concentric rings -->
+            <div style="display: flex; align-items: center; justify-content: center; width: ${ringOuter}px; height: ${ringOuter}px; border-radius: ${ringOuter / 2}px; border: 1px solid rgba(255,255,255,0.08); position: relative;">
+                <div style="display: flex; align-items: center; justify-content: center; width: ${ringInner}px; height: ${ringInner}px; border-radius: ${ringInner / 2}px; border: 1px solid rgba(255,255,255,0.15);">
+                    <img src="${avatarBase64}" style="width: ${avatarSize}px; height: ${avatarSize}px; border-radius: ${avatarSize / 2}px; border: 3px solid rgba(255,255,255,0.3);" />
+                </div>
+            </div>
+            <!-- Name -->
+            <div style="display: flex; color: white; font-size: 44px; font-weight: 700; margin-top: 28px;">
+                Joost de Valk
+            </div>
+            <!-- Tagline -->
+            <div style="display: flex; color: rgba(255,255,255,0.6); font-size: 22px; font-weight: 700; margin-top: 12px;">
+                Internet entrepreneur · Founder of Yoast · Investor
+            </div>
+            <!-- Domain -->
+            <div style="position: absolute; bottom: 30px; right: 40px; color: rgba(255,255,255,0.5); font-size: 20px; display: flex; font-weight: 700;">
+                joost.blog
+            </div>
+        </div>
+    `;
+
+    const svg = await satori(markup, {
+        width: OG_WIDTH,
+        height: OG_HEIGHT,
+        fonts: [
+            {
+                name: 'MonaSans',
+                data: font,
+                style: 'normal',
+                weight: 700
+            }
+        ]
+    });
+
+    const png = await sharp(Buffer.from(svg)).png().toBuffer();
+    return png;
+}
