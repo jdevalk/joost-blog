@@ -119,6 +119,25 @@ Plans:
 Plans:
 - [ ] 06-01: TBD
 
+### Phase 7: Yoast-like Schema
+**Goal**: Replace standalone JSON-LD blocks with a comprehensive Yoast-style @graph schema system -- every page outputs interconnected schema.org structured data with rich Person entity, breadcrumbs, and page-type-specific pieces
+**Depends on**: Phase 4
+**Requirements**: SCHEMA-01, SCHEMA-02, SCHEMA-03, SCHEMA-04, SCHEMA-05, SCHEMA-06, SCHEMA-07, SCHEMA-08
+**Success Criteria** (what must be TRUE):
+  1. Every page has a single JSON-LD block with @context and @graph array
+  2. Blog posts output Article + WebPage + BreadcrumbList + ImageObject + WebSite + Person
+  3. Video pages output VideoObject + WebPage + BreadcrumbList + WebSite + Person
+  4. Person entity includes full rich data (sameAs, worksFor, spouse, children)
+  5. All @id cross-references resolve correctly within the graph
+  6. Breadcrumbs follow correct hierarchy per page type
+  7. Homepage outputs CollectionPage, about page outputs ProfilePage
+  8. Old standalone JSON-LD blocks completely removed
+**Plans**: 2 plans
+
+Plans:
+- [ ] 07-01-PLAN.md -- Build schema utility module: types, constants, entity data, 8 piece builders, and graph assembler
+- [ ] 07-02-PLAN.md -- Create SchemaGraph component, wire into all 6 page templates, validate schema output
+
 ## Progress
 
 **Execution Order:**
@@ -132,3 +151,4 @@ Phases execute in numeric order: 1 > 2 > 3 > 4/5 (parallel possible) > 6
 | 4. SEO and Performance | 2/2 | Complete | 2026-03-04 |
 | 5. Engagement Features | 1/1 | Complete | 2026-03-05 |
 | 6. Deployment and Verification | 0/? | Not started | - |
+| 7. Yoast-like Schema | 0/2 | Not started | - |
