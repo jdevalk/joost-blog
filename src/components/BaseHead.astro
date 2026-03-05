@@ -5,6 +5,7 @@ import siteConfig from '../data/site-config';
 import { SITE_URL } from '../utils/schema/constants';
 import type { ImageInput } from '../types';
 
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 
 export type Props = {
@@ -108,3 +109,6 @@ function formatCanonicalURL(url: string | URL) {
 {description && <meta name="twitter:description" content={description} />}
 {finalOgImage && <meta name="twitter:image" content={finalOgImage} />}
 {resolvedImage?.alt && <meta name="twitter:image:alt" content={resolvedImage.alt} />}
+
+<!-- View Transitions -->
+<ClientRouter />
