@@ -152,7 +152,7 @@ Phases execute in numeric order: 1 > 2 > 3 > 4/5 (parallel possible) > 6
 | 5. Engagement Features | 1/1 | Complete | 2026-03-05 |
 | 6. Deployment and Verification | 0/? | Not started | - |
 | 7. Yoast-like Schema | 2/2 | Complete |  |
-| 8. Add site search | 0/2 | Not started | - |
+| 8. Add site search | 2/2 | Complete   | 2026-03-05 |
 
 ### Phase 8: Add site search
 
@@ -166,7 +166,7 @@ Phases execute in numeric order: 1 > 2 > 3 > 4/5 (parallel possible) > 6
   4. Search results link to correct post/page URLs
   5. Search UI matches site theme in both light and dark mode
   6. Search icon in header is discoverable on all screen sizes
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 08-01-PLAN.md -- Install astro-pagefind, register integration, add indexing attributes to all page templates
