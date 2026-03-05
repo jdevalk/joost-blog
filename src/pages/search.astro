@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Search from 'astro-pagefind/components/Search';
+---
+
+<BaseLayout title="Search" description="Search all posts and pages on joost.blog">
+    <main class="max-w-3xl mx-auto px-4 py-8 sm:py-12 grow">
+        <h1 class="text-3xl font-bold mb-8 dark:text-slate-100">Search</h1>
+        <div data-pagefind-ignore="all">
+            <Search id="search" className="pagefind-ui" uiOptions={{ showSubResults: true, showImages: true, pageSize: 10, resetStyles: true }} />
+        </div>
+    </main>
+</BaseLayout>
+
+<style is:global>
+    :root {
+        --pagefind-ui-scale: 1;
+        --pagefind-ui-primary: #3b82f6;
+        --pagefind-ui-text: #334155;
+        --pagefind-ui-background: #ffffff;
+        --pagefind-ui-border: #e2e8f0;
+        --pagefind-ui-tag: #f1f5f9;
+        --pagefind-ui-border-width: 1px;
+        --pagefind-ui-border-radius: 8px;
+        --pagefind-ui-image-border-radius: 8px;
+        --pagefind-ui-image-box-ratio: 3 / 2;
+        --pagefind-ui-font: inherit;
+    }
+
+    .dark {
+        --pagefind-ui-primary: #60a5fa;
+        --pagefind-ui-text: #e2e8f0;
+        --pagefind-ui-background: #1e293b;
+        --pagefind-ui-border: #334155;
+        --pagefind-ui-tag: #334155;
+    }
+</style>
