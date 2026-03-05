@@ -30,7 +30,7 @@ const latestPosts = posts.filter(({ data }) => !data.isFeatured).slice(0, 3);
         <Header class="relative" variant="dark" />
         <Hero {...siteConfig.hero} socialLinks={siteConfig.socialLinks} variant="dark" />
     </div>
-    <main class="py-12 grow sm:py-16">
+    <main class="py-12 grow sm:py-16" data-pagefind-body>
         {
             featuredPosts?.length > 0 && (
                 <div class="px-4 mb-12 border-b border-slate-200 dark:border-slate-700 sm:mb-16 sm:px-8">

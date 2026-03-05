@@ -79,7 +79,7 @@ const pageContext: SchemaPageContext = isBlog ? {
 {isBlog ? (
 <BaseLayout title={seoTitle} description={seoDescription} image={seoImage} pageType="article">
     <SchemaGraph pageContext={pageContext} />
-    <main class="px-4 py-12 grow sm:px-8 sm:py-16">
+    <main class="px-4 py-12 grow sm:px-8 sm:py-16" data-pagefind-body>
         <article class="max-w-6xl mx-auto mb-12 sm:mb-16">
             <header class="max-w-3xl mx-auto mb-6 sm:mb-8">
                 <div class="mb-3 text-sm tracking-wider uppercase text-slate-500 dark:text-slate-400">
@@ -111,7 +111,7 @@ const pageContext: SchemaPageContext = isBlog ? {
                         {blogData!.categories.map((cat: string, i: number) => (
                             <Fragment>
                                 {i > 0 && ', '}
-                                <a href={`/category/${slugify(cat)}/`} class="transition duration-300 text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300">{cat}</a>
+                                <a href={`/category/${slugify(cat)}/`} class="transition duration-300 text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300" data-pagefind-filter="category">{cat}</a>
                             </Fragment>
                         ))}
                     </div>
@@ -132,7 +132,7 @@ const pageContext: SchemaPageContext = isBlog ? {
                 <div class="prose prose-slate sm:prose-lg max-w-none">
                     <Content />
                 </div>
-                <div class="flex flex-wrap mt-8 text-sm gap-x-3 gap-y-1 sm:mt-12 sm:text-base">
+                <div class="flex flex-wrap mt-8 text-sm gap-x-3 gap-y-1 sm:mt-12 sm:text-base" data-pagefind-ignore="all">
                     <span class="font-semibold">Share:</span>
                     <a
                         class="transition duration-300 text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300"
@@ -160,10 +160,10 @@ const pageContext: SchemaPageContext = isBlog ? {
                         aria-label="Share on LinkedIn">LinkedIn</a>
                 </div>
             </div>
-            <Giscus />
+            <div data-pagefind-ignore="all"><Giscus /></div>
         </article>
         {relatedPosts && relatedPosts.length > 0 && (
-            <div class="max-w-3xl mx-auto mb-12 sm:mb-16">
+            <div class="max-w-3xl mx-auto mb-12 sm:mb-16" data-pagefind-ignore="all">
                 <h2 class="after:bg-primary mb-8 text-sm tracking-wider text-slate-900 dark:text-slate-100 uppercase after:mt-4 after:block after:h-px after:w-16 after:content-[''] sm:mb-12">
                     Related Posts
                 </h2>
@@ -193,13 +193,13 @@ const pageContext: SchemaPageContext = isBlog ? {
                 ))}
             </div>
         )}
-        <Subscribe class="mt-16 mb-12 sm:mt-24 sm:mb-16" />
+        <div data-pagefind-ignore="all"><Subscribe class="mt-16 mb-12 sm:mt-24 sm:mb-16" /></div>
     </main>
 </BaseLayout>
 ) : (
 <BaseLayout title={seoTitle} description={seoDescription} image={seoImage}>
     <SchemaGraph pageContext={pageContext} />
-    <main class="px-4 py-12 grow sm:px-8 sm:py-16">
+    <main class="px-4 py-12 grow sm:px-8 sm:py-16" data-pagefind-body>
         <article class="max-w-6xl mx-auto">
             <header class="max-w-3xl mx-auto mb-9">
                 <h1 class="text-4xl font-bold text-slate-900 dark:text-slate-100 sm:text-5xl">{pageData!.title}</h1>

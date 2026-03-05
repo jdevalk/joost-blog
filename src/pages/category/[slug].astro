@@ -44,7 +44,7 @@ const pageContext: SchemaPageContext = {
 
 <BaseLayout title={`${categoryName} - joost.blog`} description={`Posts in the ${categoryName} category`}>
     <SchemaGraph pageContext={pageContext} />
-    <main class="grow px-4 py-12 sm:px-8">
+    <main class="grow px-4 py-12 sm:px-8" data-pagefind-ignore="all">
         <div class="max-w-3xl mx-auto xl:max-w-6xl">
             <h1 class="text-4xl font-bold mb-12 text-slate-900 dark:text-slate-100">{categoryName}</h1>
             {posts.map((post) => (
