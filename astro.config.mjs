@@ -28,7 +28,7 @@ function noIndexOnStaging() {
 
 // https://astro.build/config
 export default defineConfig({
-    site: PRODUCTION_URL,
+    site: process.env.DEPLOY_URL || PRODUCTION_URL,
     vite: {
         plugins: [tailwindcss()]
     },
