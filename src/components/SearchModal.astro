@@ -181,6 +181,49 @@
         background: #854d0e;
         color: #fef08a;
     }
+
+    .search-modal-results :global(.search-sub-results) {
+        margin-left: 16px;
+        padding-left: 12px;
+        border-left: 2px solid #e2e8f0;
+    }
+
+    :global(.dark) .search-modal-results :global(.search-sub-results) {
+        border-left-color: #475569;
+    }
+
+    .search-modal-results :global(.search-sub-result) {
+        display: block;
+        padding: 6px 0;
+        text-decoration: none;
+    }
+
+    .search-modal-results :global(.search-sub-result:hover .search-sub-result-title) {
+        color: #3b82f6;
+    }
+
+    :global(.dark) .search-modal-results :global(.search-sub-result:hover .search-sub-result-title) {
+        color: #60a5fa;
+    }
+
+    .search-modal-results :global(.search-sub-result-title) {
+        display: block;
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: #334155;
+        transition: color 0.15s;
+    }
+
+    :global(.dark) .search-modal-results :global(.search-sub-result-title) {
+        color: #cbd5e1;
+    }
+
+    .search-modal-results :global(.search-sub-result-excerpt) {
+        display: block;
+        font-size: 0.8125rem;
+        color: #94a3b8;
+        line-height: 1.4;
+    }
 </style>
 
 <script>
@@ -264,14 +307,27 @@
                 }
 
                 resultsContainer.innerHTML = results
-                    .map((r: any) => `
-                        <div class="search-result">
-                            <a href="${r.url}">
-                                <div class="search-result-title">${r.meta?.title || r.url}</div>
-                                <div class="search-result-excerpt">${r.excerpt}</div>
-                            </a>
-                        </div>
-                    `)
+                    .map((r: any) => {
+                        const subResults = (r.sub_results || [])
+                            .filter((s: any) => s.url !== r.url)
+                            .slice(0, 3)
+                            .map((s: any) => `
+                                <a href="${s.url}" class="search-sub-result">
+                                    <span class="search-sub-result-title">${s.title}</span>
+                                    <span class="search-sub-result-excerpt">${s.excerpt}</span>
+                                </a>
+                            `)
+                            .join('');
+                        return `
+                            <div class="search-result">
+                                <a href="${r.url}">
+                                    <div class="search-result-title">${r.meta?.title || r.url}</div>
+                                    <div class="search-result-excerpt">${r.excerpt}</div>
+                                </a>
+                                ${subResults ? `<div class="search-sub-results">${subResults}</div>` : ''}
+                            </div>
+                        `;
+                    })
                     .join('');
             }, 200);
         });
