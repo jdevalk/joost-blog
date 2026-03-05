@@ -12,6 +12,7 @@ export function buildSiteNavigationElementPiece(): Record<string, unknown> {
         '@type': 'SiteNavigationElement',
         '@id': IDS.navigation,
         name: 'Main navigation',
+        isPartOf: { '@id': IDS.website },
         hasPart: navItems
     };
 }

@@ -8,6 +8,7 @@ export function buildWebSitePiece(): Record<string, unknown> {
         name: 'joost.blog',
         description: 'Joost de Valk - internet entrepreneur, founder of Yoast, investor at Emilia Capital',
         publisher: { '@id': IDS.person },
-        inLanguage: 'en-US'
+        inLanguage: 'en-US',
+        hasPart: { '@id': IDS.navigation }
     };
 }
