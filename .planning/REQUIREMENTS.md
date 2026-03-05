@@ -59,8 +59,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Engagement
 
-- [ ] **ENG-01**: Giscus comment system integrated on blog posts
-- [ ] **ENG-02**: View transitions between pages for smooth navigation
+- [x] **ENG-01**: Giscus comment system integrated on blog posts
+- [x] **ENG-02**: View transitions between pages for smooth navigation
 
 ### Deployment
 
@@ -135,8 +135,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PERF-01 | Phase 2: Content Migration | Complete |
 | PERF-02 | Phase 4: SEO and Performance | Complete |
 | PERF-03 | Phase 4: SEO and Performance | Complete |
-| ENG-01 | Phase 5: Engagement Features | Pending |
-| ENG-02 | Phase 5: Engagement Features | Pending |
+| ENG-01 | Phase 5: Engagement Features | Complete |
+| ENG-02 | Phase 5: Engagement Features | Complete |
 | DEPLOY-01 | Phase 6: Deployment and Verification | Pending |
 | DEPLOY-02 | Phase 6: Deployment and Verification | Pending |
 | DEPLOY-03 | Phase 6: Deployment and Verification | Pending |

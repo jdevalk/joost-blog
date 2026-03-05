@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_plan: 2 of 2 (04-02 complete)
-status: completed
-stopped_at: Phase 5 context gathered
-last_updated: "2026-03-04T21:49:41.184Z"
-last_activity: 2026-03-04 -- JSON-LD structured data, YouTube facade, heading/JS audit (04-02)
+current_plan: 1 of 1 (05-01 complete)
+status: phase_complete
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-03-05T09:35:00.000Z"
+last_activity: 2026-03-05 -- Giscus comments, view transitions, deviation fixes (05-01)
 progress:
   total_phases: 6
-  completed_phases: 4
-  total_plans: 10
-  completed_plans: 10
+  completed_phases: 5
+  total_plans: 11
+  completed_plans: 11
   percent: 100
 ---
 
@@ -22,23 +22,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** All existing blog content must be migrated with working URLs, clean markdown, and proper metadata -- nothing gets lost in the move.
-**Current focus:** Phase 4 complete. JSON-LD structured data, YouTube facade, heading audit, and JS audit done.
+**Current focus:** Phase 5 complete. Giscus comments added to blog posts with lazy loading, dark mode sync, and view transition support.
 
 ## Current Position
 
-Phase: 4 of 6 (SEO and Performance)
-Current Plan: 2 of 2 (04-02 complete)
+Phase: 5 of 6 (Engagement Features)
+Current Plan: 1 of 1 (05-01 complete)
 Status: phase_complete
-Last activity: 2026-03-04 -- JSON-LD structured data, YouTube facade, heading/JS audit (04-02)
+Last activity: 2026-03-05 -- Giscus comments, view transitions, deviation fixes (05-01)
 
-Progress: [██████████] 100% (10 of 10 plans)
+Progress: [██████████] 100% (11 of 11 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: 3.4min
-- Total execution time: 0.52 hours
+- Total plans completed: 10
+- Average duration: 4.2min
+- Total execution time: 0.7 hours
 
 **By Phase:**
 
@@ -48,10 +48,11 @@ Progress: [██████████] 100% (10 of 10 plans)
 | 02 | 3 | 11min | 3.7min |
 | 03 | 3 | 8min | 2.7min |
 | 04 | 1 | 4min | 4min |
+| 05 | 1 | 12min | 12min |
 
 **Recent Trend:**
-- Last 5 plans: 02-03 (2min), 03-01 (4min), 03-02 (2min), 03-03 (2min), 04-01 (4min)
-- Trend: Consistent
+- Last 5 plans: 03-02 (2min), 03-03 (2min), 04-01 (4min), 04-02 (2min), 05-01 (12min)
+- Trend: 05-01 longer due to 8 deviation fixes during verification
 
 *Updated after each plan completion*
 | Phase 02 P02 | 4min | 2 tasks | 234 files |
@@ -61,6 +62,7 @@ Progress: [██████████] 100% (10 of 10 plans)
 | Phase 03 P03 | 2min | 2 tasks | 5 files |
 | Phase 04 P01 | 4min | 2 tasks | 5 files |
 | Phase 04 P02 | 2min | 2 tasks | 6 files |
+| Phase 05 P01 | 12min | 2 tasks | 29 files |
 
 ## Accumulated Context
 
@@ -98,6 +100,10 @@ Recent decisions affecting current work:
 - [Phase 04]: BaseHead auto-constructs OG image URL from page slug -- no changes to page templates
 - [Phase 04]: Homepage falls back to existing og-default.jpg (no content slug)
 - [Phase 04]: JSON-LD placed in body (valid per Google); VideoObject only for videos with youtubeId; 404 heading hierarchy fixed
+- [Phase 05]: Giscus uses is:inline script to survive Astro view transitions
+- [Phase 05]: IntersectionObserver with 200px rootMargin for lazy loading Giscus iframe
+- [Phase 05]: MutationObserver on documentElement class for dark mode sync via postMessage
+- [Phase 05]: Placeholder repo/category IDs -- user must configure via giscus.app before comments work
 
 ### Pending Todos
 
@@ -111,6 +117,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T21:49:41.182Z
-Stopped at: Phase 5 context gathered
-Resume file: .planning/phases/05-engagement-features/05-CONTEXT.md
+Last session: 2026-03-05T09:35:00.000Z
+Stopped at: Completed 05-01-PLAN.md
+Resume file: .planning/phases/05-engagement-features/05-01-SUMMARY.md

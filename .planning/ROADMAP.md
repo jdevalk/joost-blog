@@ -15,8 +15,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Project Scaffolding and Theme Setup** - Working Astro project with Ovidius theme, branding, navigation, and homepage
 - [x] **Phase 2: Content Migration** - All blog posts, pages, videos, and images migrated as validated Astro content collections (completed 2026-03-04)
 - [x] **Phase 3: Routing and Core Pages** - All content rendered at correct URLs with blog listing, categories, and video pages (completed 2026-03-04)
-- [ ] **Phase 4: SEO and Performance** - Production-quality SEO metadata, feeds, sitemap, and optimized asset delivery
-- [ ] **Phase 5: Engagement Features** - Comments and view transitions for an interactive reading experience
+- [x] **Phase 4: SEO and Performance** - Production-quality SEO metadata, feeds, sitemap, and optimized asset delivery (completed 2026-03-04)
+- [x] **Phase 5: Engagement Features** - Comments and view transitions for an interactive reading experience (completed 2026-03-05)
 - [ ] **Phase 6: Deployment and Verification** - Live on Cloudflare Pages with custom domain and verified URL preservation
 
 ## Phase Details
@@ -89,7 +89,7 @@ Plans:
 
 Plans:
 - [x] 04-01-PLAN.md -- Auto-generate OG images (satori + sharp) for all posts/pages, wire into BaseHead OG meta tags
-- [ ] 04-02-PLAN.md -- Add Article/VideoObject JSON-LD, replace YouTube iframes with facade, audit headings and JS
+- [x] 04-02-PLAN.md -- Add Article/VideoObject JSON-LD, replace YouTube iframes with facade, audit headings and JS
 
 ### Phase 5: Engagement Features
 **Goal**: Readers can comment on posts and experience smooth page transitions
@@ -102,7 +102,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 05-01-PLAN.md -- Add Giscus comments to blog posts (lazy-loaded, dark mode synced) and verify view transitions
+- [x] 05-01-PLAN.md -- Add Giscus comments to blog posts (lazy-loaded, dark mode synced) and verify view transitions
 
 ### Phase 6: Deployment and Verification
 **Goal**: The site is live on Cloudflare Pages at joost.blog with all URLs verified and redirects working
@@ -129,6 +129,6 @@ Phases execute in numeric order: 1 > 2 > 3 > 4/5 (parallel possible) > 6
 | 1. Project Scaffolding and Theme Setup | 2/2 | Complete | 2026-03-04 |
 | 2. Content Migration | 3/3 | Complete   | 2026-03-04 |
 | 3. Routing and Core Pages | 3/3 | Complete   | 2026-03-04 |
-| 4. SEO and Performance | 1/2 | In progress | - |
-| 5. Engagement Features | 0/1 | Not started | - |
+| 4. SEO and Performance | 2/2 | Complete | 2026-03-04 |
+| 5. Engagement Features | 1/1 | Complete | 2026-03-05 |
 | 6. Deployment and Verification | 0/? | Not started | - |
