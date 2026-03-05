@@ -18,7 +18,7 @@ const { title, publishDate, updatedDate, featureImage, excerpt, categories } = p
                             <>
                                 <a
                                     href={`/category/${slugify(cat)}/`}
-                                    class="text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300 transition duration-300"
+                                    class="font-semibold text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300 underline decoration-primary/30 hover:decoration-primary dark:decoration-accent/30 dark:hover:decoration-accent transition duration-300"
                                 >
                                     {cat}
                                 </a>
@@ -46,7 +46,7 @@ const { title, publishDate, updatedDate, featureImage, excerpt, categories } = p
     {
         featureImage?.src && (
             <figure class="max-w-6xl mx-auto my-6 sm:my-8">
-                <a href={`/${post.id}/`}>
+                <a href={`/${post.id}/`} aria-label={title}>
                     <CustomImage
                         {...featureImage}
                         class="w-full rounded-md"
