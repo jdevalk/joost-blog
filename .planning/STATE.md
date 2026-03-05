@@ -2,17 +2,17 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_plan: 2 of 2 (07-02 complete)
-status: completed
-stopped_at: Completed 07-02-PLAN.md
-last_updated: "2026-03-05T13:59:20.505Z"
-last_activity: 2026-03-05 -- Schema utility module with piece builders and graph assembler (07-01)
+current_plan: 1 of 2 (08-01 complete)
+status: in-progress
+stopped_at: Completed 08-01-PLAN.md
+last_updated: "2026-03-05T14:45:04Z"
+last_activity: 2026-03-05 -- Pagefind integration with selective indexing attributes (08-01)
 progress:
-  total_phases: 7
-  completed_phases: 6
-  total_plans: 13
-  completed_plans: 13
-  percent: 100
+  total_phases: 8
+  completed_phases: 7
+  total_plans: 15
+  completed_plans: 14
+  percent: 93
 ---
 
 # Project State
@@ -22,16 +22,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** All existing blog content must be migrated with working URLs, clean markdown, and proper metadata -- nothing gets lost in the move.
-**Current focus:** Phase 7 complete. All 7 phases done -- Yoast-style schema on all page types.
+**Current focus:** Phase 8 in progress -- adding site search with Pagefind.
 
 ## Current Position
 
-Phase: 7 of 7 (Yoast-like Schema)
-Current Plan: 2 of 2 (07-02 complete)
-Status: complete
-Last activity: 2026-03-05 -- Schema utility module with piece builders and graph assembler (07-01)
+Phase: 8 of 8 (Add Site Search)
+Current Plan: 1 of 2 (08-01 complete)
+Status: in-progress
+Last activity: 2026-03-05 -- Pagefind integration with selective indexing attributes (08-01)
 
-Progress: [██████████] 100% (13 of 13 plans)
+Progress: [█████████░] 93% (14 of 15 plans)
 
 ## Performance Metrics
 
@@ -65,6 +65,7 @@ Progress: [██████████] 100% (13 of 13 plans)
 | Phase 05 P01 | 12min | 2 tasks | 29 files |
 | Phase 07 P01 | 2min | 2 tasks | 13 files |
 | Phase 07 P02 | 3min | 2 tasks | 8 files |
+| Phase 08 P01 | 2min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -111,10 +112,13 @@ Recent decisions affecting current work:
 - [Phase 07]: Person profile image uses /images/joost-profile.jpg static path
 - [Phase 07]: SiteNavigationElement uses hasPart array with nav items from siteConfig
 - [Phase 07]: SchemaGraph component reuses JsonLd.astro for rendering; inline entities with @id+name treated as resolved
+- [Phase 08]: Listing pages use data-pagefind-ignore to prevent duplicate indexing of post previews
+- [Phase 08]: Category links use data-pagefind-filter for faceted search capability
 
 ### Roadmap Evolution
 
 - Phase 7 added: Yoast like Schema
+- Phase 8 added: Add site search
 
 ### Pending Todos
 
@@ -128,6 +132,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T13:53:35.386Z
-Stopped at: Completed 07-02-PLAN.md
+Last session: 2026-03-05T14:45:04Z
+Stopped at: Completed 08-01-PLAN.md
 Resume file: None

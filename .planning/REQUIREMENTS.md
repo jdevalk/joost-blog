@@ -81,9 +81,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Site Search
 
-- [ ] **SEARCH-01**: Pagefind integration generates search index at build time
-- [ ] **SEARCH-02**: Only article content indexed (not nav, footer, comments, schema markup)
-- [ ] **SEARCH-03**: Blog post categories available as Pagefind filter metadata
+- [x] **SEARCH-01**: Pagefind integration generates search index at build time
+- [x] **SEARCH-02**: Only article content indexed (not nav, footer, comments, schema markup)
+- [x] **SEARCH-03**: Blog post categories available as Pagefind filter metadata
 - [ ] **SEARCH-04**: Dedicated search page at /search/ with Pagefind default UI
 - [ ] **SEARCH-05**: Search UI styled for both light and dark mode matching site theme
 
@@ -166,9 +166,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCHEMA-06 | Phase 7: Yoast-like Schema | Complete |
 | SCHEMA-07 | Phase 7: Yoast-like Schema | Complete |
 | SCHEMA-08 | Phase 7: Yoast-like Schema | Complete |
-| SEARCH-01 | Phase 8: Add site search | Pending |
-| SEARCH-02 | Phase 8: Add site search | Pending |
-| SEARCH-03 | Phase 8: Add site search | Pending |
+| SEARCH-01 | Phase 8: Add site search | Complete |
+| SEARCH-02 | Phase 8: Add site search | Complete |
+| SEARCH-03 | Phase 8: Add site search | Complete |
 | SEARCH-04 | Phase 8: Add site search | Pending |
 | SEARCH-05 | Phase 8: Add site search | Pending |
 
