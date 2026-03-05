@@ -2,16 +2,33 @@
 import { type CollectionEntry } from 'astro:content';
 import CustomImage from './CustomImage.astro';
 import FormattedDate from './FormattedDate.astro';
+import { slugify } from '../utils/post-utils';
 
 const { post } = Astro.props as { post: CollectionEntry<'blog'> };
-const { title, publishDate, updatedDate, featureImage, excerpt } = post.data;
+const { title, publishDate, updatedDate, featureImage, excerpt, categories } = post.data;
 ---
 
 <article class="mb-12 sm:mb-16">
     <header class="max-w-3xl mx-auto">
         <div class="mb-2 text-sm tracking-wider uppercase text-slate-500 dark:text-slate-400 sm:mb-3">
-            <span class="text-primary">Featured</span>
-            {' / '}
+            {
+                categories && categories.length > 0 && (
+                    <>
+                        {categories.map((cat: string, i: number) => (
+                            <>
+                                <a
+                                    href={`/category/${slugify(cat)}/`}
+                                    class="text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300 transition duration-300"
+                                >
+                                    {cat}
+                                </a>
+                                {i < categories.length - 1 && ', '}
+                            </>
+                        ))}
+                        {' / '}
+                    </>
+                )
+            }
             <FormattedDate date={publishDate} />
             {
                 updatedDate && (

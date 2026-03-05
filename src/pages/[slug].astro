@@ -83,9 +83,14 @@ const pageContext: SchemaPageContext = isBlog ? {
         <article class="max-w-6xl mx-auto mb-12 sm:mb-16">
             <header class="max-w-3xl mx-auto mb-6 sm:mb-8">
                 <div class="mb-3 text-sm tracking-wider uppercase text-slate-500 dark:text-slate-400">
-                    {blogData!.isFeatured && (
+                    {blogData!.categories && blogData!.categories.length > 0 && (
                         <Fragment>
-                            <span class="text-primary">Featured</span>
+                            {blogData!.categories.map((cat: string, i: number) => (
+                                <Fragment>
+                                    <a href={`/category/${slugify(cat)}/`} class="transition duration-300 text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300">{cat}</a>
+                                    {i < blogData!.categories!.length - 1 && ', '}
+                                </Fragment>
+                            ))}
                             {' / '}
                         </Fragment>
                     )}
@@ -106,16 +111,6 @@ const pageContext: SchemaPageContext = isBlog ? {
                     )}
                 </div>
                 <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 sm:text-4xl md:text-5xl">{blogData!.title}</h1>
-                {blogData!.categories && blogData!.categories.length > 0 && (
-                    <div class="mt-3 text-sm text-slate-600 dark:text-slate-400">
-                        {blogData!.categories.map((cat: string, i: number) => (
-                            <Fragment>
-                                {i > 0 && ', '}
-                                <a href={`/category/${slugify(cat)}/`} class="transition duration-300 text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300">{cat}</a>
-                            </Fragment>
-                        ))}
-                    </div>
-                )}
             </header>
             {blogData!.featureImage?.src && (
                 <figure class="my-6 sm:my-8 lg:my-12">

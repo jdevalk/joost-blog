@@ -35,31 +35,9 @@ function getMimeType(filePath: string): string {
 export async function generateOgImage(title: string, backgroundImagePath?: string): Promise<Buffer> {
     const font = loadFont();
 
-    let backgroundMarkup = '';
-
-    if (backgroundImagePath) {
-        try {
-            // Read the original image and convert to PNG via sharp for consistent base64 encoding
-            const imageBuffer = await sharp(backgroundImagePath)
-                .resize(OG_WIDTH, OG_HEIGHT, { fit: 'cover' })
-                .png()
-                .toBuffer();
-            const base64 = imageBuffer.toString('base64');
-            const dataUrl = `data:image/png;base64,${base64}`;
-            backgroundMarkup = `<img src="${dataUrl}" style="position: absolute; top: 0; left: 0; width: ${OG_WIDTH}px; height: ${OG_HEIGHT}px; object-fit: cover;" />`;
-        } catch {
-            // If image reading fails, fall through to branded fallback
-        }
-    }
-
-    // If no background image, use branded gradient
-    const fallbackBg = !backgroundMarkup
-        ? 'background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);'
-        : '';
-
+    // Render the text overlay with satori (no background image — composited later with sharp)
     const markup = html`
-        <div style="width: ${OG_WIDTH}px; height: ${OG_HEIGHT}px; display: flex; position: relative; ${fallbackBg}">
-            ${backgroundMarkup}
+        <div style="width: ${OG_WIDTH}px; height: ${OG_HEIGHT}px; display: flex; position: relative;">
             <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 70%; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8)); display: flex;"></div>
             <div style="position: absolute; bottom: 50px; left: 60px; right: 60px; color: white; font-size: 48px; line-height: 1.2; display: flex; font-weight: 700;">
                 ${title}
@@ -83,8 +61,39 @@ export async function generateOgImage(title: string, backgroundImagePath?: strin
         ]
     });
 
-    const png = await sharp(Buffer.from(svg)).png().toBuffer();
-    return png;
+    const overlay = Buffer.from(svg);
+
+    if (backgroundImagePath) {
+        try {
+            // Composite: background image + text overlay
+            const bg = await sharp(backgroundImagePath)
+                .resize(OG_WIDTH, OG_HEIGHT, { fit: 'cover' })
+                .png()
+                .toBuffer();
+
+            return await sharp(bg)
+                .composite([{ input: await sharp(overlay).png().toBuffer(), top: 0, left: 0 }])
+                .png()
+                .toBuffer();
+        } catch {
+            // Fall through to gradient fallback
+        }
+    }
+
+    // No background image — use branded gradient
+    const gradientSvg = `<svg width="${OG_WIDTH}" height="${OG_HEIGHT}">
+        <defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0f172a"/>
+            <stop offset="50%" stop-color="#1e293b"/>
+            <stop offset="100%" stop-color="#334155"/>
+        </linearGradient></defs>
+        <rect width="${OG_WIDTH}" height="${OG_HEIGHT}" fill="url(#g)"/>
+    </svg>`;
+
+    return await sharp(Buffer.from(gradientSvg))
+        .composite([{ input: await sharp(overlay).png().toBuffer(), top: 0, left: 0 }])
+        .png()
+        .toBuffer();
 }
 
 export async function generateHomepageOgImage(): Promise<Buffer> {

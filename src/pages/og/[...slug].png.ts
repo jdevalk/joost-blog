@@ -31,6 +31,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
                 imagePath = (src as { fsPath: string }).fsPath;
             }
         }
+        if (page.id === 'about-me' && !imagePath) {
+            imagePath = process.cwd() + '/src/content/pages/images/cropped-joost-de-valk-profile-picture-web.jpg';
+        }
 
         return {
             params: { slug: page.id },

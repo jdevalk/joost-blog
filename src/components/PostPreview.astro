@@ -13,9 +13,19 @@ const readingTime = getReadingTime(post.body ?? '');
     <header class="post-card-header">
         <div class="mb-2 text-sm tracking-wider uppercase text-slate-500 dark:text-slate-400">
             {
-                isFeatured && (
+                categories && categories.length > 0 && (
                     <>
-                        <span class="text-primary">Featured</span>
+                        {categories.map((cat: string, i: number) => (
+                            <>
+                                <a
+                                    href={`/category/${slugify(cat)}/`}
+                                    class="text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300 transition duration-300"
+                                >
+                                    {cat}
+                                </a>
+                                {i < categories.length - 1 && ', '}
+                            </>
+                        ))}
                         {' / '}
                     </>
                 )
@@ -32,24 +42,6 @@ const readingTime = getReadingTime(post.body ?? '');
                 )
             }
             <span> / {readingTime} min read</span>
-            {
-                categories && categories.length > 0 && (
-                    <span>
-                        {' / '}
-                        {categories.map((cat: string, i: number) => (
-                            <>
-                                <a
-                                    href={`/category/${slugify(cat)}/`}
-                                    class="text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300 transition duration-300"
-                                >
-                                    {cat}
-                                </a>
-                                {i < categories.length - 1 && ', '}
-                            </>
-                        ))}
-                    </span>
-                )
-            }
         </div>
         <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100"><a href={`/${post.id}/`}>{title}</a></h2>
     </header>
