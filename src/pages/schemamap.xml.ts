@@ -2,7 +2,11 @@ import type { APIRoute } from 'astro';
 import { SITE_URL } from '../utils/schema/constants';
 import { aggregateBlogPosts, aggregateVideos, aggregatePages } from '../utils/schema/aggregator';
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ url }) => {
+    const baseUrl = import.meta.env.DEV
+        ? `${url.protocol}//${url.host}`
+        : SITE_URL;
+
     const [posts, videos, pages] = await Promise.all([
         aggregateBlogPosts(),
         aggregateVideos(),
@@ -10,9 +14,9 @@ export const GET: APIRoute = async () => {
     ]);
 
     const entries = [
-        { loc: `${SITE_URL}/schema/post.json`, lastmod: posts.lastModified, count: posts.count },
-        { loc: `${SITE_URL}/schema/video.json`, lastmod: videos.lastModified, count: videos.count },
-        { loc: `${SITE_URL}/schema/page.json`, lastmod: pages.lastModified, count: pages.count }
+        { loc: `${baseUrl}/schema/post.json`, lastmod: posts.lastModified, count: posts.count },
+        { loc: `${baseUrl}/schema/video.json`, lastmod: videos.lastModified, count: videos.count },
+        { loc: `${baseUrl}/schema/page.json`, lastmod: pages.lastModified, count: pages.count }
     ];
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>

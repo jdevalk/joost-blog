@@ -1,7 +1,9 @@
 import type { APIRoute } from 'astro';
 
-export const GET: APIRoute = ({ site }) => {
-    const siteUrl = site?.toString().replace(/\/$/, '') ?? 'https://joost.blog';
+export const GET: APIRoute = ({ url, site }) => {
+    const siteUrl = import.meta.env.DEV
+        ? `${url.protocol}//${url.host}`
+        : (site?.toString().replace(/\/$/, '') ?? 'https://joost.blog');
 
     return new Response(
         `User-agent: *

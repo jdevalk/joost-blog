@@ -1,5 +1,5 @@
-import type { SiteConfig } from '../types';
 import avatarImage from '../assets/images/joost-profile.jpg';
+import type { SiteConfig } from '../types';
 
 const siteConfig: SiteConfig = {
     title: 'joost.blog',
@@ -24,7 +24,7 @@ const siteConfig: SiteConfig = {
     ],
     hero: {
         title: "Hi! I'm Joost de Valk",
-        text: 'Internet entrepreneur from the Netherlands. I founded Yoast, the company behind the most popular WordPress SEO plugin. Now I invest in and build digital companies through <a href="https://emiliacapital.com/">Emilia Capital</a>, and I\'m working on <a href="https://progressplanner.com/">Progress Planner</a>. <a href="/about-me">Read more &rarr;</a>',
+        text: 'Internet entrepreneur from the Netherlands. I\'m the founder of Yoast, the company behind the most popular WordPress SEO plugin. Now I invest in and build digital companies through <a href="https://emiliacapital.com/">Emilia Capital</a>, and I\'m working on <a href="https://progressplanner.com/">Progress Planner</a>. <a href="/about-me">Read more &rarr;</a>',
         avatar: {
             src: avatarImage,
             alt: 'Joost de Valk'
