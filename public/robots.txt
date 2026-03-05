@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://joost.blog/sitemap-index.xml
+Schemamap: https://joost.blog/schemamap.xml

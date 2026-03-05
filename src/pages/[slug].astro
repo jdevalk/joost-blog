@@ -4,6 +4,7 @@ import CustomImage from '../components/CustomImage.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../utils/schema';
+import { canonicalUrl } from '../utils/schema/constants';
 import Subscribe from '../components/Subscribe.astro';
 import Giscus from '../components/Giscus.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -55,21 +56,21 @@ const seoImage = isBlog
     ? (blogData!.seo?.image ?? blogData!.featureImage)
     : (pageData!.seo?.image ?? pageData!.featureImage);
 
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const pageCanonicalUrl = canonicalUrl(Astro.url.pathname);
 
 const pageContext: SchemaPageContext = isBlog ? {
     pageType: 'blogPost',
-    canonicalUrl,
+    canonicalUrl: pageCanonicalUrl,
     title: blogData!.title,
     description: blogData!.excerpt ?? blogData!.seo?.description ?? '',
     publishDate: blogData!.publishDate,
     updatedDate: blogData!.updatedDate,
-    featureImageUrl: new URL(`/og/${entry.id}.png`, Astro.site).toString(),
+    featureImageUrl: canonicalUrl(`/og/${entry.id}.png`),
     categories: blogData!.categories,
     wordCount: (entry.body ?? '').split(/\s+/).length
 } : {
     pageType: entry.id === 'about-me' ? 'about' : 'page',
-    canonicalUrl,
+    canonicalUrl: pageCanonicalUrl,
     title: pageData!.title,
     description: pageData!.seo?.description ?? ''
 };

@@ -9,13 +9,14 @@ import siteConfig from '../data/site-config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../utils/schema';
+import { canonicalUrl } from '../utils/schema/constants';
 import { sortPostsByDateDesc } from '../utils/post-utils';
 
 const posts = (await getCollection('blog')).sort(sortPostsByDateDesc);
 
 const pageContext: SchemaPageContext = {
     pageType: 'homepage',
-    canonicalUrl: new URL('/', Astro.site).toString(),
+    canonicalUrl: canonicalUrl('/'),
     title: siteConfig.title,
     description: siteConfig.description
 };

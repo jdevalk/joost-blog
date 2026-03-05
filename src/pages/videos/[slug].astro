@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SchemaGraph from '../../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../../utils/schema';
+import { canonicalUrl } from '../../utils/schema/constants';
 import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
 
 export async function getStaticPaths() {
@@ -33,7 +34,7 @@ const duration = formatDuration(video.data.duration);
 
 const pageContext: SchemaPageContext = {
     pageType: 'video',
-    canonicalUrl: new URL(Astro.url.pathname, Astro.site).toString(),
+    canonicalUrl: canonicalUrl(Astro.url.pathname),
     title: video.data.title,
     description: video.data.title,
     publishDate: video.data.publishDate,

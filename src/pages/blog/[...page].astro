@@ -8,6 +8,7 @@ import siteConfig from '../../data/site-config';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SchemaGraph from '../../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../../utils/schema';
+import { canonicalUrl } from '../../utils/schema/constants';
 import { sortPostsByDateDesc } from '../../utils/post-utils';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
@@ -20,7 +21,7 @@ const blog = page.data;
 
 const pageContext: SchemaPageContext = {
     pageType: 'blogListing',
-    canonicalUrl: new URL(Astro.url.pathname, Astro.site).toString(),
+    canonicalUrl: canonicalUrl(Astro.url.pathname),
     title: 'Blog',
     description: 'Articles about WordPress, SEO, open source, and more by Joost de Valk'
 };

@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SchemaGraph from '../../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../../utils/schema';
+import { canonicalUrl } from '../../utils/schema/constants';
 import CustomImage from '../../components/CustomImage.astro';
 
 const allVideos = await getCollection('videos');
@@ -25,7 +26,7 @@ function formatDuration(isoDuration: string | undefined): string | null {
 
 const pageContext: SchemaPageContext = {
     pageType: 'videoListing',
-    canonicalUrl: new URL('/videos/', Astro.site).toString(),
+    canonicalUrl: canonicalUrl('/videos/'),
     title: 'Videos',
     description: 'Video presentations and talks by Joost de Valk'
 };
