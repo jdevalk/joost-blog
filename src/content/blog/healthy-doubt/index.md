@@ -10,9 +10,7 @@ featureImage:
   src: ./images/healthy-doubt-featured.webp
   alt: ''
 ---
-*AI will confidently sign off on anything. The question is whether you will too.*
-
-> 
+> *AI will confidently sign off on anything. The question is whether you will too.* 
 
 ---
 

@@ -18,15 +18,15 @@ The problem today is that even the smartest AI is often a “clueless” collabo
 
 To fix this, we have to stop treating plugins like “black boxes” and start treating them as **self-advertising modules**.
 
-### The communication gap is (mostly) solved
+## The communication gap is (mostly) solved
 
 The good news is that we already have the “telephone line” for this conversation. The WordPress AI team recently introduced the [Abilities API](https://make.wordpress.org/ai/2025/07/17/abilities-api/) and the [MCP adapter](https://make.wordpress.org/ai/2025/07/17/mcp-adapter/).
 
 The Abilities API creates a centralized registry where plugins can formally register their functionalities with well-defined schemas. This means that, once installed, a plugin can “hand a menu” to an AI. But for an Architect to plan a site, they need to see that menu *before* the plugin is ever installed.
 
-### The discovery layer: AGENTS.md
+## The discovery layer: `AGENTS.md`
 
-The emerging **[AGENTS.md](https://agents.md/)** standard is the right choice for our ecosystem. It isn’t just a text file for a crawler; it’s a briefing document for the AI agents that will be doing the building.
+The emerging **[`AGENTS.md`](https://agents.md/)** standard is the right choice for our ecosystem. It isn’t just a text file for a crawler; it’s a briefing document for the AI agents that will be doing the building.
 
 By placing an `AGENTS.md` file in the root of a plugin, we provide a human-and-AI-readable introduction that links directly to a more technical **`abilities.yml`**. This YAML file acts as a static export of what the plugin’s registered abilities do, following the same schema as the Abilities API:
 
@@ -50,7 +50,7 @@ abilities:
 
 With this pairing, the Architect can scan a dozen plugins on a remote repository and know exactly which ones fit the site’s requirements, down to the exact data types required, without downloading a single byte of PHP.
 
-### Discovery via the FAIR.pm supply chain
+## Discovery via the FAIR.pm supply chain
 
 This vision requires a trusted way to query and distribute this information. This is where [FAIR.pm](https://fair.pm/) comes in.
 
@@ -58,13 +58,13 @@ If the FAIR network indexes these `AGENTS.md` and `abilities.yml` files, the glo
 
 Of course, this could be done on the WordPress.org plugin directory too, and it would be nice if it did, but that currently does not include any commercial plugins. FAIR is planning on allowing for *all* plugins from every host, which would make this a lot more inclusive of every plugin out there.
 
-### The “agent-first” developer experience (AX)
+## The “agent-first” developer experience (AX)
 
 For twenty years, plugin developers have obsessed over the user experience (UX). In the “Rise of the Architect” era, developers must at least *also* prioritize the agent experience (AX).
 
 If we don’t create a standard like this, plugins may provide a beautiful settings page, but they are invisible to the modern architect. We have to find a way for plugins to be considered in AI assembly/development processes *before* they’re installed.
 
-### Conclusion: legibility is the new portability
+## Conclusion: legibility is the new portability
 
 Plugins aren’t going away, but they are changing from being “destination apps” inside the WordPress admin to being “service providers” for an AI-driven assembly process.
 

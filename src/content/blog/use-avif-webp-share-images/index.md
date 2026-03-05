@@ -27,13 +27,28 @@ You should use both AVIF and WebP on your website. They’re smaller, they’re 
 - [Test results](#h-test-results)
 - [Methodology: how I tested AVIF and WebP](#h-methodology-how-i-tested-avif-and-webp)
 - [How to use AVIF and WebP on your WordPress site](#h-how-to-use-avif-and-webp-on-your-wordpress-site)
-    - [Modern images in the <head>](#h-modern-images-in-the-lt-head)
+    - [Modern images in the &lt;head&gt;](#h-modern-images-in-the-lt-head)
 
 ## Test results
 
 I’ve run a quick test across the platforms below, and as you can see, we still have to get multiple platforms to support AVIF:
 
-PlatformAVIFWebPBluesky❌️✅️Discord❌️✅️Facebook✅️✅️iMessage❌️✅️Pinterest✅️✅️LinkedIn❌️✅️Mastodon❌️✅️Slack❌️✅️Threads✅️✅️Twitter / X❌️✅️WhatsApp✅️✅️## Methodology: how I tested AVIF and WebP
+| Platform  | AVIF | WebP | 
+|-----------|------|------|
+| Bluesky       | ❌️ | ✅️ |
+| Discord       | ❌️ | ✅️ |
+| Facebook      | ✅️ | ✅️ |
+| iMessage      | ❌️ | ✅️ |
+| Pinterest     | ✅️ | ✅️ |
+| LinkedIn      | ❌️ | ✅️ |
+| Mastodon      | ❌️ | ✅️ |
+| Slack         | ❌️ | ✅️ |
+| Threads       | ✅️ | ✅️ |
+| Twitter / X   | ❌️ | ✅️ |
+| WhatsApp      | ✅️ | ✅️ |
+
+
+## Methodology: how I tested AVIF and WebP
 
 I’ve used these two test URLs:
 
@@ -44,13 +59,22 @@ With these URLs, I checked whether the platform would load the AVIF / WebP `og:i
 
 Below are some examples of what that looks like:
 
-![AVIF (negative) and WebP (positive) test results on LinkedIn.](./images/linkedin-avif-webp-test-png.avif)    ![AVIF (positive) and WebP (positive) test results on WhatsApp.](./images/whatsapp-avif-webp-test-791x1200.avif)    ![AVIF (negative) and WebP (positive) test results on Discord.](./images/discord-avif-webp-test-png.avif)    ![WebP (positive) and AVIF (negative) test results on Slack.](./images/slack-avif-webp-test-1-png.avif)![AVIF (negative) and WebP (positive) test results on iMessage.](./images/imessage-avif-webp-test-png.avif)![AVIF (negative) and WebP (positive) test results on Bluesky.](./images/bluesky-avif-webp-test-845x1200.avif)## How to use AVIF and WebP on your WordPress site
+![AVIF (negative) and WebP (positive) test results on LinkedIn.](./images/linkedin-avif-webp-test-png.avif)    
+![AVIF (positive) and WebP (positive) test results on WhatsApp.](./images/whatsapp-avif-webp-test-791x1200.avif)    
+![AVIF (negative) and WebP (positive) test results on Discord.](./images/discord-avif-webp-test-png.avif)    
+![WebP (positive) and AVIF (negative) test results on Slack.](./images/slack-avif-webp-test-1-png.avif)
+![AVIF (negative) and WebP (positive) test results on iMessage.](./images/imessage-avif-webp-test-png.avif)
+![AVIF (negative) and WebP (positive) test results on Bluesky.](./images/bluesky-avif-webp-test-845x1200.avif)
+
+## How to use AVIF and WebP on your WordPress site
 
 To use these modern image formats on your site you can install the [Modern Image Formats plugin](https://wordpress.org/plugins/webp-uploads/). This plugin has been built and is maintained by the WordPress Performance team, which includes some of the very best performance engineers on the web.
 
 When you install this plugin, go into its settings, and set them like this if you want to make sure your images are always recognized by social platforms:
 
-![](./images/modern-image-formats-setting-webp-1600x596.avif)### Modern images in the <head>
+![](./images/modern-image-formats-setting-webp-1600x596.avif)
+
+### Modern images in the &lt;head&gt;
 
 Alternatively, if you set this to AVIF, you have to make sure that the output in the `<head>` section of your site always uses the “classic” format, usually PNG or JPG. The Modern Image Formats plugin actually already tries to do this by default, but it unfortunately fails to do that when using Yoast SEO.
 
@@ -61,13 +85,15 @@ The following tiny plugin makes sure that your `og:image` and `twitter:image` ta
 /*
 Plugin Name: Fix modern image formats for social
 Plugin URI: /use-avif-webp-share-images/
-Description: Replaces og:image and twitter:image URLs in Yoast SEO output ending in .webp or .avif with the original in the page output, so they work.
+Description: Replaces og:image and twitter:image URLs in Yoast SEO output ending in 
+             .webp or .avif with the original in the page output, so they work.
 Author: Joost de Valk
 Version: 1.0
 */
 
 function joost_filter_modern_social_image_url( $image_url ) {
-    return preg_replace( '/^(.*)-(gif|jpeg|jpg|png)\.(avif|webp)$/i', '$1.$2', $image_url );
+    return preg_replace( '/^(.*)-(gif|jpeg|jpg|png)\.(avif|webp)$/i', 
+                         '$1.$2', $image_url );
 }
 add_filter( 'wpseo_twitter_image', 'joost_filter_modern_social_image_url' );
 add_filter( 'wpseo_opengraph_image', 'joost_filter_modern_social_image_url' );

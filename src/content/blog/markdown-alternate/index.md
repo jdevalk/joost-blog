@@ -21,18 +21,20 @@ Both solutions use the same mechanism: HTTP content negotiation via the `Accept:
 
 Cloudflare’s solution operates at the CDN edge. It’s broad: flip a toggle in your dashboard, and any page on your zone can be served as markdown. The conversion is generic, Cloudflare doesn’t know whether your page is a blog post, a product page, or a documentation article. It converts whatever HTML it sees.
 
-My plugin operates at the application level, inside WordPress. That makes it narrower in scope but significantly deeper in what it can do.
+## What `markdown-alternate` does
 
-**Dedicated `.md` URLs.**  
+My plugin operates at the application level, inside WordPress. That makes it narrower in scope but significantly deeper in what it can do. It offers:
+
+### Dedicated `.md` URLs.
 Markdown Alternate gives every post and page its own `.md` endpoint. Instead of only relying on content negotiation, you can simply request `/my-post.md` and get markdown back. These URLs are bookmarkable, independently cacheable, and intuitive, just like `.json` or `.xml` endpoints. Cloudflare only supports the `Accept` header approach. Of course they do add `rel="canonical"` HTTP headers back to the HTML source.
 
-**Discoverability.**  
+### Discoverability.
 The plugin adds `<link rel="alternate" type="text/markdown">` tags to every page’s HTML head. An agent visiting the HTML version can programmatically discover that a markdown version exists. Cloudflare doesn’t offer this, agents have to know to ask for markdown upfront. It might actually be a good addition for their solution.
 
-**Richer metadata.**  
+### Richer metadata.
 Cloudflare’s frontmatter includes title, description, and image. Because my plugin lives inside WordPress, it has access to the full post object. The frontmatter includes the title, publication date, author, featured image, and categories and tags, each with their own `.md` URLs, so agents can navigate related content.
 
-**WordPress-aware content processing.**  
+### WordPress-aware content processing.
 The plugin *knows* what type of content it’s processing. It strips syntax highlighting markup that plugins like Highlight.js inject into code blocks, preserving clean code with language hints intact. A generic HTML-to-markdown converter can’t easily know about this.
 
 ## “Stealing” the good ideas

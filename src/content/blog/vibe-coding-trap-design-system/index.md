@@ -18,7 +18,7 @@ But there is a massive obstacle standing in the way of this future: WordPress is
 
 We are seeing this play out in real-time with tools like [Telex](https://telex.automattic.ai/). It’s a glimpse into “Vibe Coding”, the ability to describe a UI and watch the AI manifest it. It’s seductive. It’s fun. And if we aren’t careful, it’s going to lead to a maintenance nightmare that makes the “spaghetti code” of the 2000s look like a masterpiece.
 
-### The seduction of the “vibe”
+## The seduction of the “vibe”
 
 Tools like Telex allow you to bypass the traditional development process. You want a pricing table with a specific “bounce”? You describe it, the AI generates the React and CSS, and it appears.
 
@@ -28,7 +28,7 @@ The problem with “vibe-coded” blocks is that they are disposable code. They 
 
 If you decide to change your brand’s primary blue or adjust your site’s spacing logic, you can’t just update a central variable. You have to “re-vibe” the entire site.
 
-### The missing foundation: a design system
+## The missing foundation: a design system
 
 This brings me back to a point I’ve [made before](/wordpress-admin-ui-needs-to-be-better/): WordPress desperately needs a unified design system.
 
@@ -39,7 +39,7 @@ An AI doesn’t need to be “creative” with your layout; it needs constraints
 - **Without a design system:** AI is like a toddler with a bucket of clay. It can mold anything, but nothing it makes will ever fit perfectly with the next thing.
 - **With a design system:** AI is an Architect with a box of Legos. Everything snaps together because the rules, the tokens for spacing, color, and typography, are pre-defined.
 
-### System-first vs. prompt-first
+## System-first vs. prompt-first
 
 The industry is currently obsessed with “prompt-first” development (Telex). But the “Architect” I described in my earlier posts knows that the future must be “system-first.”
 
@@ -47,7 +47,7 @@ In a system-first world, the AI doesn’t write the CSS for a button. Instead, t
 
 If WordPress remains a collection of “vibes” rather than a rigid system of components, we are effectively building a web of disposable components. We are trading the long-term health of our sites for the short-term high of watching an AI generate a pretty block in ten seconds.
 
-### The choice
+## The choice
 
 We are at a fork in the road.
 

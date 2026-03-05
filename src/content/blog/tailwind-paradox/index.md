@@ -28,13 +28,13 @@ He is absolutely right. But as I read it, I kept thinking that multiple things c
 2. Tailwind’s pricing model was a ticking time bomb regardless of AI.
 3. Their desire to be “good” open-source citizens is *exactly* what left them vulnerable.
 
-#### I *want* Tailwind to win
+## I *want* Tailwind to win
 
 Before I get into the economics, let me be clear: I love Tailwind. I use it constantly. I have personally purchased their lifetime “all-access” licenses multiple times for different companies, including Yoast and Emilia Capital.
 
 I am the ideal customer. I bought the product because it provides immense utility, and I wanted to support the creators. It’s painful to see a team that has built something so useful struggle.
 
-#### The great value heist
+## The great value heist
 
 Dries points out a harsh reality in his piece: AI broke the funnel.
 
@@ -46,7 +46,7 @@ The AI creates value for the user by using Tailwind’s intellectual property, b
 
 But even if we solved that problem, even if AI didn’t exist, Tailwind was facing a mathematical wall.
 
-#### The “forever” problem in a finite market
+## The “forever” problem in a finite market
 
 Tailwind UI launched with a promise that developers (myself included) love: Pay once, own it forever.
 
@@ -58,7 +58,7 @@ There is a finite number of frontend developers in the world. There is a smaller
 
 **Lifetime pricing was never going to be a good idea in any finite market.**
 
-#### The tragedy of “enough”
+## The tragedy of “enough”
 
 This is the part that breaks my heart. Knowing the open-source ethos, the creators almost certainly looked at their early success and thought, *“This is enough.”*
 
@@ -73,7 +73,7 @@ If the Tailwind team had ignored its modest instincts and implemented a standard
 
 By trying to be fair to their community, they stripped their business of the resilience it needed to survive a market shift.
 
-#### The lesson
+## The lesson
 
 Dries is right that the market is shifting from “Specification” to “Operation”. He’s also right that AI is a business model stress-test. Maybe even more so than he puts in his words.
 
