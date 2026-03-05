@@ -111,7 +111,7 @@ const pageContext: SchemaPageContext = isBlog ? {
                         {blogData!.categories.map((cat: string, i: number) => (
                             <Fragment>
                                 {i > 0 && ', '}
-                                <a href={`/category/${slugify(cat)}/`} class="transition duration-300 text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300" data-pagefind-filter="category">{cat}</a>
+                                <a href={`/category/${slugify(cat)}/`} class="transition duration-300 text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300">{cat}</a>
                             </Fragment>
                         ))}
                     </div>
