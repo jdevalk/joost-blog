@@ -37,22 +37,29 @@ import Search from 'astro-pagefind/components/Search';
 </style>
 
 <script>
-    function initSearch() {
-        const query = new URLSearchParams(window.location.search).get('q');
+    function syncSearchInputFromUrl() {
+        const input = document.querySelector<HTMLInputElement>('.pagefind-ui__search-input');
+        if (!input) return;
 
-        // Wait for Pagefind UI to render its input, then fill query and wire URL sync
+        const query = new URLSearchParams(window.location.search).get('q') || '';
+        if (input.value !== query) {
+            input.value = query;
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+    }
+
+    function initSearch() {
+        // Wait for Pagefind UI to render its input, then sync query and wire URL sync once.
         const observer = new MutationObserver(() => {
             const input = document.querySelector<HTMLInputElement>('.pagefind-ui__search-input');
             if (!input) return;
             observer.disconnect();
 
-            // Fill in query from URL if present
-            if (query) {
-                input.value = query;
-                input.dispatchEvent(new Event('input', { bubbles: true }));
-            }
+            syncSearchInputFromUrl();
 
-            // Sync URL as user types
+            if (input.dataset.urlSyncBound === 'true') return;
+            input.dataset.urlSyncBound = 'true';
+
             input.addEventListener('input', () => {
                 const url = new URL(window.location.href);
                 if (input.value) {
@@ -63,9 +70,11 @@ import Search from 'astro-pagefind/components/Search';
                 history.replaceState(null, '', url.toString());
             });
         });
+
         observer.observe(document.body, { childList: true, subtree: true });
     }
 
     initSearch();
-    document.addEventListener('astro:after-swap', initSearch);
+    window.addEventListener('pageshow', syncSearchInputFromUrl);
+    window.addEventListener('popstate', syncSearchInputFromUrl);
 </script>
