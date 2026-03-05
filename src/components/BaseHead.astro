@@ -25,7 +25,9 @@ const isStaging = Astro.site?.origin !== new URL(SITE_URL).origin;
 const slug = Astro.url.pathname.replace(/^\/|\/$/g, '');
 const autoOgImage = slug ? `/og/${slug}.png` : undefined;
 const ogImageUrl = Astro.props.ogImage ?? autoOgImage;
-const ogImageSrc = ogImageUrl ? new URL(ogImageUrl, SITE_URL).toString() : undefined;
+// OG images must point to the actual deployed site (not production canonical) so they resolve
+const ogImageBase = Astro.site?.origin ?? SITE_URL;
+const ogImageSrc = ogImageUrl ? new URL(ogImageUrl, ogImageBase).toString() : undefined;
 
 // Fallback image resolution for pages without auto-generated OG images
 const image = Astro.props.image ?? siteConfig.image;
@@ -33,7 +35,7 @@ let resolvedImage: { src: string; alt?: string } | undefined;
 if (!ogImageSrc && image?.src) {
     if (typeof image.src === 'string') {
         resolvedImage = {
-            src: new URL(image.src, SITE_URL).toString(),
+            src: new URL(image.src, ogImageBase).toString(),
             alt: image.alt
         };
     } else {
@@ -45,7 +47,7 @@ if (!ogImageSrc && image?.src) {
             fit: 'cover'
         });
         resolvedImage = {
-            src: new URL(optimizedImage.src, SITE_URL).toString(),
+            src: new URL(optimizedImage.src, ogImageBase).toString(),
             alt: image.alt
         };
     }
