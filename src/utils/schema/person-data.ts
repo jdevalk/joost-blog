@@ -1,7 +1,7 @@
 import { IDS, SITE_URL } from './constants';
 
 export const joostPersonData = {
-    '@type': ['Person', 'Organization'] as const,
+    '@type': 'Person' as const,
     '@id': IDS.person,
     name: 'Joost de Valk',
     familyName: 'de Valk',
@@ -49,6 +49,18 @@ export const joostPersonData = {
         },
         {
             '@type': 'EmployeeRole',
+            roleName: 'Board Member',
+            startDate: '2022-08-01',
+            worksFor: { '@id': IDS.org('atarim') }
+        },
+        {
+            '@type': 'EmployeeRole',
+            roleName: 'Board Member',
+            startDate: '2024-08-01',
+            worksFor: { '@id': IDS.org('patchstack') }
+        },
+        {
+            '@type': 'EmployeeRole',
             roleName: 'CEO',
             startDate: '2023',
             worksFor: { '@id': IDS.org('blokjes') }
@@ -66,10 +78,10 @@ export const joostPersonData = {
         name: 'Marieke van de Rakt'
     },
     children: [
-        { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/tycho`, name: 'Tycho' },
-        { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/wende`, name: 'Wende' },
-        { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/ravi`, name: 'Ravi' },
-        { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/borre`, name: 'Borre' }
+        { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/tycho`, name: 'Tycho de Valk' },
+        { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/wende`, name: 'Wende de Valk' },
+        { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/ravi`, name: 'Ravi de Valk' },
+        { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/borre`, name: 'Borre de Valk' }
     ]
 };
 
@@ -85,8 +97,8 @@ export const familyMembers = [
         '@id': `${SITE_URL}/#/schema.org/Person/marieke`,
         name: 'Marieke van de Rakt'
     },
-    { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/tycho`, name: 'Tycho' },
-    { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/wende`, name: 'Wende' },
-    { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/ravi`, name: 'Ravi' },
-    { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/borre`, name: 'Borre' }
+    { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/tycho`, name: 'Tycho de Valk' },
+    { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/wende`, name: 'Wende de Valk' },
+    { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/ravi`, name: 'Ravi de Valk' },
+    { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/borre`, name: 'Borre de Valk' }
 ];

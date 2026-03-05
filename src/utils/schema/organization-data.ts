@@ -23,7 +23,19 @@ export const organizations = [
         '@type': 'Organization' as const,
         '@id': IDS.org('blokjes'),
         name: 'Blokjes',
-        url: 'https://blokjes.nl/'
+        url: 'https://blokjes.co/'
+    },
+    {
+        '@type': 'Organization' as const,
+        '@id': IDS.org('atarim'),
+        name: 'Atarim',
+        url: 'https://atarim.io/'
+    },
+    {
+        '@type': 'Organization' as const,
+        '@id': IDS.org('patchstack'),
+        name: 'Patchstack',
+        url: 'https://patchstack.com/'
     },
     {
         '@type': 'Organization' as const,
