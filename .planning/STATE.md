@@ -2,17 +2,17 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_plan: 1 of 1 (05-01 complete)
-status: completed
-stopped_at: Phase 7 context gathered
-last_updated: "2026-03-05T13:28:33.819Z"
-last_activity: 2026-03-05 -- Giscus comments, view transitions, deviation fixes (05-01)
+current_plan: 1 of 2 (07-01 complete)
+status: in_progress
+stopped_at: Completed 07-01-PLAN.md
+last_updated: "2026-03-05T13:48:20.149Z"
+last_activity: 2026-03-05 -- Schema utility module with piece builders and graph assembler (07-01)
 progress:
   total_phases: 7
   completed_phases: 5
-  total_plans: 11
-  completed_plans: 11
-  percent: 100
+  total_plans: 13
+  completed_plans: 12
+  percent: 92
 ---
 
 # Project State
@@ -22,16 +22,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** All existing blog content must be migrated with working URLs, clean markdown, and proper metadata -- nothing gets lost in the move.
-**Current focus:** Phase 5 complete. Giscus comments added to blog posts with lazy loading, dark mode sync, and view transition support.
+**Current focus:** Phase 7 in progress. Schema utility module complete (07-01), template integration next (07-02).
 
 ## Current Position
 
-Phase: 5 of 6 (Engagement Features)
-Current Plan: 1 of 1 (05-01 complete)
-Status: phase_complete
-Last activity: 2026-03-05 -- Giscus comments, view transitions, deviation fixes (05-01)
+Phase: 7 of 7 (Yoast-like Schema)
+Current Plan: 1 of 2 (07-01 complete)
+Status: in_progress
+Last activity: 2026-03-05 -- Schema utility module with piece builders and graph assembler (07-01)
 
-Progress: [██████████] 100% (11 of 11 plans)
+Progress: [█████████░] 92% (12 of 13 plans)
 
 ## Performance Metrics
 
@@ -63,6 +63,7 @@ Progress: [██████████] 100% (11 of 11 plans)
 | Phase 04 P01 | 4min | 2 tasks | 5 files |
 | Phase 04 P02 | 2min | 2 tasks | 6 files |
 | Phase 05 P01 | 12min | 2 tasks | 29 files |
+| Phase 07 P01 | 2min | 2 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -104,6 +105,10 @@ Recent decisions affecting current work:
 - [Phase 05]: IntersectionObserver with 200px rootMargin for lazy loading Giscus iframe
 - [Phase 05]: MutationObserver on documentElement class for dark mode sync via postMessage
 - [Phase 05]: Placeholder repo/category IDs -- user must configure via giscus.app before comments work
+- [Phase 07]: WebPage subtypes: ProfilePage for about, CollectionPage for homepage/blog/category
+- [Phase 07]: Organization stubs on all pages (worksFor @id resolution); family members only on homepage/about
+- [Phase 07]: Person profile image uses /images/joost-profile.jpg static path
+- [Phase 07]: SiteNavigationElement uses hasPart array with nav items from siteConfig
 
 ### Roadmap Evolution
 
@@ -121,6 +126,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T13:28:33.817Z
-Stopped at: Phase 7 context gathered
-Resume file: .planning/phases/07-yoast-like-schema/07-CONTEXT.md
+Last session: 2026-03-05T13:48:20.147Z
+Stopped at: Completed 07-01-PLAN.md
+Resume file: None

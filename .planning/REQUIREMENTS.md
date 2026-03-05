@@ -70,13 +70,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Schema (Structured Data)
 
-- [ ] **SCHEMA-01**: Every page has single JSON-LD block with @context and @graph array (Yoast-style)
+- [x] **SCHEMA-01**: Every page has single JSON-LD block with @context and @graph array (Yoast-style)
 - [ ] **SCHEMA-02**: Blog posts output Article + WebPage + BreadcrumbList + ImageObject in graph
-- [ ] **SCHEMA-03**: Rich Person entity with sameAs (12 profiles), worksFor (5 EmployeeRoles), spouse, children
-- [ ] **SCHEMA-04**: All @id cross-references resolve correctly within the graph
-- [ ] **SCHEMA-05**: Breadcrumbs follow specified hierarchy per page type (Home > Blog > Category > Post, etc.)
+- [x] **SCHEMA-03**: Rich Person entity with sameAs (12 profiles), worksFor (5 EmployeeRoles), spouse, children
+- [x] **SCHEMA-04**: All @id cross-references resolve correctly within the graph
+- [x] **SCHEMA-05**: Breadcrumbs follow specified hierarchy per page type (Home > Blog > Category > Post, etc.)
 - [ ] **SCHEMA-06**: Video pages output VideoObject + WebPage + BreadcrumbList in graph
-- [ ] **SCHEMA-07**: WebSite and SiteNavigationElement pieces included on all pages
+- [x] **SCHEMA-07**: WebSite and SiteNavigationElement pieces included on all pages
 - [ ] **SCHEMA-08**: Page-type-specific subtypes: CollectionPage (homepage, blog listing, categories), ProfilePage (about)
 
 ## v2 Requirements
@@ -151,13 +151,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DEPLOY-01 | Phase 6: Deployment and Verification | Pending |
 | DEPLOY-02 | Phase 6: Deployment and Verification | Pending |
 | DEPLOY-03 | Phase 6: Deployment and Verification | Pending |
-| SCHEMA-01 | Phase 7: Yoast-like Schema | Pending |
+| SCHEMA-01 | Phase 7: Yoast-like Schema | Complete |
 | SCHEMA-02 | Phase 7: Yoast-like Schema | Pending |
-| SCHEMA-03 | Phase 7: Yoast-like Schema | Pending |
-| SCHEMA-04 | Phase 7: Yoast-like Schema | Pending |
-| SCHEMA-05 | Phase 7: Yoast-like Schema | Pending |
+| SCHEMA-03 | Phase 7: Yoast-like Schema | Complete |
+| SCHEMA-04 | Phase 7: Yoast-like Schema | Complete |
+| SCHEMA-05 | Phase 7: Yoast-like Schema | Complete |
 | SCHEMA-06 | Phase 7: Yoast-like Schema | Pending |
-| SCHEMA-07 | Phase 7: Yoast-like Schema | Pending |
+| SCHEMA-07 | Phase 7: Yoast-like Schema | Complete |
 | SCHEMA-08 | Phase 7: Yoast-like Schema | Pending |
 
 **Coverage:**

@@ -1,4 +1,4 @@
-import { SITE_URL, IDS } from './constants';
+import { IDS, SITE_URL } from './constants';
 
 export const joostPersonData = {
     '@type': ['Person', 'Organization'] as const,
@@ -37,7 +37,7 @@ export const joostPersonData = {
         },
         {
             '@type': 'EmployeeRole',
-            roleName: 'Partner and CTO',
+            roleName: 'Chair of the Board',
             startDate: '2024',
             worksFor: { '@id': IDS.org('post-status') }
         },
