@@ -15,8 +15,13 @@
     --color-base: #ffffff;
     --color-tertiary: #f7f8f8;
     --shadow-avatar: 0 0 0 11px --alpha(var(--color-primary) / 15%), 0 0 0 22px --alpha(var(--color-primary) / 10%);
-    --shadow-avatar-dark: 0 0 0 11px rgba(255, 255, 255, 0.15), 0 0 0 22px rgba(255, 255, 255, 0.08);
+    --shadow-avatar-dark: 0 0 0 11px rgba(147, 197, 253, 0.25), 0 0 0 22px rgba(147, 197, 253, 0.12);
     --shadow-button: 0 0 0 6px --alpha(var(--color-primary) / 17.5%);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 300ms;
 }
 
 @layer utilities {

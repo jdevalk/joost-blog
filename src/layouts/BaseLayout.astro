@@ -1,4 +1,5 @@
 ---
+import { fade } from 'astro:transitions';
 import BaseHead, { type Props as HeadProps } from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
@@ -29,9 +30,11 @@ const { ...head } = Astro.props;
     <body class="bg-white text-slate-700 dark:bg-slate-800 dark:text-slate-200 transition-colors duration-300">
         <div class="flex flex-col min-h-screen">
             <slot name="header">
-                <Header class="bg-slate-50 border-b border-slate-100 dark:bg-slate-800 dark:border-slate-700" />
+                <Header class="bg-gradient-to-b from-blue-950 to-blue-800 text-white border-b border-blue-700/30 dark:from-slate-800 dark:to-slate-800 dark:border-slate-700 dark:text-slate-200" variant="dark" />
             </slot>
-            <slot />
+            <div transition:animate={fade({ duration: '0.3s' })}>
+                <slot />
+            </div>
             <slot name="footer">
                 <Footer />
             </slot>
