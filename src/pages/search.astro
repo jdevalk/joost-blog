@@ -37,7 +37,7 @@ import Search from 'astro-pagefind/components/Search';
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    function initSearch() {
         const params = new URLSearchParams(window.location.search);
         const query = params.get('q');
         const input = document.querySelector<HTMLInputElement>('.pagefind-ui__search-input');
@@ -63,5 +63,8 @@ import Search from 'astro-pagefind/components/Search';
             }
         });
         observer.observe(document.body, { childList: true, subtree: true });
-    });
+    }
+
+    initSearch();
+    document.addEventListener('astro:after-swap', initSearch);
 </script>
