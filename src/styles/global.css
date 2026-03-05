@@ -15,6 +15,7 @@
     --color-base: #ffffff;
     --color-tertiary: #f7f8f8;
     --shadow-avatar: 0 0 0 11px --alpha(var(--color-primary) / 15%), 0 0 0 22px --alpha(var(--color-primary) / 10%);
+    --shadow-avatar-dark: 0 0 0 11px rgba(255, 255, 255, 0.15), 0 0 0 22px rgba(255, 255, 255, 0.08);
     --shadow-button: 0 0 0 6px --alpha(var(--color-primary) / 17.5%);
 }
 
