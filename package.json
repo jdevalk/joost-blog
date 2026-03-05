@@ -17,6 +17,7 @@
         "@fontsource-variable/mona-sans": "^5.2.8",
         "@tailwindcss/vite": "^4.1.16",
         "astro": "^5.15.3",
+        "astro-pagefind": "^1.8.5",
         "gray-matter": "^4.0.3",
         "satori": "^0.24.1",
         "satori-html": "^0.3.2",

@@ -1,6 +1,7 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import pagefind from 'astro-pagefind';
 import { defineConfig } from 'astro/config';
 import { writeFileSync } from 'node:fs';
 
@@ -32,7 +33,7 @@ export default defineConfig({
     vite: {
         plugins: [tailwindcss()]
     },
-    integrations: [mdx(), sitemap(), noIndexOnStaging()],
+    integrations: [mdx(), sitemap(), pagefind(), noIndexOnStaging()],
     markdown: {
         shikiConfig: {
             themes: {
