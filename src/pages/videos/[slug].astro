@@ -1,7 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
-import JsonLd from '../../components/JsonLd.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaGraph from '../../components/SchemaGraph.astro';
+import type { SchemaPageContext } from '../../utils/schema';
 import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
 
 export async function getStaticPaths() {
@@ -30,20 +31,19 @@ function formatDuration(isoDuration: string | undefined): string | null {
 
 const duration = formatDuration(video.data.duration);
 
-const videoSchema = video.data.youtubeId ? {
-    "@context": "https://schema.org",
-    "@type": "VideoObject",
-    "name": video.data.title,
-    "description": video.data.title,
-    "thumbnailUrl": `https://img.youtube.com/vi/${video.data.youtubeId}/maxresdefault.jpg`,
-    "uploadDate": video.data.publishDate.toISOString(),
-    ...(video.data.duration && { "duration": video.data.duration }),
-    "embedUrl": `https://www.youtube-nocookie.com/embed/${video.data.youtubeId}`
-} : null;
+const pageContext: SchemaPageContext = {
+    pageType: 'video',
+    canonicalUrl: new URL(Astro.url.pathname, Astro.site).toString(),
+    title: video.data.title,
+    description: video.data.title,
+    publishDate: video.data.publishDate,
+    youtubeId: video.data.youtubeId,
+    duration: video.data.duration
+};
 ---
 
 <BaseLayout title={`${video.data.title} - joost.blog`} description={video.data.title}>
-    {videoSchema && <JsonLd schema={videoSchema} />}
+    <SchemaGraph pageContext={pageContext} />
     <main class="grow px-4 py-12 sm:px-8">
         <div class="max-w-4xl mx-auto">
             <h1 class="text-4xl font-bold mb-6 text-slate-900 dark:text-slate-100">{video.data.title}</h1>

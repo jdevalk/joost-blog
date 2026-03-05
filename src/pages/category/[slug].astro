@@ -2,6 +2,8 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostPreview from '../../components/PostPreview.astro';
+import SchemaGraph from '../../components/SchemaGraph.astro';
+import type { SchemaPageContext } from '../../utils/schema';
 import { slugify, sortPostsByDateDesc } from '../../utils/post-utils';
 
 export async function getStaticPaths() {
@@ -29,9 +31,18 @@ export async function getStaticPaths() {
 }
 
 const { categoryName, posts } = Astro.props;
+
+const pageContext: SchemaPageContext = {
+    pageType: 'category',
+    canonicalUrl: new URL(Astro.url.pathname, Astro.site).toString(),
+    title: categoryName,
+    description: `Posts in the ${categoryName} category`,
+    categoryName
+};
 ---
 
 <BaseLayout title={`${categoryName} - joost.blog`} description={`Posts in the ${categoryName} category`}>
+    <SchemaGraph pageContext={pageContext} />
     <main class="grow px-4 py-12 sm:px-8">
         <div class="max-w-3xl mx-auto xl:max-w-6xl">
             <h1 class="text-4xl font-bold mb-12 text-slate-900 dark:text-slate-100">{categoryName}</h1>

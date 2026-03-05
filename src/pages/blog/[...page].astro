@@ -6,6 +6,8 @@ import PostPreview from '../../components/PostPreview.astro';
 import Subscribe from '../../components/Subscribe.astro';
 import siteConfig from '../../data/site-config';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaGraph from '../../components/SchemaGraph.astro';
+import type { SchemaPageContext } from '../../utils/schema';
 import { sortPostsByDateDesc } from '../../utils/post-utils';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
@@ -15,9 +17,17 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 
 const { page } = Astro.props as { page: Page<CollectionEntry<'blog'>> };
 const blog = page.data;
+
+const pageContext: SchemaPageContext = {
+    pageType: 'blogListing',
+    canonicalUrl: new URL(Astro.url.pathname, Astro.site).toString(),
+    title: 'Blog',
+    description: 'Articles about WordPress, SEO, open source, and more by Joost de Valk'
+};
 ---
 
 <BaseLayout title="Blog" description="Articles about WordPress, SEO, open source, and more by Joost de Valk">
+    <SchemaGraph pageContext={pageContext} />
     <main class="px-4 py-12 grow sm:px-8 sm:py-16">
         <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-8 sm:text-4xl max-w-3xl mx-auto xl:max-w-6xl">Blog</h1>
         <div class="max-w-3xl mx-auto xl:max-w-6xl">

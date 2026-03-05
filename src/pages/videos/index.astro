@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaGraph from '../../components/SchemaGraph.astro';
+import type { SchemaPageContext } from '../../utils/schema';
 import CustomImage from '../../components/CustomImage.astro';
 
 const allVideos = await getCollection('videos');
@@ -20,9 +22,17 @@ function formatDuration(isoDuration: string | undefined): string | null {
     }
     return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
+
+const pageContext: SchemaPageContext = {
+    pageType: 'videoListing',
+    canonicalUrl: new URL('/videos/', Astro.site).toString(),
+    title: 'Videos',
+    description: 'Video presentations and talks by Joost de Valk'
+};
 ---
 
 <BaseLayout title="Videos - joost.blog" description="Video presentations and talks by Joost de Valk">
+    <SchemaGraph pageContext={pageContext} />
     <main class="grow px-4 py-12 sm:px-8">
         <div class="max-w-6xl mx-auto">
             <h1 class="text-4xl font-bold mb-12 text-slate-900 dark:text-slate-100">Videos</h1>

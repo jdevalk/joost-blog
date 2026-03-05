@@ -2,7 +2,8 @@
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import CustomImage from '../components/CustomImage.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import JsonLd from '../components/JsonLd.astro';
+import SchemaGraph from '../components/SchemaGraph.astro';
+import type { SchemaPageContext } from '../utils/schema';
 import Subscribe from '../components/Subscribe.astro';
 import Giscus from '../components/Giscus.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -54,25 +55,29 @@ const seoImage = isBlog
     ? (blogData!.seo?.image ?? blogData!.featureImage)
     : (pageData!.seo?.image ?? pageData!.featureImage);
 
-const articleSchema = isBlog ? {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": blogData!.title,
-    "author": {
-        "@type": "Person",
-        "name": "Joost de Valk",
-        "url": "https://joost.blog"
-    },
-    "datePublished": blogData!.publishDate.toISOString(),
-    ...(blogData!.updatedDate && { "dateModified": blogData!.updatedDate.toISOString() }),
-    "description": blogData!.excerpt ?? blogData!.seo?.description ?? "",
-    "image": new URL(`/og/${entry.id}.png`, Astro.site).toString()
-} : null;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+
+const pageContext: SchemaPageContext = isBlog ? {
+    pageType: 'blogPost',
+    canonicalUrl,
+    title: blogData!.title,
+    description: blogData!.excerpt ?? blogData!.seo?.description ?? '',
+    publishDate: blogData!.publishDate,
+    updatedDate: blogData!.updatedDate,
+    featureImageUrl: new URL(`/og/${entry.id}.png`, Astro.site).toString(),
+    categories: blogData!.categories,
+    wordCount: (entry.body ?? '').split(/\s+/).length
+} : {
+    pageType: entry.id === 'about-me' ? 'about' : 'page',
+    canonicalUrl,
+    title: pageData!.title,
+    description: pageData!.seo?.description ?? ''
+};
 ---
 
 {isBlog ? (
 <BaseLayout title={seoTitle} description={seoDescription} image={seoImage} pageType="article">
-    {articleSchema && <JsonLd schema={articleSchema} />}
+    <SchemaGraph pageContext={pageContext} />
     <main class="px-4 py-12 grow sm:px-8 sm:py-16">
         <article class="max-w-6xl mx-auto mb-12 sm:mb-16">
             <header class="max-w-3xl mx-auto mb-6 sm:mb-8">
@@ -192,6 +197,7 @@ const articleSchema = isBlog ? {
 </BaseLayout>
 ) : (
 <BaseLayout title={seoTitle} description={seoDescription} image={seoImage}>
+    <SchemaGraph pageContext={pageContext} />
     <main class="px-4 py-12 grow sm:px-8 sm:py-16">
         <article class="max-w-6xl mx-auto">
             <header class="max-w-3xl mx-auto mb-9">

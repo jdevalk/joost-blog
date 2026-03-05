@@ -1,0 +1,12 @@
+---
+import JsonLd from './JsonLd.astro';
+import { buildSchemaGraph, type SchemaPageContext } from '../utils/schema';
+
+interface Props {
+    pageContext: SchemaPageContext;
+}
+
+const { pageContext } = Astro.props;
+const schema = buildSchemaGraph(pageContext);
+---
+<JsonLd schema={schema} />
