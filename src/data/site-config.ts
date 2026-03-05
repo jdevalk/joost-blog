@@ -2,11 +2,11 @@ import avatarImage from '../assets/images/joost-profile.jpg';
 import type { SiteConfig } from '../types';
 
 const siteConfig: SiteConfig = {
-    title: 'joost.blog',
+    title: 'Joost.blog',
     description: 'Joost de Valk - internet entrepreneur, founder of Yoast, investor at Emilia Capital',
     image: {
         src: '/images/og-default.jpg',
-        alt: 'joost.blog'
+        alt: 'Joost.blog'
     },
     primaryNavLinks: [
         { text: 'Blog', href: '/blog' },

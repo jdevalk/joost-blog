@@ -5,7 +5,7 @@ export function buildWebSitePiece(): Record<string, unknown> {
         '@type': 'WebSite',
         '@id': IDS.website,
         url: `${SITE_URL}/`,
-        name: 'joost.blog',
+        name: 'Joost.blog',
         description: 'Joost de Valk - internet entrepreneur, founder of Yoast, investor at Emilia Capital',
         publisher: { '@id': IDS.person },
         inLanguage: 'en-US',
