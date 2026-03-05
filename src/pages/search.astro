@@ -38,29 +38,30 @@ import Search from 'astro-pagefind/components/Search';
 
 <script>
     function initSearch() {
-        const params = new URLSearchParams(window.location.search);
-        const query = params.get('q');
-        const input = document.querySelector<HTMLInputElement>('.pagefind-ui__search-input');
-        if (query && input) {
-            input.value = query;
-            input.dispatchEvent(new Event('input', { bubbles: true }));
-        }
+        const query = new URLSearchParams(window.location.search).get('q');
 
-        // Update URL as user types
+        // Wait for Pagefind UI to render its input, then fill query and wire URL sync
         const observer = new MutationObserver(() => {
-            const el = document.querySelector<HTMLInputElement>('.pagefind-ui__search-input');
-            if (el) {
-                observer.disconnect();
-                el.addEventListener('input', () => {
-                    const url = new URL(window.location.href);
-                    if (el.value) {
-                        url.searchParams.set('q', el.value);
-                    } else {
-                        url.searchParams.delete('q');
-                    }
-                    history.replaceState(null, '', url.toString());
-                });
+            const input = document.querySelector<HTMLInputElement>('.pagefind-ui__search-input');
+            if (!input) return;
+            observer.disconnect();
+
+            // Fill in query from URL if present
+            if (query) {
+                input.value = query;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
             }
+
+            // Sync URL as user types
+            input.addEventListener('input', () => {
+                const url = new URL(window.location.href);
+                if (input.value) {
+                    url.searchParams.set('q', input.value);
+                } else {
+                    url.searchParams.delete('q');
+                }
+                history.replaceState(null, '', url.toString());
+            });
         });
         observer.observe(document.body, { childList: true, subtree: true });
     }
