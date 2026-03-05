@@ -34,38 +34,29 @@ Would you be interested in that? Please fill out my [contact form](/contact-me/)
 
 ### Past speaking engagements
 
-![](./images/wceu-keynote.webp)
-
-## [Sustainable open source is the future](/videos/sustainable-open-source-is-the-future/)
-
-December 16, 2024
-
-![Still of the presentation: To have less crawling we need to create less URLs.](./images/less-crawling-still-1.png)
-
-## [Improve the environment. Start with your website!](/videos/improve-the-environment-start-with-your-website/)
-
-December 11, 2022
-
-![WordPress SEO in 2019](./images/joost-de-valk-wordcamp-athens-2019.png)
-
-## [WordPress SEO in 2019](/videos/wordpress-seo-in-2019/)
-
-August 16, 2022
-
-![Joost de Valk and Sebastiaan van der Lans talk about timestamping, SEO and more.](./images/joost-de-valk-timestamping-wordproof.png)
-
-## [Why timestamping will be good for SEO](/videos/why-timestamping-will-be-good-for-seo/)
-
-August 16, 2022
-
-![](./images/joost-de-valk-wordcamp-europe-leiden-2013.png)
-
-## [The victory of the commons](/videos/the-victory-of-the-commons/)
-
-August 16, 2022
-
-![](./images/joost-de-valk-wordcamp-us-nashville-2018.png)
-
-## [The business of open source](/videos/the-business-of-open-source/)
-
-August 16, 2022
+<div class="not-prose grid grid-cols-2 sm:grid-cols-3 gap-4">
+  <a href="/videos/sustainable-open-source-is-the-future/" class="group">
+    <img src="./images/wceu-keynote.webp" alt="Sustainable open source is the future" class="rounded-lg aspect-video object-cover w-full transition-transform duration-300 group-hover:scale-105" />
+    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">Sustainable open source is the future</p>
+  </a>
+  <a href="/videos/improve-the-environment-start-with-your-website/" class="group">
+    <img src="./images/less-crawling-still-1.png" alt="Improve the environment. Start with your website!" class="rounded-lg aspect-video object-cover w-full transition-transform duration-300 group-hover:scale-105" />
+    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">Improve the environment. Start with your website!</p>
+  </a>
+  <a href="/videos/wordpress-seo-in-2019/" class="group">
+    <img src="./images/joost-de-valk-wordcamp-athens-2019.png" alt="WordPress SEO in 2019" class="rounded-lg aspect-video object-cover w-full transition-transform duration-300 group-hover:scale-105" />
+    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">WordPress SEO in 2019</p>
+  </a>
+  <a href="/videos/why-timestamping-will-be-good-for-seo/" class="group">
+    <img src="./images/joost-de-valk-timestamping-wordproof.png" alt="Why timestamping will be good for SEO" class="rounded-lg aspect-video object-cover w-full transition-transform duration-300 group-hover:scale-105" />
+    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">Why timestamping will be good for SEO</p>
+  </a>
+  <a href="/videos/the-victory-of-the-commons/" class="group">
+    <img src="./images/joost-de-valk-wordcamp-europe-leiden-2013.png" alt="The victory of the commons" class="rounded-lg aspect-video object-cover w-full transition-transform duration-300 group-hover:scale-105" />
+    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">The victory of the commons</p>
+  </a>
+  <a href="/videos/the-business-of-open-source/" class="group">
+    <img src="./images/joost-de-valk-wordcamp-us-nashville-2018.png" alt="The business of open source" class="rounded-lg aspect-video object-cover w-full transition-transform duration-300 group-hover:scale-105" />
+    <p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors">The business of open source</p>
+  </a>
+</div>
