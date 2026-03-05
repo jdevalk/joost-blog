@@ -151,4 +151,23 @@ Phases execute in numeric order: 1 > 2 > 3 > 4/5 (parallel possible) > 6
 | 4. SEO and Performance | 2/2 | Complete | 2026-03-04 |
 | 5. Engagement Features | 1/1 | Complete | 2026-03-05 |
 | 6. Deployment and Verification | 0/? | Not started | - |
-| 7. Yoast-like Schema | 1/2 | In Progress|  |
+| 7. Yoast-like Schema | 2/2 | Complete |  |
+| 8. Add site search | 0/2 | Not started | - |
+
+### Phase 8: Add site search
+
+**Goal:** Full-text search powered by Pagefind -- users can search all blog posts, pages, and videos from a dedicated search page with themed UI
+**Requirements**: SEARCH-01, SEARCH-02, SEARCH-03, SEARCH-04, SEARCH-05
+**Depends on:** Phase 7
+**Success Criteria** (what must be TRUE):
+  1. Pagefind index is generated at build time from HTML output
+  2. Only article content is indexed (not nav, footer, comments, related posts, schema)
+  3. Search page exists at /search/ with working full-text search
+  4. Search results link to correct post/page URLs
+  5. Search UI matches site theme in both light and dark mode
+  6. Search icon in header is discoverable on all screen sizes
+**Plans:** 2 plans
+
+Plans:
+- [ ] 08-01-PLAN.md -- Install astro-pagefind, register integration, add indexing attributes to all page templates
+- [ ] 08-02-PLAN.md -- Create search page with Pagefind UI, add search icon to header, style for dark mode

@@ -79,6 +79,14 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SCHEMA-07**: WebSite and SiteNavigationElement pieces included on all pages
 - [x] **SCHEMA-08**: Page-type-specific subtypes: CollectionPage (homepage, blog listing, categories), ProfilePage (about)
 
+### Site Search
+
+- [ ] **SEARCH-01**: Pagefind integration generates search index at build time
+- [ ] **SEARCH-02**: Only article content indexed (not nav, footer, comments, schema markup)
+- [ ] **SEARCH-03**: Blog post categories available as Pagefind filter metadata
+- [ ] **SEARCH-04**: Dedicated search page at /search/ with Pagefind default UI
+- [ ] **SEARCH-05**: Search UI styled for both light and dark mode matching site theme
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -94,7 +102,6 @@ Deferred to future release. Tracked but not in current roadmap.
 - **FEAT-V2-01**: Previous/next post navigation
 - **FEAT-V2-02**: Social sharing links (Twitter/X, LinkedIn, Bluesky)
 - **FEAT-V2-03**: Table of contents for long posts
-- **FEAT-V2-04**: Full-text search (Pagefind)
 
 ## Out of Scope
 
@@ -159,12 +166,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCHEMA-06 | Phase 7: Yoast-like Schema | Complete |
 | SCHEMA-07 | Phase 7: Yoast-like Schema | Complete |
 | SCHEMA-08 | Phase 7: Yoast-like Schema | Complete |
+| SEARCH-01 | Phase 8: Add site search | Pending |
+| SEARCH-02 | Phase 8: Add site search | Pending |
+| SEARCH-03 | Phase 8: Add site search | Pending |
+| SEARCH-04 | Phase 8: Add site search | Pending |
+| SEARCH-05 | Phase 8: Add site search | Pending |
 
 **Coverage:**
-- v1 requirements: 45 total
-- Mapped to phases: 45
+- v1 requirements: 50 total
+- Mapped to phases: 50
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-04*
-*Last updated: 2026-03-05 after Phase 7 planning*
+*Last updated: 2026-03-05 after Phase 8 planning*
