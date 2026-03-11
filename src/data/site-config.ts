@@ -11,7 +11,7 @@ const siteConfig: SiteConfig = {
     primaryNavLinks: [
         { text: 'Blog', href: '/blog' },
         { text: 'About', href: '/about-me' },
-        { text: 'Plugins', href: '/plugins' },
+        { text: 'Code', href: '/code' },
         { text: 'Videos', href: '/videos' },
         { text: 'Contact', href: '/contact-me' }
     ],

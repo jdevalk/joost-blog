@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const plugins = [
+    {
+        name: 'Progress Planner',
+        description: 'My current main focus. A WordPress plugin that helps you plan and track your content and site maintenance progress.',
+        url: 'https://progressplanner.com/',
+    },
+    {
+        name: 'AAA Option Optimizer',
+        description: 'Tracks autoloaded options usage and allows the user to optimize them.',
+        url: 'https://progressplanner.com/plugins/aaa-option-optimizer/',
+    },
+    {
+        name: 'Brand Assets',
+        description: 'Stop chasing down requests for your logo and color codes by creating a Brand Assets page on your site.',
+        url: 'https://progressplanner.com/plugins/brand-assets/',
+    },
+    {
+        name: 'Clicky Analytics',
+        description: 'Make it easy for you to add your Clicky analytics tracking code to your site.',
+        url: '/plugins/clicky/',
+    },
+    {
+        name: 'Comment Experience',
+        description: "WordPress' comment system is incomplete. This plugin adds a lot of nifty little tricks to make comments on WordPress a lot more manageable.",
+        url: 'https://progressplanner.com/plugins/comment-experience/',
+    },
+    {
+        name: 'Comment Free Zone',
+        description: "Your WordPress site comes with comments enabled in many places by default. But not every site needs them, and if that’s the case for you, they can add unnecessary clutter.",
+        url: 'https://progressplanner.com/plugins/comment-free-zone/',
+    },
+    {
+        name: 'Fewer Tags',
+        description: "Make sure tags are only live on your site when they actually add value, so when there's more than a few posts in it.",
+        url: 'https://progressplanner.com/plugins/fewer-tags/',
+    },
+    {
+        name: 'Glossary',
+        description: 'Make your content easier to understand with clear definitions that show up exactly when and where readers need them.',
+        url: 'https://progressplanner.com/plugins/glossary/',
+    },
+    {
+        name: 'XML Sitemaps for PDFs',
+        description: 'If your site has a lot of PDFs, this add-on to Yoast SEO is what you need to get them indexed.',
+        url: 'https://progressplanner.com/plugins/xml-sitemap-for-pdfs/',
+    },
+];
+---
+
+<BaseLayout
+    title="Code"
+    description="Code projects, WordPress plugins, and other software I've built and maintain."
+>
+    <main class="px-4 py-12 grow sm:px-8 sm:py-16" data-pagefind-body>
+        <div class="max-w-6xl mx-auto">
+            <header class="max-w-3xl mx-auto mb-9">
+                <h1 class="text-4xl font-bold text-slate-900 dark:text-slate-100 sm:text-5xl">Code</h1>
+            </header>
+
+            <div class="max-w-3xl mx-auto mt-12 mb-12">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Rondo</h2>
+                <p class="prose prose-slate sm:prose-lg max-w-none">
+                    From member management and dues to invoicing, VOG, and membership passes: <a href="https://rondo.club">Rondo</a> automates 
+                    your club processes and keeps everything in sync.
+                </p>    
+            </div>
+            <div class="max-w-3xl mx-auto mt-12 mb-12">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">WordPress plugins</h2>
+                <p class="prose prose-slate sm:prose-lg max-w-none">
+                    I was the original author of Yoast SEO, and most of its addons, and never really stopped coding on WordPress plugins and other stuff.
+                </p>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {plugins.map((plugin) => (
+                    <a
+                        href={plugin.url}
+                        class="group block rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 transition duration-300 hover:border-primary dark:hover:border-accent hover:shadow-md"
+                    >
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary dark:group-hover:text-accent transition duration-300">
+                            {plugin.name}
+                        </h2>
+                        <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            {plugin.description}
+                        </p>
+                    </a>
+                ))}
+            </div>
+            <div class="max-w-3xl mx-auto mt-12">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Other projects</h2>
+                <p class="prose prose-slate sm:prose-lg max-w-none">
+                    I actively contribute to other projects, including the software of some of the companies in our investment portfolio. To read more about that, see either my <a href="/about-me/">about page</a>, or read about <a href="https://emilia.capital/">Emilia Capital</a>.
+                </p>
+            </div>
+        </div>
+    </main>
+</BaseLayout>
