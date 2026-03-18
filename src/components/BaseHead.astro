@@ -1,5 +1,6 @@
 ---
 import monaSansWoff2 from '@fontsource-variable/mona-sans/files/mona-sans-latin-wght-normal.woff2?url';
+import { SEO } from 'astro-seo';
 import { getImage } from 'astro:assets';
 import siteConfig from '../data/site-config';
 import { SITE_URL } from '../utils/schema/constants';
@@ -14,9 +15,20 @@ export type Props = {
     image?: ImageInput | undefined;
     ogImage?: string;
     pageType?: 'website' | 'article';
+    publishDate?: Date;
+    updatedDate?: Date;
+    categories?: string[];
+    noindex?: boolean;
 };
 
-const { description = '', pageType = 'website' } = Astro.props;
+const {
+    description = '',
+    pageType = 'website',
+    publishDate,
+    updatedDate,
+    categories,
+    noindex = false,
+} = Astro.props;
 const title = [Astro.props.title, siteConfig.title].filter(Boolean).join(' | ');
 
 // Detect staging: Astro.site differs from production SITE_URL
@@ -66,49 +78,75 @@ const canonicalURL = new URL(Astro.url.pathname, SITE_URL);
 function formatCanonicalURL(url: string | URL) {
     const path = url.toString();
     const hasQueryParams = path.includes('?');
-    // If there are query params, make sure the URL has no trailing slash
     if (hasQueryParams) {
         path.replace(/\/?$/, '');
     }
-    // otherwise, canonical URL always has a trailing slash
     return path.replace(/\/?$/, hasQueryParams ? '' : '/');
 }
+
+// Build article-specific OG data
+const articleOg = pageType === 'article' && publishDate ? {
+    publishedTime: publishDate.toISOString(),
+    ...(updatedDate ? { modifiedTime: updatedDate.toISOString() } : {}),
+    authors: ['https://joost.blog/about-me/'],
+    ...(categories?.length ? { tags: categories } : {}),
+} : undefined;
 ---
 
 <!-- High Priority Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>{title}</title>
 <meta name="generator" content={Astro.generator} />
 
 <!-- Font preloads -->
 <link rel="preload" as="font" type="font/woff2" href={monaSansWoff2} crossorigin="anonymous" />
 
-<!-- Low Priority Global Metadata -->
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="sitemap" href="/sitemap-index.xml" />
-<link rel="alternate" type="application/rss+xml" href="/rss.xml" title="RSS" />
-
-<!-- Page Metadata -->
-<link rel="canonical" href={formatCanonicalURL(canonicalURL)} />
-<meta name="description" content={description} />
-{isStaging && <meta name="robots" content="noindex, nofollow" />}
-
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content={pageType} />
-<meta property="og:url" content={formatCanonicalURL(canonicalURL)} />
-<meta property="og:title" content={title} />
-{description && <meta property="og:description" content={description} />}
-{finalOgImage && <meta property="og:image" content={finalOgImage} />}
-{resolvedImage?.alt && <meta property="og:image:alt" content={resolvedImage.alt} />}
-
-<!-- X/Twitter -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:url" content={formatCanonicalURL(canonicalURL)} />
-<meta name="twitter:title" content={title} />
-{description && <meta name="twitter:description" content={description} />}
-{finalOgImage && <meta name="twitter:image" content={finalOgImage} />}
-{resolvedImage?.alt && <meta name="twitter:image:alt" content={resolvedImage.alt} />}
+<!-- SEO -->
+<SEO
+    title={title}
+    description={description}
+    canonical={formatCanonicalURL(canonicalURL)}
+    noindex={isStaging || noindex}
+    nofollow={isStaging}
+    openGraph={{
+        basic: {
+            title,
+            type: pageType,
+            image: finalOgImage ?? '',
+            url: formatCanonicalURL(canonicalURL),
+        },
+        optional: {
+            description,
+            locale: 'en_US',
+            siteName: siteConfig.title,
+        },
+        image: {
+            alt: resolvedImage?.alt ?? Astro.props.title ?? siteConfig.title,
+            width: 1200,
+            height: 630,
+        },
+        ...(articleOg ? { article: articleOg } : {}),
+    }}
+    twitter={{
+        card: 'summary_large_image',
+        site: '@jdevalk',
+        creator: '@jdevalk',
+        title,
+        description,
+        image: finalOgImage,
+        imageAlt: resolvedImage?.alt ?? Astro.props.title ?? siteConfig.title,
+    }}
+    extend={{
+        link: [
+            { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+            { rel: 'sitemap', href: '/sitemap-index.xml' },
+            { rel: 'alternate', type: 'application/rss+xml', href: '/rss.xml', title: 'RSS' },
+        ],
+        meta: [
+            { name: 'author', content: 'Joost de Valk' },
+        ],
+    }}
+/>
 
 <!-- View Transitions -->
 <ClientRouter />
