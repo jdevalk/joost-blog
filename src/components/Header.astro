@@ -10,7 +10,7 @@ const { class: className, variant } = Astro.props;
 const isDark = variant === 'dark';
 ---
 
-<header class:list={['flex items-center justify-between gap-4 px-4 py-4 sm:px-8 sm:py-5', className]}>
+<header class:list={['fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-4 px-4 py-3 sm:px-8 sm:py-4 transition-colors duration-300', isDark ? '' : 'bg-white/80 backdrop-blur-lg border-b border-slate-200/80 dark:bg-slate-900/80 dark:border-slate-700/80', className]}>
     {
         siteConfig.logo?.src ? (
             <a href="/">
@@ -29,8 +29,9 @@ const isDark = variant === 'dark';
                 <nav class="hidden md:flex items-center gap-1" aria-label="Primary navigation">
                     {primaryNavLinks.map((link) => (
                         <HeaderNavLink
-                            class:list={["relative rounded-md px-3 py-1.5 text-sm font-medium transition duration-300", isDark ? "text-white/70 hover:text-white hover:bg-white/10" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-700"]}
+                            class:list={["relative rounded-md px-3 py-1.5 text-sm font-medium transition duration-300", isDark ? "text-white/70 hover:text-white hover:bg-white/10" : "text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50"]}
                             href={link.href}
+                            data-variant={isDark ? 'dark' : 'light'}
                         >
                             {link.text}
                         </HeaderNavLink>
@@ -40,7 +41,7 @@ const isDark = variant === 'dark';
         }
         <button
             data-open-search
-            class="inline-flex items-center justify-center w-9 h-9 rounded-md text-current opacity-60 hover:opacity-100 hover:bg-white/10 transition cursor-pointer"
+            class:list={["inline-flex items-center justify-center w-9 h-9 rounded-md transition cursor-pointer", isDark ? "text-white/60 hover:text-white hover:bg-white/10" : "text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50"]}
             aria-label="Search (Cmd+K)">
             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -48,20 +49,20 @@ const isDark = variant === 'dark';
                 <path d="m21 21-4.3-4.3" />
             </svg>
         </button>
-        <ThemeToggle />
+        <ThemeToggle variant={isDark ? 'dark' : 'light'} />
         {/* Mobile nav */}
         {
             primaryNavLinks.length > 0 && (
                 <nav class="relative md:hidden" aria-label="Mobile navigation">
                     <button
-                        class="relative z-20 inline-flex items-center justify-center w-9 h-9 rounded-md text-current opacity-60 hover:opacity-100 hover:bg-white/10 transition cursor-pointer menu-toggle"
+                        class:list={["relative z-20 inline-flex items-center justify-center w-9 h-9 rounded-md transition cursor-pointer menu-toggle", isDark ? "text-white/60 hover:text-white hover:bg-white/10" : "text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50"]}
                         aria-label="Open Menu"
                         aria-expanded="false"
                         aria-controls="menu-items"
                     >
                         <span class="relative w-1 h-1 bg-current rounded-full menu-toggle-icon" />
                     </button>
-                    <ul id="menu-items" class="absolute z-10 px-8 pt-16 pb-10 border menu -top-3 -right-3 border-white/20 bg-white/90 dark:border-slate-600/40 dark:bg-slate-800/95 sm:px-12 sm:pt-20 sm:pb-16">
+                    <ul id="menu-items" class="absolute z-10 px-8 pt-16 pb-10 border menu -top-3 -right-3 border-slate-200/60 bg-white/90 dark:border-slate-600/40 dark:bg-slate-800/95 sm:px-12 sm:pt-20 sm:pb-16">
                         {primaryNavLinks.map((link) => (
                             <li class="mb-1 border-b border-slate-200/70 dark:border-slate-600/70">
                                 <HeaderNavLink

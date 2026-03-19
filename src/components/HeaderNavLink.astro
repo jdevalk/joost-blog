@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 
-type Props = HTMLAttributes<'a'>;
+type Props = HTMLAttributes<'a'> & { 'data-variant'?: 'dark' | 'light' };
 
 const { href, class: className, ...props } = Astro.props;
 
@@ -23,7 +23,15 @@ const isActive = href === pathname || href === pathname.replace(/\/$/, '');
 <style>
     @reference "tailwindcss";
 
-    a.active {
+    a.active[data-variant='dark'] {
         @apply bg-white/15 text-white;
+    }
+    a.active:not([data-variant='dark']) {
+        @apply bg-slate-100 font-semibold;
+        color: var(--color-primary);
+    }
+    :global(.dark) a.active:not([data-variant='dark']) {
+        @apply bg-slate-700/50;
+        color: var(--color-accent);
     }
 </style>

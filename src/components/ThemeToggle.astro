@@ -1,7 +1,13 @@
+---
+type Props = { variant?: 'dark' | 'light' };
+const { variant } = Astro.props;
+const isDark = variant === 'dark';
+---
+
 <button
     id="themeToggle"
     aria-label="Toggle dark mode"
-    class="inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors duration-300 text-current opacity-60 hover:opacity-100 hover:bg-white/10 cursor-pointer"
+    class:list={["inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors duration-300 cursor-pointer", isDark ? "text-white/60 hover:text-white hover:bg-white/10" : "text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50"]}
 >
     <!-- Sun icon (visible in dark mode) -->
     <svg class="hidden dark:block h-[18px] w-[18px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

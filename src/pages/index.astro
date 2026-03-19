@@ -28,7 +28,8 @@ const latestPosts = posts.filter(({ data }) => !data.isFeatured).slice(0, 6);
 <BaseLayout description={siteConfig.description}>
     <SchemaGraph pageContext={pageContext} />
     <div class="relative bg-gradient-to-br from-blue-950 via-slate-900 to-indigo-950 text-white" slot="header">
-        <Header class="relative" variant="dark" />
+        <Header variant="dark" />
+        <div class="h-[52px] sm:h-[56px]"></div>
         <Hero {...siteConfig.hero} socialLinks={siteConfig.socialLinks} variant="dark" />
     </div>
     <main class="grow" data-pagefind-ignore="all">
