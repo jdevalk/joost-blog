@@ -21,10 +21,9 @@ const isActive = href === pathname || href === pathname.replace(/\/$/, '');
 </a>
 
 <style>
+    @reference "tailwindcss";
+
     a.active {
-        color: white;
-        text-decoration: underline;
-        text-underline-offset: 6px;
-        text-decoration-thickness: 2px;
+        @apply bg-white/15 text-white;
     }
 </style>

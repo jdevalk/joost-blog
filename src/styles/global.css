@@ -9,14 +9,23 @@
 
 @theme {
     --font-sans: 'Mona Sans Variable', sans-serif;
+
+    /* Refined palette: deeper primary, warm accent */
     --color-primary: #2563eb;
-    --color-secondary: #1d4ed8;
+    --color-secondary: #1e40af;
     --color-accent: #60a5fa;
+    --color-warm: #f59e0b;
+    --color-warm-hover: #d97706;
     --color-base: #ffffff;
-    --color-tertiary: #f7f8f8;
-    --shadow-avatar: 0 0 0 11px --alpha(var(--color-primary) / 15%), 0 0 0 22px --alpha(var(--color-primary) / 10%);
-    --shadow-avatar-dark: 0 0 0 11px rgba(147, 197, 253, 0.25), 0 0 0 22px rgba(147, 197, 253, 0.12);
-    --shadow-button: 0 0 0 6px --alpha(var(--color-primary) / 17.5%);
+    --color-surface: #f8fafc;
+    --color-tertiary: #f1f5f9;
+
+    /* Shadows */
+    --shadow-avatar: 0 0 0 6px rgba(37, 99, 235, 0.12), 0 0 0 14px rgba(37, 99, 235, 0.06);
+    --shadow-avatar-dark: 0 0 0 6px rgba(96, 165, 250, 0.15), 0 0 0 14px rgba(96, 165, 250, 0.08);
+    --shadow-button: 0 0 0 4px --alpha(var(--color-primary) / 15%);
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
 }
 
 ::view-transition-old(root),
@@ -74,18 +83,18 @@
 @layer utilities {
     .dark .prose {
         --tw-prose-body: #cbd5e1;
-        --tw-prose-headings: #e2e8f0;
+        --tw-prose-headings: #f1f5f9;
         --tw-prose-links: #60a5fa;
-        --tw-prose-bold: #e2e8f0;
+        --tw-prose-bold: #f1f5f9;
         --tw-prose-counters: #94a3b8;
         --tw-prose-bullets: #94a3b8;
         --tw-prose-hr: #334155;
-        --tw-prose-quotes: #e2e8f0;
+        --tw-prose-quotes: #f1f5f9;
         --tw-prose-quote-borders: #334155;
         --tw-prose-captions: #94a3b8;
-        --tw-prose-code: #e2e8f0;
-        --tw-prose-pre-code: #e2e8f0;
-        --tw-prose-pre-bg: #1e293b;
+        --tw-prose-code: #f1f5f9;
+        --tw-prose-pre-code: #f1f5f9;
+        --tw-prose-pre-bg: #0f172a;
         --tw-prose-th-borders: #475569;
         --tw-prose-td-borders: #334155;
     }

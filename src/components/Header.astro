@@ -10,26 +10,26 @@ const { class: className, variant } = Astro.props;
 const isDark = variant === 'dark';
 ---
 
-<header class:list={['flex items-center justify-between gap-6 px-4 py-4 sm:px-8 sm:py-6', className]}>
+<header class:list={['flex items-center justify-between gap-4 px-4 py-4 sm:px-8 sm:py-5', className]}>
     {
         siteConfig.logo?.src ? (
             <a href="/">
-                <CustomImage class="max-h-12" {...siteConfig.logo} loading="eager" fetchpriority="high" />
+                <CustomImage class="max-h-10" {...siteConfig.logo} loading="eager" fetchpriority="high" />
             </a>
         ) : (
-            <a class:list={["text-xl font-bold sm:text-2xl", isDark ? "text-white" : "dark:text-slate-100"]} href="/">
+            <a class:list={["text-lg font-extrabold tracking-tight sm:text-xl", isDark ? "text-white" : "text-slate-900 dark:text-slate-100"]} href="/">
                 {siteConfig.title}
             </a>
         )
     }
-    <div class="flex items-center gap-4">
-        {/* Desktop nav - inline links visible on md+ */}
+    <div class="flex items-center gap-1 sm:gap-2">
+        {/* Desktop nav */}
         {
             primaryNavLinks.length > 0 && (
-                <nav class="hidden md:flex items-center gap-6" aria-label="Primary navigation">
+                <nav class="hidden md:flex items-center gap-1" aria-label="Primary navigation">
                     {primaryNavLinks.map((link) => (
                         <HeaderNavLink
-                            class:list={["relative text-sm font-semibold tracking-wide uppercase transition duration-300", isDark ? "text-white/80 hover:text-white" : "text-slate-700 hover:text-primary dark:text-slate-200 dark:hover:text-accent"]}
+                            class:list={["relative rounded-md px-3 py-1.5 text-sm font-medium transition duration-300", isDark ? "text-white/70 hover:text-white hover:bg-white/10" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-700"]}
                             href={link.href}
                         >
                             {link.text}
@@ -40,32 +40,32 @@ const isDark = variant === 'dark';
         }
         <button
             data-open-search
-            class="inline-flex items-center justify-center w-8 h-8 text-current opacity-70 hover:opacity-100 transition-opacity cursor-pointer"
+            class="inline-flex items-center justify-center w-9 h-9 rounded-md text-current opacity-60 hover:opacity-100 hover:bg-white/10 transition cursor-pointer"
             aria-label="Search (Cmd+K)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8" />
                 <path d="m21 21-4.3-4.3" />
             </svg>
         </button>
         <ThemeToggle />
-        {/* Mobile nav - dot menu, hidden on md+ */}
+        {/* Mobile nav */}
         {
             primaryNavLinks.length > 0 && (
                 <nav class="relative md:hidden" aria-label="Mobile navigation">
                     <button
-                        class="relative z-20 inline-flex items-center justify-center w-10 h-10 text-white transition-shadow duration-300 rounded-full cursor-pointer menu-toggle bg-primary hover:shadow-button"
+                        class="relative z-20 inline-flex items-center justify-center w-9 h-9 rounded-md text-current opacity-60 hover:opacity-100 hover:bg-white/10 transition cursor-pointer menu-toggle"
                         aria-label="Open Menu"
                         aria-expanded="false"
                         aria-controls="menu-items"
                     >
-                        <span class="relative w-1 h-1 bg-white rounded-full menu-toggle-icon" />
+                        <span class="relative w-1 h-1 bg-current rounded-full menu-toggle-icon" />
                     </button>
-                    <ul id="menu-items" class="absolute z-10 px-8 pt-16 pb-10 border menu -top-3 -right-3 border-white/40 bg-white/75 dark:border-slate-600/40 dark:bg-slate-800/90 sm:px-12 sm:pt-20 sm:pb-16">
+                    <ul id="menu-items" class="absolute z-10 px-8 pt-16 pb-10 border menu -top-3 -right-3 border-white/20 bg-white/90 dark:border-slate-600/40 dark:bg-slate-800/95 sm:px-12 sm:pt-20 sm:pb-16">
                         {primaryNavLinks.map((link) => (
                             <li class="mb-1 border-b border-slate-200/70 dark:border-slate-600/70">
                                 <HeaderNavLink
-                                    class="relative block py-1 pr-6 text-lg font-bold transition duration-300 text-slate-700 hover:text-slate-500 dark:text-slate-200 dark:hover:text-slate-400 sm:text-xl"
+                                    class="relative block py-1.5 pr-6 text-base font-semibold transition duration-300 text-slate-700 hover:text-primary dark:text-slate-200 dark:hover:text-accent"
                                     href={link.href}
                                 >
                                     {link.text}
@@ -85,9 +85,9 @@ const isDark = variant === 'dark';
     .menu {
         width: calc(100vw - 0.5rem);
         max-width: 18.75rem;
-        border-radius: 26px;
+        border-radius: 16px;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(5px);
+        backdrop-filter: blur(12px);
         opacity: 0;
         transform: scale(0.6);
         transform-origin: top right;
@@ -117,7 +117,7 @@ const isDark = variant === 'dark';
     }
     .menu-toggle-icon:before,
     .menu-toggle-icon:after {
-        @apply absolute top-1/2 left-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white;
+        @apply absolute top-1/2 left-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-current;
         content: '';
         transition:
             width 0.25s cubic-bezier(0.4, 0, 0.2, 1),

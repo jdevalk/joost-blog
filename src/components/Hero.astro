@@ -25,31 +25,33 @@ const isDark = variant === 'dark';
                     loading="eager"
                 />
             )}
-            <section class="relative px-4 py-12 sm:px-8 sm:py-16">
-                <div class="flex flex-col items-center w-full max-w-3xl mx-auto text-center">
+            <section class="relative px-4 py-10 sm:px-8 sm:py-14">
+                <div class="flex flex-col items-center w-full max-w-3xl mx-auto sm:flex-row sm:items-center sm:text-left sm:gap-8">
                     {avatar?.src && (
-                        <div class="p-6 mb-6">
+                        <div class="shrink-0 mb-4 sm:mb-0">
                             <CustomImage
                                 {...avatar}
-                                class:list={["object-cover w-40 border-2 rounded-full aspect-square", isDark ? "border-white/30 shadow-avatar-dark" : "border-primary shadow-avatar"]}
-                                width={160}
-                                height={160}
-                                widths={[160, 320]}
-                                sizes="160px"
+                                class:list={["object-cover w-28 sm:w-36 border-2 rounded-full aspect-square", isDark ? "border-white/20 shadow-avatar-dark" : "border-primary/20 shadow-avatar"]}
+                                width={144}
+                                height={144}
+                                widths={[144, 288]}
+                                sizes="144px"
                                 fetchpriority="high"
                                 loading="eager"
                             />
                         </div>
                     )}
-                    {title && <h1 class:list={["text-4xl font-bold sm:text-5xl", isDark ? "text-white" : "text-slate-900 dark:text-slate-100"]}>{title}</h1>}
-                    {text && <p class:list={['sm:text-lg', isDark ? 'text-white/80 [&_a]:text-accent [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-white' : 'text-slate-700 dark:text-slate-300', { 'mt-4': title }]} set:html={text} />}
-                    {socialLinks && socialLinks.length > 0 && (
-                        <div class:list={['flex flex-wrap justify-center gap-x-4 gap-y-3', { 'mt-8': title || text }]}>
-                            {socialLinks.map((link) => (
-                                <SocialLink {...link} class:list={[isDark ? "bg-white/10 hover:bg-white/20 text-white hover:text-white" : "bg-white hover:bg-primary hover:shadow-button text-slate-700 hover:text-white dark:bg-slate-800 dark:text-slate-200"]} />
-                            ))}
-                        </div>
-                    )}
+                    <div class="text-center sm:text-left">
+                        {title && <h1 class:list={["text-3xl font-extrabold tracking-tight sm:text-4xl", isDark ? "text-white" : "text-slate-900 dark:text-slate-100"]}>{title}</h1>}
+                        {text && <p class:list={['mt-2 text-base sm:text-lg leading-relaxed', isDark ? 'text-white/75 [&_a]:text-accent [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-white' : 'text-slate-600 dark:text-slate-300', { 'mt-3': title }]} set:html={text} />}
+                        {socialLinks && socialLinks.length > 0 && (
+                            <div class:list={['flex flex-wrap gap-x-2 gap-y-2 justify-center sm:justify-start', { 'mt-5': title || text }]}>
+                                {socialLinks.map((link) => (
+                                    <SocialLink {...link} class:list={[isDark ? "bg-white/10 hover:bg-white/20 text-white hover:text-white" : "bg-white hover:bg-primary hover:shadow-button text-slate-700 hover:text-white dark:bg-slate-700 dark:text-slate-200"]} />
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </section>
         </>

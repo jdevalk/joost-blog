@@ -9,85 +9,38 @@ const { title, publishDate, updatedDate, featureImage, excerpt, isFeatured, cate
 const readingTime = getReadingTime(post.body ?? '');
 ---
 
-<article class="mb-12 post-card sm:mb-16">
-    <header class="post-card-header">
-        <div class="mb-2 text-sm tracking-wider uppercase text-slate-500 dark:text-slate-400">
-            {
-                categories && categories.length > 0 && (
-                    <>
-                        {categories.map((cat: string, i: number) => (
-                            <>
-                                <a
-                                    href={`/category/${slugify(cat)}/`}
-                                    class="font-semibold text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300 underline decoration-primary/30 hover:decoration-primary dark:decoration-accent/30 dark:hover:decoration-accent transition duration-300"
-                                >
-                                    {cat}
-                                </a>
-                                {i < categories.length - 1 && ', '}
-                            </>
-                        ))}
-                        {' / '}
-                    </>
-                )
-            }
-            <FormattedDate date={publishDate} />
-            {
-                updatedDate && (
-                    <>
-                        {' '}
-                        <span>
-                            (Updated on <FormattedDate date={updatedDate} />)
-                        </span>
-                    </>
-                )
-            }
-            <span> / {readingTime} min read</span>
-        </div>
-        <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100"><a href={`/${post.id}/`}>{title}</a></h2>
-    </header>
-    {
-        featureImage?.src && (
-            <figure class="mt-6 mb-6 post-card-thumbnail xl:mt-7 xl:mb-0">
-                <a href={`/${post.id}/`} aria-label={title}>
-                    <CustomImage
-                        {...featureImage}
-                        class="w-full rounded-md"
-                        widths={[160, 320, 480, 640, 768, 960, 1200]}
-                        sizes="(min-width: 1280px) 160px, (min-width: 832px) 768px, calc(100vw - 32px)"
-                    />
+<article class="group flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-card transition duration-300 hover:shadow-card-hover hover:-translate-y-0.5 dark:border-slate-700 dark:bg-slate-800/50">
+    {featureImage?.src && (
+        <a href={`/${post.id}/`} aria-label={title} class="block overflow-hidden">
+            <CustomImage
+                {...featureImage}
+                class="w-full aspect-[16/9] object-cover transition-transform duration-500 group-hover:scale-105"
+                widths={[320, 480, 640, 768]}
+                sizes="(min-width: 1024px) 384px, (min-width: 640px) 50vw, calc(100vw - 32px)"
+            />
+        </a>
+    )}
+    <div class="flex flex-1 flex-col p-5">
+        <div class="mb-2 flex flex-wrap items-center gap-2 text-xs">
+            {categories && categories.length > 0 && categories.map((cat: string) => (
+                <a
+                    href={`/category/${slugify(cat)}/`}
+                    class="rounded-full bg-primary/10 px-2.5 py-0.5 font-semibold text-primary transition-colors duration-300 hover:bg-primary hover:text-white dark:bg-accent/10 dark:text-accent dark:hover:bg-accent dark:hover:text-slate-900"
+                >
+                    {cat}
                 </a>
-            </figure>
-        )
-    }
-    {
-        excerpt && (
-            <div class="mt-4 post-card-content">
-                <div class="prose prose-slate sm:prose-lg max-w-none">{excerpt}</div>
-            </div>
-        )
-    }
+            ))}
+        </div>
+        <h2 class="text-xl font-bold leading-snug text-slate-900 dark:text-slate-100">
+            <a href={`/${post.id}/`} class="hover:text-primary dark:hover:text-accent transition-colors duration-300">{title}</a>
+        </h2>
+        {excerpt && (
+            <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-2">{excerpt}</p>
+        )}
+        <div class="mt-auto pt-4 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+            <FormattedDate date={publishDate} />
+            <span>&middot;</span>
+            <span>{readingTime} min read</span>
+        </div>
+    </div>
 </article>
-
-<style>
-    @reference "tailwindcss";
-
-    @media (min-width: 1280px) {
-        .post-card-header {
-            grid-area: header;
-        }
-        .post-card-content {
-            grid-area: content;
-        }
-        .post-card-thumbnail {
-            grid-area: thumbnail;
-        }
-        .post-card {
-            @apply grid gap-x-8;
-            grid-template-rows: min-content 1fr;
-            grid-template-columns: 1fr 768px 1fr;
-            grid-template-areas:
-                'thumbnail header'
-                'thumbnail content';
-        }
-    }
-</style>

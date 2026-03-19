@@ -2,76 +2,60 @@
 import { type CollectionEntry } from 'astro:content';
 import CustomImage from './CustomImage.astro';
 import FormattedDate from './FormattedDate.astro';
-import { slugify } from '../utils/post-utils';
+import { slugify, getReadingTime } from '../utils/post-utils';
 
 const { post } = Astro.props as { post: CollectionEntry<'blog'> };
 const { title, publishDate, updatedDate, featureImage, excerpt, categories } = post.data;
+const readingTime = getReadingTime(post.body ?? '');
 ---
 
-<article class="mb-12 sm:mb-16">
-    <header class="max-w-3xl mx-auto">
-        <div class="mb-2 text-sm tracking-wider uppercase text-slate-500 dark:text-slate-400 sm:mb-3">
-            {
-                categories && categories.length > 0 && (
-                    <>
-                        {categories.map((cat: string, i: number) => (
-                            <>
-                                <a
-                                    href={`/category/${slugify(cat)}/`}
-                                    class="font-semibold text-primary hover:text-slate-700 dark:text-accent dark:hover:text-slate-300 underline decoration-primary/30 hover:decoration-primary dark:decoration-accent/30 dark:hover:decoration-accent transition duration-300"
-                                >
-                                    {cat}
-                                </a>
-                                {i < categories.length - 1 && ', '}
-                            </>
-                        ))}
-                        {' / '}
-                    </>
-                )
-            }
-            <FormattedDate date={publishDate} />
-            {
-                updatedDate && (
-                    <>
-                        {' '}
-                        <span>
-                            (Updated on <FormattedDate date={updatedDate} />)
-                        </span>
-                    </>
-                )
-            }
-        </div>
-        <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 sm:text-4xl md:text-5xl"><a href={`/${post.id}/`}>{title}</a></h2>
-    </header>
-    {
-        featureImage?.src && (
-            <figure class="max-w-6xl mx-auto my-6 sm:my-8">
-                <a href={`/${post.id}/`} aria-label={title}>
-                    <CustomImage
-                        {...featureImage}
-                        class="w-full rounded-md"
-                        widths={[480, 640, 768, 960, 1200, 1600]}
-                        sizes="(min-width: 1216px) 1152px, calc(100vw - 32px)"
-                        fetchpriority="high"
-                        loading="eager"
-                    />
-                </a>
-            </figure>
-        )
-    }
-    {
-        excerpt && (
-            <div class="max-w-3xl mx-auto mt-6">
-                <div class="prose prose-slate sm:prose-lg max-w-none">{excerpt}</div>
+<article class="group mb-12 sm:mb-16">
+    <div class="grid gap-6 lg:grid-cols-2 lg:gap-10 items-center">
+        {featureImage?.src && (
+            <a href={`/${post.id}/`} aria-label={title} class="block overflow-hidden rounded-lg">
+                <CustomImage
+                    {...featureImage}
+                    class="w-full aspect-[16/10] object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    widths={[480, 640, 768, 960, 1200]}
+                    sizes="(min-width: 1024px) 50vw, calc(100vw - 32px)"
+                    fetchpriority="high"
+                    loading="eager"
+                />
+            </a>
+        )}
+        <div>
+            <div class="mb-3 flex flex-wrap items-center gap-2 text-xs">
+                {categories && categories.length > 0 && categories.map((cat: string) => (
+                    <a
+                        href={`/category/${slugify(cat)}/`}
+                        class="rounded-full bg-primary/10 px-2.5 py-0.5 font-semibold text-primary transition-colors duration-300 hover:bg-primary hover:text-white dark:bg-accent/10 dark:text-accent dark:hover:bg-accent dark:hover:text-slate-900"
+                    >
+                        {cat}
+                    </a>
+                ))}
             </div>
-        )
-    }
-    <div class="max-w-3xl mx-auto mt-8">
-        <a
-            class="bg-primary hover:shadow-button inline-flex items-center justify-center gap-1.5 rounded-full px-8 py-2.5 font-semibold text-white transition duration-300"
-            href={`/${post.id}/`}
-        >
-            Continue reading
-        </a>
+            <h2 class="text-2xl font-extrabold leading-snug tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl lg:text-4xl">
+                <a href={`/${post.id}/`} class="hover:text-primary dark:hover:text-accent transition-colors duration-300">{title}</a>
+            </h2>
+            {excerpt && (
+                <p class="mt-3 text-base leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-3">{excerpt}</p>
+            )}
+            <div class="mt-4 flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+                <FormattedDate date={publishDate} />
+                <span>&middot;</span>
+                <span>{readingTime} min read</span>
+            </div>
+            <div class="mt-5">
+                <a
+                    class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300"
+                    href={`/${post.id}/`}
+                >
+                    Read article
+                    <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+        </div>
     </div>
 </article>
