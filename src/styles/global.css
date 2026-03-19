@@ -37,7 +37,7 @@
     .prose a {
         @apply text-primary underline decoration-1 underline-offset-2 hover:no-underline;
     }
-    .prose a[href^="http"]::after {
+    .prose a[href^="http"]:not(:where(.not-prose, .not-prose *))::after {
         content: '';
         display: inline-block;
         width: 0.7em;
@@ -52,7 +52,7 @@
         -webkit-mask-size: contain;
         -webkit-mask-repeat: no-repeat;
     }
-    .prose a[href^="http"]:hover::after {
+    .prose a[href^="http"]:not(:where(.not-prose, .not-prose *)):hover::after {
         @apply opacity-70;
     }
     .prose .not-prose a[href^="http"]::after {
@@ -64,7 +64,8 @@
     .prose a:not([href^="http"]):hover {
         @apply decoration-primary decoration-2 underline;
     }
-    .prose :is(h2, h3) {
+    .prose :not(.not-prose) > :is(h2, h3),
+    .prose > :is(h2, h3) {
         @apply border-l-3 border-primary dark:border-accent -ml-5 pl-[17px];
     }
     .prose blockquote {

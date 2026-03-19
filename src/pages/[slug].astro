@@ -26,7 +26,7 @@ export async function getStaticPaths() {
     }));
 
     const pagePaths = pages
-        .filter((page) => page.id !== 'videos')
+        .filter((page) => page.id !== 'videos' && page.id !== 'clicky')
         .map((page) => ({
             params: { slug: page.id },
             props: {
