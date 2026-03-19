@@ -28,7 +28,7 @@ const readingTime = getReadingTime(post.body ?? '');
                 {categories && categories.length > 0 && categories.map((cat: string) => (
                     <a
                         href={`/category/${slugify(cat)}/`}
-                        class="rounded-full bg-primary/10 px-2.5 py-0.5 font-semibold text-primary transition-colors duration-300 hover:bg-primary hover:text-white dark:bg-accent/10 dark:text-accent dark:hover:bg-accent dark:hover:text-slate-900"
+                        class="rounded-full bg-primary/15 px-2.5 py-0.5 font-bold text-primary transition-colors duration-300 hover:bg-primary hover:text-white dark:bg-accent/15 dark:text-accent dark:hover:bg-accent dark:hover:text-slate-900"
                     >
                         {cat}
                     </a>
@@ -47,7 +47,7 @@ const readingTime = getReadingTime(post.body ?? '');
             </div>
             <div class="mt-5">
                 <a
-                    class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300"
+                    class="inline-flex items-center gap-1.5 text-sm font-bold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300"
                     href={`/${post.id}/`}
                 >
                     Read article

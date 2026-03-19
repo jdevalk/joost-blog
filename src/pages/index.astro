@@ -27,7 +27,7 @@ const latestPosts = posts.filter(({ data }) => !data.isFeatured).slice(0, 6);
 
 <BaseLayout description={siteConfig.description}>
     <SchemaGraph pageContext={pageContext} />
-    <div class="relative bg-gradient-to-b from-slate-900 to-slate-800 text-white" slot="header">
+    <div class="relative bg-gradient-to-br from-blue-950 via-slate-900 to-indigo-950 text-white" slot="header">
         <Header class="relative" variant="dark" />
         <Hero {...siteConfig.hero} socialLinks={siteConfig.socialLinks} variant="dark" />
     </div>
@@ -35,7 +35,7 @@ const latestPosts = posts.filter(({ data }) => !data.isFeatured).slice(0, 6);
         {/* Currently working on */}
         <section class="px-4 py-10 sm:px-8 sm:py-14 bg-surface dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
             <div class="max-w-5xl mx-auto">
-                <h2 class="mb-6 text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">Currently working on</h2>
+                <h2 class="mb-6 text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Currently working on</h2>
                 <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     <ProjectCard
                         title="Progress Planner"
@@ -63,7 +63,7 @@ const latestPosts = posts.filter(({ data }) => !data.isFeatured).slice(0, 6);
         {featuredPosts?.length > 0 && (
             <section class="px-4 py-12 sm:px-8 sm:py-16">
                 <div class="max-w-5xl mx-auto">
-                    <h2 class="mb-8 text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">Featured</h2>
+                    <h2 class="mb-8 text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Featured</h2>
                     {featuredPosts.map((post) => (
                         <FeaturedPostPreview post={post} />
                     ))}
@@ -76,9 +76,9 @@ const latestPosts = posts.filter(({ data }) => !data.isFeatured).slice(0, 6);
             <section class="px-4 pb-12 sm:px-8 sm:pb-16">
                 <div class="max-w-5xl mx-auto">
                     <div class="flex items-center justify-between mb-8">
-                        <h2 class="text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">Latest Articles</h2>
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Latest Articles</h2>
                         <a
-                            class="text-sm font-semibold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300"
+                            class="text-sm font-bold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300"
                             href="/blog"
                         >
                             View all &rarr;

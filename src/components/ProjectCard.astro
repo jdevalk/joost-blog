@@ -13,11 +13,11 @@ const { title, description, href, label } = Astro.props;
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    class="group flex flex-col rounded-lg border border-slate-200 bg-white p-5 transition duration-300 hover:shadow-card-hover hover:-translate-y-0.5 dark:border-slate-700 dark:bg-slate-800/50"
+    class="group flex flex-col rounded-lg border-l-4 border-l-primary border border-slate-200 bg-white p-5 transition duration-300 hover:shadow-card-hover hover:-translate-y-0.5 dark:border-slate-700 dark:border-l-accent dark:bg-slate-800/50"
 >
     {label && (
-        <span class="mb-2 text-xs font-semibold uppercase tracking-wider text-primary dark:text-accent">{label}</span>
+        <span class="mb-2 text-xs font-bold uppercase tracking-wider text-primary dark:text-accent">{label}</span>
     )}
-    <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary dark:group-hover:text-accent transition-colors duration-300">{title}</h3>
+    <h3 class="text-lg font-extrabold text-slate-900 dark:text-slate-100 group-hover:text-primary dark:group-hover:text-accent transition-colors duration-300">{title}</h3>
     <p class="mt-1.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{description}</p>
 </a>
