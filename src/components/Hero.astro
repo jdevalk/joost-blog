@@ -31,11 +31,11 @@ const isDark = variant === 'dark';
                         <div class="shrink-0 mb-4 sm:mb-0">
                             <CustomImage
                                 {...avatar}
-                                class:list={["object-cover w-28 sm:w-36 border-2 rounded-full aspect-square", isDark ? "border-white/20 shadow-avatar-dark" : "border-primary/20 shadow-avatar"]}
-                                width={144}
-                                height={144}
-                                widths={[144, 288]}
-                                sizes="144px"
+                                class:list={["object-cover w-36 sm:w-44 border-2 rounded-full aspect-square", isDark ? "border-white/20 shadow-avatar-dark" : "border-primary/20 shadow-avatar"]}
+                                width={176}
+                                height={176}
+                                widths={[176, 352]}
+                                sizes="176px"
                                 fetchpriority="high"
                                 loading="eager"
                             />
@@ -47,7 +47,7 @@ const isDark = variant === 'dark';
                         {socialLinks && socialLinks.length > 0 && (
                             <div class:list={['flex flex-wrap gap-x-2 gap-y-2 justify-center sm:justify-start', { 'mt-5': title || text }]}>
                                 {socialLinks.map((link) => (
-                                    <SocialLink {...link} class:list={[isDark ? "bg-white/10 hover:bg-white/20 text-white hover:text-white" : "bg-white hover:bg-primary hover:shadow-button text-slate-700 hover:text-white dark:bg-slate-700 dark:text-slate-200"]} />
+                                    <SocialLink {...link} class:list={[isDark ? "bg-white/10 hover:bg-white/20 text-white hover:text-white" : "bg-white hover:bg-primary hover:shadow-button text-slate-700 hover:text-white dark:bg-[#2a2623] dark:text-slate-200"]} />
                                 ))}
                             </div>
                         )}

@@ -10,14 +10,14 @@ const { class: className, variant } = Astro.props;
 const isDark = variant === 'dark';
 ---
 
-<header class:list={['fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-4 px-4 py-3 sm:px-8 sm:py-4 transition-colors duration-300', isDark ? '' : 'bg-white/80 backdrop-blur-lg border-b border-slate-200/80 dark:bg-slate-900/80 dark:border-slate-700/80', className]}>
+<header class:list={['fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-4 px-4 py-3 sm:px-8 sm:py-4 transition-colors duration-300', isDark ? '' : 'bg-[#4a1525]/90 backdrop-blur-lg border-b border-white/10 text-white dark:bg-[#1c1614]/90 dark:border-[#c9506a]/10', className]}>
     {
         siteConfig.logo?.src ? (
             <a href="/">
                 <CustomImage class="max-h-10" {...siteConfig.logo} loading="eager" fetchpriority="high" />
             </a>
         ) : (
-            <a class:list={["text-lg font-extrabold tracking-tight sm:text-xl", isDark ? "text-white" : "text-slate-900 dark:text-slate-100"]} href="/">
+            <a class:list={["text-lg font-extrabold tracking-tight sm:text-xl", isDark ? "text-white" : "text-white dark:text-slate-100"]} href="/">
                 {siteConfig.title}
             </a>
         )
@@ -29,7 +29,7 @@ const isDark = variant === 'dark';
                 <nav class="hidden md:flex items-center gap-1" aria-label="Primary navigation">
                     {primaryNavLinks.map((link) => (
                         <HeaderNavLink
-                            class:list={["relative rounded-md px-3 py-1.5 text-sm font-medium transition duration-300", isDark ? "text-white/70 hover:text-white hover:bg-white/10" : "text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50"]}
+                            class:list={["relative rounded-md px-3 py-1.5 text-sm font-medium transition duration-300", isDark ? "text-white/90 hover:text-white hover:bg-white/15" : "text-white/90 hover:text-white hover:bg-white/15 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50"]}
                             href={link.href}
                             data-variant={isDark ? 'dark' : 'light'}
                         >
@@ -41,7 +41,7 @@ const isDark = variant === 'dark';
         }
         <button
             data-open-search
-            class:list={["inline-flex items-center justify-center w-9 h-9 rounded-md transition cursor-pointer", isDark ? "text-white/60 hover:text-white hover:bg-white/10" : "text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50"]}
+            class:list={["inline-flex items-center justify-center w-9 h-9 rounded-md transition cursor-pointer", isDark ? "text-white/80 hover:text-white hover:bg-white/15" : "text-white/80 hover:text-white hover:bg-white/15 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50"]}
             aria-label="Search (Cmd+K)">
             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -55,7 +55,7 @@ const isDark = variant === 'dark';
             primaryNavLinks.length > 0 && (
                 <nav class="relative md:hidden" aria-label="Mobile navigation">
                     <button
-                        class:list={["relative z-20 inline-flex items-center justify-center w-9 h-9 rounded-md transition cursor-pointer menu-toggle", isDark ? "text-white/60 hover:text-white hover:bg-white/10" : "text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50"]}
+                        class:list={["relative z-20 inline-flex items-center justify-center w-9 h-9 rounded-md transition cursor-pointer menu-toggle", isDark ? "text-white/80 hover:text-white hover:bg-white/15" : "text-white/80 hover:text-white hover:bg-white/15 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50"]}
                         aria-label="Open Menu"
                         aria-expanded="false"
                         aria-controls="menu-items"

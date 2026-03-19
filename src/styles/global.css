@@ -10,22 +10,22 @@
 @theme {
     --font-sans: 'Mona Sans Variable', sans-serif;
 
-    /* Bold palette */
-    --color-primary: #1d4ed8;
-    --color-secondary: #1e40af;
-    --color-accent: #3b82f6;
-    --color-warm: #f59e0b;
-    --color-warm-hover: #d97706;
-    --color-base: #ffffff;
-    --color-surface: #f8fafc;
-    --color-tertiary: #f1f5f9;
+    /* Luxe burgundy palette */
+    --color-primary: #7a1830;
+    --color-secondary: #5e1224;
+    --color-accent: #c9506a;
+    --color-warm: #b8962e;
+    --color-warm-hover: #9a7d24;
+    --color-base: #fffcf9;
+    --color-surface: #faf7f3;
+    --color-tertiary: #f3efe9;
 
     /* Shadows */
-    --shadow-avatar: 0 0 0 6px rgba(29, 78, 216, 0.2), 0 0 0 14px rgba(29, 78, 216, 0.08);
-    --shadow-avatar-dark: 0 0 0 6px rgba(59, 130, 246, 0.25), 0 0 0 14px rgba(59, 130, 246, 0.1);
+    --shadow-avatar: 0 0 0 6px rgba(122, 24, 48, 0.2), 0 0 0 14px rgba(122, 24, 48, 0.08);
+    --shadow-avatar-dark: 0 0 0 6px rgba(201, 80, 106, 0.25), 0 0 0 14px rgba(201, 80, 106, 0.1);
     --shadow-button: 0 0 0 4px --alpha(var(--color-primary) / 20%);
-    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.08);
-    --shadow-card-hover: 0 12px 28px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.06);
+    --shadow-card: 0 1px 3px rgba(80, 30, 20, 0.05), 0 1px 2px rgba(80, 30, 20, 0.06);
+    --shadow-card-hover: 0 14px 32px -6px rgba(80, 30, 20, 0.14), 0 8px 12px -6px rgba(80, 30, 20, 0.06);
 }
 
 ::view-transition-old(root),
@@ -64,6 +64,9 @@
     .prose a:not([href^="http"]):hover {
         @apply decoration-primary decoration-2 underline;
     }
+    .prose :is(h2, h3) {
+        @apply border-l-3 border-primary dark:border-accent -ml-5 pl-[17px];
+    }
     .prose blockquote {
         @apply relative border-none pl-0 text-center text-[1.375em] leading-snug font-semibold not-italic sm:text-[1.66667em] lg:-mx-24 xl:-mx-40;
     }
@@ -82,21 +85,21 @@
 /* Dark mode prose overrides */
 @layer utilities {
     .dark .prose {
-        --tw-prose-body: #cbd5e1;
-        --tw-prose-headings: #f1f5f9;
-        --tw-prose-links: #60a5fa;
-        --tw-prose-bold: #f1f5f9;
-        --tw-prose-counters: #94a3b8;
-        --tw-prose-bullets: #94a3b8;
-        --tw-prose-hr: #334155;
-        --tw-prose-quotes: #f1f5f9;
-        --tw-prose-quote-borders: #334155;
-        --tw-prose-captions: #94a3b8;
-        --tw-prose-code: #f1f5f9;
-        --tw-prose-pre-code: #f1f5f9;
-        --tw-prose-pre-bg: #0f172a;
-        --tw-prose-th-borders: #475569;
-        --tw-prose-td-borders: #334155;
+        --tw-prose-body: #d4cdc5;
+        --tw-prose-headings: #f5f0eb;
+        --tw-prose-links: #e88a9c;
+        --tw-prose-bold: #f5f0eb;
+        --tw-prose-counters: #a09789;
+        --tw-prose-bullets: #a09789;
+        --tw-prose-hr: #3a3330;
+        --tw-prose-quotes: #f5f0eb;
+        --tw-prose-quote-borders: #3a3330;
+        --tw-prose-captions: #a09789;
+        --tw-prose-code: #f5f0eb;
+        --tw-prose-pre-code: #f5f0eb;
+        --tw-prose-pre-bg: #161210;
+        --tw-prose-th-borders: #504840;
+        --tw-prose-td-borders: #3a3330;
     }
     .dark .prose a {
         @apply text-accent hover:text-white;

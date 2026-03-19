@@ -12,7 +12,7 @@ if (!subscribe?.enabled || !subscribe?.form?.action) {
 
 <section
     class:list={[
-        'mx-auto flex w-full max-w-3xl flex-col items-center gap-4 rounded-xl bg-slate-50 px-6 py-8 text-center dark:bg-slate-800/50 sm:px-12 sm:py-12',
+        'mx-auto flex w-full max-w-3xl flex-col items-center gap-4 rounded-xl bg-slate-50 px-6 py-8 text-center dark:bg-[#1e1b19]/50 sm:px-12 sm:py-12',
         className
     ]}
 >
@@ -31,7 +31,7 @@ if (!subscribe?.enabled || !subscribe?.form?.action) {
             required
             autocomplete="email"
             placeholder="name@example.com"
-            class="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:placeholder:text-slate-500 dark:focus:border-accent dark:focus:ring-accent/20"
+            class="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-600 dark:bg-[#2a2623] dark:text-slate-200 dark:placeholder:text-slate-500 dark:focus:border-accent dark:focus:ring-accent/20"
             aria-label="Email address"
         />
         {subscribe.form.hiddenFields?.map((field) => <input type="hidden" name={field.name} value={field.value} />)}
