@@ -1,0 +1,11 @@
+---
+title: "Interview with Joost De Valk"
+publishDate: 2018-09-30T00:00:00.000Z
+youtubeId: DeYBJdLVGRU
+videoUrl: "https://www.youtube.com/watch?v=DeYBJdLVGRU"
+duration: PT3M46S
+featureImage:
+  src: ./images/thumbnail.jpg
+  alt: "Interview with Joost De Valk"
+---
+#YOAST A little snippet of my recent interview with Joost from Yoast. What a lovely chap he was! Podcast coming out next week. Search for THE RECIPE FOR SEO SUCCESS PODCAST wherev...

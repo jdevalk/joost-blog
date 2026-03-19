@@ -58,6 +58,7 @@ const videos = defineCollection({
             duration: z.string().optional(),
             videoUrl: z.string().url().optional(),
             videoPressId: z.string().optional(),
+            thumbnailUrl: z.string().url().optional(),
             featureImage: imageSchema(image)
                 .extend({
                     caption: z.string().optional()

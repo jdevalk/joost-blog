@@ -68,6 +68,18 @@ const pageContext: SchemaPageContext = {
                     </div>
                 </div>
             )}
+            {!video.data.youtubeId && !video.data.videoPressId && video.data.videoUrl && (
+                <div class="mb-8">
+                    <a
+                        href={video.data.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-white hover:opacity-90 transition"
+                    >
+                        Watch video
+                    </a>
+                </div>
+            )}
             <div class="prose prose-slate dark:prose-invert max-w-none">
                 <Content />
             </div>

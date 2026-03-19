@@ -1,13 +1,10 @@
 ---
-title: The Business of Open Source
-publishDate: 2022-08-16T00:00:00.000Z
-videoUrl: 'https://wordpress.tv/2018/12/27/joost-de-valk-the-business-of-open-source/'
+title: "Joost de Valk and Marieke van de Rakt: Thrive for the future – the business of open source"
+publishDate: 2019-01-02T00:00:00.000Z
+videoUrl: "https://wordpress.tv/2019/01/02/joost-de-valk-and-marieke-van-de-rakt-thrive-for-the-future-the-business-of-open-source/"
+duration: PT42M24S
 featureImage:
   src: ./images/thumbnail.png
-  alt: 'The Business of Open Source - WordCamp US Nashville 2018'
+  alt: "The Business of Open Source - WordCamp US Nashville 2018"
 ---
-This page features a video discussion about open source software sustainability and monetization strategies. Joost de Valk and Marieke van de Rakt presented on this topic, exploring why business models matter for open source project longevity.
-
-The presentation, titled "Thrive for the Future: The Business of Open Source," was delivered at WordCamp US in Nashville (2018) and is available on WordPress.tv.
-
-**Key Theme:** The speakers address the critical intersection of open source development and financial sustainability, arguing that "monetization is an important part of sustainability" for open source initiatives.
+For an open source community to thrive, it’s important that valid business models surround it. In this talk Marieke and I will discuss why a business model around open source proj...

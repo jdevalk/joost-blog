@@ -1,12 +1,10 @@
 ---
-title: WordPress SEO in 2019
-publishDate: 2022-08-16T00:00:00.000Z
-youtubeId: pS-OhpUMC10
+title: "Joost De Valk : WordPress SEO in 2019"
+publishDate: 2019-09-12T00:00:00.000Z
+videoUrl: "https://wordpress.tv/2019/09/12/joost-de-valk-wordpress-seo-in-2019/"
 duration: PT44M14S
 featureImage:
   src: ./images/thumbnail.png
-  alt: 'WordPress SEO in 2019 - WordCamp Athens'
+  alt: "WordPress SEO in 2019 - WordCamp Athens"
 ---
-In this talk, which I gave at WordCamp Athens in 2019, I discussed the state of WordPress SEO.
-
-The presentation from the WordCamp Athens 2019 conference addresses contemporary search engine optimization trends and practices for WordPress websites.
+Joost is going to describe at his presentation what’s needed for a site to rank well in 2019 and what you need in order to achieve that. In this talk he will cover the latest upda...
