@@ -2,6 +2,7 @@
 title: "WPCoffeeTalk: Joost de Valk"
 publishDate: 2024-04-29T00:00:00.000Z
 youtubeId: VnYT8GDceLk
+duration: PT39M36S
 videoUrl: "https://www.youtube.com/watch?v=VnYT8GDceLk"
 featureImage:
   src: ./images/thumbnail.jpg
