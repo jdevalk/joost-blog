@@ -3,33 +3,9 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import pagefind from 'astro-pagefind';
 import { defineConfig } from 'astro/config';
-import { writeFileSync } from 'node:fs';
-
-const PRODUCTION_URL = 'https://joost.blog';
-
-function noIndexOnStaging() {
-    let siteUrl;
-    return {
-        name: 'noindex-on-staging',
-        hooks: {
-            'astro:config:done': ({ config }) => {
-                siteUrl = config.site?.toString().replace(/\/$/, '');
-            },
-            'astro:build:done': ({ dir }) => {
-                if (siteUrl !== PRODUCTION_URL) {
-                    writeFileSync(
-                        new URL('_headers', dir),
-                        '/*\n  X-Robots-Tag: noindex, nofollow\n'
-                    );
-                }
-            }
-        }
-    };
-}
-
 // https://astro.build/config
 export default defineConfig({
-    site: process.env.DEPLOY_URL || PRODUCTION_URL,
+    site: 'https://joost.blog',
     vite: {
         plugins: [tailwindcss()]
     },
@@ -44,7 +20,7 @@ export default defineConfig({
     prefetch: {
         defaultStrategy: 'viewport',
     },
-    integrations: [mdx(), sitemap(), pagefind(), noIndexOnStaging()],
+    integrations: [mdx(), sitemap(), pagefind()],
     markdown: {
         shikiConfig: {
             themes: {

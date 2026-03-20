@@ -18,7 +18,6 @@ export type Props = {
     publishDate?: Date;
     updatedDate?: Date;
     categories?: string[];
-    noindex?: boolean;
 };
 
 const {
@@ -27,12 +26,8 @@ const {
     publishDate,
     updatedDate,
     categories,
-    noindex = false,
 } = Astro.props;
 const title = [Astro.props.title, siteConfig.title].filter(Boolean).join(' | ');
-
-// Detect staging: Astro.site differs from production SITE_URL
-const isStaging = Astro.site?.origin !== new URL(SITE_URL).origin;
 
 // OG image resolution: prefer explicit ogImage prop, then auto-generated OG image from slug
 const slug = Astro.url.pathname.replace(/^\/|\/$/g, '');
@@ -110,8 +105,6 @@ const articleOg = pageType === 'article' && publishDate ? {
     title={title}
     description={description}
     canonical={formatCanonicalURL(canonicalURL)}
-    noindex={isStaging || noindex}
-    nofollow={isStaging}
     openGraph={{
         basic: {
             title,
