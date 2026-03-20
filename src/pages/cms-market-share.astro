@@ -372,8 +372,6 @@ const pageContext: SchemaPageContext = {
     </main>
 </BaseLayout>
 
-<script is:inline src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script is:inline>
 // htmlLegendPlugin - custom plugin for clickable legends
 const htmlLegendPlugin = {
@@ -798,13 +796,34 @@ function initCharts() {
 
 }
 
+function loadChartJs() {
+    return new Promise(function(resolve, reject) {
+        if (typeof Chart !== 'undefined') {
+            resolve();
+            return;
+        }
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+}
+
+function tryInitCharts() {
+    if (!document.getElementById('pie_chart_1')) return;
+    loadChartJs().then(function() {
+        initCharts();
+    });
+}
+
 // Support both full page load and View Transitions navigation
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCharts);
+    document.addEventListener('DOMContentLoaded', tryInitCharts);
 } else {
-    initCharts();
+    tryInitCharts();
 }
-document.addEventListener('astro:page-load', initCharts);
+document.addEventListener('astro:page-load', tryInitCharts);
 </script>
 
 <style>
