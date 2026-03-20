@@ -8,48 +8,56 @@ const plugins = [
         description: 'My current main focus. A WordPress plugin that helps you plan and track your content and site maintenance progress.',
         url: 'https://progressplanner.com/',
         image: '/images/plugins/progress-planner.webp',
+        github: 'https://github.com/ProgressPlanner/progress-planner',
     },
     {
         name: 'AAA Option Optimizer',
         description: 'Tracks autoloaded options usage and allows the user to optimize them.',
         url: 'https://progressplanner.com/plugins/aaa-option-optimizer/',
         image: '/images/plugins/aaa-option-optimizer.webp',
+        github: 'https://github.com/ProgressPlanner/aaa-option-optimizer',
     },
     {
         name: 'Brand Assets',
         description: 'Stop chasing down requests for your logo and color codes by creating a Brand Assets page on your site.',
         url: 'https://progressplanner.com/plugins/brand-assets/',
         image: '/images/plugins/brand-assets.webp',
+        github: 'https://github.com/ProgressPlanner/brand-assets',
     },
     {
         name: 'Comment Experience',
         description: "WordPress' comment system is incomplete. This plugin adds a lot of nifty little tricks to make comments on WordPress a lot more manageable.",
         url: 'https://progressplanner.com/plugins/comment-experience/',
         image: '/images/plugins/comment-experience.webp',
+        github: 'https://github.com/ProgressPlanner/comment-experience',
     },
     {
         name: 'Comment Free Zone',
         description: "Your WordPress site comes with comments enabled in many places by default. But not every site needs them, and if that's the case for you, they can add unnecessary clutter.",
         url: 'https://progressplanner.com/plugins/comment-free-zone/',
         image: '/images/plugins/comment-free-zone.webp',
+        github: 'https://github.com/ProgressPlanner/comment-free-zone',
     },
     {
         name: 'Fewer Tags',
         description: "Make sure tags are only live on your site when they actually add value, so when there's more than a few posts in it.",
         url: 'https://progressplanner.com/plugins/fewer-tags/',
         image: '/images/plugins/fewer-tags.png',
+        github: 'https://github.com/ProgressPlanner/fewer-tags',
     },
     {
         name: 'Glossary',
         description: 'Make your content easier to understand with clear definitions that show up exactly when and where readers need them.',
         url: 'https://progressplanner.com/plugins/glossary/',
         image: '/images/plugins/glossary.webp',
+        github: 'https://github.com/ProgressPlanner/flavor-glossary',
     },
     {
         name: 'XML Sitemaps for PDFs',
         description: 'If your site has a lot of PDFs, this add-on to Yoast SEO is what you need to get them indexed.',
         url: 'https://progressplanner.com/plugins/xml-sitemap-for-pdfs/',
         image: '/images/plugins/xml-sitemaps-pdfs.webp',
+        github: 'https://github.com/ProgressPlanner/xml-sitemap-for-pdfs',
     },
 ];
 ---
@@ -80,6 +88,10 @@ const plugins = [
                         From member management and dues to invoicing, VOG, and membership passes: <a href="https://rondo.club">Rondo</a> automates
                         your club processes and keeps everything in sync.
                     </p>
+                    <a href="https://github.com/rondoclubmanager" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                        View on GitHub
+                    </a>
                 </div>
                 <a href="https://rondo.club" class="hidden md:block">
                     <img src="/images/rondo-screenshot.webp" alt="Rondo committee overview" class="rounded-lg shadow-card-hover w-full" />
@@ -97,28 +109,31 @@ const plugins = [
                 </p>
                 <div class="flex flex-col gap-5">
                     {plugins.map((plugin, i) => (
-                        <a
-                            href={plugin.url}
-                            class="group flex flex-col sm:flex-row sm:h-44 items-stretch overflow-hidden rounded-lg border border-slate-200 bg-white transition duration-300 hover:shadow-card-hover hover:-translate-y-0.5 dark:border-[#2a2623] dark:bg-[#1e1b19]/50"
+                        <div
+                            class="group flex flex-col sm:flex-row sm:h-44 items-stretch overflow-hidden rounded-lg border border-slate-200 bg-white transition duration-300 hover:shadow-card-hover dark:border-[#2a2623] dark:bg-[#1e1b19]/50"
                         >
-                            {plugin.image ? (
-                                <div class:list={["sm:w-72 shrink-0 bg-slate-50 dark:bg-[#161210] p-4 flex items-center justify-center", i % 2 === 1 ? "sm:order-2 sm:border-l-4 sm:border-l-primary dark:sm:border-l-accent" : "sm:border-r-4 sm:border-r-primary dark:sm:border-r-accent"]}>
+                            {plugin.image && (
+                                <a href={plugin.url} class:list={["sm:w-72 shrink-0 bg-slate-50 dark:bg-[#161210] p-4 flex items-center justify-center", i % 2 === 1 ? "sm:order-2 sm:border-l-4 sm:border-l-primary dark:sm:border-l-accent" : "sm:border-r-4 sm:border-r-primary dark:sm:border-r-accent"]}>
                                     <img src={plugin.image} alt={plugin.name} class="w-full h-full object-cover object-top rounded" />
-                                </div>
-                            ) : (
-                                <div class:list={["hidden sm:flex items-center justify-center sm:w-72 shrink-0 bg-slate-50 dark:bg-[#161210]", i % 2 === 1 ? "sm:order-2 sm:border-l-4 sm:border-l-primary dark:sm:border-l-accent" : "sm:border-r-4 sm:border-r-primary dark:sm:border-r-accent"]}>
-                                    <svg class="w-12 h-12 text-primary/20 dark:text-accent/20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                                </div>
+                                </a>
                             )}
                             <div class="p-6 flex flex-col justify-center grow">
-                                <h3 class="text-xl font-extrabold text-slate-950 dark:text-slate-100 group-hover:text-primary dark:group-hover:text-accent transition duration-300">
-                                    {plugin.name}
+                                <h3 class="text-xl font-extrabold">
+                                    <a href={plugin.url} class="text-slate-950 dark:text-slate-100 hover:text-primary dark:hover:text-accent transition duration-300">
+                                        {plugin.name}
+                                    </a>
                                 </h3>
                                 <p class="mt-2 text-base text-slate-700 dark:text-slate-400 leading-relaxed">
                                     {plugin.description}
                                 </p>
+                                {plugin.github && (
+                                    <a href={plugin.github} class="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                                        GitHub
+                                    </a>
+                                )}
                             </div>
-                        </a>
+                        </div>
                     ))}
                 </div>
             </div>

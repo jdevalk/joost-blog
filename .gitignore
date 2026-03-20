@@ -19,3 +19,9 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# Playwright MCP debug output
+.playwright-mcp/
+
+# Content exports
+content-export/

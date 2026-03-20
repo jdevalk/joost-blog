@@ -12,6 +12,7 @@ const siteConfig: SiteConfig = {
         { text: 'Blog', href: '/blog' },
         { text: 'About', href: '/about-me' },
         { text: 'Code', href: '/code' },
+        { text: 'CMS Market Share', href: '/cms-market-share' },
         { text: 'Videos', href: '/videos' },
         { text: 'Contact', href: '/contact-me' }
     ],
