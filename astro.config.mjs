@@ -38,6 +38,8 @@ export default defineConfig({
         '/clicky/': 'https://wordpress.org/plugins/clicky/',
         '/code/clicky': 'https://wordpress.org/plugins/clicky/',
         '/code/clicky/': 'https://wordpress.org/plugins/clicky/',
+        '/plugins': '/code/',
+        '/plugins/': '/code/',
     },
     integrations: [mdx(), sitemap(), pagefind(), noIndexOnStaging()],
     markdown: {
