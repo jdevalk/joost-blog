@@ -1,15 +1,18 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
 import SchemaGraph from '../../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../../utils/schema';
 import { canonicalUrl } from '../../utils/schema/constants';
 import CustomImage from '../../components/CustomImage.astro';
 
 const allVideos = await getCollection('videos');
-const videos = allVideos.sort(
+const sorted = allVideos.sort(
     (a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
 );
+const featuredVideo = sorted.find((v) => v.data.featured) ?? sorted[0];
+const videos = sorted.filter((v) => v.id !== featuredVideo.id);
 
 function formatDuration(isoDuration: string | undefined): string | null {
     if (!isoDuration) return null;
@@ -48,15 +51,51 @@ const pageContext: SchemaPageContext = {
 
 <BaseLayout title="Videos - Joost.blog" description="Video presentations and talks by Joost de Valk">
     <SchemaGraph pageContext={pageContext} />
-    <main class="grow px-4 py-12 sm:px-8" data-pagefind-ignore="all">
-        <div class="max-w-6xl mx-auto">
-            <div class="max-w-3xl mb-12">
-                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3">Talks, interviews & keynotes</p>
-                <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-900 dark:text-slate-100">Videos</h1>
-                <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
-                    A curated archive of talks, interviews, podcasts, and conference sessions featuring Joost de Valk — ordered from newest to oldest.
-                </p>
+    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
+        <Header variant="dark" />
+        <div class="h-[52px] sm:h-[56px]"></div>
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Videos</h1>
             </div>
+        </section>
+    </div>
+
+    <main class="grow" data-pagefind-ignore="all">
+        {/* Featured — most recent video */}
+        <section class="px-4 py-10 sm:px-8 sm:py-14 bg-surface dark:bg-[#1e1b19]/50 border-b border-slate-200 dark:border-[#2a2623]">
+            <div class="max-w-5xl mx-auto">
+                <p class="mb-8 text-lg text-slate-600 dark:text-slate-400 max-w-2xl">A curated archive of talks, interviews, podcasts, and conference sessions — ordered from newest to oldest.</p>
+            </div>
+            <div class="max-w-5xl mx-auto grid md:grid-cols-[1fr_440px] gap-8 items-center">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Featured video</span>
+                    <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100">{featuredVideo.data.title}</h2>
+                    {featuredVideo.body && (
+                        <p class="mt-3 text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">{getExcerpt(featuredVideo.body)}</p>
+                    )}
+                    <a href={`/videos/${featuredVideo.id}/`} class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300">
+                        Watch video
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                </div>
+                {featuredVideo.data.featureImage?.src && (
+                    <a href={`/videos/${featuredVideo.id}/`} class="hidden md:block">
+                        <CustomImage
+                            {...featuredVideo.data.featureImage}
+                            class="rounded-lg shadow-card-hover w-full aspect-video object-cover"
+                            widths={[440, 880]}
+                        />
+                    </a>
+                )}
+            </div>
+        </section>
+
+        {/* All videos */}
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+        <div class="max-w-5xl mx-auto">
+            <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Archive</span>
+            <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100 mb-8">All videos</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {videos.map((video) => {
                     const duration = formatDuration(video.data.duration);
@@ -94,5 +133,6 @@ const pageContext: SchemaPageContext = {
                 })}
             </div>
         </div>
+        </section>
     </main>
 </BaseLayout>

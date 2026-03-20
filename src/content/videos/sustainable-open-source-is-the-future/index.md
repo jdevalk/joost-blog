@@ -3,6 +3,7 @@ title: "Keynote: Sustainable open source is the future"
 publishDate: 2024-07-03T00:00:00.000Z
 videoUrl: "https://wordpress.tv/2024/07/03/keynote-sustainable-open-source-is-the-future/"
 duration: PT48M44S
+featured: true
 featureImage:
   src: ./images/thumbnail.webp
   alt: "Sustainable open source is the future - WCEU 2024 keynote"

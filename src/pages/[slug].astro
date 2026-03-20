@@ -26,7 +26,7 @@ export async function getStaticPaths() {
     }));
 
     const pagePaths = pages
-        .filter((page) => page.id !== 'videos' && page.id !== 'clicky')
+        .filter((page) => page.id !== 'videos' && page.id !== 'clicky' && page.id !== 'about-me' && page.id !== 'contact-me' && page.id !== 'cms-market-share')
         .map((page) => ({
             params: { slug: page.id },
             props: {
@@ -83,18 +83,16 @@ const pageContext: SchemaPageContext = isBlog ? {
     <main class="px-4 py-12 grow sm:px-8 sm:py-16" data-pagefind-body>
         <article class="max-w-6xl mx-auto mb-12 sm:mb-16">
             <header class="max-w-3xl mx-auto mb-8 sm:mb-10">
-                {blogData!.categories && blogData!.categories.length > 0 && (
-                    <div class="mb-4 flex flex-wrap gap-2">
-                        {blogData!.categories.map((cat: string) => (
-                            <a
-                                href={`/category/${slugify(cat)}/`}
-                                class="rounded-full bg-primary/15 px-3 py-1 text-xs font-bold text-primary transition-colors duration-300 hover:bg-primary hover:text-white dark:bg-accent/15 dark:text-accent dark:hover:bg-accent dark:hover:text-slate-900"
-                            >
-                                {cat}
-                            </a>
-                        ))}
-                    </div>
-                )}
+                <nav class="mb-6 text-sm" aria-label="Breadcrumb">
+                    <ol class="flex items-center gap-1.5">
+                        <li><a href="/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Home</a></li>
+                        <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href="/blog/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Blog</a></li>
+                        {blogData!.categories && blogData!.categories.length > 0 && (
+                            <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href={`/category/${slugify(blogData!.categories[0])}/`} class="text-primary dark:text-accent hover:text-secondary dark:hover:text-white transition-colors">{blogData!.categories[0]}</a></li>
+                        )}
+                        <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600 text-slate-900 dark:text-slate-100 font-medium truncate">{blogData!.title}</li>
+                    </ol>
+                </nav>
                 <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl md:text-5xl">{blogData!.title}</h1>
                 <div class="mt-4 flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
                     <FormattedDate date={blogData!.publishDate} />

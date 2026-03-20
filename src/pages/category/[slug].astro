@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
 import PostPreview from '../../components/PostPreview.astro';
 import SchemaGraph from '../../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../../utils/schema';
@@ -44,12 +45,36 @@ const pageContext: SchemaPageContext = {
 
 <BaseLayout title={`${categoryName} - Joost.blog`} description={`Posts in the ${categoryName} category`}>
     <SchemaGraph pageContext={pageContext} />
-    <main class="grow px-4 py-12 sm:px-8" data-pagefind-ignore="all">
-        <div class="max-w-3xl mx-auto xl:max-w-6xl">
-            <h1 class="text-4xl font-bold mb-12 text-slate-900 dark:text-slate-100">{categoryName}</h1>
-            {posts.map((post) => (
-                <PostPreview post={post} />
-            ))}
-        </div>
+    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
+        <Header variant="dark" />
+        <div class="h-[52px] sm:h-[56px]"></div>
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">{categoryName}</h1>
+            </div>
+        </section>
+    </div>
+
+    <main class="grow" data-pagefind-ignore="all">
+        <section class="px-4 py-10 sm:px-8 sm:py-14 bg-surface dark:bg-[#1e1b19]/50 border-b border-slate-200 dark:border-[#2a2623]">
+            <div class="max-w-5xl mx-auto">
+                <nav class="mb-6 text-sm" aria-label="Breadcrumb">
+                    <ol class="flex items-center gap-1.5">
+                        <li><a href="/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Home</a></li>
+                        <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href="/blog/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Blog</a></li>
+                        <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600 text-slate-900 dark:text-slate-100 font-medium">{categoryName}</li>
+                    </ol>
+                </nav>
+                <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">{posts.length} {posts.length === 1 ? 'post' : 'posts'} in {categoryName}.</p>
+            </div>
+        </section>
+
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {posts.map((post) => <PostPreview post={post} />)}
+                </div>
+            </div>
+        </section>
     </main>
 </BaseLayout>
