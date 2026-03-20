@@ -473,7 +473,18 @@ var pieTooltipCallback = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
+function initCharts() {
+    // Bail if not on this page (view transitions may keep script alive)
+    if (!document.getElementById('pie_chart_1')) return;
+
+    // Destroy any existing chart instances to avoid "Canvas is already in use" errors
+    if (typeof Chart !== 'undefined') {
+        Chart.helpers?.each(Chart.instances, function(instance) {
+            instance.destroy();
+        });
+        // Chart.js v4 approach
+        Object.values(Chart.instances || {}).forEach(c => c.destroy());
+    }
 
     // ========================================
     // Chart 1: CMS Pie Chart
@@ -785,7 +796,15 @@ document.addEventListener('DOMContentLoaded', function() {
         plugins: [htmlLegendPlugin]
     });
 
-});
+}
+
+// Support both full page load and View Transitions navigation
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCharts);
+} else {
+    initCharts();
+}
+document.addEventListener('astro:page-load', initCharts);
 </script>
 
 <style>
