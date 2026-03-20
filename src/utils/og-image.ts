@@ -83,9 +83,9 @@ export async function generateOgImage(title: string, backgroundImagePath?: strin
     // No background image — use branded gradient
     const gradientSvg = `<svg width="${OG_WIDTH}" height="${OG_HEIGHT}">
         <defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#0f172a"/>
-            <stop offset="50%" stop-color="#1e293b"/>
-            <stop offset="100%" stop-color="#334155"/>
+            <stop offset="0%" stop-color="#4a1525"/>
+            <stop offset="50%" stop-color="#3a1a28"/>
+            <stop offset="100%" stop-color="#2e1220"/>
         </linearGradient></defs>
         <rect width="${OG_WIDTH}" height="${OG_HEIGHT}" fill="url(#g)"/>
     </svg>`;
@@ -119,7 +119,7 @@ export async function generateHomepageOgImage(): Promise<Buffer> {
     const ringInner = avatarSize + 22;
 
     const markup = html`
-        <div style="width: ${OG_WIDTH}px; height: ${OG_HEIGHT}px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); position: relative;">
+        <div style="width: ${OG_WIDTH}px; height: ${OG_HEIGHT}px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #4a1525 0%, #3a1a28 50%, #2e1220 100%); position: relative;">
             <!-- Concentric rings -->
             <div style="display: flex; align-items: center; justify-content: center; width: ${ringOuter}px; height: ${ringOuter}px; border-radius: ${ringOuter / 2}px; border: 1px solid rgba(255,255,255,0.08); position: relative;">
                 <div style="display: flex; align-items: center; justify-content: center; width: ${ringInner}px; height: ${ringInner}px; border-radius: ${ringInner / 2}px; border: 1px solid rgba(255,255,255,0.15);">
