@@ -1,0 +1,822 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import SchemaGraph from '../components/SchemaGraph.astro';
+import type { SchemaPageContext } from '../utils/schema';
+import { canonicalUrl } from '../utils/schema/constants';
+
+const title = 'CMS Market Share';
+const description = 'Monthly CMS market share data based on the HTTP Archive.';
+
+const pageContext: SchemaPageContext = {
+    pageType: 'page',
+    canonicalUrl: canonicalUrl('/cms-market-share/'),
+    title,
+    description
+};
+---
+
+<BaseLayout title={title} description={description}>
+    <SchemaGraph pageContext={pageContext} />
+    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
+        <Header variant="dark" />
+        <div class="h-[52px] sm:h-[56px]"></div>
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">{title}</h1>
+            </div>
+        </section>
+    </div>
+
+    <main class="grow" data-pagefind-body>
+        <section class="px-4 py-10 sm:px-8 sm:py-14 bg-surface dark:bg-[#1e1b19]/50 border-b border-slate-200 dark:border-[#2a2623]">
+            <div class="max-w-5xl mx-auto">
+                <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Data Report</span>
+                <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100">HTTP Archive CMS Data</h2>
+                <p class="mt-3 text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">Based on data from the <a href="https://httparchive.org/" class="text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition duration-300 underline underline-offset-2 decoration-1">HTTP Archive</a>, this report focuses on the CMS market share of the most popular CMSes and related important web (and WordPress) technologies.</p>
+                <p class="mt-3 text-base leading-relaxed text-slate-600 dark:text-slate-400">This report does not contain commentary on these numbers. The commentary can be found in posts on my blog in the <a href="/category/market-share-analysis/" class="text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition duration-300 underline underline-offset-2 decoration-1">market share analysis</a> category.</p>
+            </div>
+        </section>
+
+        <article class="max-w-5xl mx-auto px-4 py-10 sm:px-8 sm:py-14">
+            <!-- Section: Most popular CMSes -->
+            <section class="mb-16">
+                <div class="not-prose mb-6">
+                    <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Current Data</span>
+                    <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100" id="most-popular-cmses">Most popular CMSes</h2>
+                </div>
+                <p class="text-base text-slate-700 dark:text-slate-300 mb-2">Here, you can see the market share of the 20 most popular CMSes as of last month.</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Note: click on names in the legend to remove or re-add them.</p>
+
+                <div class="chart-container pie-chart max-w-[70%] mx-auto">
+                    <canvas id="pie_chart_1"></canvas>
+                </div>
+                <div class="chart-legend" id="legend_container_chart_1"></div>
+
+                <!-- Most popular CMSes over time -->
+                <div class="not-prose mt-12 mb-6">
+                    <h3 class="text-xl font-extrabold text-slate-950 dark:text-slate-100" id="most-popular-cmses-over-time">Most popular CMSes over time</h3>
+                </div>
+                <p class="text-base text-slate-700 dark:text-slate-300 mb-2">This shows how the top 10 progressed over the last few years.</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Note: click on the labels of the CMSes to remove them from the chart.</p>
+
+                <div style="height: 400px;">
+                    <canvas id="historic_line_chart_2"></canvas>
+                </div>
+                <div class="chart-legend" id="legend_container_chart_2"></div>
+
+                <!-- Growth rates for the top 10 CMSes -->
+                <div class="not-prose mt-12 mb-6">
+                    <h3 class="text-xl font-extrabold text-slate-950 dark:text-slate-100" id="cms-growth-rates">Growth rates for the top 10 CMSes</h3>
+                </div>
+                <p class="text-base text-slate-700 dark:text-slate-300 mb-6">These are the CMS systems that have increased their market share the most over the last 12 months.</p>
+
+                <div class="rounded-xl border border-slate-200 dark:border-[#2a2623] overflow-hidden mb-10">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 dark:bg-[#2a2623]/50">
+                            <tr>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Rank</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Technology</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Market share</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Growth rate YoY</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">MoM</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">1</td><td class="px-4 py-3 text-sm">WordPress</td><td class="px-4 py-3 text-sm">35.45%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">1.40%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">2</td><td class="px-4 py-3 text-sm">Shopify</td><td class="px-4 py-3 text-sm">4.03%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">5.22%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">3</td><td class="px-4 py-3 text-sm">Wix</td><td class="px-4 py-3 text-sm">2.51%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">7.73%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">4</td><td class="px-4 py-3 text-sm">Squarespace</td><td class="px-4 py-3 text-sm">1.81%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">5.85%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">5</td><td class="px-4 py-3 text-sm">Drupal</td><td class="px-4 py-3 text-sm">1.32%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-7.04%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">6</td><td class="px-4 py-3 text-sm">Joomla</td><td class="px-4 py-3 text-sm">1.28%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-11.72%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">7</td><td class="px-4 py-3 text-sm">PrestaShop</td><td class="px-4 py-3 text-sm">0.68%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-10.53%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">8</td><td class="px-4 py-3 text-sm">Webflow</td><td class="px-4 py-3 text-sm">0.65%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">18.18%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">9</td><td class="px-4 py-3 text-sm">Tistory</td><td class="px-4 py-3 text-sm">0.55%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-11.29%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">10</td><td class="px-4 py-3 text-sm">Weebly</td><td class="px-4 py-3 text-sm">0.46%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-8.00%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Top 10 fastest growing CMSes -->
+                <div class="not-prose mt-12 mb-6">
+                    <h3 class="text-xl font-extrabold text-slate-950 dark:text-slate-100" id="fastest-growing-cmses">Top 10 fastest growing CMSes</h3>
+                </div>
+                <p class="text-base text-slate-700 dark:text-slate-300 mb-6">These are not necessarily the biggest, but they are the fastest growing CMSes:</p>
+
+                <div class="rounded-xl border border-slate-200 dark:border-[#2a2623] overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 dark:bg-[#2a2623]/50">
+                            <tr>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Rank</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Technology</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Market share</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Growth rate YoY</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">MoM</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">1</td><td class="px-4 py-3 text-sm">Framer Sites</td><td class="px-4 py-3 text-sm">0.06%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">200.00%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">2</td><td class="px-4 py-3 text-sm">Fourthwall</td><td class="px-4 py-3 text-sm">0.14%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">180.00%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">3</td><td class="px-4 py-3 text-sm">Ecwid</td><td class="px-4 py-3 text-sm">0.05%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">66.67%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">4</td><td class="px-4 py-3 text-sm">Amazon Webstore</td><td class="px-4 py-3 text-sm">0.06%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">50.00%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">5</td><td class="px-4 py-3 text-sm">Storyblok</td><td class="px-4 py-3 text-sm">0.03%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">50.00%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">6</td><td class="px-4 py-3 text-sm">WebNode</td><td class="px-4 py-3 text-sm">0.08%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">33.33%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">7</td><td class="px-4 py-3 text-sm">Salla</td><td class="px-4 py-3 text-sm">0.04%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">33.33%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">8</td><td class="px-4 py-3 text-sm">JouwWeb</td><td class="px-4 py-3 text-sm">0.04%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">33.33%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">9</td><td class="px-4 py-3 text-sm">Tiendanube</td><td class="px-4 py-3 text-sm">0.13%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">30.00%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">10</td><td class="px-4 py-3 text-sm">Odoo</td><td class="px-4 py-3 text-sm">0.09%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">28.57%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section: Most popular eCommerce systems -->
+            <section class="mb-16">
+                <div class="not-prose mb-6">
+                    <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">eCommerce</span>
+                    <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100" id="most-popular-ecommerce-systems">Most popular eCommerce systems</h2>
+                </div>
+                <p class="text-base text-slate-700 dark:text-slate-300 mb-2">Within the CMS world, there is a highly important (and lucrative) "sub" group of eCommerce systems. Some of these systems are CMSes themselves. Others, like WooCommerce, are built on top of a CMS. In the case of WooCommerce, that CMS is WordPress.</p>
+                <p class="text-base text-slate-700 dark:text-slate-300 mb-2"><strong>Explanation of the data:</strong> This pie chart takes the entire "web" as its base. So the slice "Not eCommerce" is the portion of the web that is not an eCommerce site. One of the other biggest slices is "Cart functionality". Here, the HTTP Archive <em>has</em> detected that there is some sort of shop on the site, but it didn't recognize the system in use.</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Note: click on names in the legend to remove or re-add them.</p>
+
+                <div class="chart-container pie-chart max-w-[70%] mx-auto">
+                    <canvas id="pie_chart_3"></canvas>
+                </div>
+                <div class="chart-legend" id="legend_container_chart_3"></div>
+
+                <!-- Most popular eCommerce systems over time -->
+                <div class="not-prose mt-12 mb-6">
+                    <h3 class="text-xl font-extrabold text-slate-950 dark:text-slate-100" id="most-popular-ecommerce-over-time">Most popular eCommerce systems over time</h3>
+                </div>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Note: click on the label of an eCommerce system to remove it from the chart.</p>
+
+                <div style="height: 400px;">
+                    <canvas id="historic_line_chart_4"></canvas>
+                </div>
+                <div class="chart-legend" id="legend_container_chart_4"></div>
+
+                <!-- Growth rates for the top 10 eCommerce systems -->
+                <div class="not-prose mt-12 mb-6">
+                    <h3 class="text-xl font-extrabold text-slate-950 dark:text-slate-100" id="ecommerce-growth-rates">Growth rates for the top 10 eCommerce systems</h3>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 dark:border-[#2a2623] overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 dark:bg-[#2a2623]/50">
+                            <tr>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Rank</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Technology</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Market share</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Growth rate YoY</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">MoM</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">1</td><td class="px-4 py-3 text-sm">WooCommerce</td><td class="px-4 py-3 text-sm">7.14%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">1.56%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">2</td><td class="px-4 py-3 text-sm">Shopify</td><td class="px-4 py-3 text-sm">4.03%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">5.22%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">3</td><td class="px-4 py-3 text-sm">Squarespace Commerce</td><td class="px-4 py-3 text-sm">1.81%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">5.85%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">4</td><td class="px-4 py-3 text-sm">Wix eCommerce</td><td class="px-4 py-3 text-sm">1.45%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">18.85%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">5</td><td class="px-4 py-3 text-sm">PrestaShop</td><td class="px-4 py-3 text-sm">0.68%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-10.53%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">6</td><td class="px-4 py-3 text-sm">Magento</td><td class="px-4 py-3 text-sm">0.43%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-12.24%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">7</td><td class="px-4 py-3 text-sm">1C-Bitrix</td><td class="px-4 py-3 text-sm">0.27%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-49.06%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">8</td><td class="px-4 py-3 text-sm">OpenCart</td><td class="px-4 py-3 text-sm">0.22%</td><td class="px-4 py-3 text-sm">0.00%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">9</td><td class="px-4 py-3 text-sm">Fourthwall</td><td class="px-4 py-3 text-sm">0.14%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">180.00%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">10</td><td class="px-4 py-3 text-sm">Webflow Ecommerce</td><td class="px-4 py-3 text-sm">0.13%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">30.00%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section: Most popular WordPress page builders -->
+            <section class="mb-16">
+                <div class="not-prose mb-6">
+                    <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">WordPress</span>
+                    <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100" id="most-popular-wordpress-page-builders">Most popular WordPress page builders</h2>
+                </div>
+                <p class="text-base text-slate-700 dark:text-slate-300 mb-2">Another big group, within the WordPress world specifically, is the world of page builders. Some of these page builders transform the entire WordPress experience.</p>
+                <p class="text-base text-slate-700 dark:text-slate-300 mb-2"><strong>Explanation of the data:</strong> This pie chart takes the entire "web" as its base. So, the slice "No page builder" is the portion of the web that does not use a WordPress page builder.</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Note: click on names in the legend to remove or re-add them.</p>
+
+                <div class="chart-container pie-chart max-w-[70%] mx-auto">
+                    <canvas id="pie_chart_5"></canvas>
+                </div>
+                <div class="chart-legend" id="legend_container_chart_5"></div>
+
+                <!-- Most popular WordPress page builders over time -->
+                <div class="not-prose mt-12 mb-6">
+                    <h3 class="text-xl font-extrabold text-slate-950 dark:text-slate-100" id="page-builders-over-time">Most popular WordPress page builders over time</h3>
+                </div>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Note: click on the label of a page builder to remove it from the chart.</p>
+
+                <div style="height: 400px;">
+                    <canvas id="historic_line_chart_6"></canvas>
+                </div>
+                <div class="chart-legend" id="legend_container_chart_6"></div>
+
+                <!-- Growth rates for the top Page builders -->
+                <div class="not-prose mt-12 mb-6">
+                    <h3 class="text-xl font-extrabold text-slate-950 dark:text-slate-100" id="page-builder-growth-rates">Growth rates for the top page builders</h3>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 dark:border-[#2a2623] overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 dark:bg-[#2a2623]/50">
+                            <tr>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Rank</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Technology</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Market share</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Growth rate YoY</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">MoM</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">1</td><td class="px-4 py-3 text-sm">Elementor</td><td class="px-4 py-3 text-sm">8.83%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">4.00%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">2</td><td class="px-4 py-3 text-sm">WordPress Block Editor</td><td class="px-4 py-3 text-sm">4.94%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">New</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">3</td><td class="px-4 py-3 text-sm">wpBakery</td><td class="px-4 py-3 text-sm">3.66%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-8.96%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">4</td><td class="px-4 py-3 text-sm">Divi</td><td class="px-4 py-3 text-sm">2.16%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-2.26%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">5</td><td class="px-4 py-3 text-sm">Beaver Builder</td><td class="px-4 py-3 text-sm">0.41%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">New</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">6</td><td class="px-4 py-3 text-sm">WordPress Site Editor</td><td class="px-4 py-3 text-sm">0.38%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">New</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">7</td><td class="px-4 py-3 text-sm">SiteOrigin Page Builder</td><td class="px-4 py-3 text-sm">0.31%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-16.22%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">8</td><td class="px-4 py-3 text-sm">Oxygen</td><td class="px-4 py-3 text-sm">0.15%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">7.14%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">9</td><td class="px-4 py-3 text-sm">Themify Builder</td><td class="px-4 py-3 text-sm">0.08%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">New</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">10</td><td class="px-4 py-3 text-sm">Thrive Architect</td><td class="px-4 py-3 text-sm">0.07%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-22.22%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section: Most popular WordPress block libraries -->
+            <section class="mb-16">
+                <div class="not-prose mb-6">
+                    <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Gutenberg</span>
+                    <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100" id="most-popular-wordpress-block-libraries">Most popular WordPress block libraries</h2>
+                </div>
+                <p class="text-base text-slate-700 dark:text-slate-300 mb-2">Related specifically to Gutenberg, there's an important sub-group: block libraries.</p>
+                <p class="text-base text-slate-700 dark:text-slate-300 mb-2"><strong>Explanation of the data:</strong> This pie chart takes the entire "web" as its base. So, the slice "No block library" is the portion of the web that does not use a WordPress block library.</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Note: click on names in the legend to remove or re-add them.</p>
+
+                <div class="chart-container pie-chart max-w-[70%] mx-auto">
+                    <canvas id="pie_chart_7"></canvas>
+                </div>
+                <div class="chart-legend" id="legend_container_chart_7"></div>
+
+                <!-- Most popular block libraries over time -->
+                <div class="not-prose mt-12 mb-6">
+                    <h3 class="text-xl font-extrabold text-slate-950 dark:text-slate-100" id="block-libraries-over-time">Most popular block libraries over time</h3>
+                </div>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Note: click on the label of a block library to remove it from the chart.</p>
+
+                <div style="height: 400px;">
+                    <canvas id="historic_line_chart_8"></canvas>
+                </div>
+                <div class="chart-legend" id="legend_container_chart_8"></div>
+
+                <!-- Growth rates for the top block libraries -->
+                <div class="not-prose mt-12 mb-6">
+                    <h3 class="text-xl font-extrabold text-slate-950 dark:text-slate-100" id="block-library-growth-rates">Growth rates for the top block libraries</h3>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 dark:border-[#2a2623] overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 dark:bg-[#2a2623]/50">
+                            <tr>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Rank</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Technology</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Market share</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Growth rate YoY</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">MoM</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">1</td><td class="px-4 py-3 text-sm">GoDaddy CoBlocks</td><td class="px-4 py-3 text-sm">0.97%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">335.29%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-23.71%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">2</td><td class="px-4 py-3 text-sm">Kadence WP Blocks</td><td class="px-4 py-3 text-sm">0.36%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">New</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-2.78%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">3</td><td class="px-4 py-3 text-sm">Spectra</td><td class="px-4 py-3 text-sm">0.16%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">New</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">4</td><td class="px-4 py-3 text-sm">GenerateBlocks</td><td class="px-4 py-3 text-sm">0.11%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">22.22%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">5</td><td class="px-4 py-3 text-sm">Stackable</td><td class="px-4 py-3 text-sm">0.08%</td><td class="px-4 py-3 text-sm">0.00%</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section: Most popular WordPress SEO plugins -->
+            <section class="mb-16">
+                <div class="not-prose mb-6">
+                    <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">SEO</span>
+                    <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100" id="most-popular-wordpress-seo-plugins">Most popular WordPress SEO plugins</h2>
+                </div>
+                <p class="text-base text-slate-700 dark:text-slate-300 mb-2">The SEO plugins group is an interesting group to look at, certainly for me personally, but I think for more people. SEO plugins are among the most widely installed plugins on WordPress sites.</p>
+                <p class="text-base text-slate-700 dark:text-slate-300 mb-2">Note: We are aware that tracking All In One SEO was not working until July 2024. This <a href="https://github.com/HTTPArchive/wappalyzer/pull/35" class="text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition duration-300 underline underline-offset-2 decoration-1">has been fixed</a> since.</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Note: click on names in the legend to remove or re-add them.</p>
+
+                <div class="chart-container pie-chart max-w-[70%] mx-auto">
+                    <canvas id="pie_chart_9"></canvas>
+                </div>
+                <div class="chart-legend" id="legend_container_chart_9"></div>
+
+                <!-- Most popular SEO plugins over time -->
+                <div class="not-prose mt-12 mb-6">
+                    <h3 class="text-xl font-extrabold text-slate-950 dark:text-slate-100" id="seo-plugins-over-time">Most popular SEO plugins over time</h3>
+                </div>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Note: click on the label of an SEO plugin to remove it from the chart.</p>
+
+                <div style="height: 400px;">
+                    <canvas id="historic_line_chart_10"></canvas>
+                </div>
+                <div class="chart-legend" id="legend_container_chart_10"></div>
+
+                <!-- Growth rates for the top SEO plugins -->
+                <div class="not-prose mt-12 mb-6">
+                    <h3 class="text-xl font-extrabold text-slate-950 dark:text-slate-100" id="seo-plugin-growth-rates">Growth rates for the top SEO plugins</h3>
+                </div>
+                <p class="text-base text-slate-700 dark:text-slate-300 mb-6">Given that graph is sometimes hard to see the difference, here are the respective growth rates:</p>
+
+                <div class="rounded-xl border border-slate-200 dark:border-[#2a2623] overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 dark:bg-[#2a2623]/50">
+                            <tr>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Rank</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Technology</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Market share</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Growth rate YoY</th>
+                                <th class="px-4 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">MoM</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">1</td><td class="px-4 py-3 text-sm">Yoast SEO</td><td class="px-4 py-3 text-sm">15.89%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-2.03%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">0.06%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">2</td><td class="px-4 py-3 text-sm">RankMath SEO</td><td class="px-4 py-3 text-sm">3.13%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">17.67%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-2.19%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">3</td><td class="px-4 py-3 text-sm">All in One SEO</td><td class="px-4 py-3 text-sm">2.86%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">652.63%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-0.69%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">4</td><td class="px-4 py-3 text-sm">The SEO Framework</td><td class="px-4 py-3 text-sm">0.14%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">7.69%</td><td class="px-4 py-3 text-sm text-red-500 dark:text-red-400">-6.67%</td></tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"><td class="px-4 py-3 text-sm">5</td><td class="px-4 py-3 text-sm">Slim SEO</td><td class="px-4 py-3 text-sm">0.03%</td><td class="px-4 py-3 text-sm text-emerald-600 dark:text-emerald-400">New</td><td class="px-4 py-3 text-sm">0.00%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section: Methodology -->
+            <section class="mb-16">
+                <div class="not-prose mb-6">
+                    <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">About the data</span>
+                    <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100" id="methodology-explanation">Methodology explanation</h2>
+                </div>
+                <div class="prose prose-slate sm:prose-lg max-w-none">
+                    <p>In our CMS market share research, we ran many queries on the HTTP Archive's BigQuery dataset. The HTTP Archive uses a fork of the <a href="https://www.wappalyzer.com/">Wappalyzer</a> project for technology detection. One of the challenges was that we had to combine technologies from several categories, as the classification was a bit weird. Shopify, Magento, OpenCart, and PrestaShop were all solely classified as an eCommerce tool and not the CMS they also are, and Webflow was only categorized as a Page builder, while it's clearly also a CMS. Some of that could be fixed by looking at both the CMS and the Ecommerce category when compiling the data, we had to manually add Webflow to the list later.</p>
+                    <p>A <a href="https://github.com/HTTPArchive/wappalyzer/pull/37">better fix for this problem</a> is in the works, which would properly classify all these tools as a CMS and make long-term measurements much easier.</p>
+                    <p>If you're interested in the queries, <a href="https://gist.github.com/jdevalk/d4ae38001139f128dd65914cf03bd207">you can find them here</a>.</p>
+
+                    <h3 id="which-sites-are-in-this-dataset">Which sites are in this dataset?</h3>
+                    <p>The HTTP Archive takes its data from the Chrome UX dataset. The methodology for choosing sites for that dataset is <a href="https://developer.chrome.com/docs/crux/methodology">described here</a>. Sites have to be "sufficiently popular" to be included. As stated in that explanation: "An exact number is not disclosed, but it has been chosen to ensure that we have enough samples to be confident in the statistical distributions for included pages."</p>
+                </div>
+            </section>
+        </article>
+    </main>
+</BaseLayout>
+
+<script is:inline src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script is:inline>
+// htmlLegendPlugin - custom plugin for clickable legends
+const htmlLegendPlugin = {
+    id: 'htmlLegend',
+    afterUpdate(chart, args, options) {
+        const container = document.getElementById(options.containerID);
+        if (!container) return;
+
+        // Remove old legend items
+        while (container.firstChild) {
+            container.firstChild.remove();
+        }
+
+        const ul = document.createElement('ul');
+        ul.style.display = 'flex';
+        ul.style.flexWrap = 'wrap';
+        ul.style.gap = '8px';
+        ul.style.listStyle = 'none';
+        ul.style.padding = '10px 0';
+        ul.style.margin = '0';
+
+        const items = chart.options.plugins.legend.labels.generateLabels
+            ? chart.options.plugins.legend.labels.generateLabels(chart)
+            : chart.legend?.legendItems || [];
+
+        // For pie charts, generate from data labels
+        let legendItems;
+        if (chart.config.type === 'pie') {
+            legendItems = chart.data.labels.map(function(label, i) {
+                var meta = chart.getDatasetMeta(0);
+                var hidden = meta.data[i] ? meta.data[i].hidden : false;
+                return {
+                    text: label,
+                    fillStyle: chart.data.datasets[0].backgroundColor[i],
+                    hidden: hidden,
+                    index: i
+                };
+            });
+        } else {
+            legendItems = chart.data.datasets.map(function(dataset, i) {
+                return {
+                    text: dataset.label,
+                    fillStyle: dataset.backgroundColor,
+                    hidden: !chart.isDatasetVisible(i),
+                    datasetIndex: i
+                };
+            });
+        }
+
+        legendItems.forEach(function(item) {
+            var li = document.createElement('li');
+            li.style.display = 'flex';
+            li.style.alignItems = 'center';
+            li.style.gap = '4px';
+            li.style.cursor = 'pointer';
+            li.style.fontSize = '13px';
+            li.style.opacity = item.hidden ? '0.4' : '1';
+
+            li.addEventListener('click', function() {
+                if (chart.config.type === 'pie') {
+                    var meta = chart.getDatasetMeta(0);
+                    meta.data[item.index].hidden = !meta.data[item.index].hidden;
+                } else {
+                    chart.setDatasetVisibility(item.datasetIndex, !chart.isDatasetVisible(item.datasetIndex));
+                }
+                chart.update();
+            });
+
+            var colorBox = document.createElement('span');
+            colorBox.style.display = 'inline-block';
+            colorBox.style.width = '12px';
+            colorBox.style.height = '12px';
+            colorBox.style.borderRadius = '50%';
+            colorBox.style.backgroundColor = item.fillStyle;
+            colorBox.style.flexShrink = '0';
+
+            var label = document.createElement('span');
+            label.style.textDecoration = item.hidden ? 'line-through' : 'none';
+            label.textContent = item.text;
+
+            li.appendChild(colorBox);
+            li.appendChild(label);
+            ul.appendChild(li);
+        });
+
+        container.appendChild(ul);
+    }
+};
+
+var chartColors = ["rgba(54, 162, 235, 0.7)","rgba(255, 99, 132, 0.7)","rgba(255, 206, 86, 0.7)","rgba(75, 192, 192, 0.7)","rgba(153, 102, 255, 0.7)","rgba(255, 159, 64, 0.7)","rgba(199, 199, 199, 0.7)","rgba(255, 99, 71, 0.7)","rgba(100, 149, 237, 0.7)","rgba(60, 179, 113, 0.7)","rgba(238, 130, 238, 0.7)","rgba(139, 69, 19, 0.7)","rgba(255, 182, 193, 0.7)","rgba(0, 128, 128, 0.7)","rgba(255, 140, 0, 0.7)","rgba(75, 0, 130, 0.7)","rgba(128, 0, 0, 0.7)","rgba(0, 255, 127, 0.7)","rgba(173, 255, 47, 0.7)","rgba(0, 191, 255, 0.7)","rgba(255, 20, 147, 0.7)"];
+
+var pieTooltipCallback = {
+    callbacks: {
+        label: function(tooltipItem) {
+            return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+        }
+    }
+};
+
+function initCharts() {
+    // Bail if not on this page (view transitions may keep script alive)
+    if (!document.getElementById('pie_chart_1')) return;
+
+    // Destroy any existing chart instances to avoid "Canvas is already in use" errors
+    if (typeof Chart !== 'undefined') {
+        Chart.helpers?.each(Chart.instances, function(instance) {
+            instance.destroy();
+        });
+        // Chart.js v4 approach
+        Object.values(Chart.instances || {}).forEach(c => c.destroy());
+    }
+
+    // ========================================
+    // Chart 1: CMS Pie Chart
+    // ========================================
+    var ctx1 = document.getElementById('pie_chart_1').getContext('2d');
+    new Chart(ctx1, {
+        type: 'pie',
+        data: {
+            labels: ["Unrecognized","WordPress","Shopify","Wix","Squarespace","Drupal","Joomla","PrestaShop","Webflow","Tistory","Weebly","Duda","TYPO3 CMS","Magento","Tilda","GoDaddy Website Builder","1C-Bitrix","Jimdo","OpenCart","HubSpot CMS Hub"],
+            datasets: [{
+                data: ["77.95","35.45","4.03","2.51","1.81","1.32","1.28","0.68","0.65","0.55","0.46","0.44","0.43","0.43","0.31","0.28","0.27","0.23","0.22","0.2"],
+                backgroundColor: chartColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            layout: { padding: 10 },
+            responsive: true,
+            plugins: {
+                htmlLegend: { containerID: 'legend_container_chart_1' },
+                legend: { display: false },
+                tooltip: pieTooltipCallback
+            }
+        },
+        plugins: [htmlLegendPlugin]
+    });
+
+    // ========================================
+    // Chart 2: CMS Historic Line Chart
+    // ========================================
+    var ctx2 = document.getElementById('historic_line_chart_2').getContext('2d');
+    new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: ["2018-01","2018-02","2018-03","2018-04","2018-05","2018-06","2018-07","2018-08","2018-09","2018-10","2018-11","2018-12","2019-01","2019-02","2019-03","2019-04","2019-05","2019-06","2019-07","2019-08","2019-09","2019-10","2019-11","2019-12","2020-01","2020-02","2020-03","2020-04","2020-05","2020-06","2020-07","2020-08","2020-09","2020-10","2020-11","2020-12","2021-01","2021-02","2021-03","2021-04","2021-05","2021-06","2021-07","2021-08","2021-09","2021-10","2021-11","2021-12","2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06","2023-07","2023-08","2023-09","2023-10","2023-11","2023-12","2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11"],
+            datasets: [
+                {"label":"WordPress","data":["21.99","22.62","21.06","22.82","22.81","23","15.88","15.96","16","16","16.05","16.08","26.36","26.48","26.51","28.47","28.64","28.7","29.24","29.27","29.31","29.35","29.4","29.43","29.49","30.23","31.49","30.47","29.85","30.39","31.23","31.5","31.5","31.73","31.98","32.26","32.29","31.84","32.62","32.72","32.9","32.94","33.07","32.97","32.44","32.14","32.52","32.64","32.62","31.82","32.86","33.23","33.27","33.38","34.6","34.49","34.22","34.08","34.97","35.13","35.05","34.53","35.29","35.18","34.78","34.93","34.88","34.62","34.18","34.45","34.2","34.96","34.44","35.56","35.55","35.49","35.58","35.47","35.36","35.26","35.01","35.46","35.45"],"backgroundColor":"rgba(255, 99, 132, 0.7)","borderColor":"rgba(255, 99, 132, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Shopify","data":["0.79","0.71","0.59","0.72","0.73","0.74","0.61","0.62","0.63","0.64","0.65","0.65","1.57","1.65","1.65","1.61","1.65","1.64","1.72","1.73","1.73","1.74","1.75","1.76","1.77","2.29","2.12","2.01","2.15","2.57","2.58","2.56","2.68","2.7","2.62","2.67","2.96","3.07","2.87","2.88","2.84","2.89","2.94","2.94","3.01","3.06","2.99","3.01","3.21","3.28","3.08","3.1","3.12","3.15","3.16","2.91","3.05","3.07","3.01","3.07","3.28","3.39","3.21","3.24","3.27","3.27","3.33","3.46","3.54","3.46","3.55","3.83","3.96","3.69","3.7","3.73","3.76","3.81","3.87","4","4.05","3.96","4.03"],"backgroundColor":"rgba(255, 206, 86, 0.7)","borderColor":"rgba(255, 206, 86, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Wix","data":["0.02","0.02","0.01",0,0,"0.08","0.04","0.04","0.04","0.04","0.04","0.04","0.46","0.45","0.45","0.56","0.59","0.59","0.64","0.65","0.65","0.65","0.66","0.66","0.66","0.67","0.79","0.79","0.72","0.87","0.98","1.06","1.07","1.11","0.94","0.97","0.92","0.96","1.04","1.04","1.17","1.18","1.22","1.24","1.21","1.17","1.13","1.11","1.09","1.01","1.12","1.17","1.15","1.15","1.43","1.83","1.83","1.88","2.01","2.04","2.05","1.94","2.19","2.13","2.22","2.23","2.22","2.24","2.29","2.29","2.27","2.33","2.18","2.41","2.5","2.49","2.52","2.51","2.49","2.48","2.53","2.55","2.51"],"backgroundColor":"rgba(75, 192, 192, 0.7)","borderColor":"rgba(75, 192, 192, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Squarespace","data":["0.13","0.19","0.16","0.19","0.19","0.2","0.15","0.15","0.15","0.15","0.15","0.15","0.8","0.82","0.82","0.98","0.96","0.96","0.93","0.93","0.93","0.94","0.94","0.94","0.95","0.93","1.05","1.05","0.92","1.02","1.04","1.08","1.1","1.14","1.14","1.16","1.1","1.09","1.16","1.17","1.24","1.25","1.23","1.23","1.21","1.17","1.15","1.15","1.12","1.06","1.16","1.21","1.19","1.19","1.29","1.5","1.53","1.58","1.58","1.59","1.58","1.54","1.68","1.67","1.67","1.63","1.64","1.66","1.71","1.69","1.68","1.71","1.66","1.77","1.8","1.8","1.82","1.8","1.8","1.81","1.85","1.85","1.81"],"backgroundColor":"rgba(153, 102, 255, 0.7)","borderColor":"rgba(153, 102, 255, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Drupal","data":["2.96","3.03","3.08","3.04","3.02","3.26","3.15","3.15","3.16","3.18","3.19","3.19","2.76","2.73","2.74","2.81","2.75","2.76","2.63","2.63","2.63","2.63","2.63","2.63","2.63","2.56","2.56","2.56","2.52","2.39","2.32","2.32","2.27","2.26","2.31","2.27","2.22","2.13","2.12","2.12","2.09","2.09","2.11","2.11","2.11","2.13","2.17","2.16","2.13","2.12","2.12","2.1","2.13","2.12","1.92","1.68","1.65","1.65","1.59","1.57","1.55","1.54","1.52","1.52","1.5","1.48","1.47","1.45","1.46","1.47","1.46","1.42","1.42","1.37","1.36","1.35","1.35","1.34","1.35","1.32","1.31","1.31","1.32"],"backgroundColor":"rgba(255, 159, 64, 0.7)","borderColor":"rgba(255, 159, 64, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Joomla","data":["1.5","1.48","1.41","1.47","1.46","1.69","1.23","1.23","1.22","1.21","1.21","1.2","2.03","1.92","1.9","2.05","2.02","2.02","2.05","2.04","2.03","2.01","1.99","1.97","1.96","1.79","1.9","1.92","1.92","1.9","1.99","1.96","1.84","1.79","1.87","1.84","1.84","0.94","0.86","0.85","0.84","0.99","1.73","1.69","1.6","1.55","1.63","1.59","1.57","1.48","1.54","1.53","1.5","1.47","1.66","1.71","1.64","1.6","1.67","1.65","1.64","1.56","1.63","1.61","1.56","1.55","1.51","1.45","1.42","1.47","1.45","1.45","1.37","1.41","1.41","1.38","1.37","1.35","1.34","1.28","1.24","1.3","1.28"],"backgroundColor":"rgba(199, 199, 199, 0.7)","borderColor":"rgba(199, 199, 199, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"PrestaShop","data":["0.35","0.33","0.26","0.33","0.33","0.41","0.33","0.33","0.33","0.33","0.33","0.33","0.87","0.87","0.87","0.83","0.83","0.83","0.85","0.84","0.84","0.84","0.84","0.83","0.87","0.94","0.91","0.86","0.87","0.97","0.97","0.91","0.88","0.85","0.87","0.88","0.97","0.9","0.84","0.84","0.81","0.82","0.92","0.88","0.87","0.86","0.89","0.9","0.94","0.96","0.91","0.89","0.88","0.87","0.88","0.75","0.76","0.73","0.73","0.74","0.76","0.77","0.73","0.73","0.71","0.7","0.7","0.7","0.68","0.7","0.71","0.76","0.76","0.71","0.7","0.69","0.68","0.68","0.69","0.69","0.67","0.67","0.68"],"backgroundColor":"rgba(255, 99, 71, 0.7)","borderColor":"rgba(255, 99, 71, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Webflow","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.19","0.19","0.2","0.2","0.22","0.22","0.22","0.24","0.24","0.21","0.22","0.23","0.25","0.27","0.3","0.3","0.31","0.32","0.32","0.33","0.34","0.34","0.36","0.37","0.38","0.38","0.38","0.41","0.42","0.42","0.43","0.44","0.44","0.45","0.46","0.47","0.49","0.5","0.51","0.52","0.53","0.54","0.55","0.55","0.55","0.57","0.59","0.6","0.61","0.62","0.63","0.77","0.78","0.65","0.65"],"backgroundColor":"rgba(100, 149, 237, 0.7)","borderColor":"rgba(100, 149, 237, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Tistory","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.57","0.58","0.62","0.64","0.59","0.57","0.58","0.58","0.56","0.57","0.59","0.55","0.53","0.55"],"backgroundColor":"rgba(60, 179, 113, 0.7)","borderColor":"rgba(60, 179, 113, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Weebly","data":["0.08","0.09","0.07","0.09","0.09","0.09","0.52","0.52","0.52","0.52","0.52","0.52","0.4","0.37","0.37","0.41","0.42","0.41","0.4","0.39","0.39","0.39","0.39","0.39","0.39","0.32","0.36","0.36","0.29","0.31","0.33","0.31","0.31","0.32","0.33","0.33","0.32","0.31","0.33","0.33","0.34","0.34","0.35","0.32","0.3","0.31","0.33","0.34","0.33","0.3","0.33","0.34","0.33","0.32","0.38","0.49","0.47","0.51","0.54","0.54","0.53","0.5","0.54","0.54","0.52","0.51","0.48","0.46","0.49","0.5","0.5","0.5","0.47","0.49","0.51","0.51","0.51","0.47","0.46","0.45","0.48","0.48","0.46"],"backgroundColor":"rgba(238, 130, 238, 0.7)","borderColor":"rgba(238, 130, 238, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8}
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: 20 },
+            interaction: { mode: 'nearest', axis: 'xy', intersect: true },
+            scales: {
+                y: { beginAtZero: true, stacked: false },
+                x: { stacked: false }
+            },
+            plugins: {
+                htmlLegend: { containerID: 'legend_container_chart_2' },
+                legend: { display: false }
+            }
+        },
+        plugins: [htmlLegendPlugin]
+    });
+
+    // ========================================
+    // Chart 3: eCommerce Pie Chart
+    // ========================================
+    var ctx3 = document.getElementById('pie_chart_3').getContext('2d');
+    new Chart(ctx3, {
+        type: 'pie',
+        data: {
+            labels: ["Not eCommerce","Cart Functionality","WooCommerce","Shopify","Squarespace Commerce","Wix eCommerce","PrestaShop","Magento","1C-Bitrix","OpenCart","Fourthwall","Tiendanube","Square Online","Webflow Ecommerce","Nuvemshop","Shoptet","Tray","Shopware","Kajabi","ColorMeShop"],
+            datasets: [{
+                data: ["73.37","7.6","7.14","4.03","1.81","1.45","0.68","0.43","0.27","0.22","0.14","0.13","0.13","0.13","0.11","0.1","0.1","0.09","0.08","0.08"],
+                backgroundColor: chartColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            layout: { padding: 10 },
+            responsive: true,
+            plugins: {
+                htmlLegend: { containerID: 'legend_container_chart_3' },
+                legend: { display: false },
+                tooltip: pieTooltipCallback
+            }
+        },
+        plugins: [htmlLegendPlugin]
+    });
+
+    // ========================================
+    // Chart 4: eCommerce Historic Line Chart
+    // ========================================
+    var ctx4 = document.getElementById('historic_line_chart_4').getContext('2d');
+    new Chart(ctx4, {
+        type: 'line',
+        data: {
+            labels: ["2018-01","2018-02","2018-03","2018-04","2018-05","2018-06","2018-07","2018-08","2018-09","2018-10","2018-11","2018-12","2019-01","2019-02","2019-03","2019-04","2019-05","2019-06","2019-07","2019-08","2019-09","2019-10","2019-11","2019-12","2020-01","2020-02","2020-03","2020-04","2020-05","2020-06","2020-07","2020-08","2020-09","2020-10","2020-11","2020-12","2021-01","2021-02","2021-03","2021-04","2021-05","2021-06","2021-07","2021-08","2021-09","2021-10","2021-11","2021-12","2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06","2023-07","2023-08","2023-09","2023-10","2023-11","2023-12","2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11"],
+            datasets: [
+                {"label":"WooCommerce","data":["0.01","0.01","0.01","0.01","0.01","1.54","1.01","1.02","1.02","1.03","1.04","1.04","3.32","3.34","3.36","3.61","3.71","3.72","3.92","3.94","3.96","3.98","4.01","4.03","4.05","4.42","4.54","4.48","4.45","4.91","5.14","5.14","5.2","5.22","5.24","5.34","5.6","4.77","4.69","4.73","4.79","4.92","5.86","5.75","0.09","0.1","5.64","5.71","5.87","5.77","5.8","5.88","5.85","5.85","6.3","6.22","6.28","6.26","6.45","6.54","6.67","6.66","6.61","6.66","6.55","6.61","6.58","6.62","6.61","6.63","6.65","7.03","7.03","6.95","6.92","6.95","6.98","7","6.98","7.07","7.04","7.06","7.14"],"backgroundColor":"rgba(255, 206, 86, 0.7)","borderColor":"rgba(255, 206, 86, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Shopify","data":["0.79","0.71","0.59","0.72","0.73","0.74","0.61","0.62","0.63","0.64","0.65","0.65","1.57","1.65","1.65","1.61","1.65","1.64","1.72","1.73","1.73","1.74","1.75","1.76","1.77","2.29","2.12","2.01","2.15","2.57","2.58","2.56","2.68","2.7","2.62","2.67","2.96","3.07","2.87","2.88","2.84","2.89","2.94","2.94","3.01","3.06","2.99","3.01","3.21","3.28","3.08","3.1","3.12","3.15","3.16","2.91","3.05","3.07","3.01","3.07","3.28","3.39","3.21","3.24","3.27","3.27","3.33","3.46","3.54","3.46","3.55","3.83","3.96","3.69","3.7","3.73","3.76","3.81","3.87","4","4.05","3.96","4.03"],"backgroundColor":"rgba(75, 192, 192, 0.7)","borderColor":"rgba(75, 192, 192, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Squarespace Commerce","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.44","0.45","0.45","0.47","0.47","0.47","0.46","0.46","0.45","0.44","0.43","0.44","1.06","1.16","1.21","1.19","1.19","1.29","1.51","1.53","1.58","1.58","1.59","1.58","1.54","1.68","1.67","1.67","1.63","1.64","1.66","1.71","1.69","1.68","1.71","1.66","1.77","1.8","1.8","1.82","1.8","1.8","1.81","1.85","1.85","1.81"],"backgroundColor":"rgba(153, 102, 255, 0.7)","borderColor":"rgba(153, 102, 255, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Wix eCommerce","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.51","0.51","0.51","0.49","0.48","0.47","0.48","0.45","0.48","0.5","0.49","0.5","0.62","0.75","0.77","0.8","0.87","0.91","0.97","0.94","1.04","1.02","1.06","1.08","1.1","1.13","1.16","1.16","1.16","1.22","1.16","1.26","1.32","1.33","1.37","1.38","1.38","1.41","1.45","1.46","1.45"],"backgroundColor":"rgba(255, 159, 64, 0.7)","borderColor":"rgba(255, 159, 64, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"PrestaShop","data":["0.35","0.33","0.26","0.33","0.33","0.41","0.33","0.33","0.33","0.33","0.33","0.33","0.87","0.87","0.87","0.83","0.83","0.83","0.85","0.84","0.84","0.84","0.84","0.83","0.87","0.94","0.91","0.86","0.87","0.97","0.97","0.91","0.88","0.85","0.87","0.88","0.97","0.9","0.84","0.84","0.81","0.82","0.92","0.88","0.87","0.86","0.89","0.9","0.94","0.96","0.91","0.89","0.88","0.87","0.88","0.75","0.76","0.73","0.73","0.74","0.76","0.77","0.73","0.73","0.71","0.7","0.7","0.7","0.68","0.7","0.71","0.76","0.76","0.71","0.7","0.69","0.68","0.68","0.69","0.69","0.67","0.67","0.68"],"backgroundColor":"rgba(199, 199, 199, 0.7)","borderColor":"rgba(199, 199, 199, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Magento","data":["0.93","0.96","0.86","0.97","0.97","1.32","0.97","0.97","0.97","0.97","0.97","0.97","1.29","1.33","1.33","1.25","1.23","1.22","1.18","1.18","1.17","1.17","1.16","1.15","1.21","1.29","1.21","1.13","1.14","1.13","1.07","1.03","1.03","1","0.96","0.94","0.96","0.78","0.72","0.71","0.69","0.69","0.83","0.81","0.86","0.86","0.84","0.83","0.83","0.94","0.89","0.8","0.81","0.81","0.71","0.57","0.58","0.58","0.55","0.54","0.54","0.57","0.53","0.53","0.52","0.51","0.51","0.51","0.51","0.49","0.48","0.49","0.51","0.47","0.46","0.45","0.45","0.45","0.46","0.46","0.46","0.44","0.43"],"backgroundColor":"rgba(255, 99, 71, 0.7)","borderColor":"rgba(255, 99, 71, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"1C-Bitrix","data":["0.51","0.51","0.48",0,0,"0.64",0,"0.54","0.54","0.54","0.55","0.55","0.69","0.72","0.72","0.7","0.67","0.68","0.62","0.63","0.63","0.63","0.64","0.64","0.64","0.73","0.69","0.7","0.69","0.66","0.65","0.38","0.38","0.38","0.38","0.38","0.38","0.41","0.38","0.39","0.65","0.65","0.39","0.39","0.4","0.4","0.37","0.37","0.67","0.7","0.63","0.64","0.64","0.67","0.63","0.58","0.58","0.57","0.53","0.53","0.53","0.56","0.52","0.53","0.54","0.51","0.52","0.52","0.52","0.51","0.52","0.53","0.53","0.49","0.5","0.5","0.5","0.49","0.28","0.28","0.27","0.27","0.27"],"backgroundColor":"rgba(100, 149, 237, 0.7)","borderColor":"rgba(100, 149, 237, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"OpenCart","data":["0.31","0.31","0.26","0.31","0.31","0.31","0.26","0.26","0.26","0.26","0.26","0.26","0.71","0.72","0.72","0.68",0,0,"0.05",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.17","0.18","0.18","0.18","0.19","0.2","0.19","0.19","0.17","0.18","0.19","0.19","0.19","0.19","0.19","0.19","0.2","0.21","0.2","0.2","0.2","0.2","0.2","0.2","0.21","0.21","0.21","0.22","0.23","0.21","0.21","0.21","0.21","0.21","0.21","0.22","0.22","0.22","0.22"],"backgroundColor":"rgba(60, 179, 113, 0.7)","borderColor":"rgba(60, 179, 113, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Fourthwall","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.12","0.12","0.13","0.12","0.13","0.12","0.11","0.11","0.11","0.1","0.11","0.11","0.11","0.11","0.11","0.12","0.12","0.05","0.05","0.05","0.04","0.05","0.05","0.05","0.05","0.05","0.05","0.05","0.05","0.05","0.13","0.13","0.13","0.14","0.14"],"backgroundColor":"rgba(238, 130, 238, 0.7)","borderColor":"rgba(238, 130, 238, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Tiendanube","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.07","0.06","0.06","0.06","0.05","0.06","0.06","0.06","0.07","0.06","0.07","0.06","0.08","0.08","0.08","0.08","0.07","0.07","0.09","0.09","0.09","0.09","0.09","0.09","0.09","0.1","0.1","0.09","0.09","0.1","0.11","0.12","0.12","0.12","0.13","0.12","0.13"],"backgroundColor":"rgba(139, 69, 19, 0.7)","borderColor":"rgba(139, 69, 19, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8}
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: 20 },
+            interaction: { mode: 'nearest', axis: 'xy', intersect: true },
+            scales: {
+                y: { beginAtZero: true, stacked: false },
+                x: { stacked: false }
+            },
+            plugins: {
+                htmlLegend: { containerID: 'legend_container_chart_4' },
+                legend: { display: false }
+            }
+        },
+        plugins: [htmlLegendPlugin]
+    });
+
+    // ========================================
+    // Chart 5: Page Builder Pie Chart
+    // ========================================
+    var ctx5 = document.getElementById('pie_chart_5').getContext('2d');
+    new Chart(ctx5, {
+        type: 'pie',
+        data: {
+            labels: ["No page builder","Elementor","WordPress Block Editor","wpBakery","Divi","Beaver Builder","WordPress Site Editor","SiteOrigin Page Builder","Oxygen","Themify Builder","Thrive Architect","Bricks","Visual Composer","Colibri WP","Brizy WordPress","SeedProd Coming Soon"],
+            datasets: [{
+                data: ["76.65","8.83","4.94","3.66","2.16","0.41","0.38","0.31","0.15","0.08","0.07","0.05","0.03","0.03","0.03","0.01"],
+                backgroundColor: chartColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            layout: { padding: 10 },
+            responsive: true,
+            plugins: {
+                htmlLegend: { containerID: 'legend_container_chart_5' },
+                legend: { display: false },
+                tooltip: pieTooltipCallback
+            }
+        },
+        plugins: [htmlLegendPlugin]
+    });
+
+    // ========================================
+    // Chart 6: Page Builder Historic Line Chart
+    // ========================================
+    var ctx6 = document.getElementById('historic_line_chart_6').getContext('2d');
+    new Chart(ctx6, {
+        type: 'line',
+        data: {
+            labels: ["2020-04","2020-05","2020-06","2020-07","2020-08","2020-09","2020-10","2020-11","2020-12","2021-01","2021-02","2021-03","2021-04","2021-05","2021-06","2021-07","2021-08","2021-09","2021-10","2021-11","2021-12","2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06","2023-07","2023-08","2023-09","2023-10","2023-11","2023-12","2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11"],
+            datasets: [
+                {"label":"Elementor","data":[0,"1.89","2.05","2.27","2.33","2.66","2.77","2.85","3.03","3.17","3.27","3.47","3.57","3.79","3.93","4.06","4.13","4.45","4.59","4.66","4.8","4.92","4.85","5.09","5.23","5.36","5.46","5.6","6.06","6.24","6.35","6.5","6.63","6.44","6.46","6.65","6.77","7.37","7.59","7.72","7.86","7.96","8.08","8.14","8.49","8.48","8.77","8.87","9.04","9.22","9.36","8.48","8.45","8.69","8.76","8.83"],"backgroundColor":"rgba(255, 99, 132, 0.7)","borderColor":"rgba(255, 99, 132, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"WordPress Block Editor","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"4.57","4.82","4.87","4.92","4.94"],"backgroundColor":"rgba(255, 206, 86, 0.7)","borderColor":"rgba(255, 206, 86, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"wpBakery","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.62","1.75","1.37",0,"0.37","1.72","1.72","1.72","4.16","4.23","4.28","4.3","4.33","4.49","4.46","4.43","4.39","4.37","4.38","4.35","4.28","4.32","4.3","4.15","4.15","4.11","4.06","3.99","3.98","3.93","4.02","3.93","3.95","3.91","3.9","3.88","3.83","3.78","3.73","3.7","3.71","3.66"],"backgroundColor":"rgba(75, 192, 192, 0.7)","borderColor":"rgba(75, 192, 192, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Divi","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.48","1.62","1.28",0,"0.35","1.65","1.64","1.63","1.64","1.71","1.77","1.8","1.83","1.95","2.1","2.1","2.11","2.12","2.14","2.14","2.1","2.22","2.22","2.19","2.19","2.2","2.18","2.18","2.19","2.15","2.21","2.15","2.24","2.26","2.26","2.29","2.27","2.17","2.31","2.16","2.18","2.16"],"backgroundColor":"rgba(153, 102, 255, 0.7)","borderColor":"rgba(153, 102, 255, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Beaver Builder","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.41","0.44","0.42","0.41","0.41"],"backgroundColor":"rgba(255, 159, 64, 0.7)","borderColor":"rgba(255, 159, 64, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"WordPress Site Editor","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.31","0.35","0.35","0.37","0.38"],"backgroundColor":"rgba(199, 199, 199, 0.7)","borderColor":"rgba(199, 199, 199, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"SiteOrigin Page Builder","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.4","0.41","0.41","0.42","0.42","0.44","0.45","0.44","0.44","0.44","0.43","0.43","0.41","0.42","0.42","0.41","0.4","0.4","0.39","0.38","0.38","0.37","0.37","0.36","0.37","0.36","0.36","0.36","0.35","0.33","0.33","0.31","0.31","0.31"],"backgroundColor":"rgba(255, 99, 71, 0.7)","borderColor":"rgba(255, 99, 71, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Oxygen","data":[0,0,0,0,0,0,0,0,0,0,"0.04","0.04","0.04","0.05","0.05","0.06","0.05",0,"0.01","0.07","0.07","0.08","0.08","0.08","0.09","0.09","0.1","0.1","0.1","0.11","0.11","0.11","0.11","0.12","0.12","0.12","0.12","0.13","0.13","0.13","0.13","0.13","0.13","0.13","0.14","0.14","0.14","0.15","0.15","0.15","0.15","0.15","0.16","0.14","0.15","0.15"],"backgroundColor":"rgba(100, 149, 237, 0.7)","borderColor":"rgba(100, 149, 237, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Themify Builder","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.09","0.08","0.08","0.08"],"backgroundColor":"rgba(60, 179, 113, 0.7)","borderColor":"rgba(60, 179, 113, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Thrive Architect","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.11","0.11","0.11","0.11","0.11","0.1","0.1","0.1","0.1","0.1","0.1","0.09","0.09","0.09","0.09","0.09","0.09","0.09","0.09","0.08","0.08","0.07","0.07","0.07","0.07"],"backgroundColor":"rgba(238, 130, 238, 0.7)","borderColor":"rgba(238, 130, 238, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8}
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: 20 },
+            interaction: { mode: 'nearest', axis: 'xy', intersect: true },
+            scales: {
+                y: { beginAtZero: true, stacked: false },
+                x: { stacked: false }
+            },
+            plugins: {
+                htmlLegend: { containerID: 'legend_container_chart_6' },
+                legend: { display: false }
+            }
+        },
+        plugins: [htmlLegendPlugin]
+    });
+
+    // ========================================
+    // Chart 7: Block Library Pie Chart
+    // ========================================
+    var ctx7 = document.getElementById('pie_chart_7').getContext('2d');
+    new Chart(ctx7, {
+        type: 'pie',
+        data: {
+            labels: ["No block library","GoDaddy CoBlocks","Kadence WP Blocks","Spectra","GenerateBlocks","Stackable"],
+            datasets: [{
+                data: ["98.31","0.97","0.36","0.16","0.11","0.08"],
+                backgroundColor: chartColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            layout: { padding: 10 },
+            responsive: true,
+            plugins: {
+                htmlLegend: { containerID: 'legend_container_chart_7' },
+                legend: { display: false },
+                tooltip: pieTooltipCallback
+            }
+        },
+        plugins: [htmlLegendPlugin]
+    });
+
+    // ========================================
+    // Chart 8: Block Library Historic Line Chart
+    // ========================================
+    var ctx8 = document.getElementById('historic_line_chart_8').getContext('2d');
+    new Chart(ctx8, {
+        type: 'line',
+        data: {
+            labels: ["2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11"],
+            datasets: [
+                {"label":"GoDaddy CoBlocks","data":["0.2","0.2","0.2","0.2","0.2","0.2","0.74","0.97"],"backgroundColor":"rgba(255, 99, 132, 0.7)","borderColor":"rgba(255, 99, 132, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Kadence WP Blocks","data":["0.17","0.17","0.18","0.18","0.35","0.35","0.35","0.36"],"backgroundColor":"rgba(255, 206, 86, 0.7)","borderColor":"rgba(255, 206, 86, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Spectra","data":["0.11","0.12","0.13","0.13","0.15","0.15","0.16","0.16"],"backgroundColor":"rgba(75, 192, 192, 0.7)","borderColor":"rgba(75, 192, 192, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"GenerateBlocks","data":["0.1","0.1","0.1","0.11","0.11","0.11","0.11","0.11"],"backgroundColor":"rgba(153, 102, 255, 0.7)","borderColor":"rgba(153, 102, 255, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Stackable","data":["0.08","0.08","0.08","0.08","0.08","0.08","0.08","0.08"],"backgroundColor":"rgba(255, 159, 64, 0.7)","borderColor":"rgba(255, 159, 64, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8}
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: 20 },
+            interaction: { mode: 'nearest', axis: 'xy', intersect: true },
+            scales: {
+                y: { beginAtZero: true, stacked: false },
+                x: { stacked: false }
+            },
+            plugins: {
+                htmlLegend: { containerID: 'legend_container_chart_8' },
+                legend: { display: false }
+            }
+        },
+        plugins: [htmlLegendPlugin]
+    });
+
+    // ========================================
+    // Chart 9: SEO Plugin Pie Chart
+    // ========================================
+    var ctx9 = document.getElementById('pie_chart_9').getContext('2d');
+    new Chart(ctx9, {
+        type: 'pie',
+        data: {
+            labels: ["Yoast SEO","RankMath SEO","All in One SEO","The SEO Framework","Slim SEO"],
+            datasets: [{
+                data: ["15.89","3.13","2.86","0.14","0.03"],
+                backgroundColor: chartColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            layout: { padding: 10 },
+            responsive: true,
+            plugins: {
+                htmlLegend: { containerID: 'legend_container_chart_9' },
+                legend: { display: false },
+                tooltip: pieTooltipCallback
+            }
+        },
+        plugins: [htmlLegendPlugin]
+    });
+
+    // ========================================
+    // Chart 10: SEO Plugin Historic Line Chart
+    // ========================================
+    var ctx10 = document.getElementById('historic_line_chart_10').getContext('2d');
+    new Chart(ctx10, {
+        type: 'line',
+        data: {
+            labels: ["2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06","2023-07","2023-08","2023-09","2023-10","2023-11","2023-12","2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11"],
+            datasets: [
+                {"label":"Yoast SEO","data":["16.52","16.35","16.65","16.92","17.07","17.22","17.23","16.5","16.45","16.34","16.32","16.44","16.41","16.31","16.4","16.41","16.15","16.17","16.18","16.09","15.98","15.99","15.83","16.22","16.09","16.26","16.19","16.19","16.22","16.1","16.03","16.12","15.9","15.89","15.88"],"backgroundColor":"rgba(54, 162, 235, 0.7)","borderColor":"rgba(54, 162, 235, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"RankMath SEO","data":[0,"0","0","0","0","0","0","0","0","0.53","1.89","1.94","1.98","2.05","2.06","2.12","2.2","2.26","2.33","2.39","2.45","2.48","2.52","2.66","2.74","2.8","2.83","2.87","2.91","2.95","3","3.09","3.12","3.13","3.2"],"backgroundColor":"rgba(255, 99, 132, 0.7)","borderColor":"rgba(255, 99, 132, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"All in One SEO","data":["0.75","0.74","0.7","0.69","0.66","0.67","0.67","0.6","0.57","0.56","0.54","0.53","0.52","0.5","0.49","0.48","0.46","0.44","0.44","0.42","0.41","0.4","0.39","0.38","0.37","0.36","0.35","0.33","0.33","0.32","2.89","2.94","2.86","2.86","2.88"],"backgroundColor":"rgba(255, 206, 86, 0.7)","borderColor":"rgba(255, 206, 86, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"The SEO Framework","data":[0,0,0,0,0,0,"0.12","0.12","0.12","0.12","0.12","0.12","0.12","0.12","0.12","0.12","0.12","0.12","0.12","0.12","0.12","0.12","0.12","0.13","0.13","0.13","0.13","0.13","0.13","0.13","0.13","0.14","0.14","0.14","0.15"],"backgroundColor":"rgba(75, 192, 192, 0.7)","borderColor":"rgba(75, 192, 192, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8},
+                {"label":"Slim SEO","data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"0.02","0.02","0.02","0.03","0.03","0.03","0.03"],"backgroundColor":"rgba(153, 102, 255, 0.7)","borderColor":"rgba(153, 102, 255, 0.7)","borderWidth":2,"fill":false,"pointRadius":3,"pointHoverRadius":8}
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: 20 },
+            interaction: { mode: 'nearest', axis: 'xy', intersect: true },
+            scales: {
+                y: { beginAtZero: true, stacked: false },
+                x: { stacked: false }
+            },
+            plugins: {
+                htmlLegend: { containerID: 'legend_container_chart_10' },
+                legend: { display: false }
+            }
+        },
+        plugins: [htmlLegendPlugin]
+    });
+
+}
+
+// Support both full page load and View Transitions navigation
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCharts);
+} else {
+    initCharts();
+}
+document.addEventListener('astro:page-load', initCharts);
+</script>
+
+<style>
+    .chart-legend ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        list-style: none;
+        padding: 10px 0;
+        margin: 0;
+    }
+    .chart-legend li {
+        font-size: 13px;
+    }
+</style>

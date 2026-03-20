@@ -14,7 +14,7 @@ const readingTime = getReadingTime(post.body ?? '');
         <a href={`/${post.id}/`} aria-label={title} class="block overflow-hidden">
             <CustomImage
                 {...featureImage}
-                class="w-full aspect-[16/9] object-cover transition-transform duration-500 group-hover:scale-105"
+                class="w-full aspect-[5/2] object-cover transition-transform duration-500 group-hover:scale-105"
                 widths={[320, 480, 640, 768]}
                 sizes="(min-width: 1024px) 384px, (min-width: 640px) 50vw, calc(100vw - 32px)"
             />

@@ -4,8 +4,10 @@ import { type CollectionEntry, getCollection } from 'astro:content';
 import Icon from '../../components/Icon.astro';
 import PostPreview from '../../components/PostPreview.astro';
 import Subscribe from '../../components/Subscribe.astro';
+import CustomImage from '../../components/CustomImage.astro';
 import siteConfig from '../../data/site-config';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
 import SchemaGraph from '../../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../../utils/schema';
 import { canonicalUrl } from '../../utils/schema/constants';
@@ -18,6 +20,10 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 
 const { page } = Astro.props as { page: Page<CollectionEntry<'blog'>> };
 const blog = page.data;
+const isFirstPage = page.currentPage === 1;
+
+const allPosts = (await getCollection('blog')).sort(sortPostsByDateDesc);
+const featuredPost = allPosts.find((p) => p.data.isFeatured) ?? allPosts[0];
 
 const pageContext: SchemaPageContext = {
     pageType: 'blogListing',
@@ -29,36 +35,83 @@ const pageContext: SchemaPageContext = {
 
 <BaseLayout title="Blog" description="Articles about WordPress, SEO, open source, and more by Joost de Valk">
     <SchemaGraph pageContext={pageContext} />
-    <main class="px-4 py-12 grow sm:px-8 sm:py-16" data-pagefind-ignore="all">
-        <div class="max-w-5xl mx-auto">
-            <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 mb-8 sm:text-4xl">Blog</h1>
-            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {blog.map((post) => <PostPreview post={post} />)}
+    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
+        <Header variant="dark" />
+        <div class="h-[52px] sm:h-[56px]"></div>
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Blog</h1>
             </div>
-            <nav aria-label="Pagination" class="mt-12 flex items-center justify-center gap-4 sm:mt-16">
-                {page.url.prev && (
-                    <a
-                        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 text-slate-600 transition duration-300 hover:bg-primary hover:text-white dark:bg-[#1e1b19] dark:text-slate-300"
-                        href={page.url.prev}
-                        rel="prefetch"
-                        aria-label={`Go to page ${page.currentPage - 1} of ${page.lastPage}`}
-                    >
-                        <Icon icon="arrow-left" class="w-5 h-5 fill-current" />
-                    </a>
+        </section>
+    </div>
+
+    <main class="grow" data-pagefind-ignore="all">
+        {isFirstPage && (
+            <section class="px-4 py-10 sm:px-8 sm:py-14 bg-surface dark:bg-[#1e1b19]/50 border-b border-slate-200 dark:border-[#2a2623]">
+                <div class="max-w-5xl mx-auto">
+                    <p class="mb-8 text-lg text-slate-600 dark:text-slate-400 max-w-2xl">Articles about WordPress, SEO, open source, and more.</p>
+                </div>
+                <div class="max-w-5xl mx-auto grid md:grid-cols-[1fr_440px] gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Featured post</span>
+                        <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100">{featuredPost.data.title}</h2>
+                        {featuredPost.data.excerpt && (
+                            <p class="mt-3 text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">{featuredPost.data.excerpt}</p>
+                        )}
+                        <a href={`/${featuredPost.id}/`} class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300">
+                            Read article
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                    {featuredPost.data.featureImage?.src && (
+                        <a href={`/${featuredPost.id}/`} class="hidden md:block">
+                            <CustomImage
+                                {...featuredPost.data.featureImage}
+                                class="rounded-lg shadow-card-hover w-full"
+                                widths={[440, 880]}
+                            />
+                        </a>
+                    )}
+                </div>
+            </section>
+        )}
+
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                {isFirstPage && (
+                    <Fragment>
+                        <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Archive</span>
+                        <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100 mb-8">All posts</h2>
+                    </Fragment>
                 )}
-                <span class="text-sm text-slate-500 dark:text-slate-400" aria-current="page">Page {page.currentPage} of {page.lastPage}</span>
-                {page.url.next && (
-                    <a
-                        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 text-slate-600 transition duration-300 hover:bg-primary hover:text-white dark:bg-[#1e1b19] dark:text-slate-300"
-                        href={page.url.next}
-                        rel="prefetch"
-                        aria-label={`Go to page ${page.currentPage + 1} of ${page.lastPage}`}
-                    >
-                        <Icon icon="arrow-right" class="w-5 h-5 fill-current" />
-                    </a>
-                )}
-            </nav>
-        </div>
-        <Subscribe class="mt-12 sm:mt-16" />
+                <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {blog.map((post) => <PostPreview post={post} />)}
+                </div>
+                <nav aria-label="Pagination" class="mt-12 flex items-center justify-center gap-4 sm:mt-16">
+                    {page.url.prev && (
+                        <a
+                            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 text-slate-600 transition duration-300 hover:bg-primary hover:text-white dark:bg-[#1e1b19] dark:text-slate-300"
+                            href={page.url.prev}
+                            rel="prefetch"
+                            aria-label={`Go to page ${page.currentPage - 1} of ${page.lastPage}`}
+                        >
+                            <Icon icon="arrow-left" class="w-5 h-5 fill-current" />
+                        </a>
+                    )}
+                    <span class="text-sm text-slate-500 dark:text-slate-400" aria-current="page">Page {page.currentPage} of {page.lastPage}</span>
+                    {page.url.next && (
+                        <a
+                            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 text-slate-600 transition duration-300 hover:bg-primary hover:text-white dark:bg-[#1e1b19] dark:text-slate-300"
+                            href={page.url.next}
+                            rel="prefetch"
+                            aria-label={`Go to page ${page.currentPage + 1} of ${page.lastPage}`}
+                        >
+                            <Icon icon="arrow-right" class="w-5 h-5 fill-current" />
+                        </a>
+                    )}
+                </nav>
+            </div>
+            <Subscribe class="mt-12 sm:mt-16" />
+        </section>
     </main>
 </BaseLayout>
