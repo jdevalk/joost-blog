@@ -33,6 +33,12 @@ export default defineConfig({
     vite: {
         plugins: [tailwindcss()]
     },
+    redirects: {
+        '/clicky': 'https://wordpress.org/plugins/clicky/',
+        '/clicky/': 'https://wordpress.org/plugins/clicky/',
+        '/code/clicky': 'https://wordpress.org/plugins/clicky/',
+        '/code/clicky/': 'https://wordpress.org/plugins/clicky/',
+    },
     integrations: [mdx(), sitemap(), pagefind(), noIndexOnStaging()],
     markdown: {
         shikiConfig: {

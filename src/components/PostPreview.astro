@@ -9,7 +9,7 @@ const { title, publishDate, updatedDate, featureImage, excerpt, isFeatured, cate
 const readingTime = getReadingTime(post.body ?? '');
 ---
 
-<article class="group flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-card transition duration-300 hover:shadow-card-hover hover:-translate-y-0.5 dark:border-slate-700 dark:bg-slate-800/50">
+<article class="group flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-card transition duration-300 hover:shadow-card-hover hover:-translate-y-0.5 dark:border-[#2a2623] dark:bg-[#1e1b19]/50">
     {featureImage?.src && (
         <a href={`/${post.id}/`} aria-label={title} class="block overflow-hidden">
             <CustomImage

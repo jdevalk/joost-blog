@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+
+const plugins = [
+    {
+        name: 'Progress Planner',
+        description: 'My current main focus. A WordPress plugin that helps you plan and track your content and site maintenance progress.',
+        url: 'https://progressplanner.com/',
+        image: '/images/plugins/progress-planner.webp',
+    },
+    {
+        name: 'AAA Option Optimizer',
+        description: 'Tracks autoloaded options usage and allows the user to optimize them.',
+        url: 'https://progressplanner.com/plugins/aaa-option-optimizer/',
+        image: '/images/plugins/aaa-option-optimizer.webp',
+    },
+    {
+        name: 'Brand Assets',
+        description: 'Stop chasing down requests for your logo and color codes by creating a Brand Assets page on your site.',
+        url: 'https://progressplanner.com/plugins/brand-assets/',
+        image: '/images/plugins/brand-assets.webp',
+    },
+    {
+        name: 'Comment Experience',
+        description: "WordPress' comment system is incomplete. This plugin adds a lot of nifty little tricks to make comments on WordPress a lot more manageable.",
+        url: 'https://progressplanner.com/plugins/comment-experience/',
+        image: '/images/plugins/comment-experience.webp',
+    },
+    {
+        name: 'Comment Free Zone',
+        description: "Your WordPress site comes with comments enabled in many places by default. But not every site needs them, and if that's the case for you, they can add unnecessary clutter.",
+        url: 'https://progressplanner.com/plugins/comment-free-zone/',
+        image: '/images/plugins/comment-free-zone.webp',
+    },
+    {
+        name: 'Fewer Tags',
+        description: "Make sure tags are only live on your site when they actually add value, so when there's more than a few posts in it.",
+        url: 'https://progressplanner.com/plugins/fewer-tags/',
+        image: '/images/plugins/fewer-tags.png',
+    },
+    {
+        name: 'Glossary',
+        description: 'Make your content easier to understand with clear definitions that show up exactly when and where readers need them.',
+        url: 'https://progressplanner.com/plugins/glossary/',
+        image: '/images/plugins/glossary.webp',
+    },
+    {
+        name: 'XML Sitemaps for PDFs',
+        description: 'If your site has a lot of PDFs, this add-on to Yoast SEO is what you need to get them indexed.',
+        url: 'https://progressplanner.com/plugins/xml-sitemap-for-pdfs/',
+        image: '/images/plugins/xml-sitemaps-pdfs.webp',
+    },
+];
+---
+
+<BaseLayout
+    title="Code"
+    description="Code projects, WordPress plugins, and other software I've built and maintain."
+>
+    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
+        <Header variant="dark" />
+        <div class="h-[52px] sm:h-[56px]"></div>
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Code</h1>
+                <p class="mt-3 text-lg text-white/75 max-w-2xl">Building tools that make the web better — from WordPress plugins to SaaS products.</p>
+            </div>
+        </section>
+    </div>
+
+    <main class="grow" data-pagefind-body>
+        {/* Rondo — featured */}
+        <section class="px-4 py-10 sm:px-8 sm:py-14 bg-surface dark:bg-[#1e1b19]/50 border-b border-slate-200 dark:border-[#2a2623]">
+            <div class="max-w-5xl mx-auto grid md:grid-cols-[1fr_440px] gap-8 items-center">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Featured project</span>
+                    <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100">Rondo</h2>
+                    <p class="mt-3 prose prose-slate sm:prose-lg max-w-none">
+                        From member management and dues to invoicing, VOG, and membership passes: <a href="https://rondo.club">Rondo</a> automates
+                        your club processes and keeps everything in sync.
+                    </p>
+                </div>
+                <a href="https://rondo.club" class="hidden md:block">
+                    <img src="/images/rondo-screenshot.webp" alt="Rondo committee overview" class="rounded-lg shadow-card-hover w-full" />
+                </a>
+            </div>
+        </section>
+
+        {/* WordPress plugins */}
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">WordPress</span>
+                <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100 mb-3">Plugins</h2>
+                <p class="mb-8 text-slate-600 dark:text-slate-400 max-w-2xl">
+                    I was the original author of Yoast SEO, and most of its addons, and never really stopped coding on WordPress plugins and other stuff.
+                </p>
+                <div class="flex flex-col gap-5">
+                    {plugins.map((plugin, i) => (
+                        <a
+                            href={plugin.url}
+                            class="group flex flex-col sm:flex-row sm:h-44 items-stretch overflow-hidden rounded-lg border border-slate-200 bg-white transition duration-300 hover:shadow-card-hover hover:-translate-y-0.5 dark:border-[#2a2623] dark:bg-[#1e1b19]/50"
+                        >
+                            {plugin.image ? (
+                                <div class:list={["sm:w-72 shrink-0 bg-slate-50 dark:bg-[#161210] p-4 flex items-center justify-center", i % 2 === 1 ? "sm:order-2 sm:border-l-4 sm:border-l-primary dark:sm:border-l-accent" : "sm:border-r-4 sm:border-r-primary dark:sm:border-r-accent"]}>
+                                    <img src={plugin.image} alt={plugin.name} class="w-full h-full object-cover object-top rounded" />
+                                </div>
+                            ) : (
+                                <div class:list={["hidden sm:flex items-center justify-center sm:w-72 shrink-0 bg-slate-50 dark:bg-[#161210]", i % 2 === 1 ? "sm:order-2 sm:border-l-4 sm:border-l-primary dark:sm:border-l-accent" : "sm:border-r-4 sm:border-r-primary dark:sm:border-r-accent"]}>
+                                    <svg class="w-12 h-12 text-primary/20 dark:text-accent/20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                                </div>
+                            )}
+                            <div class="p-6 flex flex-col justify-center grow">
+                                <h3 class="text-xl font-extrabold text-slate-950 dark:text-slate-100 group-hover:text-primary dark:group-hover:text-accent transition duration-300">
+                                    {plugin.name}
+                                </h3>
+                                <p class="mt-2 text-base text-slate-700 dark:text-slate-400 leading-relaxed">
+                                    {plugin.description}
+                                </p>
+                            </div>
+                        </a>
+                    ))}
+                </div>
+            </div>
+        </section>
+
+        {/* Other projects */}
+        <section class="px-4 py-10 sm:px-8 sm:py-14 bg-surface dark:bg-[#1e1b19]/50 border-t border-slate-200 dark:border-[#2a2623]">
+            <div class="max-w-5xl mx-auto">
+                <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Open source</span>
+                <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100 mb-3">Other projects</h2>
+                <p class="prose prose-slate sm:prose-lg max-w-none">
+                    I actively contribute to other projects, including the software of some of the companies in our investment portfolio. To read more about that, see either my <a href="/about-me/">about page</a>, or read about <a href="https://emilia.capital/">Emilia Capital</a>.
+                </p>
+            </div>
+        </section>
+    </main>
+</BaseLayout>
