@@ -96,7 +96,7 @@ const plugins = [
                     </a>
                 </div>
                 <a href="https://rondo.club" class="hidden md:block">
-                    <img src="/images/rondo-screenshot.webp" alt="Rondo committee overview" class="rounded-lg shadow-card-hover w-full" />
+                    <img src="/images/rondo-screenshot.webp" alt="Rondo committee overview" class="rounded-lg shadow-card-hover w-full" loading="eager" decoding="async" width="440" height="280" />
                 </a>
             </div>
         </section>
@@ -116,7 +116,7 @@ const plugins = [
                         >
                             {plugin.image && (
                                 <a href={plugin.url} class:list={["sm:w-72 shrink-0 bg-slate-50 dark:bg-[#161210] p-4 flex items-center justify-center", i % 2 === 1 ? "sm:order-2 sm:border-l-4 sm:border-l-primary dark:sm:border-l-accent" : "sm:border-r-4 sm:border-r-primary dark:sm:border-r-accent"]}>
-                                    <img src={plugin.image} alt={plugin.name} class="w-full h-full object-cover object-top rounded" />
+                                    <img src={plugin.image} alt={plugin.name} class="w-full h-full object-cover object-top rounded" loading="lazy" decoding="async" width="288" height="176" />
                                 </a>
                             )}
                             <div class="p-6 flex flex-col justify-center grow">

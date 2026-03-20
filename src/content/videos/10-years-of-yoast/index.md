@@ -4,7 +4,7 @@ publishDate: 2022-08-16T00:00:00.000Z
 youtubeId: 27_iFw_W-HE
 duration: PT33M46S
 featureImage:
-  src: ./images/thumbnail.png
+  src: ./images/thumbnail.webp
   alt: "10 years of Yoast - YoastCon presentation"
 ---
 This page features a video presentation from YoastCon where Joost de Valk discusses Yoast's mission of "SEO for Everyone" and how the company operationalizes this vision.

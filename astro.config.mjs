@@ -41,6 +41,9 @@ export default defineConfig({
         '/plugins': '/code/',
         '/plugins/': '/code/',
     },
+    prefetch: {
+        defaultStrategy: 'viewport',
+    },
     integrations: [mdx(), sitemap(), pagefind(), noIndexOnStaging()],
     markdown: {
         shikiConfig: {
