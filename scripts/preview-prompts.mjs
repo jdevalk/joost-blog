@@ -16,41 +16,32 @@ const BLOG_DIR = path.resolve('src/content/blog');
 const CATEGORY_STYLES = {
     'WordPress': {
         colors: 'deep navy blue, steel blue, and touches of warm burgundy-crimson',
-        motif: 'modular building blocks stacking upward, interconnected panels forming a digital skyline, geometric puzzle pieces clicking together',
     },
     'Development': {
         colors: 'teal, dark emerald green, and warm burgundy-crimson accents',
-        motif: 'circuit board pathways with glowing nodes, code brackets as architectural arches, mechanical precision instruments',
     },
     'Search Opinion': {
         colors: 'warm gold, deep amber, and rich burgundy-brown',
-        motif: 'a bold magnifying lens with radiating golden search beams, pathways diverging and converging, signal waves propagating outward',
     },
     'Open Source': {
         colors: 'forest green, sage green, and dark burgundy',
-        motif: 'branching tree silhouettes forming a network, forking paths spreading outward, collaborative hands or figures reaching together in solidarity',
     },
     'Market Share Analysis': {
         colors: 'rich purple, violet, and warm burgundy',
-        motif: 'bold rising bar chart columns forming a dramatic city skyline, pie chart segments as sweeping architectural arcs, data visualization as dramatic landscape',
     },
     'Productivity hacks': {
         colors: 'warm coral-orange, amber, and deep burgundy',
-        motif: 'interlocking precision gears in motion, a bold clock face with dramatic hands, lightning bolt silhouettes cutting through geometric shapes',
     },
     'Yoast': {
         colors: 'rich Yoast purple (#A4286A), magenta, and warm burgundy',
-        motif: 'a traffic signal turning green as a triumphant moment, a rising score meter reaching its peak, optimization arrows spiraling upward',
     },
     'Personal stuff': {
         colors: 'warm rose, deep burgundy, and soft cream highlights',
-        motif: 'a contemplative human silhouette gazing at a horizon, concentric circles radiating outward like ripples, warm abstract landscape',
     },
 };
 
 const DEFAULT_STYLE = {
     colors: 'warm burgundy-crimson, deep rose, and cream highlights',
-    motif: 'bold abstract geometric shapes radiating outward, strong diagonal composition with dramatic silhouettes',
 };
 
 function buildPrompt(title, category, hint) {
@@ -65,13 +56,12 @@ STYLE (CRITICAL — follow exactly):
 - Vintage screen-print aesthetic with subtle grain texture
 - Geometric abstraction — convey the concept through bold shapes and silhouettes, NOT literal photorealistic depictions
 - Absolutely NO text, NO letters, NO words, NO numbers, NO typography of any kind anywhere in the image
+- The image must be full-bleed with NO border, NO frame, NO margin — the artwork should extend to all edges
 - High contrast between bold foreground graphic elements and the dark background
 - The mood should feel intelligent, sophisticated, and cinematically dramatic
 - Think: Saul Bass, Art Deco, Polish movie poster school, mid-century modern graphic design
 
 SUBJECT: Visually represent the concept behind this blog post title: "${title}"
-
-Use visual motifs inspired by: ${style.motif}
 
 COMPOSITION: Wide banner format (16:9). Distribute visual interest across the frame with an asymmetric focal point. Leave the lower-third relatively less busy (text will be overlaid there later). The upper portion should have the most dramatic graphic elements.`;
 
