@@ -1,7 +1,11 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
+import sanitizeHtml from 'sanitize-html';
+import MarkdownIt from 'markdown-it';
 import siteConfig from '../data/site-config';
 import { sortPostsByDateDesc } from '../utils/post-utils';
+
+const parser = new MarkdownIt();
 
 export async function GET(context) {
     const posts = (await getCollection('blog')).sort(sortPostsByDateDesc);
@@ -25,7 +29,9 @@ export async function GET(context) {
             pubDate: new Date(post.data.publishDate),
             categories: post.data.categories ?? [],
             author: 'joost@joost.blog (Joost de Valk)',
-            content: post.body ?? '',
+            content: sanitizeHtml(parser.render(post.body ?? ''), {
+                allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+            }),
         })),
     });
 }
