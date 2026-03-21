@@ -10,8 +10,10 @@ categories:
   - Open Source
   - WordPress
 featureImage:
-  src: ./images/google-agentic-woo-featured-scaled.webp
-  alt: ''
+  src: ./images/featured.png
+  alt: >-
+    Illustration for: The silence is deafening: Google’s “agentic” future leaves
+    the WordPress economy behind
 ---
 **Google just announced a massive shift in how the internet shops, and the biggest platform on the web wasn’t even in the room.**
 

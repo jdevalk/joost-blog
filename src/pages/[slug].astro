@@ -53,9 +53,6 @@ const seoTitle = isBlog
 const seoDescription = isBlog
     ? (blogData!.seo?.description ?? blogData!.excerpt)
     : pageData!.seo?.description;
-const seoImage = isBlog
-    ? (blogData!.seo?.image ?? blogData!.featureImage)
-    : (pageData!.seo?.image ?? pageData!.featureImage);
 
 const pageCanonicalUrl = canonicalUrl(Astro.url.pathname);
 
@@ -78,48 +75,69 @@ const pageContext: SchemaPageContext = isBlog ? {
 ---
 
 {isBlog ? (
-<BaseLayout title={seoTitle} description={seoDescription} image={seoImage} pageType="article" publishDate={blogData!.publishDate} updatedDate={blogData!.updatedDate} categories={blogData!.categories}>
+<BaseLayout title={seoTitle} description={seoDescription} pageType="article" publishDate={blogData!.publishDate} updatedDate={blogData!.updatedDate} categories={blogData!.categories}>
     <SchemaGraph pageContext={pageContext} />
     <main class="px-4 py-12 grow sm:px-8 sm:py-16" data-pagefind-body>
         <article class="max-w-6xl mx-auto mb-12 sm:mb-16">
-            <header class="max-w-3xl mx-auto mb-8 sm:mb-10">
-                <nav class="mb-6 text-sm" aria-label="Breadcrumb">
-                    <ol class="flex items-center gap-1.5">
-                        <li><a href="/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Home</a></li>
-                        <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href="/blog/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Blog</a></li>
-                        {blogData!.categories && blogData!.categories.length > 0 && (
-                            <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href={`/category/${slugify(blogData!.categories[0])}/`} class="text-primary dark:text-accent hover:text-secondary dark:hover:text-white transition-colors">{blogData!.categories[0]}</a></li>
-                        )}
-                        <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600 text-slate-900 dark:text-slate-100 font-medium truncate" aria-current="page">{blogData!.title}</li>
-                    </ol>
-                </nav>
-                <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl md:text-5xl">{blogData!.title}</h1>
-                <div class="mt-4 flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
-                    <FormattedDate date={blogData!.publishDate} />
-                    {blogData!.updatedDate && (
-                        <Fragment>
-                            <span>&middot;</span>
-                            <span>Updated <FormattedDate date={blogData!.updatedDate} /></span>
-                        </Fragment>
+            <nav class="max-w-3xl mx-auto mb-6 text-sm" aria-label="Breadcrumb">
+                <ol class="flex items-center gap-1.5">
+                    <li><a href="/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Home</a></li>
+                    <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href="/blog/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Blog</a></li>
+                    {blogData!.categories && blogData!.categories.length > 0 && (
+                        <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href={`/category/${slugify(blogData!.categories[0])}/`} class="text-primary dark:text-accent hover:text-secondary dark:hover:text-white transition-colors">{blogData!.categories[0]}</a></li>
                     )}
-                    {readingTime && (
-                        <Fragment>
-                            <span>&middot;</span>
-                            <span>{readingTime} min read</span>
-                        </Fragment>
-                    )}
-                </div>
-            </header>
-            {blogData!.featureImage?.src && (
-                <figure class="my-6 sm:my-8 lg:my-12">
+                    <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600 text-slate-900 dark:text-slate-100 font-medium truncate" aria-current="page">{blogData!.title}</li>
+                </ol>
+            </nav>
+            {blogData!.featureImage?.src ? (
+                <header class="relative mb-8 sm:mb-10 rounded-lg overflow-hidden">
                     <CustomImage
                         {...blogData!.featureImage}
-                        class="w-full rounded-lg"
-                        widths={[480, 640, 768, 960, 1200, 1600]}
+                        class="w-full aspect-[16/9] object-cover"
+                        widths={[480, 640, 768, 960, 1200]}
                         sizes="(min-width: 1216px) 1152px, calc(100vw - 32px)"
+                        fetchpriority="high"
+                        loading="eager"
                     />
-                    {blogData!.featureImage.caption && <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 sm:text-sm">{blogData!.featureImage.caption}</figcaption>}
-                </figure>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 lg:p-10">
+                        <h1 class="text-2xl font-extrabold tracking-tight text-white sm:text-3xl md:text-4xl lg:text-5xl drop-shadow-lg">{blogData!.title}</h1>
+                        <div class="mt-3 flex items-center gap-3 text-sm text-white/80">
+                            <FormattedDate date={blogData!.publishDate} />
+                            {blogData!.updatedDate && (
+                                <Fragment>
+                                    <span>&middot;</span>
+                                    <span>Updated <FormattedDate date={blogData!.updatedDate} /></span>
+                                </Fragment>
+                            )}
+                            {readingTime && (
+                                <Fragment>
+                                    <span>&middot;</span>
+                                    <span>{readingTime} min read</span>
+                                </Fragment>
+                            )}
+                        </div>
+                    </div>
+                </header>
+            ) : (
+                <header class="max-w-3xl mx-auto mb-8 sm:mb-10">
+                    <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl md:text-5xl">{blogData!.title}</h1>
+                    <div class="mt-4 flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+                        <FormattedDate date={blogData!.publishDate} />
+                        {blogData!.updatedDate && (
+                            <Fragment>
+                                <span>&middot;</span>
+                                <span>Updated <FormattedDate date={blogData!.updatedDate} /></span>
+                            </Fragment>
+                        )}
+                        {readingTime && (
+                            <Fragment>
+                                <span>&middot;</span>
+                                <span>{readingTime} min read</span>
+                            </Fragment>
+                        )}
+                    </div>
+                </header>
             )}
             <div class="max-w-3xl mx-auto">
                 <div class="prose prose-slate sm:prose-lg max-w-none">
@@ -210,7 +228,7 @@ const pageContext: SchemaPageContext = isBlog ? {
     </main>
 </BaseLayout>
 ) : (
-<BaseLayout title={seoTitle} description={seoDescription} image={seoImage}>
+<BaseLayout title={seoTitle} description={seoDescription}>
     <SchemaGraph pageContext={pageContext} />
     <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
         <Header variant="dark" />

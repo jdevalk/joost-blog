@@ -9,8 +9,10 @@ categories:
   - Development
   - WordPress
 featureImage:
-  src: ./images/gemini_generated_image_4un6sn4un6sn4un6-scaled.webp
-  alt: ''
+  src: ./images/featured.png
+  alt: >-
+    Illustration for: From installation to integration: Making plugins
+    “agent-ready”
 ---
 In my [last post](/vibe-coding-trap-design-system/), I discussed why a design system is the “visual rail” AI needs. But the “Architect” I’ve [been describing](/rise-architect/) doesn’t just care about how a site looks; they care about how it functions.
 

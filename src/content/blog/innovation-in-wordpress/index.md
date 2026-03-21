@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/wordpress-plugin-innovation.webp
-  alt: ''
+  src: ./images/featured.png
+  alt: 'Illustration for: Innovation in WordPress: a look at plugin development'
 ---
 ## Introduction 
 

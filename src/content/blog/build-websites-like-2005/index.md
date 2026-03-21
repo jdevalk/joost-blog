@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - Search Opinion
 featureImage:
-  src: ./images/websites-like-2005-fi.webp
-  alt: ''
+  src: ./images/featured.png
+  alt: 'Illustration for: Build websites like it’s 2005 (and win in 2025)'
 ---
 Last week was a whirlwind, first diving deep into AI and WordPress while working with the WP CLI as MCP host team at Cloudfest, then heading off to SMX Munich for non-stop conversations about SEO, AI, and the future of search. Two very different settings, one clear takeaway:
 

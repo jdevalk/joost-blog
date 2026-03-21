@@ -6,8 +6,10 @@ categories:
   - Open Source
   - WordPress
 featureImage:
-  src: ./images/community-scaled.webp
-  alt: ''
+  src: ./images/featured.png
+  alt: >-
+    Illustration for: The People Behind the Platform: How WordPress’s Community
+    Drives its Success
 ---
 ***By [Marieke van de Rakt](https://marieke.com/) and Joost de Valk***
 

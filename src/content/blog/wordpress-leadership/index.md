@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/wordpress-fire-scaled.webp
-  alt: ''
+  src: ./images/featured.png
+  alt: 'Illustration for: Breaking the Status Quo'
 ---
 ## A vision for a new WordPress era
 

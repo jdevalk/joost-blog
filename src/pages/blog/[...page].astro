@@ -67,7 +67,7 @@ const pageContext: SchemaPageContext = {
                         <a href={`/${featuredPost.id}/`} class="hidden md:block">
                             <CustomImage
                                 {...featuredPost.data.featureImage}
-                                class="rounded-lg shadow-card-hover w-full"
+                                class="rounded-lg shadow-card-hover w-full aspect-[16/9] object-cover"
                                 widths={[440, 880]}
                             />
                         </a>

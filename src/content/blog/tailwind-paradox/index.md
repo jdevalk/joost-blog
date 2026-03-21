@@ -9,8 +9,8 @@ categories:
   - Development
   - Open Source
 featureImage:
-  src: ./images/Gemini_Generated_Image_a085oha085oha085-scaled.webp
-  alt: ''
+  src: ./images/featured.png
+  alt: 'Illustration for: The Tailwind paradox: the high price of “enough”'
 ---
 The news hit the developer community like a cold bucket of water. Adam Wathan, the creator of Tailwind CSS, recently announced that he [had to lay off 75% of his engineering team](https://github.com/tailwindlabs/tailwindcss.com/pull/2388#issuecomment-3717222957), cutting the staff from four engineers down to just one.
 

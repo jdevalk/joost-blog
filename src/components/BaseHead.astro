@@ -1,10 +1,8 @@
 ---
 import monaSansWoff2 from '@fontsource-variable/mona-sans/files/mona-sans-latin-wght-normal.woff2?url';
 import { SEO } from 'astro-seo';
-import { getImage } from 'astro:assets';
 import siteConfig from '../data/site-config';
 import { SITE_URL } from '../utils/schema/constants';
-import type { ImageInput } from '../types';
 
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
@@ -12,8 +10,6 @@ import '../styles/global.css';
 export type Props = {
     title?: string;
     description?: string;
-    image?: ImageInput | undefined;
-    ogImage?: string;
     pageType?: 'website' | 'article';
     publishDate?: Date;
     updatedDate?: Date;
@@ -29,40 +25,10 @@ const {
 } = Astro.props;
 const title = [Astro.props.title, siteConfig.title].filter(Boolean).join(' | ');
 
-// OG image resolution: prefer explicit ogImage prop, then auto-generated OG image from slug
+// OG image: always use auto-generated image from slug
 const slug = Astro.url.pathname.replace(/^\/|\/$/g, '');
-const autoOgImage = `/og/${slug || 'index'}.jpg`;
-const ogImageUrl = Astro.props.ogImage ?? autoOgImage;
-// OG images must point to the actual deployed site (not production canonical) so they resolve
 const ogImageBase = Astro.site?.origin ?? SITE_URL;
-const ogImageSrc = ogImageUrl ? new URL(ogImageUrl, ogImageBase).toString() : undefined;
-
-// Fallback image resolution for pages without auto-generated OG images
-const image = Astro.props.image ?? siteConfig.image;
-let resolvedImage: { src: string; alt?: string } | undefined;
-if (!ogImageSrc && image?.src) {
-    if (typeof image.src === 'string') {
-        resolvedImage = {
-            src: new URL(image.src, ogImageBase).toString(),
-            alt: image.alt
-        };
-    } else {
-        const optimizedImage = await getImage({
-            src: image.src as ImageMetadata,
-            width: 1200,
-            height: 630,
-            format: 'jpeg',
-            fit: 'cover'
-        });
-        resolvedImage = {
-            src: new URL(optimizedImage.src, ogImageBase).toString(),
-            alt: image.alt
-        };
-    }
-}
-
-// Final OG image: auto-generated takes priority, then resolved from image prop
-const finalOgImage = ogImageSrc ?? resolvedImage?.src;
+const ogImage = new URL(`/og/${slug || 'index'}.jpg`, ogImageBase).toString();
 
 // Canonical URL always points to production domain
 const canonicalURL = new URL(Astro.url.pathname, SITE_URL);
@@ -109,7 +75,7 @@ const articleOg = pageType === 'article' && publishDate ? {
         basic: {
             title,
             type: pageType,
-            image: finalOgImage ?? '',
+            image: ogImage,
             url: formatCanonicalURL(canonicalURL),
         },
         optional: {
@@ -118,9 +84,9 @@ const articleOg = pageType === 'article' && publishDate ? {
             siteName: siteConfig.title,
         },
         image: {
-            alt: resolvedImage?.alt ?? Astro.props.title ?? siteConfig.title,
+            alt: Astro.props.title ?? siteConfig.title,
             width: 1200,
-            height: 630,
+            height: 675,
         },
         ...(articleOg ? { article: articleOg } : {}),
     }}
@@ -130,8 +96,8 @@ const articleOg = pageType === 'article' && publishDate ? {
         creator: '@jdevalk',
         title,
         description,
-        image: finalOgImage,
-        imageAlt: resolvedImage?.alt ?? Astro.props.title ?? siteConfig.title,
+        image: ogImage,
+        imageAlt: Astro.props.title ?? siteConfig.title,
     }}
     extend={{
         link: [

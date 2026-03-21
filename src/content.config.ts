@@ -28,6 +28,7 @@ const blog = defineCollection({
                     caption: z.string().optional()
                 })
                 .optional(),
+            imageHint: z.string().optional(),
             categories: z.array(z.string()).optional(),
             isFeatured: z.boolean().default(false),
             seo: seoSchema(image).optional()

@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/FAIR-WordPress-and-Knowing-When-to-Stop-featured-scaled.webp
-  alt: ''
+  src: ./images/featured.png
+  alt: 'Illustration for: FAIR, WordPress, and Knowing When to Stop'
 isFeatured: false
 ---
 Over the past year, we, Karim & Joost, have written and talked extensively about the challenges facing WordPress. [We’ve been critical](https://marucchi.com/wordpress-leadership-continued/). At times, [very critical](/wordpress-leadership/). Of leadership, of governance, of the way decisions are made and enforced. We stand by that criticism.

@@ -7,8 +7,8 @@ excerpt: >-
 categories:
   - Search Opinion
 featureImage:
-  src: ./images/ai-replaying-early-seo-scaled.webp
-  alt: ''
+  src: ./images/ai-optimization-is-replaying-early-seo-just-faster.png
+  alt: 'Illustration for: AI optimization is replaying early SEO, just faster'
 ---
 *If you were around for early SEO, the current AI-content wave should feel familiar. The difference is speed: what used to take years now takes weeks.*
 

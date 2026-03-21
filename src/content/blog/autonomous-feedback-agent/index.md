@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - Development
 featureImage:
-  src: ./images/building-an-autonomous-feedback-agent-featured-scaled.webp
-  alt: ''
+  src: ./images/featured.png
+  alt: 'Illustration for: Building an Autonomous Feedback Agent'
 ---
 What if your users could submit a bug report and have a pull request ready for review before you’ve even seen the ticket? That’s what we built for [Rondo Club](https://rondo.svawc.nl), a sports club management app. It’s a fully autonomous feedback processing pipeline (in my case powered by Claude Code).
 

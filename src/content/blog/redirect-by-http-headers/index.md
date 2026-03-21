@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - Search Opinion
 featureImage:
-  src: ./images/redirect-by-http-header-fi-png.webp
-  alt: ''
+  src: ./images/featured.png
+  alt: 'Illustration for: Redirect-By HTTP headers'
 ---
 One of the things one runs into when you’re doing large migrations (between domains, or within a domain) is that you run into redirects that go “wrong”. A system somewhere is doing a redirect, and you don’t know which system you need to change that redirect in. A “Redirect-By” header helps you find out which system did the redirect.
 

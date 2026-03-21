@@ -39,10 +39,10 @@ export async function generateOgImage(title: string, backgroundImagePath?: strin
     const markup = html`
         <div style="width: ${OG_WIDTH}px; height: ${OG_HEIGHT}px; display: flex; position: relative;">
             <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 70%; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8)); display: flex;"></div>
-            <div style="position: absolute; bottom: 50px; left: 60px; right: 60px; color: white; font-size: 48px; line-height: 1.2; display: flex; font-weight: 700;">
+            <div style="position: absolute; bottom: 50px; left: 60px; right: 240px; color: white; font-size: 56px; line-height: 1.2; display: flex; font-weight: 700;">
                 ${title}
             </div>
-            <div style="position: absolute; top: 30px; right: 40px; color: rgba(255,255,255,0.9); font-size: 24px; display: flex; font-weight: 700;">
+            <div style="position: absolute; bottom: 30px; right: 40px; color: rgba(255,255,255,0.9); font-size: 24px; display: flex; font-weight: 700;">
                 joost.blog
             </div>
         </div>
