@@ -46,11 +46,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export async function GET({ props }: APIContext) {
     const { title, imagePath } = props as { title: string; imagePath?: string };
-    const png = await generateOgImage(title, imagePath);
+    const jpg = await generateOgImage(title, imagePath);
 
-    return new Response(png, {
+    return new Response(jpg, {
         headers: {
-            'Content-Type': 'image/png',
+            'Content-Type': 'image/jpeg',
             'Cache-Control': 'public, max-age=31536000, immutable'
         }
     });

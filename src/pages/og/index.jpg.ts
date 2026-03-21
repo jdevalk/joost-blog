@@ -1,11 +1,11 @@
 import { generateHomepageOgImage } from '../../utils/og-image';
 
 export async function GET() {
-    const png = await generateHomepageOgImage();
+    const jpg = await generateHomepageOgImage();
 
-    return new Response(png, {
+    return new Response(jpg, {
         headers: {
-            'Content-Type': 'image/png',
+            'Content-Type': 'image/jpeg',
             'Cache-Control': 'public, max-age=31536000, immutable'
         }
     });

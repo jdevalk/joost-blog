@@ -73,7 +73,7 @@ export async function generateOgImage(title: string, backgroundImagePath?: strin
 
             return await sharp(bg)
                 .composite([{ input: await sharp(overlay).png().toBuffer(), top: 0, left: 0 }])
-                .png()
+                .jpeg({ quality: 85 })
                 .toBuffer();
         } catch {
             // Fall through to gradient fallback
@@ -92,7 +92,7 @@ export async function generateOgImage(title: string, backgroundImagePath?: strin
 
     return await sharp(Buffer.from(gradientSvg))
         .composite([{ input: await sharp(overlay).png().toBuffer(), top: 0, left: 0 }])
-        .png()
+        .jpeg({ quality: 85 })
         .toBuffer();
 }
 
@@ -154,6 +154,5 @@ export async function generateHomepageOgImage(): Promise<Buffer> {
         ]
     });
 
-    const png = await sharp(Buffer.from(svg)).png().toBuffer();
-    return png;
+    return await sharp(Buffer.from(svg)).jpeg({ quality: 85 }).toBuffer();
 }
