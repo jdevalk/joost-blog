@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - Yoast
 featureImage:
-  src: ./images/marieke-goodbye-party-jpg-webp.webp
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: Saying goodbye to Marieke at Yoast'
 ---
 Last Friday (June 23rd 2023) we had [Marieke](https://marieke.blog/)‘s goodbye party from Yoast. With that, we’ve both completely stepped out at both Yoast and Newfold Digital, and can start to focus on new stuff. I wrote a speech for the occasion and thought it’d be a shame to not share it with the wider world:
 

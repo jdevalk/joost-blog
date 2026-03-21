@@ -17,7 +17,6 @@ import path from 'node:path';
 import http from 'node:http';
 import matter from 'gray-matter';
 import satori from 'satori';
-import { html } from 'satori-html';
 import sharp from 'sharp';
 
 const PORT = 3456;
@@ -172,17 +171,17 @@ function loadFont() {
 async function generateOgImage(title, backgroundImagePath) {
     const font = loadFont();
 
-    const markup = html`
-        <div style="width: ${OG_WIDTH}px; height: ${OG_HEIGHT}px; display: flex; position: relative;">
-            <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 70%; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8)); display: flex;"></div>
-            <div style="position: absolute; bottom: 50px; left: 60px; right: 240px; color: white; font-size: 56px; line-height: 1.2; display: flex; font-weight: 700;">
-                ${title}
-            </div>
-            <div style="position: absolute; bottom: 30px; right: 40px; color: rgba(255,255,255,0.9); font-size: 24px; display: flex; font-weight: 700;">
-                joost.blog
-            </div>
-        </div>
-    `;
+    const markup = {
+        type: 'div',
+        props: {
+            style: { width: OG_WIDTH, height: OG_HEIGHT, display: 'flex', position: 'relative' },
+            children: [
+                { type: 'div', props: { style: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%', background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.8))', display: 'flex' } } },
+                { type: 'div', props: { style: { position: 'absolute', bottom: 50, left: 60, right: 240, color: 'white', fontSize: 56, lineHeight: 1.2, display: 'flex', fontWeight: 700 }, children: title } },
+                { type: 'div', props: { style: { position: 'absolute', bottom: 30, right: 40, color: 'rgba(255,255,255,0.9)', fontSize: 24, display: 'flex', fontWeight: 700 }, children: 'joost.blog' } },
+            ],
+        },
+    };
 
     const svg = await satori(markup, {
         width: OG_WIDTH,

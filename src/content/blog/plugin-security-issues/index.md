@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/wordpress-plugin-security-issues-jaye-haych-unsplash-scaled.webp
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: How to deal with plugin security issues'
 ---
 Dealing with security issues for your WordPress plugin can be hard and even a bit scary, certainly when it’s happening to you for the first time. In this post I try to outline all the steps you should take as a plugin developer. So, let’s dive in. This isn’t a short post, so here’s a table of contents:
 

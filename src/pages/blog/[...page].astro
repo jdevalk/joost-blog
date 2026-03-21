@@ -87,24 +87,41 @@ const pageContext: SchemaPageContext = {
                 <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                     {blog.map((post) => <PostPreview post={post} />)}
                 </div>
-                <nav aria-label="Pagination" class="mt-12 flex items-center justify-center gap-4 sm:mt-16">
+                <nav aria-label="Pagination" class="mt-12 flex items-center justify-center gap-2 sm:mt-16">
                     {page.url.prev && (
                         <a
                             class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 text-slate-600 transition duration-300 hover:bg-primary hover:text-white dark:bg-[#1e1b19] dark:text-slate-300"
                             href={page.url.prev}
                             rel="prev"
-                            aria-label={`Go to page ${page.currentPage - 1} of ${page.lastPage}`}
+                            aria-label={`Go to page ${page.currentPage - 1}`}
                         >
                             <Icon icon="arrow-left" class="w-5 h-5 fill-current" />
                         </a>
                     )}
-                    <span class="text-sm text-slate-500 dark:text-slate-400" aria-current="page">Page {page.currentPage} of {page.lastPage}</span>
+                    {Array.from({ length: page.lastPage }, (_, i) => i + 1).map((num) => {
+                        const href = num === 1 ? '/blog/' : `/blog/${num}/`;
+                        const isCurrent = num === page.currentPage;
+                        return (
+                            <a
+                                href={href}
+                                class={`inline-flex items-center justify-center w-10 h-10 rounded-full text-sm font-semibold transition duration-300 ${
+                                    isCurrent
+                                        ? 'bg-primary text-white dark:bg-accent dark:text-slate-900'
+                                        : 'bg-slate-100 text-slate-600 hover:bg-primary hover:text-white dark:bg-[#1e1b19] dark:text-slate-300'
+                                }`}
+                                aria-label={`Go to page ${num}`}
+                                aria-current={isCurrent ? 'page' : undefined}
+                            >
+                                {num}
+                            </a>
+                        );
+                    })}
                     {page.url.next && (
                         <a
                             class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 text-slate-600 transition duration-300 hover:bg-primary hover:text-white dark:bg-[#1e1b19] dark:text-slate-300"
                             href={page.url.next}
                             rel="next"
-                            aria-label={`Go to page ${page.currentPage + 1} of ${page.lastPage}`}
+                            aria-label={`Go to page ${page.currentPage + 1}`}
                         >
                             <Icon icon="arrow-right" class="w-5 h-5 fill-current" />
                         </a>

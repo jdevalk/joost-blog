@@ -1,13 +1,15 @@
 ---
-title: "Do you need a CMS?"
+title: Do you need a CMS?
 publishDate: 2026-03-21T00:00:00.000Z
 excerpt: >-
-  For twenty years, wanting a website meant needing a CMS. That's no longer true. The real question people ask now is simpler: how do I get my content on the web?
+  For twenty years, wanting a website meant needing a CMS. That's no longer
+  true. The real question people ask now is simpler: how do I get my content on
+  the web?
 categories:
   - Market Share Analysis
 isFeatured: true
 featureImage:
-  src: ./images/do-you-need-a-cms.webp
+  src: ./images/featured.webp
   alt: 'Illustration for: Do you need a CMS?'
 ---
 For twenty years, "I want a website" meant "I need a CMS." WordPress, Joomla, Drupal: the conversation was always about *which* one. That framing is outdated. People never wanted a CMS. They want a website.

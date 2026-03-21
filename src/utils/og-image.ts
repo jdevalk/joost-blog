@@ -1,6 +1,5 @@
 import { readFileSync } from 'node:fs';
 import satori from 'satori';
-import { html } from 'satori-html';
 import sharp from 'sharp';
 
 const OG_WIDTH = 1200;
@@ -35,18 +34,18 @@ function getMimeType(filePath: string): string {
 export async function generateOgImage(title: string, backgroundImagePath?: string): Promise<Buffer> {
     const font = loadFont();
 
-    // Render the text overlay with satori (no background image — composited later with sharp)
-    const markup = html`
-        <div style="width: ${OG_WIDTH}px; height: ${OG_HEIGHT}px; display: flex; position: relative;">
-            <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 70%; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8)); display: flex;"></div>
-            <div style="position: absolute; bottom: 50px; left: 60px; right: 240px; color: white; font-size: 56px; line-height: 1.2; display: flex; font-weight: 700;">
-                ${title}
-            </div>
-            <div style="position: absolute; bottom: 30px; right: 40px; color: rgba(255,255,255,0.9); font-size: 24px; display: flex; font-weight: 700;">
-                joost.blog
-            </div>
-        </div>
-    `;
+    // Render the text overlay with satori (using object markup to avoid HTML entity issues)
+    const markup = {
+        type: 'div',
+        props: {
+            style: { width: OG_WIDTH, height: OG_HEIGHT, display: 'flex', position: 'relative' },
+            children: [
+                { type: 'div', props: { style: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%', background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.8))', display: 'flex' } } },
+                { type: 'div', props: { style: { position: 'absolute', bottom: 50, left: 60, right: 240, color: 'white', fontSize: 56, lineHeight: 1.2, display: 'flex', fontWeight: 700 }, children: title } },
+                { type: 'div', props: { style: { position: 'absolute', bottom: 30, right: 40, color: 'rgba(255,255,255,0.9)', fontSize: 24, display: 'flex', fontWeight: 700 }, children: 'joost.blog' } },
+            ],
+        },
+    };
 
     const svg = await satori(markup, {
         width: OG_WIDTH,
@@ -118,28 +117,22 @@ export async function generateHomepageOgImage(): Promise<Buffer> {
     const ringOuter = avatarSize + 44;
     const ringInner = avatarSize + 22;
 
-    const markup = html`
-        <div style="width: ${OG_WIDTH}px; height: ${OG_HEIGHT}px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #4a1525 0%, #3a1a28 50%, #2e1220 100%); position: relative;">
-            <!-- Concentric rings -->
-            <div style="display: flex; align-items: center; justify-content: center; width: ${ringOuter}px; height: ${ringOuter}px; border-radius: ${ringOuter / 2}px; border: 1px solid rgba(255,255,255,0.08); position: relative;">
-                <div style="display: flex; align-items: center; justify-content: center; width: ${ringInner}px; height: ${ringInner}px; border-radius: ${ringInner / 2}px; border: 1px solid rgba(255,255,255,0.15);">
-                    <img src="${avatarBase64}" style="width: ${avatarSize}px; height: ${avatarSize}px; border-radius: ${avatarSize / 2}px; border: 3px solid rgba(255,255,255,0.3);" />
-                </div>
-            </div>
-            <!-- Name -->
-            <div style="display: flex; color: white; font-size: 44px; font-weight: 700; margin-top: 28px;">
-                Joost de Valk
-            </div>
-            <!-- Tagline -->
-            <div style="display: flex; color: rgba(255,255,255,0.6); font-size: 22px; font-weight: 700; margin-top: 12px;">
-                Internet entrepreneur · Founder of Yoast · Investor
-            </div>
-            <!-- Domain -->
-            <div style="position: absolute; bottom: 30px; right: 40px; color: rgba(255,255,255,0.5); font-size: 20px; display: flex; font-weight: 700;">
-                joost.blog
-            </div>
-        </div>
-    `;
+    const markup = {
+        type: 'div',
+        props: {
+            style: { width: OG_WIDTH, height: OG_HEIGHT, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #4a1525 0%, #3a1a28 50%, #2e1220 100%)', position: 'relative' },
+            children: [
+                { type: 'div', props: { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', width: ringOuter, height: ringOuter, borderRadius: ringOuter / 2, border: '1px solid rgba(255,255,255,0.08)', position: 'relative' }, children: [
+                    { type: 'div', props: { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', width: ringInner, height: ringInner, borderRadius: ringInner / 2, border: '1px solid rgba(255,255,255,0.15)' }, children: [
+                        { type: 'img', props: { src: avatarBase64, style: { width: avatarSize, height: avatarSize, borderRadius: avatarSize / 2, border: '3px solid rgba(255,255,255,0.3)' } } },
+                    ] } },
+                ] } },
+                { type: 'div', props: { style: { display: 'flex', color: 'white', fontSize: 44, fontWeight: 700, marginTop: 28 }, children: 'Joost de Valk' } },
+                { type: 'div', props: { style: { display: 'flex', color: 'rgba(255,255,255,0.6)', fontSize: 22, fontWeight: 700, marginTop: 12 }, children: 'Internet entrepreneur \u00b7 Founder of Yoast \u00b7 Investor' } },
+                { type: 'div', props: { style: { position: 'absolute', bottom: 30, right: 40, color: 'rgba(255,255,255,0.5)', fontSize: 20, display: 'flex', fontWeight: 700 }, children: 'joost.blog' } },
+            ],
+        },
+    };
 
     const svg = await satori(markup, {
         width: OG_WIDTH,

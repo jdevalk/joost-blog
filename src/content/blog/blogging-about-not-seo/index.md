@@ -7,6 +7,9 @@ excerpt: >-
   surprisingly
 categories:
   - Search Opinion
+featureImage:
+  src: ./images/featured.webp
+  alt: 'Illustration for: Blogging about not SEO'
 ---
 I’ve been wanting to do this for a while: blogging for fun, on a domain separate from [Yoast.com](https://yoast.com/). Blogging about stuff I do outside of Yoast, which, surprisingly to some people, is more and more. I will blog here about the investments Marieke and I make with Altha, our investment company and my advisory work, when I’m allowed to.
 

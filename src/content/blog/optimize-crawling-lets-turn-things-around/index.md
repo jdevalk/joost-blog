@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - Search Opinion
 featureImage:
-  src: ./images/priscilla-du-preez-4E4AccyhWZo-unsplash-scaled.webp
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: Optimize crawling: let’s turn things around!'
 ---
 I wrote about [crawl optimization](/optimize-crawling-for-the-environment/) last week, mostly about getting stuff that you don’t want crawled to not be crawled. There’s more to say about that, and I will in follow up posts, but first we need to talk about how to get the stuff that you *do* want indexed, crawled and indexed by search engines. To that end we’ll have to talk about XML sitemaps and the new kid in town, IndexNow.
 

@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - Productivity hacks
 featureImage:
-  src: ./images/waldemar-brandt-oWUx0ON3EVc-unsplash-scaled.webp
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: How to get week numbers in your Mac menu bar'
 ---
 This post explains how to get the week number in your Mac’s menu bar. Simple enough, right? At some point, as you start planning ahead in basically anything, you’ll run into “week numbers”. Week numbers are weird in that they’re not in your head all the time. But you do need to look them up more than you want. I ran into this and decided: there must be a way to solve this. And there is.
 

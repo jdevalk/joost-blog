@@ -5,8 +5,8 @@ excerpt: '> “Computing is too important to be left to men.”'
 categories:
   - Short
 featureImage:
-  src: ./images/ksj-jpg.webp
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: Karen Sparck Jones'
 ---
 > “Computing is too important to be left to men.”
 

@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/Gutenberg_2_FI.webp
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: WordPress 5.0 needs a different timeline'
 ---
 For the last few months, the WordPress developer community has been moving towards a release of WordPress 5.0. This is the highly anticipated release that will contain the new Gutenberg editing experience. It’s arguably one of the biggest leaps forward in WordPress’ editing experience *and* its developer experience in this decade. It’s also not done yet, and if we keep striving for its planned November 19th release date, we are setting ourselves up for failure.
 

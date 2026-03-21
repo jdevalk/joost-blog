@@ -8,8 +8,8 @@ categories:
   - WordPress
   - Yoast
 featureImage:
-  src: ./images/michal-matlon-7OxV_qDiGRI-unsplash-scaled.webp
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: Democratizing publishing'
 ---
 Matt blogged, in response to a question asked at WordCamp US: what does “democratizing publishing” mean to you? His answer:
 

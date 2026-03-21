@@ -9,8 +9,8 @@ categories:
   - Personal stuff
   - Yoast
 featureImage:
-  src: ./images/mohamed-nohassi-odxB5oIG_iA-unsplash-scaled.webp
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: Transitioning to a new role at Yoast'
 ---
 At the end of this month, I will [transition to a different role at Yoast](https://yoast.com/joost-transitions-to-a-new-position/). No, I will not leave Yoast. But, I *am* going to pursue some other dreams outside of Yoast. It’s time to spread my wings! Let me explain a bit on why I am making this transition and what it will look like!
 

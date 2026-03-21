@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - Yoast
 featureImage:
-  src: ./images/Power-Marieke.jpg
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: Stepping “down” at Yoast'
 ---
 Today [we’ve announced](https://yoast.com/new-ceo-marieke-van-de-rakt/) that [Marieke](https://marieke.blog/) is the new CEO at Yoast, and I’m stepping down. With me recently [stepping ](/leading-marketing-communication-for-wordpress/)*[up](/leading-marketing-communication-for-wordpress/)* as Marketing & Communications Lead for WordPress, this made a lot of sense. In many ways, Marieke was already the acting CEO at Yoast. While this step makes a lot of sense *to us*, it probably needs some explaining to the outside world.
 
