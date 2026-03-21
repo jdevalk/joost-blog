@@ -70,15 +70,7 @@ export default defineConfig({
     vite: {
         plugins: [tailwindcss()]
     },
-    redirects: {
-        '/clicky': 'https://wordpress.org/plugins/clicky/',
-        '/clicky/': 'https://wordpress.org/plugins/clicky/',
-        '/code/clicky': 'https://wordpress.org/plugins/clicky/',
-        '/code/clicky/': 'https://wordpress.org/plugins/clicky/',
-        '/plugins': '/code/',
-        '/plugins/': '/code/',
-    },
-    prefetch: {
+prefetch: {
         defaultStrategy: 'viewport',
     },
     integrations: [mdx(), sitemap(), pagefind(), injectModulePreloads()],
