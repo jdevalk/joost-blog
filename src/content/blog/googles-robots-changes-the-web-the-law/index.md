@@ -8,7 +8,7 @@ excerpt: >-
 categories:
   - Search Opinion
 featureImage:
-  src: ./images/Robots_FI.png
+  src: ./images/Robots_FI.webp
   alt: ''
 ---
 Google [announced a few days ago](https://webmasters.googleblog.com/2019/09/evolving-nofollow-new-ways-to-identify.html) that they would change the way `rel="nofollow"` works *for them*. They would start treating `nofollow` as a “hint” instead of a “directive”. This means they go from “oh you don’t want us to go into that room? ok” to “oh you don’t want us to go into that room? We’ll see about that”. Basically, they went from friendly neighbor to annoying parent real quick.

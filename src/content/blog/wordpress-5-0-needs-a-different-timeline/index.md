@@ -8,7 +8,7 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/Gutenberg_2_FI.png
+  src: ./images/Gutenberg_2_FI.webp
   alt: ''
 ---
 For the last few months, the WordPress developer community has been moving towards a release of WordPress 5.0. This is the highly anticipated release that will contain the new Gutenberg editing experience. It’s arguably one of the biggest leaps forward in WordPress’ editing experience *and* its developer experience in this decade. It’s also not done yet, and if we keep striving for its planned November 19th release date, we are setting ourselves up for failure.
@@ -29,11 +29,11 @@ There are a two main reasons why the November 19th timeline is in my opinion unt
 
 The amount of work being done every day right now by the development team is bordering on the insane. Look at the work for the last three days:
 
-![](./images/image.png)I’d normally be happy with this for a week. This is 3 days, also including a Sunday. It’s been like this for a while. I appreciate all these people doing the hard work, but moving this fast only increases the chance of regressions.
+![](./images/image.webp)I’d normally be happy with this for a week. This is 3 days, also including a Sunday. It’s been like this for a while. I appreciate all these people doing the hard work, but moving this fast only increases the chance of regressions.
 
 When [I mentioned earlier today](https://wordpress.slack.com/archives/C02QB2JS7/p1541503290677300) in the WordPress Slack’s #core-editor channel that I think we should push back, the response was pretty positive:
 
-![](./images/image-1.png)Let’s get this straight: *this is in the channel with a large part of the people working on this release*. I’m not the first to say this. I hope this post will help the powers that be come to the same conclusion.
+![](./images/image-1.webp)Let’s get this straight: *this is in the channel with a large part of the people working on this release*. I’m not the first to say this. I hope this post will help the powers that be come to the same conclusion.
 
 ## Conclusion: push back, and zoom out
 

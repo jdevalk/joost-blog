@@ -8,14 +8,14 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/CleanShot-2023-12-14-at-14.58.48.png
+  src: ./images/CleanShot-2023-12-14-at-14.58.48.webp
   alt: ''
 ---
 For years, plugin developers have been looking for ways to demo their plugins to users. Users don’t read `readme.txt` files or plugin pages on WordPress.org. They want to try and see a plugin in action for a bit, which is a much better way of seeing whether a plugin solves your problem. The new [WordPress playground](https://developer.wordpress.org/playground/) is a perfect way of doing that. So, the meta team at WordPress.org started building a preview button. While the first iteration was not ideal, a few weeks ago, @Tellyworth posted on Make WordPress about the [revisited Playground experiment](https://make.wordpress.org/meta/2023/11/22/plugin-directory-preview-button-revisited/). I, of course, started playing with this feature, and now I can’t wait for it to go live for all users.
 
 First, let me show you what I’ve created. [Click this link to open the Fewer Tags playground](https://playground.wordpress.net/?plugin=fewer-tags&blueprint-url=https%3A%2F%2Fwordpress.org%2Fplugins%2Fwp-json%2Fplugins%2Fv1%2Fplugin%2Ffewer-tags%2Fblueprint.json%3Frev%3D3010033) in a new tab.
 
-![Screenshot of the WordPress playground with the Fewer Tags plugin loaded and demo data loaded.](./images/CleanShot-2023-12-14-at-14.58.48.png)As you’ll see, this opens a WordPress Playground, with [Fewer Tags](/plugins/fewer-tags/) installed, like in the screenshot above. But it does more. It brings you to the correct page for you to see what Fewer Tags does (the edit tags page), *and* it loads a notification that explains what you can do there. This notification *only loads and shows on Playground sites*.
+![Screenshot of the WordPress playground with the Fewer Tags plugin loaded and demo data loaded.](./images/CleanShot-2023-12-14-at-14.58.48.webp)As you’ll see, this opens a WordPress Playground, with [Fewer Tags](/plugins/fewer-tags/) installed, like in the screenshot above. But it does more. It brings you to the correct page for you to see what Fewer Tags does (the edit tags page), *and* it loads a notification that explains what you can do there. This notification *only loads and shows on Playground sites*.
 
 Let me explain to you how to do this:
 

@@ -7,7 +7,7 @@ excerpt: >-
 categories:
   - Post from Joost
 featureImage:
-  src: ./images/featured.png
+  src: ./images/featured.webp
   alt: 'Illustration for: Why healthy doubt beats AI confidence theater'
 ---
 > *AI will confidently sign off on anything. The question is whether you will too.* 

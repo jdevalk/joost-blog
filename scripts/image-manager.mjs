@@ -240,8 +240,11 @@ async function handleUpload(slug, imageBuffer, filename) {
     const post = posts.find(p => p.slug === slug);
     if (!post) throw new Error(`Post "${slug}" not found`);
 
-    const ext = path.extname(filename).toLowerCase() || '.png';
-    const imageFilename = `featured${ext}`;
+    // Convert to WebP for optimal file size
+    imageBuffer = await sharp(imageBuffer)
+        .webp({ quality: 85 })
+        .toBuffer();
+    const imageFilename = 'featured.webp';
 
     let imageDir;
     if (post.isDirectory) {

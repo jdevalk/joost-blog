@@ -9,7 +9,7 @@ categories:
   - Development
   - WordPress
 featureImage:
-  src: ./images/featured.png
+  src: ./images/featured.webp
   alt: >-
     Illustration for: The generalization tax: why WordPress is still the smart
     architectural base

@@ -8,7 +8,7 @@ excerpt: >-
 categories:
   - Development
 featureImage:
-  src: ./images/healthy-github-repository-example.png
+  src: ./images/healthy-github-repository-example.webp
   alt: ''
 ---
 As a result of [investing in a fair few companies](https://emilia.capital/) and getting a lot more requests to invest, I look at GitHub repositories a lot. I often run into GitHub repositories that don’t look well maintained. So, I thought I’d write a small article on what a healthy GitHub repository should look like.
@@ -34,7 +34,7 @@ The repository description should not be empty. If you go to your repository and
 
 If you haven’t set a URL for your project, add it now, too.
 
-![](./images/CleanShot-2023-12-19-at-12.41.14@2x.png)
+![](./images/CleanShot-2023-12-19-at-12.41.14@2x.webp)
 
 ## README file
 

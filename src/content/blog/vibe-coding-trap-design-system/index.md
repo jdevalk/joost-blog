@@ -9,7 +9,7 @@ categories:
   - Development
   - WordPress
 featureImage:
-  src: ./images/featured.png
+  src: ./images/featured.webp
   alt: >-
     Illustration for: Vibe coding is a trap: why WordPress needs a design system
     NOW

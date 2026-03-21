@@ -8,7 +8,7 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/featured.png
+  src: ./images/featured.webp
   alt: 'Illustration for: FAIR, WordPress, and Knowing When to Stop'
 isFeatured: false
 ---

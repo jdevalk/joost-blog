@@ -9,7 +9,7 @@ categories:
   - Development
   - Open Source
 featureImage:
-  src: ./images/featured.png
+  src: ./images/featured.webp
   alt: >-
     Illustration for: The death of Code Copyright (and the rise of the
     Architect)

@@ -111,8 +111,8 @@ const articleOg = pageType === 'article' && publishDate ? {
     }}
 />
 
-<!-- Analytics -->
-<script defer data-domain="joost.blog" data-api="/api/event" src="/api/s"></script>
+<!-- Analytics (Cloudflare Pages Functions — only works in production) -->
+{!import.meta.env.DEV && <script defer data-domain="joost.blog" data-api="/api/event" src="/api/s"></script>}
 <script>
     // Track pageviews on View Transitions navigation
     document.addEventListener('astro:page-load', () => {

@@ -6,7 +6,7 @@ categories:
   - Open Source
   - WordPress
 featureImage:
-  src: ./images/featured.png
+  src: ./images/featured.webp
   alt: >-
     Illustration for: The People Behind the Platform: How WordPress’s Community
     Drives its Success

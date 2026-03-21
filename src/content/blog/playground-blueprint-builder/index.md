@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/playground-blueprint-builder-jpg.webp
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: Playground Blueprint Builder'
 ---
 I have been playing with the [WordPress Playground](https://wordpress.org/playground/) a lot. As I did, I wanted a way to quickly make a copy of an existing site to a new Playground. It seems an ideal way to test new plugins, themes, and other things you’d want to change.
 

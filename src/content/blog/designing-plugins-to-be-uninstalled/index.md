@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/Designing-plugins-to-be-uninstalled-1-jpg.webp
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: Designing plugins to be uninstalled'
 ---
 I feel a particular class of plugins in the WordPress world should be more prominent. Plugins that help you do something, which you then delete when you’re done. There are a lot of these, and they’re super useful. I’d probably call them *utility plugins*.
 

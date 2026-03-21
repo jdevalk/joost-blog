@@ -10,7 +10,7 @@ categories:
   - Open Source
   - WordPress
 featureImage:
-  src: ./images/featured.png
+  src: ./images/featured.webp
   alt: >-
     Illustration for: Great minds think alike? My WordPress take on Markdown for
     Agents

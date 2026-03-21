@@ -8,12 +8,12 @@ excerpt: >-
 categories:
   - Development
 featureImage:
-  src: ./images/whatsapp-email-links.png
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: Clickable WhatsApp links'
 ---
 The simple things make life easy. One of them is WhatsApp. And more specifically: customer service through WhatsApp. I love it when companies offer WhatsApp support. What I love a little bit less is when they offer it, but they make me jump through hoops to get to it. I recently ordered some shirts from SuitSupply and ended up needing their support. This is what I ran into:
 
-![Screenshot of SuitSupply's FAQ page, where their WhatsApp and email addresses both aren't linked.](./images/whatsapp-email-links.png)The email address wasn’t linked and thus not clickable, nor were the WhatsApp numbers. Talking about making me work for it… Now, I don’t even need to *know* your WhatsApp number. I just need you to give me a link that works. And this stuff ain’t hard, so here comes the explanation:
+![Screenshot of SuitSupply's FAQ page, where their WhatsApp and email addresses both aren't linked.](./images/whatsapp-email-links.webp)The email address wasn’t linked and thus not clickable, nor were the WhatsApp numbers. Talking about making me work for it… Now, I don’t even need to *know* your WhatsApp number. I just need you to give me a link that works. And this stuff ain’t hard, so here comes the explanation:
 
 ## How to create Clickable WhatsApp links
 
@@ -33,7 +33,7 @@ On [their official support page](https://faq.whatsapp.com/5913398998672934), Wha
 
 And then it could look something like this:
 
-![](./images/whatsapp-email-links-after.png)
+![](./images/whatsapp-email-links-after.webp)
 
 Now, of course, they really should underline their links too, but that’s another matter.
 

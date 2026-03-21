@@ -9,8 +9,8 @@ categories:
   - Development
   - WordPress
 featureImage:
-  src: ./images/aaa-option-optimizer-screenshot-1.png
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: Cleaning up WordPress option clutter'
 ---
 Note: this plugin has received a ton of updates since its inception. It’s now been moved to Progress Planner, where the team there (including myself) are developing it further. So please check out [AAA Option Optimizer on Progress Planner’s website](https://progressplanner.com/plugins/aaa-option-optimizer/).
 
@@ -38,7 +38,7 @@ When you install the plugin, it measures the current standings immediately and s
 
 Then you go to the plugin’s page. It’s under Tools. It’ll look something like this:
 
-![](./images/aaa-option-optimizer-screenshot-1.png)On this page, you remove the options that you no longer need, and you can optimize away. Be sure to make a backup before you do this, because you might of course break things. This is a power tool, don’t give it to people who don’t know what to do with it.
+![](./images/aaa-option-optimizer-screenshot-1.webp)On this page, you remove the options that you no longer need, and you can optimize away. Be sure to make a backup before you do this, because you might of course break things. This is a power tool, don’t give it to people who don’t know what to do with it.
 
 ## Future versions: auto optimization?
 

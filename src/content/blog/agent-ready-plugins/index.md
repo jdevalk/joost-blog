@@ -9,7 +9,7 @@ categories:
   - Development
   - WordPress
 featureImage:
-  src: ./images/featured.png
+  src: ./images/featured.webp
   alt: >-
     Illustration for: From installation to integration: Making plugins
     “agent-ready”

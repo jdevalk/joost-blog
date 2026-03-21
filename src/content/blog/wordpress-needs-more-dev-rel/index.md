@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/cal.com-wordpress-plugin.png
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: WordPress needs more dev-rel'
 ---
 The WordPress ecosystem is very good at talking to each other. We do so on platforms like [the official WordPress Slack, Post Status, Twitter,](https://make.wordpress.org/chat/) and many other places. We are, however, not as good at keeping up with the rest of the open-source world – something [Marieke recently mentioned in her column too](https://poststatus.com/open-source-beyond-wordpress/) – and I think this is where we are missing many opportunities. In this post, I explain why WordPress needs more developer relations (dev-rel) and what we could do to fix it.
 

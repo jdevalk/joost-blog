@@ -9,7 +9,7 @@ categories:
   - Development
   - Productivity hacks
 featureImage:
-  src: ./images/featured.png
+  src: ./images/featured.webp
   alt: 'Illustration for: Share Obsidian links that actually work everywhere'
 ---
 I’ve been playing with OpenClaw a lot, and I’m using [Obsidian](https://obsidian.md/) intensely with it. All my processes and even my OpenClaw’s core files live in my Obsidian vault. I have Obsidian on all machines I work on, so it’s very convenient. There was only one piece missing: a way to get links in WhatsApp from my OpenClaw that point back to Obsidian.

@@ -8,7 +8,7 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/featured.png
+  src: ./images/featured.webp
   alt: 'Illustration for: Breaking the Status Quo'
 ---
 ## A vision for a new WordPress era

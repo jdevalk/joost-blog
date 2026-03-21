@@ -10,7 +10,7 @@ categories:
   - Open Source
   - WordPress
 featureImage:
-  src: ./images/featured.png
+  src: ./images/featured.webp
   alt: >-
     Illustration for: The silence is deafening: Google’s “agentic” future leaves
     the WordPress economy behind

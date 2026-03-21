@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/edd-transform-rules.png
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: Multi-currency awesomeness with EDD & Cloudflare'
 ---
 We’re getting ready at Emilia Projects (which is the “run our own projects part” of [Emilia Capital](https://emilia.capital/)) to sell our first plugin, the Pro version of [Fewer Tags](/plugins/fewer-tags/). We will sell that using [Easy Digital Downloads](https://easydigitaldownloads.com/) (EDD), which I have not used for *years,* so I’ve been re-learning how to work with it. One of the things I’d found they had added since I started using it is a very nice [multi-currency plugin](https://easydigitaldownloads.com/downloads/multi-currency/).
 
@@ -21,7 +21,7 @@ I started with an approach using [cookies and a worker](https://gist.github.com/
 
 Cloudflare has added a *very* nifty feature called transform rules that allow you to change URLs based on a number of variables. One of them is the country that people are visiting your site from. So, I created a transform rule that adds `?currency=EUR` to every URL on the site for visitors from the EU (and GB). Here’s the “request match” part of that rule:
 
-![](./images/edd-transform-rules.png)Clicking this together in Cloudflare can be some work, so here’s the full expression. You can just put that in by clicking “Edit expression”:
+![](./images/edd-transform-rules.webp)Clicking this together in Cloudflare can be some work, so here’s the full expression. You can just put that in by clicking “Edit expression”:
 
 ```plaintext
 (
@@ -37,17 +37,17 @@ The first bit is simple: target everyone in these countries. The second “And�
 
 And here’s the “Then” part of this rule:
 
-![](./images/cloudflare-transform-url.png)What’s probably not immediately clear to you but is super valuable: **the user does not see that `?currency=EUR` is secretly being added to the URL**! It only gets added in the communication between CloudFlare and your server and not towards the user. So, the cache is different because the URL that CloudFlare is requesting is different, but the user sees the exact same URL as his friend in the US! This isn’t just great for the user but also for your SEO *and* your caching.
+![](./images/cloudflare-transform-url.webp)What’s probably not immediately clear to you but is super valuable: **the user does not see that `?currency=EUR` is secretly being added to the URL**! It only gets added in the communication between CloudFlare and your server and not towards the user. So, the cache is different because the URL that CloudFlare is requesting is different, but the user sees the exact same URL as his friend in the US! This isn’t just great for the user but also for your SEO *and* your caching.
 
 ## Displaying the right price
 
 Now, the next challenge is displaying the right price and the right currency! Luckily, EDD has a shortcode for that: `[edd_price id=<ID of download>]`; this will output the price correctly. So, you need to drop the habit of mentioning price straight in your copy and instead use that shortcode everywhere. And yes, you can use that shortcode within blocks, for instance, buttons. Doing this in the editor:
 
-![](./images/CleanShot-2024-01-26-at-11.43.41.png)Will show this on the front of the site:
+![](./images/CleanShot-2024-01-26-at-11.43.41.webp)Will show this on the front of the site:
 
-![](./images/CleanShot-2024-01-26-at-11.44.01.png)Or this if you’re from the US:
+![](./images/CleanShot-2024-01-26-at-11.44.01.webp)Or this if you’re from the US:
 
-![](./images/CleanShot-2024-01-26-at-11.45.09.png)## You don’t need a currency switcher!
+![](./images/CleanShot-2024-01-26-at-11.45.09.webp)## You don’t need a currency switcher!
 
 By doing this, I would argue you do not need a currency switcher dropdown or buttons on your EDD site, and you can give people the correct currency, depending on where they come from, without any coding!
 

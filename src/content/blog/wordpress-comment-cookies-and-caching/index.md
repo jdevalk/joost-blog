@@ -7,7 +7,7 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/featured.png
+  src: ./images/featured.webp
   alt: 'Illustration for: WordPress comments, cookies and caching'
 ---
 This post explains how WordPress uses comment cookies and why that is detrimental to your site’s caching. It then shows you how to fix this.

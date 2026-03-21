@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - Development
 featureImage:
-  src: ./images/CleanShot-2023-12-20-at-21.12.33.png
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: Good-looking GitHub profile pages'
 ---
 After my [blog post about healthy GitHub repositories](/healthy-github-repository/), I learned that many people didn’t know how to create `.github` repositories and what you can do with those. That automatically also means that you don’t know about organization profile pages, so I wrote a quick post about those, too, which you’re reading now. I’ll start by explaining how to make a good-looking organization page, and then we’ll talk about your [*personal* GitHub profile](#h-personal-github-profile).
 
@@ -17,7 +17,7 @@ After my [blog post about healthy GitHub repositories](/healthy-github-repositor
 
 The Emilia Capital GitHub organization profile is very new and a bit empty, but it already looks quite good:
 
-![Screenshot of the Emilia Capital GitHub profile, showing a README file.](./images/CleanShot-2023-12-20-at-20.56.17.png)### 1. Add a profile readme
+![Screenshot of the Emilia Capital GitHub profile, showing a README file.](./images/CleanShot-2023-12-20-at-20.56.17.webp)### 1. Add a profile readme
 
 The fact that this looks good is the result of a few things. First, and most importantly, it’s the `profile/README.md` in our `.github` repository, which renders above our pinned repositories. This allows you to explain who you, as an organization, are and point to interesting links. It’s really as simple as this: create a `.github` repository, which you should for reasons I outlined in my previous post anyway, add a `profile` directory and create a `README.md` file in that directory.
 
@@ -39,7 +39,7 @@ Add your company’s URL, a description, and a few social profiles like your org
 
 You can quite simply have a good-looking personal GitHub profile [like mine](https://github.com/jdevalk):
 
-![Screenshot of Joost's personal GitHub profile page.](./images/CleanShot-2023-12-20-at-21.12.33.png)### 1. Create a profile readme
+![Screenshot of Joost's personal GitHub profile page.](./images/CleanShot-2023-12-20-at-21.12.33.webp)### 1. Create a profile readme
 
 Just like you can create a `.github` repository for organizations, you can create a “magic” repository for your personal profile too. But this repository has a different name: it should be identical to your username. So for me, it’s `jdevalk`, as [you can see here](https://github.com/jdevalk/jdevalk). If you add a `README.md` file to that personal repository, you get the same benefits as the `profile/README.md` does for organization profiles. And then it renders above your pinned profiles as you can see in the screenshot.
 

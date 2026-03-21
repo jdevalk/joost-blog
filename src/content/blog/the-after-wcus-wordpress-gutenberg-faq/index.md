@@ -8,7 +8,7 @@ excerpt: >-
 categories:
   - WordPress
 featureImage:
-  src: ./images/Gutenberg_FI.png
+  src: ./images/Gutenberg_FI.webp
   alt: ''
 ---
 I just came back from WordCamp US in Nashville, which was awesome. In this post I want to address some of the questions I’ve had a couple of times. So here we go:

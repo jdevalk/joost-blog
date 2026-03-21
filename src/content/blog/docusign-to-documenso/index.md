@@ -8,8 +8,8 @@ excerpt: >-
 categories:
   - Open Source
 featureImage:
-  src: ./images/documenso-screenshot.png
-  alt: ''
+  src: ./images/featured.webp
+  alt: 'Illustration for: Docusign to Documenso'
 ---
 ## Migrating from SaaS to open-source
 
@@ -79,7 +79,7 @@ For the email sending part, Documenso allows you to put several different types 
 
 Once you’ve done all that, you should have something that looks like this:
 
-![Screenshot of the Documenso interface](./images/documenso-screenshot.png)## The benefits
+![Screenshot of the Documenso interface](./images/documenso-screenshot.webp)## The benefits
 
 Next to the cost benefits, more on that below, there are a few other benefits:
 

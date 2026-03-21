@@ -8,7 +8,7 @@ excerpt: >-
 categories:
   - Productivity hacks
 featureImage:
-  src: ./images/hazel-script-screenshot-2.png
+  src: ./images/hazel-script-screenshot-2.webp
   alt: ''
 ---
 I love [CloudFlare](https://www.cloudflare.com/). It makes websites lots faster. One of the things it does is change PNG files to WebP automatically when your browser (f.i. Google Chrome) supports it. This is awesome, as they’re smaller and it thus loads faster.
@@ -19,7 +19,7 @@ I had this happen to me enough that I decided to find a better solution. I run a
 
 ## Prerequisites
 
-To convert `.webp` files to `.png` files, you need [Google’s WebP libraries](https://developers.google.com/speed/webp/download). On your Mac, the easiest way to do that is with [Brew](https://brew.sh/):
+To convert `.webp` files to `.webp` files, you need [Google’s WebP libraries](https://developers.google.com/speed/webp/download). On your Mac, the easiest way to do that is with [Brew](https://brew.sh/):
 
 ```shell
 brew install webp
@@ -30,14 +30,14 @@ brew install webp
 The command to convert a WebP file to PNG would look like this:
 
 ```shell
-/usr/local/bin/dwebp -o target.png input.webp
+/usr/local/bin/dwebp -o target.webp input.webp
 ```
 
 ## Adding the rule to Hazel
 
 Now it’s time to open Hazel and add a rule:
 
-![A screenshot of the Hazel configuration screen with the configured rule.](./images/hazel-rule-screenshot-1557x1200.png)Our rule is going to:
+![A screenshot of the Hazel configuration screen with the configured rule.](./images/hazel-rule-screenshot-1557x1200.webp)Our rule is going to:
 
 - Find files in the Downloads folder that end in `.webp`.
 - Run a script to convert those `.webp` files to PNG.
@@ -46,10 +46,10 @@ Now it’s time to open Hazel and add a rule:
 
 All this is pretty easy to configure in Hazel. What you’ll need is the following embedded script:
 
-![A screenshot of the Hazel configuration screen with the script highlighted.](./images/hazel-script-screenshot-3-1557x1200.png)The script is `/bin/bash` as we need to strip the `.webp` extension with some bash magic, and replace it with `.png`:
+![A screenshot of the Hazel configuration screen with the script highlighted.](./images/hazel-script-screenshot-3-1557x1200.webp)The script is `/bin/bash` as we need to strip the `.webp` extension with some bash magic, and replace it with `.webp`:
 
 ```shell
-/usr/local/bin/dwebp -o "${1%%.*}.png" $1
+/usr/local/bin/dwebp -o "${1%%.*}.webp" $1
 ```
 
 After setting up all the rules as explained above and copy pasting the script, just save the rule. You can save any WebP file to the Downloads folder (or whichever folder you decide to run this rule for) and it should be automatically converted to PNG!
