@@ -42,7 +42,7 @@ const isDark = variant === 'dark';
                         </div>
                     )}
                     <div class="text-center sm:text-left">
-                        {title && <h1 class:list={["text-3xl font-extrabold tracking-tight sm:text-4xl", isDark ? "text-white" : "text-slate-900 dark:text-slate-100"]}>{title}</h1>}
+                        {title && <div class:list={["text-3xl font-extrabold tracking-tight sm:text-4xl", isDark ? "text-white" : "text-slate-900 dark:text-slate-100"]}>Hi, I'm <h1 class="inline">{title}</h1></div>}
                         {text && <p class:list={['mt-2 text-base sm:text-lg leading-relaxed', isDark ? 'text-white/75 [&_a]:text-accent [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-white' : 'text-slate-600 dark:text-slate-300', { 'mt-3': title }]} set:html={text} />}
                         {socialLinks && socialLinks.length > 0 && (
                             <div class:list={['flex flex-wrap gap-x-2 gap-y-2 justify-center sm:justify-start', { 'mt-5': title || text }]}>
