@@ -1,5 +1,7 @@
-/rss.xml /feed/ 301
-/rss /feed/ 301
+/feed /feed.xml 301
+/feed/ /feed.xml 301
+/rss.xml /feed.xml 301
+/rss /feed.xml 301
 /plugins /code/ 301
 /plugins/ /code/ 301
 /clicky https://wordpress.org/plugins/clicky/ 301

@@ -1,7 +1,7 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
-import siteConfig from '../../data/site-config';
-import { sortPostsByDateDesc } from '../../utils/post-utils';
+import siteConfig from '../data/site-config';
+import { sortPostsByDateDesc } from '../utils/post-utils';
 
 export async function GET(context) {
     const posts = (await getCollection('blog')).sort(sortPostsByDateDesc);
@@ -14,7 +14,7 @@ export async function GET(context) {
         },
         customData: [
             '<language>en-us</language>',
-            `<atom:link href="${new URL('/feed/', context.site)}" rel="self" type="application/rss+xml" />`,
+            `<atom:link href="${new URL('/feed.xml', context.site)}" rel="self" type="application/rss+xml" />`,
             '<managingEditor>joost@joost.blog (Joost de Valk)</managingEditor>',
             '<webMaster>joost@joost.blog (Joost de Valk)</webMaster>',
         ].join(''),
