@@ -30,4 +30,9 @@ const recentPosts = allPosts.sort(sortPostsByDateDesc).slice(0, 3);
             ))}
         </div>
     </main>
+    <script>
+        if (window.plausible) {
+            window.plausible('404', { props: { path: document.location.pathname } });
+        }
+    </script>
 </BaseLayout>
