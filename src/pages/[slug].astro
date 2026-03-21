@@ -90,7 +90,7 @@ const pageContext: SchemaPageContext = isBlog ? {
                         {blogData!.categories && blogData!.categories.length > 0 && (
                             <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href={`/category/${slugify(blogData!.categories[0])}/`} class="text-primary dark:text-accent hover:text-secondary dark:hover:text-white transition-colors">{blogData!.categories[0]}</a></li>
                         )}
-                        <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600 text-slate-900 dark:text-slate-100 font-medium truncate">{blogData!.title}</li>
+                        <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600 text-slate-900 dark:text-slate-100 font-medium truncate" aria-current="page">{blogData!.title}</li>
                     </ol>
                 </nav>
                 <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl md:text-5xl">{blogData!.title}</h1>

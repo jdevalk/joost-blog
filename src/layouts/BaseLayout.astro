@@ -28,12 +28,13 @@ const { ...head } = Astro.props;
         <BaseHead {...head} />
     </head>
     <body class="bg-white text-slate-700 dark:bg-[#141211] dark:text-slate-300 transition-colors duration-300">
+        <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-white focus:shadow-lg">Skip to content</a>
         <div class="flex flex-col min-h-screen">
             <slot name="header">
                 <Header />
                 <div class="h-[52px] sm:h-[56px]"></div>
             </slot>
-            <div transition:animate={fade({ duration: '0.15s' })}>
+            <div id="main-content" transition:animate={fade({ duration: '0.15s' })}>
                 <slot />
             </div>
             <slot name="footer">

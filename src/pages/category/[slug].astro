@@ -62,7 +62,7 @@ const pageContext: SchemaPageContext = {
                     <ol class="flex items-center gap-1.5">
                         <li><a href="/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Home</a></li>
                         <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href="/blog/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Blog</a></li>
-                        <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600 text-slate-900 dark:text-slate-100 font-medium">{categoryName}</li>
+                        <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600 text-slate-900 dark:text-slate-100 font-medium" aria-current="page">{categoryName}</li>
                     </ol>
                 </nav>
                 <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">{posts.length} {posts.length === 1 ? 'post' : 'posts'} in {categoryName}.</p>

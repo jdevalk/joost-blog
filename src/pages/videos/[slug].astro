@@ -51,7 +51,7 @@ const pageContext: SchemaPageContext = {
                 <ol class="flex items-center gap-1.5">
                     <li><a href="/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Home</a></li>
                     <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href="/videos/" class="text-primary dark:text-accent hover:text-secondary dark:hover:text-white transition-colors">Videos</a></li>
-                    <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600 text-slate-900 dark:text-slate-100 font-medium truncate">{video.data.title}</li>
+                    <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600 text-slate-900 dark:text-slate-100 font-medium truncate" aria-current="page">{video.data.title}</li>
                 </ol>
             </nav>
             <h1 class="text-4xl font-bold mb-6 text-slate-900 dark:text-slate-100">{video.data.title}</h1>

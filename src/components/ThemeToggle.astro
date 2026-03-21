@@ -28,6 +28,13 @@ const isDark = variant === 'dark';
 </button>
 
 <script>
+    function updateThemeLabel() {
+        const toggle = document.getElementById('themeToggle');
+        if (!toggle) return;
+        const isDark = document.documentElement.classList.contains('dark');
+        toggle.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
+    }
+
     function initThemeToggle() {
         const toggle = document.getElementById('themeToggle');
         if (toggle) {
@@ -35,7 +42,9 @@ const isDark = variant === 'dark';
                 document.documentElement.classList.toggle('dark');
                 const isDark = document.documentElement.classList.contains('dark');
                 localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                updateThemeLabel();
             });
+            updateThemeLabel();
         }
     }
     initThemeToggle();
