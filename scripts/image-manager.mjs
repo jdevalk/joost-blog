@@ -195,7 +195,7 @@ function loadFont() {
     return fontData;
 }
 
-async function generateOgImage(title, backgroundImagePath) {
+async function generateOgImage(title, backgroundImagePathOrBuffer) {
     const font = loadFont();
 
     const markup = {
@@ -218,9 +218,9 @@ async function generateOgImage(title, backgroundImagePath) {
 
     const overlay = Buffer.from(svg);
 
-    if (backgroundImagePath) {
+    if (backgroundImagePathOrBuffer) {
         try {
-            const bg = await sharp(backgroundImagePath)
+            const bg = await sharp(backgroundImagePathOrBuffer)
                 .resize(OG_WIDTH, OG_HEIGHT, { fit: 'cover' })
                 .png()
                 .toBuffer();
@@ -249,8 +249,8 @@ async function generateOgImage(title, backgroundImagePath) {
         .toBuffer();
 }
 
-async function generateAndSaveOgImage(slug, title, featureImagePath) {
-    const ogBuffer = await generateOgImage(title, featureImagePath);
+async function generateAndSaveOgImage(slug, title, featureImagePathOrBuffer) {
+    const ogBuffer = await generateOgImage(title, featureImagePathOrBuffer);
     fs.mkdirSync(OG_DIR, { recursive: true });
     const ogPath = path.join(OG_DIR, `${slug}.jpg`);
     fs.writeFileSync(ogPath, ogBuffer);
@@ -309,8 +309,8 @@ async function handleUpload(slug, imageBuffer, filename) {
         fs.writeFileSync(item.filePath, matter.stringify(body, frontmatter));
     }
 
-    // Generate OG image
-    const ogPath = await generateAndSaveOgImage(slug, item.title, imagePath);
+    // Generate OG image using the buffer directly (avoids stale file reads)
+    const ogPath = await generateAndSaveOgImage(slug, item.title, imageBuffer);
 
     return { imagePath: path.relative('.', imagePath), ogPath };
 }
@@ -367,10 +367,10 @@ function renderHTML() {
                 </div>
                 <div class="prompt-col">
                     <div class="prompt-box">
-                        <pre>${promptEscaped}</pre>
+                        <textarea class="prompt-text" data-slug="${post.slug}">${promptEscaped}</textarea>
                     </div>
                     <div class="btn-row">
-                        <button class="copy-btn" onclick='copyPrompt(${promptForCopy})'>Copy prompt</button>
+                        <button class="copy-btn" onclick="copyFromTextarea('${post.slug}')">Copy prompt</button>
                         <button class="generate-btn" onclick="generateImage('${post.slug}', this)">Generate</button>
                     </div>
                 </div>
@@ -414,8 +414,8 @@ function renderHTML() {
     .drop-placeholder svg { margin-bottom: 0.5rem; }
     .drop-placeholder p { font-size: 0.85rem; }
     .prompt-col { display: flex; flex-direction: column; gap: 0.5rem; }
-    .prompt-box { flex: 1; background: #0f0f0f; border: 1px solid #222; border-radius: 8px; padding: 0.75rem; overflow: auto; max-height: 200px; }
-    .prompt-box pre { font-size: 0.8rem; white-space: pre-wrap; word-wrap: break-word; color: #bbb; font-family: inherit; line-height: 1.5; }
+    .prompt-box { flex: 1; }
+    .prompt-text { width: 100%; height: 180px; background: #0f0f0f; border: 1px solid #222; border-radius: 8px; padding: 0.75rem; font-size: 0.8rem; color: #bbb; font-family: inherit; line-height: 1.5; resize: vertical; }
     .copy-btn { align-self: flex-start; padding: 0.4rem 1rem; border: 1px solid #333; border-radius: 6px; background: #1a1a1a; color: #ccc; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
     .og-preview { margin-top: 0.5rem; position: relative; border-radius: 6px; overflow: hidden; border: 1px solid #222; }
     .og-preview img { width: 100%; display: block; }
@@ -454,6 +454,11 @@ function renderHTML() {
 <script>
 function copyPrompt(text) {
     navigator.clipboard.writeText(text).then(() => showToast('Prompt copied!'));
+}
+
+function copyFromTextarea(slug) {
+    const ta = document.querySelector('.prompt-text[data-slug="' + slug + '"]');
+    if (ta) navigator.clipboard.writeText(ta.value).then(() => showToast('Prompt copied!'));
 }
 
 function showToast(msg) {
@@ -498,7 +503,13 @@ async function generateImage(slug, btn) {
     btn.disabled = true;
     btn.textContent = 'Generating...';
     try {
-        const res = await fetch('/generate/' + slug, { method: 'POST' });
+        const ta = document.querySelector('.prompt-text[data-slug="' + slug + '"]');
+        const prompt = ta ? ta.value : '';
+        const res = await fetch('/generate/' + slug, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt }),
+        });
         const data = await res.json();
         if (data.ok) {
             showToast('Image generated + saved');
