@@ -6,6 +6,19 @@ const STOPWORDS = new Set([
 	'why', 'with', 'you', 'your'
 ]);
 
+const MAX_CONTEXT_CHARS = 6000;
+const MODEL = '@cf/meta/llama-3.1-70b-instruct';
+
+const SYSTEM_PROMPT = `You are a helpful assistant answering questions about Joost de Valk and his blog joost.blog. Joost is an internet entrepreneur from the Netherlands, founder of Yoast (the WordPress SEO plugin company), and investor at Emilia Capital.
+
+Rules:
+- Answer ONLY based on the provided context. Do not make up information.
+- If the context doesn't contain enough information to answer, say so honestly.
+- Keep answers concise and direct — 2-4 sentences for simple questions, more for complex ones.
+- When referencing blog posts, mention them by title.
+- Do not repeat the question back. Just answer it.
+- Write in a natural, conversational tone.`;
+
 const headers = {
 	'Access-Control-Allow-Origin': '*',
 	'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
@@ -57,15 +70,82 @@ function scoreDocument(document, tokens) {
 	return score;
 }
 
-function summarize(query, results) {
+function search(query) {
+	const tokens = tokenize(query);
+	return nlwebIndex
+		.map((document) => ({ document, score: scoreDocument(document, tokens) }))
+		.filter((item) => item.score > 0)
+		.sort((a, b) => b.score - a.score)
+		.slice(0, 8);
+}
+
+function buildContext(scoredResults) {
+	let context = '';
+	const sources = [];
+
+	for (const { document } of scoredResults) {
+		const entry = `## ${document.name}\nURL: https://joost.blog${document.url}\n${document.text}\n\n`;
+
+		if (context.length + entry.length > MAX_CONTEXT_CHARS) {
+			// Add truncated version if we have room
+			const remaining = MAX_CONTEXT_CHARS - context.length;
+			if (remaining > 200) {
+				context += `## ${document.name}\nURL: https://joost.blog${document.url}\n${document.text.slice(0, remaining - 100)}\n\n`;
+				sources.push({ url: `https://joost.blog${document.url}`, title: document.name });
+			}
+			break;
+		}
+
+		context += entry;
+		sources.push({ url: `https://joost.blog${document.url}`, title: document.name });
+	}
+
+	return { context, sources };
+}
+
+function fallbackSummarize(query, results) {
 	if (!results.length) {
-		return `I couldn't find a good match on joost.blog for “${query}”. Try a more specific query or fewer keywords.`;
+		return {
+			answer: `I couldn't find a good match on joost.blog for "${query}". Try a more specific query or fewer keywords.`,
+			sources: [],
+		};
 	}
 
 	const top = results[0];
-	const extras = results.slice(1, 3).map((result) => result.name);
+	const extras = results.slice(1, 3).map((r) => r.name);
 	const extraText = extras.length ? ` Related matches include ${extras.join(' and ')}.` : '';
-	return `${top.name} looks like the best match for “${query}”. ${top.description}${extraText}`;
+	return {
+		answer: `${top.name} looks like the best match for "${query}". ${top.description}${extraText}`,
+		sources: results.slice(0, 3).map((r) => ({ url: `https://joost.blog${r.url}`, title: r.name })),
+	};
+}
+
+async function generateAnswer(ai, query, scoredResults) {
+	const { context, sources } = buildContext(scoredResults);
+
+	if (!context.trim()) {
+		return fallbackSummarize(query, scoredResults.map((r) => r.document));
+	}
+
+	try {
+		const response = await ai.run(MODEL, {
+			messages: [
+				{ role: 'system', content: SYSTEM_PROMPT },
+				{ role: 'user', content: `Context from joost.blog:\n\n${context}\n\nQuestion: ${query}` },
+			],
+			max_tokens: 512,
+			temperature: 0.3,
+		});
+
+		const answer = response.response || response.result?.response;
+		if (!answer) throw new Error('Empty model response');
+
+		return { answer, sources };
+	} catch (err) {
+		// Fallback to deterministic summary on any LLM failure
+		console.error('AI generation failed, falling back:', err.message);
+		return fallbackSummarize(query, scoredResults.map((r) => r.document));
+	}
 }
 
 async function normalizeRequest(request) {
@@ -87,7 +167,7 @@ async function normalizeRequest(request) {
 	};
 }
 
-async function handle(request) {
+async function handle(request, env) {
 	const payload = await normalizeRequest(request);
 	const query = payload.decontextualized_query || payload.query;
 
@@ -98,20 +178,16 @@ async function handle(request) {
 		}, 400);
 	}
 
-	const tokens = tokenize(query);
-	const results = nlwebIndex
-		.map((document) => ({ document, score: scoreDocument(document, tokens) }))
-		.filter((item) => item.score > 0)
-		.sort((a, b) => b.score - a.score)
-		.slice(0, 8)
-		.map(({ document, score }) => ({
-			url: document.url,
-			name: document.name,
-			site: payload.site,
-			score,
-			description: document.description,
-			schema_object: document.schema_object,
-		}));
+	const scoredResults = search(query);
+
+	const results = scoredResults.map(({ document, score }) => ({
+		url: document.url,
+		name: document.name,
+		site: payload.site,
+		score,
+		description: document.description,
+		schema_object: document.schema_object,
+	}));
 
 	const response = {
 		query_id: payload.query_id,
@@ -122,8 +198,19 @@ async function handle(request) {
 	};
 
 	if (payload.mode === 'summarize' || payload.mode === 'generate') {
-		response.answer = summarize(query, results);
-		response.summary = response.answer;
+		const ai = env?.AI;
+		let generated;
+
+		if (ai) {
+			generated = await generateAnswer(ai, query, scoredResults);
+		} else {
+			// No AI binding available (local dev) — use deterministic fallback
+			generated = fallbackSummarize(query, scoredResults.map((r) => r.document));
+		}
+
+		response.answer = generated.answer;
+		response.summary = generated.answer;
+		response.sources = generated.sources;
 	}
 
 	return json(response);
@@ -134,9 +221,9 @@ export function onRequestOptions() {
 }
 
 export async function onRequestGet(context) {
-	return handle(context.request);
+	return handle(context.request, context.env);
 }
 
 export async function onRequestPost(context) {
-	return handle(context.request);
+	return handle(context.request, context.env);
 }
