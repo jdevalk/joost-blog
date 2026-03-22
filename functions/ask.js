@@ -202,7 +202,9 @@ async function generateAnswer(ai, query, scoredResults, prevExchanges, sessionId
 			headers: { 'x-session-affinity': sessionId },
 		});
 
-		const answer = response.response || response.result?.response;
+		const answer = response.response
+			|| response.result?.response
+			|| response.choices?.[0]?.message?.content;
 		if (!answer) throw new Error('Empty model response');
 
 		// Extract sources the model actually referenced (by URL in markdown links)
