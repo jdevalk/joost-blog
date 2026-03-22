@@ -158,7 +158,7 @@ function fallbackSummarize(query, results) {
 	};
 }
 
-async function generateAnswer(ai, query, scoredResults) {
+async function generateAnswer(ai, query, scoredResults, prevExchanges) {
 	const { context, sources } = buildContext(scoredResults);
 
 	if (!context.trim()) {
@@ -166,11 +166,21 @@ async function generateAnswer(ai, query, scoredResults) {
 	}
 
 	try {
+		// Build message history from previous exchanges
+		const messages = [{ role: 'system', content: SYSTEM_PROMPT }];
+
+		if (prevExchanges && prevExchanges.length > 0) {
+			// Include up to 3 previous exchanges for context
+			for (const exchange of prevExchanges.slice(-3)) {
+				messages.push({ role: 'user', content: exchange.query });
+				messages.push({ role: 'assistant', content: exchange.answer });
+			}
+		}
+
+		messages.push({ role: 'user', content: `Context from joost.blog:\n\n${context}\n\nQuestion: ${query}` });
+
 		const response = await ai.run(MODEL, {
-			messages: [
-				{ role: 'system', content: SYSTEM_PROMPT },
-				{ role: 'user', content: `Context from joost.blog:\n\n${context}\n\nQuestion: ${query}` },
-			],
+			messages,
 			max_tokens: 512,
 			temperature: 0.3,
 		});
@@ -242,8 +252,18 @@ async function handle(request, env) {
 	if (payload.mode === 'summarize' || payload.mode === 'generate') {
 		let generated;
 
+		// Parse previous exchanges from prev parameter (JSON array of {query, answer} objects)
+		let prevExchanges = [];
+		if (payload.prev) {
+			try {
+				prevExchanges = JSON.parse(payload.prev);
+			} catch {
+				// prev can also be a comma-separated list of queries (NLWeb format) — ignore for now
+			}
+		}
+
 		if (ai) {
-			generated = await generateAnswer(ai, query, scoredResults);
+			generated = await generateAnswer(ai, query, scoredResults, prevExchanges);
 		} else {
 			// No AI binding available (local dev) — use deterministic fallback
 			generated = fallbackSummarize(query, scoredResults.map((r) => r.document));

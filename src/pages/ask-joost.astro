@@ -35,27 +35,18 @@ import Header from '../components/Header.astro';
                 </button>
             </form>
 
-            <div id="answer-area" class="mt-8 hidden">
-                <div id="loading" class="hidden py-8 text-center text-slate-500 dark:text-slate-400">
-                    <svg class="mx-auto mb-3 h-8 w-8 animate-spin text-primary dark:text-accent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                    </svg>
-                    Thinking...
-                </div>
+            <div id="conversation" class="mt-8 space-y-4"></div>
 
-                <div id="answer-content" class="hidden">
-                    <div id="answer-text" class="prose prose-slate dark:prose-invert max-w-none rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-[#2a2623] dark:bg-[#1e1b19]/50"></div>
+            <div id="loading" class="mt-8 hidden py-8 text-center text-slate-500 dark:text-slate-400">
+                <svg class="mx-auto mb-3 h-8 w-8 animate-spin text-primary dark:text-accent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                </svg>
+                Thinking...
+            </div>
 
-                    <div id="sources-area" class="mt-4 hidden">
-                        <h2 class="mb-2 text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Sources</h2>
-                        <ul id="sources-list" class="space-y-1"></ul>
-                    </div>
-                </div>
-
-                <div id="error-content" class="hidden rounded-lg border border-red-200 bg-red-50 p-6 text-red-800 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300">
-                    Something went wrong. Please try again.
-                </div>
+            <div id="error-content" class="mt-8 hidden rounded-lg border border-red-200 bg-red-50 p-6 text-red-800 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300">
+                Something went wrong. Please try again.
             </div>
 
             <div class="mt-12 text-sm text-slate-500 dark:text-slate-400">
@@ -70,15 +61,14 @@ import Header from '../components/Header.astro';
         const form = document.getElementById('ask-form');
         const input = document.getElementById('ask-input');
         const btn = document.getElementById('ask-btn');
-        const answerArea = document.getElementById('answer-area');
+        const conversation = document.getElementById('conversation');
         const loading = document.getElementById('loading');
-        const answerContent = document.getElementById('answer-content');
-        const answerText = document.getElementById('answer-text');
-        const sourcesArea = document.getElementById('sources-area');
-        const sourcesList = document.getElementById('sources-list');
         const errorContent = document.getElementById('error-content');
 
         if (!form) return;
+
+        // Conversation history for follow-up context
+        const history = [];
 
         // Check URL for pre-filled query
         const params = new URLSearchParams(window.location.search);
@@ -97,39 +87,59 @@ import Header from '../components/Header.astro';
             const url = new URL(window.location);
             url.searchParams.set('q', query);
             url.pathname = url.pathname.replace(/\/+$/, '');
-            history.replaceState(null, '', url);
+            history.length === 0
+                ? history.replaceState(null, '', url)
+                : window.history.replaceState(null, '', url);
 
             submitQuery(query);
         });
 
+        function addQuestionBubble(query) {
+            const div = document.createElement('div');
+            div.className = 'flex justify-end';
+            div.innerHTML = `<div class="rounded-lg bg-primary/10 px-5 py-3 text-sm font-medium text-slate-900 dark:bg-accent/10 dark:text-slate-100 max-w-[80%]">${escapeHtml(query)}</div>`;
+            conversation.appendChild(div);
+        }
+
+        function addAnswerBubble(answerHtml, sources) {
+            const div = document.createElement('div');
+            let sourcesHtml = '';
+            if (sources && sources.length > 0) {
+                const items = sources.map((s) =>
+                    `<li><a href="${s.url}" class="text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors">${escapeHtml(s.title)}</a></li>`
+                ).join('');
+                sourcesHtml = `<div class="mt-3 pt-3 border-t border-slate-200 dark:border-[#2a2623]"><p class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent mb-1">Sources</p><ul class="space-y-0.5 text-sm">${items}</ul></div>`;
+            }
+            div.innerHTML = `<div class="prose prose-slate dark:prose-invert max-w-none rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-[#2a2623] dark:bg-[#1e1b19]/50">${answerHtml}${sourcesHtml}</div>`;
+            conversation.appendChild(div);
+        }
+
         async function submitQuery(query) {
-            answerArea.classList.remove('hidden');
+            addQuestionBubble(query);
+            input.value = '';
             loading.classList.remove('hidden');
-            answerContent.classList.add('hidden');
             errorContent.classList.add('hidden');
             btn.disabled = true;
             btn.textContent = 'Asking...';
 
             try {
                 const apiBase = window.location.hostname === 'localhost' ? 'https://joost.blog' : '';
-                const res = await fetch(`${apiBase}/ask?${new URLSearchParams({ q: query, mode: 'generate' })}`);
+                const fetchParams = { q: query, mode: 'generate' };
+                if (history.length > 0) {
+                    fetchParams.prev = JSON.stringify(history.slice(-3));
+                }
+                const res = await fetch(`${apiBase}/ask?${new URLSearchParams(fetchParams)}`);
                 const data = await res.json();
 
                 if (!res.ok || data.error) throw new Error(data.error || 'Request failed');
 
-                answerText.innerHTML = formatAnswer(data.answer || data.summary || 'No answer available.');
+                const answer = data.answer || data.summary || 'No answer available.';
+                addAnswerBubble(formatAnswer(answer), data.sources);
 
-                if (data.sources && data.sources.length > 0) {
-                    sourcesList.innerHTML = data.sources
-                        .map((s) => `<li><a href="${s.url}" class="text-sm text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors">${s.title}</a></li>`)
-                        .join('');
-                    sourcesArea.classList.remove('hidden');
-                } else {
-                    sourcesArea.classList.add('hidden');
-                }
+                // Store in history for follow-up context
+                history.push({ query, answer });
 
                 loading.classList.add('hidden');
-                answerContent.classList.remove('hidden');
             } catch (err) {
                 loading.classList.add('hidden');
                 errorContent.classList.remove('hidden');
@@ -137,6 +147,11 @@ import Header from '../components/Header.astro';
 
             btn.disabled = false;
             btn.textContent = 'Ask';
+            conversation.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
         function formatAnswer(text) {
