@@ -15,7 +15,7 @@ const siteConfig: SiteConfig = {
         { text: 'CMS Market Share', href: '/cms-market-share' },
         { text: 'Videos', href: '/videos' },
         { text: 'Contact', href: '/contact-me' },
-        { text: 'Ask', href: '/ask' }
+        { text: 'Ask', href: '/ask-joost' }
     ],
     secondaryNavLinks: [],
     socialLinks: [
