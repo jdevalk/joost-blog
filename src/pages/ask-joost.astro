@@ -68,7 +68,7 @@ import Header from '../components/Header.astro';
         if (!form) return;
 
         // Conversation history for follow-up context
-        const history = [];
+        const exchanges = [];
 
         // Check URL for pre-filled query
         const params = new URLSearchParams(window.location.search);
@@ -87,9 +87,7 @@ import Header from '../components/Header.astro';
             const url = new URL(window.location);
             url.searchParams.set('q', query);
             url.pathname = url.pathname.replace(/\/+$/, '');
-            history.length === 0
-                ? history.replaceState(null, '', url)
-                : window.history.replaceState(null, '', url);
+            window.history.replaceState(null, '', url);
 
             submitQuery(query);
         });
