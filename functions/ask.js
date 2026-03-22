@@ -7,7 +7,7 @@ const STOPWORDS = new Set([
 ]);
 
 const MAX_CONTEXT_CHARS = 10000;
-const MODEL = '@cf/moonshotai/kimi-k2.5';
+const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const EMBEDDING_MODEL = '@cf/baai/bge-base-en-v1.5';
 
 const SYSTEM_PROMPT = `You are a helpful assistant answering questions about Joost de Valk and his blog joost.blog. Joost is an internet entrepreneur from the Netherlands, founder of Yoast (the WordPress SEO plugin company), and investor at Emilia Capital.
