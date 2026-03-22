@@ -16,7 +16,7 @@ Rules:
 - Answer ONLY based on the provided context. Do not make up information.
 - If the context doesn't contain enough information to answer, say so honestly.
 - Keep answers concise and direct — 2-4 sentences for simple questions, more for complex ones.
-- When referencing a blog post, link to it using markdown: [Post Title](URL). The URL is provided in the context for each post.
+- ALWAYS link to the blog posts you reference using markdown: [Post Title](URL). The URL is provided in the context for each post. Every answer should include at least one link.
 - Do not repeat the question back. Just answer it.
 - Write in a natural, conversational tone.
 - Use markdown formatting: **bold** for emphasis, bullet lists where appropriate, and links for referenced posts.
@@ -190,7 +190,21 @@ async function generateAnswer(ai, query, scoredResults, prevExchanges) {
 		const answer = response.response || response.result?.response;
 		if (!answer) throw new Error('Empty model response');
 
-		return { answer, sources };
+		// Extract sources the model actually referenced (by URL in markdown links)
+		const usedUrls = new Set();
+		const linkPattern = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g;
+		let match;
+		while ((match = linkPattern.exec(answer)) !== null) {
+			usedUrls.add(match[2].replace(/\/$/, ''));
+		}
+
+		// Filter sources to only those referenced in the answer, preserving order
+		let usedSources = sources.filter((s) => usedUrls.has(s.url.replace(/\/$/, '')));
+
+		// If the model didn't link to anything, fall back to all context sources
+		if (usedSources.length === 0) usedSources = sources;
+
+		return { answer, sources: usedSources };
 	} catch (err) {
 		// Fallback to deterministic summary on any LLM failure
 		console.error('AI generation failed, falling back:', err.message);
