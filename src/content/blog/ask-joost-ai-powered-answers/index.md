@@ -47,6 +47,16 @@ Each post in the context includes its publication date. When posts contain confl
 
 The page also supports **follow-up questions**. Ask something, then ask a follow-up — the previous exchanges are sent along so the model understands what "that" or "tell me more" refers to. Answers include inline links to the referenced posts, so you can always read the full source.
 
+### Ranking and source quality
+
+Not all content is equally useful as a source. Pages like "About" are authoritative and get a scoring boost over blog posts. Video transcripts — auto-generated from YouTube captions — are useful for finding relevant content but are less readable as sources, so they're ranked lower.
+
+The sources shown below each answer aren't just "everything we sent to the model." The system parses the markdown links in the model's response and only shows the posts it actually referenced. If the model cites two of the five posts it was given, you see two sources — not five.
+
+### Prompt caching
+
+Workers AI supports [prompt caching](https://developers.cloudflare.com/workers-ai/features/prompt-caching/) via session affinity. The Ask Joost page generates a stable session ID for each conversation and sends it with every request. This routes all questions in a conversation to the same model instance, so the system prompt and previous exchanges stay cached in memory. Follow-up questions are faster because the model doesn't need to reprocess the entire conversation history.
+
 ## Why this architecture
 
 I wanted something that:
@@ -54,8 +64,8 @@ I wanted something that:
 - **Has no ongoing cost at rest.** The search index is static. The Cloudflare Function only runs when someone asks a question. Workers AI charges per request, not per month.
 - **Degrades gracefully.** If the AI call fails or times out, the endpoint falls back to a deterministic summary built from the search results. You always get something useful.
 - **Stays fast.** The embedding lookup is cosine similarity against an in-memory array. The LLM call adds latency, but the context is capped so it stays reasonable.
-- **Doesn't require a vector database.** For a blog with ~100 posts, storing embeddings in the index file adds ~2MB. Cosine similarity over 100 vectors is instant. No Pinecone, no pgvector, no Vectorize.
-- **Is NLWeb-compatible.** The `/ask` endpoint follows the [NLWeb protocol](https://github.com/nlweb-ai/NLWeb), so AI agents and tools that speak NLWeb can query my blog directly.
+- **Doesn't require a vector database.** For a blog with ~100 posts, storing embeddings in the index file adds ~3MB. Cosine similarity over 100 vectors is instant. No Pinecone, no pgvector, no Vectorize.
+- **Is NLWeb-compatible.** The `/ask` endpoint follows the [NLWeb protocol](https://github.com/nlweb-ai/NLWeb), so AI agents and tools that speak NLWeb can query my blog directly. The site also advertises its capabilities via `/.well-known/nlweb` and a `<link rel="nlweb">` tag on every page.
 
 ## The tech stack
 
