@@ -26,11 +26,24 @@ function cleanVtt(vttText) {
     .replace(/\d{2}:\d{2}:\d{2}\.\d{3}\s*-->\s*\d{2}:\d{2}:\d{2}\.\d{3}[^\n]*/g, '')
     // Remove VTT tags like <c> </c> <00:00:01.199>
     .replace(/<[^>]+>/g, '')
-    // Remove duplicate lines (VTT repeats lines across cues)
+    // Remove >> markers and other VTT artifacts
+    .replace(/>{2,}/g, '')
+    .replace(/&gt;/g, '')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '')
+    .replace(/&nbsp;/g, ' ')
+    // Split into lines, deduplicate
     .split('\n')
     .map(line => line.trim())
-    .filter((line, i, arr) => line && line !== arr[i - 1])
+    .filter(Boolean)
+    // VTT repeats each line across multiple cues — remove exact consecutive dupes
+    .reduce((acc, line) => {
+      if (acc.length === 0 || acc[acc.length - 1] !== line) acc.push(line);
+      return acc;
+    }, [])
     .join(' ')
+    // Remove repeated phrases (VTT often has "A B\nA B C" patterns)
+    .replace(/(.{20,}?)\s+\1/g, '$1')
     // Clean up whitespace
     .replace(/\s+/g, ' ')
     .trim();
