@@ -6,10 +6,10 @@ import PostPreview from '../../components/PostPreview.astro';
 import SchemaGraph from '../../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../../utils/schema';
 import { canonicalUrl } from '../../utils/schema/constants';
-import { slugify, sortPostsByDateDesc } from '../../utils/post-utils';
+import { slugify, sortPostsByDateDesc, getPublishedPosts } from '../../utils/post-utils';
 
 export async function getStaticPaths() {
-    const allPosts = await getCollection('blog');
+    const allPosts = getPublishedPosts(await getCollection('blog'));
     const categoryMap = new Map<string, { name: string; posts: CollectionEntry<'blog'>[] }>();
 
     for (const post of allPosts) {

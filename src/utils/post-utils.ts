@@ -4,6 +4,14 @@ export function sortPostsByDateDesc(postA: CollectionEntry<'blog'>, postB: Colle
     return new Date(postB.data.publishDate).getTime() - new Date(postA.data.publishDate).getTime();
 }
 
+export function isPublished(post: CollectionEntry<'blog'>): boolean {
+    return !post.data.draft;
+}
+
+export function getPublishedPosts(posts: CollectionEntry<'blog'>[]): CollectionEntry<'blog'>[] {
+    return posts.filter(isPublished).sort(sortPostsByDateDesc);
+}
+
 export function slugify(text: string): string {
     return text
         .toLowerCase()

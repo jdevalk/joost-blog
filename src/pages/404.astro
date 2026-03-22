@@ -2,10 +2,10 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostPreview from '../components/PostPreview.astro';
-import { sortPostsByDateDesc } from '../utils/post-utils';
+import { getPublishedPosts } from '../utils/post-utils';
 
-const allPosts = await getCollection('blog');
-const recentPosts = allPosts.sort(sortPostsByDateDesc).slice(0, 3);
+const allPosts = getPublishedPosts(await getCollection('blog'));
+const recentPosts = allPosts.slice(0, 3);
 ---
 
 <BaseLayout title="Page Not Found - Joost.blog">

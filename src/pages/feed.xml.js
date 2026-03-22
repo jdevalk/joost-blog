@@ -3,12 +3,12 @@ import { getCollection } from 'astro:content';
 import sanitizeHtml from 'sanitize-html';
 import MarkdownIt from 'markdown-it';
 import siteConfig from '../data/site-config';
-import { sortPostsByDateDesc } from '../utils/post-utils';
+import { sortPostsByDateDesc, getPublishedPosts } from '../utils/post-utils';
 
 const parser = new MarkdownIt();
 
 export async function GET(context) {
-    const posts = (await getCollection('blog')).sort(sortPostsByDateDesc);
+    const posts = getPublishedPosts(await getCollection('blog'));
     return rss({
         title: siteConfig.title,
         description: siteConfig.description,

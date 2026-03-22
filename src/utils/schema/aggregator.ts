@@ -2,6 +2,7 @@ import { getCollection } from 'astro:content';
 import { SITE_URL } from './constants';
 import { buildSchemaGraph } from './index';
 import type { SchemaPageContext } from './types';
+import { isPublished } from '../post-utils';
 
 const ARTICLE_BODY_MAX_LENGTH = 500;
 
@@ -47,7 +48,7 @@ export interface AggregatedSchema {
 }
 
 export async function aggregateBlogPosts(): Promise<AggregatedSchema> {
-    const posts = await getCollection('blog');
+    const posts = (await getCollection('blog')).filter(isPublished);
     const allEntities: Record<string, unknown>[] = [];
     let lastModified = new Date(0);
 
