@@ -42,7 +42,20 @@ export const getStaticPaths: GetStaticPaths = async () => {
         };
     });
 
-    return [...blogPaths, ...pagePaths];
+    // Standalone Astro pages (not in content collections)
+    const standalonePaths = [
+        { slug: 'ask-joost', title: 'Ask Joost' },
+        { slug: 'cms-market-share', title: 'CMS Market Share' },
+        { slug: 'cms-usage', title: 'CMS Usage Statistics' },
+        { slug: 'contact-me', title: 'Contact' },
+        { slug: 'search', title: 'Search' },
+        { slug: '404', title: 'Page Not Found' },
+    ].map(({ slug, title }) => ({
+        params: { slug },
+        props: { title, imagePath: undefined }
+    }));
+
+    return [...blogPaths, ...pagePaths, ...standalonePaths];
 };
 
 export async function GET({ props }: APIContext) {
