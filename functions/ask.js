@@ -173,7 +173,7 @@ function fallbackSummarize(query, results) {
 	};
 }
 
-async function generateAnswer(ai, query, scoredResults, prevExchanges) {
+async function generateAnswer(ai, query, scoredResults, prevExchanges, sessionId) {
 	const { context, sources } = buildContext(scoredResults);
 
 	if (!context.trim()) {
@@ -198,6 +198,8 @@ async function generateAnswer(ai, query, scoredResults, prevExchanges) {
 			messages,
 			max_tokens: 512,
 			temperature: 0.3,
+		}, {
+			headers: { 'x-session-affinity': sessionId },
 		});
 
 		const answer = response.response || response.result?.response;
@@ -292,7 +294,7 @@ async function handle(request, env) {
 		}
 
 		if (ai) {
-			generated = await generateAnswer(ai, query, scoredResults, prevExchanges);
+			generated = await generateAnswer(ai, query, scoredResults, prevExchanges, payload.query_id);
 		} else {
 			// No AI binding available (local dev) — use deterministic fallback
 			generated = fallbackSummarize(query, scoredResults.map((r) => r.document));

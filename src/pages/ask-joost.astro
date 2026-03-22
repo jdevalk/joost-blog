@@ -69,6 +69,8 @@ import Header from '../components/Header.astro';
 
         // Conversation history for follow-up context
         const exchanges = [];
+        // Stable session ID for prompt caching across exchanges
+        const sessionId = crypto.randomUUID();
 
         // Check URL for pre-filled query
         const params = new URLSearchParams(window.location.search);
@@ -119,7 +121,7 @@ import Header from '../components/Header.astro';
 
             try {
                 const apiBase = window.location.hostname === 'localhost' ? 'https://joost.blog' : '';
-                const fetchParams = { q: query, mode: 'generate' };
+                const fetchParams = { q: query, mode: 'generate', query_id: sessionId };
                 if (exchanges.length > 0) {
                     fetchParams.prev = JSON.stringify(exchanges.slice(-3));
                 }
