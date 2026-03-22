@@ -17,6 +17,8 @@ I write a lot. Over the years, this blog has accumulated posts about WordPress, 
 
 So I built [Ask Joost](/ask-joost/): a page where you can ask a natural language question and get a direct answer, sourced from my blog posts.
 
+*Want this on your own site? I've [open sourced it on GitHub](https://github.com/jdevalk/nlweb-cloudflare).*
+
 ## How it works
 
 The system has three layers: a search index, semantic retrieval, and an LLM that generates the answer.
@@ -63,6 +65,12 @@ I wanted something that:
 - **A build-time script** that generates the search index and embeddings from markdown content, with content-hash caching
 
 The whole thing is about 200 lines of code in a single Cloudflare Function, plus a build script. No framework, no SDK, no orchestration layer.
+
+## Use it on your own site
+
+I've extracted the core into an open source package: [nlweb-cloudflare](https://github.com/jdevalk/nlweb-cloudflare). It gives you a drop-in NLWeb-compatible `/ask` endpoint for any markdown-based site on Cloudflare Pages.
+
+The setup is straightforward: configure your content directories and site details, run the index generator as part of your build, drop the function into your `functions/` directory, and add a Workers AI binding. The README has the full walkthrough.
 
 ## Try it
 

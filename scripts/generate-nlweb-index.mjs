@@ -75,11 +75,25 @@ function buildUrl(contentType, filePath, frontmatter) {
   return `${contentType.baseUrl}${slug}/`;
 }
 
-function buildRecord(contentType, filePath, parsedFile) {
+const transcriptDir = path.join(rootDir, 'src', 'generated', 'transcripts');
+
+async function loadTranscript(youtubeId) {
+  if (!youtubeId) return '';
+  try {
+    const text = await fs.readFile(path.join(transcriptDir, `${youtubeId}.txt`), 'utf8');
+    return text.trim();
+  } catch {
+    return '';
+  }
+}
+
+function buildRecord(contentType, filePath, parsedFile, transcript) {
   const data = parsedFile.data || {};
   const title = data.title || path.basename(path.dirname(filePath)) || path.parse(filePath).name;
   const url = buildUrl(contentType, filePath, data);
   const bodyText = stripMarkdown(parsedFile.content);
+  // Append transcript to body text for search indexing
+  const fullText = transcript ? `${bodyText}\n\nTranscript:\n${transcript}` : bodyText;
   const excerpt = stripMarkdown(data.excerpt || bodyText.slice(0, 280));
   const categories = Array.isArray(data.categories)
     ? data.categories.map((value) => Array.isArray(value) ? value[0] : String(value))
@@ -94,7 +108,7 @@ function buildRecord(contentType, filePath, parsedFile) {
     description: excerpt,
     datePublished: normalizeDate(data.publishDate),
     keywords: categories,
-    text: bodyText,
+    text: fullText,
     schema_object: {
       '@context': 'https://schema.org',
       '@type': contentType.type,
@@ -212,7 +226,8 @@ async function main() {
     for (const filePath of files) {
       const raw = await fs.readFile(filePath, 'utf8');
       const parsedFile = matter(raw);
-      records.push(buildRecord(contentType, filePath, parsedFile));
+      const transcript = await loadTranscript(parsedFile.data.youtubeId);
+      records.push(buildRecord(contentType, filePath, parsedFile, transcript));
     }
   }
 
