@@ -22,7 +22,7 @@ import Header from '../components/Header.astro';
                     type="text"
                     id="ask-input"
                     name="q"
-                    placeholder="e.g. What does Joost think about WordPress governance?"
+                    placeholder="e.g. Do you think I need a CMS?"
                     autocomplete="off"
                     class="flex-1 rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-[#2a2623] dark:bg-[#1e1b19] dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-accent dark:focus:ring-accent/20"
                 />
@@ -96,6 +96,7 @@ import Header from '../components/Header.astro';
             // Update URL without reload
             const url = new URL(window.location);
             url.searchParams.set('q', query);
+            url.pathname = url.pathname.replace(/\/+$/, '');
             history.replaceState(null, '', url);
 
             submitQuery(query);
