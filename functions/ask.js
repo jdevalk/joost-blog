@@ -8,6 +8,7 @@ const STOPWORDS = new Set([
 
 const MAX_CONTEXT_CHARS = 10000;
 const MODEL = '@cf/meta/llama-3.1-70b-instruct';
+const EMBEDDING_MODEL = '@cf/baai/bge-base-en-v1.5';
 
 const SYSTEM_PROMPT = `You are a helpful assistant answering questions about Joost de Valk and his blog joost.blog. Joost is an internet entrepreneur from the Netherlands, founder of Yoast (the WordPress SEO plugin company), and investor at Emilia Capital.
 
@@ -75,11 +76,48 @@ function scoreDocument(document, tokens, fullQuery) {
 	return score;
 }
 
-function search(query) {
+function cosineSimilarity(a, b) {
+	if (!a || !b || a.length !== b.length) return 0;
+	let dot = 0, magA = 0, magB = 0;
+	for (let i = 0; i < a.length; i++) {
+		dot += a[i] * b[i];
+		magA += a[i] * a[i];
+		magB += b[i] * b[i];
+	}
+	const mag = Math.sqrt(magA) * Math.sqrt(magB);
+	return mag === 0 ? 0 : dot / mag;
+}
+
+async function embedQuery(ai, query) {
+	if (!ai) return null;
+	try {
+		const res = await ai.run(EMBEDDING_MODEL, { text: [query] });
+		return res?.data?.[0] || null;
+	} catch {
+		return null;
+	}
+}
+
+function search(query, queryEmbedding) {
 	const tokens = tokenize(query);
+
 	return nlwebIndex
-		.map((document) => ({ document, score: scoreDocument(document, tokens, query) }))
-		.filter((item) => item.score > 0)
+		.map((document) => {
+			const keywordScore = scoreDocument(document, tokens, query);
+
+			// Semantic score: cosine similarity scaled to comparable range
+			let semanticScore = 0;
+			if (queryEmbedding && document.embedding) {
+				const similarity = cosineSimilarity(queryEmbedding, document.embedding);
+				// Scale similarity (typically 0.3-0.9) to a score range comparable to keyword scoring
+				semanticScore = Math.max(0, similarity - 0.3) * 100;
+			}
+
+			// Blend: keyword and semantic scores complement each other
+			const score = keywordScore + semanticScore;
+			return { document, score, keywordScore, semanticScore };
+		})
+		.filter((item) => item.score > 2)
 		.sort((a, b) => b.score - a.score)
 		.slice(0, 8);
 }
@@ -177,7 +215,11 @@ async function handle(request, env) {
 		}, 400);
 	}
 
-	const scoredResults = search(query);
+	// Embed query for semantic search (runs in parallel with keyword search intent)
+	const ai = env?.AI;
+	const queryEmbedding = ai ? await embedQuery(ai, query) : null;
+
+	const scoredResults = search(query, queryEmbedding);
 
 	const results = scoredResults.map(({ document, score }) => ({
 		url: document.url,
@@ -197,7 +239,6 @@ async function handle(request, env) {
 	};
 
 	if (payload.mode === 'summarize' || payload.mode === 'generate') {
-		const ai = env?.AI;
 		let generated;
 
 		if (ai) {

@@ -1,11 +1,16 @@
 ---
-title: "Ask Joost: AI-powered answers from my blog"
+title: 'Ask Joost: AI-powered answers from my blog'
 publishDate: 2026-03-22T00:00:00.000Z
 excerpt: >-
-  I built an AI-powered Q&A feature that lets you ask questions about anything I've written. Here's how it works, and why I built it on Cloudflare Workers AI.
+  I built an AI-powered Q&A feature that lets you ask questions about anything
+  I've written. Here's how it works, and why I built it on Cloudflare Workers
+  AI.
 categories:
   - Development
 draft: true
+featureImage:
+  src: ./images/featured.webp
+  alt: 'Illustration for: Ask Joost: AI-powered answers from my blog'
 ---
 
 I write a lot. Over the years, this blog has accumulated posts about WordPress, SEO, open source governance, CMS market share, and plenty more. Finding the right post for a specific question means searching, skimming, and hoping the title matches what you're looking for. That's not great.

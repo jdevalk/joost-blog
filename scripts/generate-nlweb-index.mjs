@@ -1,4 +1,5 @@
 import { promises as fs } from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import matter from 'gray-matter';
 
@@ -6,6 +7,13 @@ const rootDir = process.cwd();
 const contentDir = path.join(rootDir, 'src', 'content');
 const outputJsonPath = path.join(rootDir, 'src', 'generated', 'nlweb-index.json');
 const outputModulePath = path.join(rootDir, 'src', 'generated', 'nlweb-index.mjs');
+const embeddingCachePath = path.join(rootDir, 'src', 'generated', 'embedding-cache.json');
+
+// Cloudflare Workers AI config for embeddings
+const CF_ACCOUNT_ID = process.env.CF_ACCOUNT_ID || 'c53e64d218c83cb220b523a637ffd079';
+const CF_API_TOKEN = process.env.CF_API_TOKEN || 'cfut_6j0n95cS6YyGuKHIBC8k02gwVYhlOBboAe4z7S4g756be1c8';
+const EMBEDDING_MODEL = '@cf/baai/bge-base-en-v1.5';
+const MAX_EMBED_CHARS = 2000; // ~500 tokens, enough to capture the gist
 
 const CONTENT_TYPES = [
   { dir: 'blog', type: 'BlogPosting', baseUrl: '/' },
@@ -99,6 +107,101 @@ function buildRecord(contentType, filePath, parsedFile) {
   };
 }
 
+// ============================================================
+// Embedding generation with cache
+// ============================================================
+
+function contentHash(text) {
+  return createHash('sha256').update(text).digest('hex').slice(0, 16);
+}
+
+function embeddingInput(record) {
+  // Combine title, description, keywords, and beginning of body for embedding
+  const parts = [record.name, record.description, record.keywords.join(', '), record.text.slice(0, MAX_EMBED_CHARS)];
+  return parts.join('\n');
+}
+
+async function loadEmbeddingCache() {
+  try {
+    const raw = await fs.readFile(embeddingCachePath, 'utf8');
+    return JSON.parse(raw);
+  } catch {
+    return {};
+  }
+}
+
+async function saveEmbeddingCache(cache) {
+  await fs.writeFile(embeddingCachePath, JSON.stringify(cache), 'utf8');
+}
+
+async function fetchEmbeddings(texts) {
+  const res = await fetch(
+    `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/ai/run/${EMBEDDING_MODEL}`,
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${CF_API_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: texts }),
+    }
+  );
+
+  const data = await res.json();
+  if (!data.success || !data.result?.data) {
+    throw new Error(`Embedding API error: ${JSON.stringify(data.errors)}`);
+  }
+  return data.result.data; // array of float arrays
+}
+
+async function generateEmbeddings(records) {
+  const cache = await loadEmbeddingCache();
+  const toEmbed = []; // { index, text, hash }
+  const embeddings = new Array(records.length);
+
+  // Check cache for each record
+  for (let i = 0; i < records.length; i++) {
+    const text = embeddingInput(records[i]);
+    const hash = contentHash(text);
+
+    if (cache[records[i].id]?.hash === hash) {
+      embeddings[i] = cache[records[i].id].embedding;
+    } else {
+      toEmbed.push({ index: i, text, hash, id: records[i].id });
+    }
+  }
+
+  const cached = records.length - toEmbed.length;
+  if (cached > 0) console.log(`  Embedding cache: ${cached} cached, ${toEmbed.length} to generate`);
+
+  // Batch embed in chunks of 20 (API limit)
+  const BATCH_SIZE = 20;
+  for (let i = 0; i < toEmbed.length; i += BATCH_SIZE) {
+    const batch = toEmbed.slice(i, i + BATCH_SIZE);
+    const texts = batch.map(b => b.text);
+
+    console.log(`  Embedding batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(toEmbed.length / BATCH_SIZE)} (${batch.length} items)...`);
+    const vectors = await fetchEmbeddings(texts);
+
+    for (let j = 0; j < batch.length; j++) {
+      embeddings[batch[j].index] = vectors[j];
+      cache[batch[j].id] = { hash: batch[j].hash, embedding: vectors[j] };
+    }
+
+    // Small delay between batches to avoid rate limits
+    if (i + BATCH_SIZE < toEmbed.length) {
+      await new Promise(r => setTimeout(r, 200));
+    }
+  }
+
+  await saveEmbeddingCache(cache);
+  return embeddings;
+}
+
+// ============================================================
+// Main
+// ============================================================
+
 async function main() {
   const records = [];
 
@@ -115,12 +218,22 @@ async function main() {
 
   records.sort((a, b) => (b.datePublished || '').localeCompare(a.datePublished || ''));
 
+  // Generate embeddings
+  console.log(`Generating embeddings for ${records.length} records...`);
+  const embeddings = await generateEmbeddings(records);
+
+  // Attach embeddings to records
+  for (let i = 0; i < records.length; i++) {
+    records[i].embedding = embeddings[i];
+  }
+
   await fs.mkdir(path.dirname(outputJsonPath), { recursive: true });
   const json = JSON.stringify(records, null, 2) + '\n';
   await fs.writeFile(outputJsonPath, json, 'utf8');
   await fs.writeFile(outputModulePath, `export default ${json};`, 'utf8');
 
-  console.log(`Generated NLWeb index with ${records.length} records at ${path.relative(rootDir, outputJsonPath)} and ${path.relative(rootDir, outputModulePath)}`);
+  const sizeKB = Math.round(Buffer.byteLength(json) / 1024);
+  console.log(`Generated NLWeb index with ${records.length} records (${sizeKB}KB) at ${path.relative(rootDir, outputJsonPath)} and ${path.relative(rootDir, outputModulePath)}`);
 }
 
 main().catch((error) => {
