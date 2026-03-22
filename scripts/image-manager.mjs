@@ -90,8 +90,19 @@ COMPOSITION: Wide banner format (16:9). Distribute visual interest across the fr
 }
 
 // ============================================================
-// Blog scanner
+// Content scanner
 // ============================================================
+
+const PAGES_IMAGE_DIR = path.resolve('public/images/pages');
+
+const STANDALONE_PAGES = [
+    { slug: 'ask-joost', title: 'Ask Joost' },
+    { slug: 'cms-market-share', title: 'CMS Market Share' },
+    { slug: 'cms-usage', title: 'CMS Usage Statistics' },
+    { slug: 'contact-me', title: 'Contact' },
+    { slug: 'search', title: 'Search' },
+    { slug: 'code', title: 'Code & Projects' },
+];
 
 function scanBlogPosts() {
     const posts = [];
@@ -129,6 +140,7 @@ function scanBlogPosts() {
             title: data.title,
             publishDate: data.publishDate,
             category,
+            pageType: 'post',
             imageHint: data.imageHint || null,
             hasImage,
             currentImagePath,
@@ -138,6 +150,29 @@ function scanBlogPosts() {
     // Sort newest first
     posts.sort((a, b) => new Date(b.publishDate || 0) - new Date(a.publishDate || 0));
     return posts;
+}
+
+function scanStandalonePages() {
+    return STANDALONE_PAGES.map(({ slug, title }) => {
+        const imgPath = path.join(PAGES_IMAGE_DIR, `${slug}.webp`);
+        const hasImage = fs.existsSync(imgPath);
+        return {
+            slug,
+            filePath: null,
+            title,
+            publishDate: null,
+            category: 'Page',
+            pageType: 'page',
+            imageHint: null,
+            hasImage,
+            currentImagePath: hasImage ? imgPath : null,
+            isDirectory: false,
+        };
+    });
+}
+
+function scanAll() {
+    return [...scanStandalonePages(), ...scanBlogPosts()];
 }
 
 // ============================================================
@@ -222,46 +257,55 @@ async function generateAndSaveOgImage(slug, title, featureImagePath) {
 // ============================================================
 
 async function handleUpload(slug, imageBuffer, filename) {
-    const posts = scanBlogPosts();
-    const post = posts.find(p => p.slug === slug);
-    if (!post) throw new Error(`Post "${slug}" not found`);
+    const all = scanAll();
+    const item = all.find(p => p.slug === slug);
+    if (!item) throw new Error(`"${slug}" not found`);
 
     // Convert to WebP for optimal file size
     imageBuffer = await sharp(imageBuffer)
         .webp({ quality: 85 })
         .toBuffer();
-    const imageFilename = 'featured.webp';
 
-    let imageDir;
-    if (post.isDirectory) {
-        imageDir = path.join(BLOG_DIR, slug, 'images');
+    let imagePath;
+
+    if (item.pageType === 'page') {
+        // Standalone pages: save to public/images/pages/
+        fs.mkdirSync(PAGES_IMAGE_DIR, { recursive: true });
+        imagePath = path.join(PAGES_IMAGE_DIR, `${slug}.webp`);
+        fs.writeFileSync(imagePath, imageBuffer);
     } else {
-        // Convert single-file post to directory-based
-        const newDir = path.join(BLOG_DIR, slug);
-        if (!fs.existsSync(newDir)) {
-            fs.mkdirSync(newDir, { recursive: true });
-            const newFilePath = path.join(newDir, 'index.md');
-            fs.renameSync(post.filePath, newFilePath);
-            post.filePath = newFilePath;
+        // Blog posts: save to post's images directory
+        const imageFilename = 'featured.webp';
+        let imageDir;
+        if (item.isDirectory) {
+            imageDir = path.join(BLOG_DIR, slug, 'images');
+        } else {
+            const newDir = path.join(BLOG_DIR, slug);
+            if (!fs.existsSync(newDir)) {
+                fs.mkdirSync(newDir, { recursive: true });
+                const newFilePath = path.join(newDir, 'index.md');
+                fs.renameSync(item.filePath, newFilePath);
+                item.filePath = newFilePath;
+            }
+            imageDir = path.join(newDir, 'images');
         }
-        imageDir = path.join(newDir, 'images');
+
+        fs.mkdirSync(imageDir, { recursive: true });
+        imagePath = path.join(imageDir, imageFilename);
+        fs.writeFileSync(imagePath, imageBuffer);
+
+        // Update frontmatter
+        const raw = fs.readFileSync(item.filePath, 'utf8');
+        const { data: frontmatter, content: body } = matter(raw);
+        frontmatter.featureImage = {
+            src: `./images/${imageFilename}`,
+            alt: `Illustration for: ${item.title}`,
+        };
+        fs.writeFileSync(item.filePath, matter.stringify(body, frontmatter));
     }
 
-    fs.mkdirSync(imageDir, { recursive: true });
-    const imagePath = path.join(imageDir, imageFilename);
-    fs.writeFileSync(imagePath, imageBuffer);
-
-    // Update frontmatter
-    const raw = fs.readFileSync(post.filePath, 'utf8');
-    const { data: frontmatter, content: body } = matter(raw);
-    frontmatter.featureImage = {
-        src: `./images/${imageFilename}`,
-        alt: `Illustration for: ${post.title}`,
-    };
-    fs.writeFileSync(post.filePath, matter.stringify(body, frontmatter));
-
     // Generate OG image
-    const ogPath = await generateAndSaveOgImage(slug, post.title, imagePath);
+    const ogPath = await generateAndSaveOgImage(slug, item.title, imagePath);
 
     return { imagePath: path.relative('.', imagePath), ogPath };
 }
@@ -271,8 +315,8 @@ async function handleUpload(slug, imageBuffer, filename) {
 // ============================================================
 
 function serveImage(slug) {
-    const posts = scanBlogPosts();
-    const post = posts.find(p => p.slug === slug);
+    const all = scanAll();
+    const post = all.find(p => p.slug === slug);
     if (!post || !post.currentImagePath) return null;
     const ext = path.extname(post.currentImagePath).toLowerCase();
     const mimeTypes = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp' };
@@ -287,13 +331,13 @@ function serveImage(slug) {
 // ============================================================
 
 function renderHTML() {
-    const posts = scanBlogPosts();
+    const posts = scanAll();
     const postCards = posts.map(post => {
         const prompt = buildPrompt(post.title, post.category, post.imageHint);
         const promptEscaped = prompt.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         const promptForCopy = JSON.stringify(prompt);
         return `
-        <div class="post ${post.hasImage ? 'has-image' : 'needs-image'}" data-slug="${post.slug}">
+        <div class="post ${post.hasImage ? 'has-image' : 'needs-image'} type-${post.pageType}" data-slug="${post.slug}">
             <div class="post-header">
                 <div class="post-info">
                     <span class="status ${post.hasImage ? 'done' : 'todo'}">${post.hasImage ? 'Has image' : 'Needs image'}</span>
@@ -385,6 +429,8 @@ function renderHTML() {
 
     <div class="filters">
         <button class="active" onclick="filterPosts('all')">All</button>
+        <button onclick="filterPosts('pages')">Pages</button>
+        <button onclick="filterPosts('posts')">Posts</button>
         <button onclick="filterPosts('needs')">Needs image</button>
         <button onclick="filterPosts('has')">Has image</button>
     </div>
@@ -410,6 +456,8 @@ function filterPosts(filter) {
     event.target.classList.add('active');
     document.querySelectorAll('.post').forEach(p => {
         if (filter === 'all') p.style.display = '';
+        else if (filter === 'pages') p.style.display = p.classList.contains('type-page') ? '' : 'none';
+        else if (filter === 'posts') p.style.display = p.classList.contains('type-post') ? '' : 'none';
         else if (filter === 'needs') p.style.display = p.classList.contains('needs-image') ? '' : 'none';
         else p.style.display = p.classList.contains('has-image') ? '' : 'none';
     });
@@ -532,9 +580,9 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'POST' && req.url.startsWith('/regenerate-og/')) {
         const slug = req.url.replace('/regenerate-og/', '');
         try {
-            const posts = scanBlogPosts();
-            const post = posts.find(p => p.slug === slug);
-            if (!post) throw new Error(`Post "${slug}" not found`);
+            const all = scanAll();
+            const post = all.find(p => p.slug === slug);
+            if (!post) throw new Error(`"${slug}" not found`);
             if (!post.currentImagePath) throw new Error('No featured image to use');
             const ogPath = await generateAndSaveOgImage(slug, post.title, post.currentImagePath);
             res.writeHead(200, { 'Content-Type': 'application/json' });

@@ -50,10 +50,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
         { slug: 'contact-me', title: 'Contact' },
         { slug: 'search', title: 'Search' },
         { slug: '404', title: 'Page Not Found' },
-    ].map(({ slug, title }) => ({
-        params: { slug },
-        props: { title, imagePath: undefined }
-    }));
+    ].map(({ slug, title }) => {
+        const pageImagePath = join(process.cwd(), 'public/images/pages', `${slug}.webp`);
+        return {
+            params: { slug },
+            props: { title, imagePath: existsSync(pageImagePath) ? pageImagePath : undefined }
+        };
+    });
 
     return [...blogPaths, ...pagePaths, ...standalonePaths];
 };
