@@ -76,19 +76,19 @@ const latestPosts = posts.filter(({ data }) => !data.isFeatured).slice(0, 6);
         {latestPosts?.length > 0 && (
             <section class="px-4 pb-12 sm:px-8 sm:pb-16">
                 <div class="max-w-5xl mx-auto">
-                    <div class="flex items-center justify-between mb-8">
-                        <h2 class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Latest Articles</h2>
-                        <a
-                            class="text-sm font-bold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300"
-                            href="/blog"
-                        >
-                            View all &rarr;
-                        </a>
-                    </div>
+                    <h2 class="mb-8 text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Latest Articles</h2>
                     <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                         {latestPosts.map((post) => (
                             <PostPreview post={post} />
                         ))}
+                    </div>
+                    <div class="mt-8 text-right">
+                        <a
+                            class="text-sm font-bold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300"
+                            href="/blog"
+                        >
+                            View all articles &rarr;
+                        </a>
                     </div>
                 </div>
             </section>

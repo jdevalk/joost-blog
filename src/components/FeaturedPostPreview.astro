@@ -9,7 +9,7 @@ const { title, publishDate, updatedDate, featureImage, excerpt, categories } = p
 const readingTime = getReadingTime(post.body ?? '');
 ---
 
-<article class="group mb-12 sm:mb-16">
+<article class="group">
     <div class="grid gap-6 lg:grid-cols-2 lg:gap-10 items-center">
         {featureImage?.src && (
             <a href={`/${post.id}/`} aria-label={title} class="block overflow-hidden rounded-lg">
