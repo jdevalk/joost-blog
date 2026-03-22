@@ -6,7 +6,7 @@ const STOPWORDS = new Set([
 	'why', 'with', 'you', 'your'
 ]);
 
-const MAX_CONTEXT_CHARS = 6000;
+const MAX_CONTEXT_CHARS = 10000;
 const MODEL = '@cf/meta/llama-3.1-70b-instruct';
 
 const SYSTEM_PROMPT = `You are a helpful assistant answering questions about Joost de Valk and his blog joost.blog. Joost is an internet entrepreneur from the Netherlands, founder of Yoast (the WordPress SEO plugin company), and investor at Emilia Capital.
@@ -52,9 +52,14 @@ function buildNeedle(document) {
 	].join(' \n ').toLowerCase();
 }
 
-function scoreDocument(document, tokens) {
+function scoreDocument(document, tokens, fullQuery) {
 	const needle = buildNeedle(document);
 	let score = 0;
+
+	// Exact phrase match bonus
+	if (fullQuery && needle.includes(fullQuery.toLowerCase())) {
+		score += 20;
+	}
 
 	for (const token of tokens) {
 		const occurrences = needle.split(token).length - 1;
@@ -73,30 +78,24 @@ function scoreDocument(document, tokens) {
 function search(query) {
 	const tokens = tokenize(query);
 	return nlwebIndex
-		.map((document) => ({ document, score: scoreDocument(document, tokens) }))
+		.map((document) => ({ document, score: scoreDocument(document, tokens, query) }))
 		.filter((item) => item.score > 0)
 		.sort((a, b) => b.score - a.score)
 		.slice(0, 8);
 }
 
 function buildContext(scoredResults) {
+	const maxResults = Math.min(scoredResults.length, 5);
+	const perResultBudget = Math.floor(MAX_CONTEXT_CHARS / maxResults);
 	let context = '';
 	const sources = [];
 
-	for (const { document } of scoredResults) {
-		const entry = `## ${document.name}\nURL: https://joost.blog${document.url}\n${document.text}\n\n`;
-
-		if (context.length + entry.length > MAX_CONTEXT_CHARS) {
-			// Add truncated version if we have room
-			const remaining = MAX_CONTEXT_CHARS - context.length;
-			if (remaining > 200) {
-				context += `## ${document.name}\nURL: https://joost.blog${document.url}\n${document.text.slice(0, remaining - 100)}\n\n`;
-				sources.push({ url: `https://joost.blog${document.url}`, title: document.name });
-			}
-			break;
-		}
-
-		context += entry;
+	for (let i = 0; i < maxResults; i++) {
+		const { document } = scoredResults[i];
+		const text = document.text.length > perResultBudget
+			? document.text.slice(0, perResultBudget) + '...'
+			: document.text;
+		context += `## ${document.name}\nURL: https://joost.blog${document.url}\n${text}\n\n`;
 		sources.push({ url: `https://joost.blog${document.url}`, title: document.name });
 	}
 

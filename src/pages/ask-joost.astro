@@ -110,7 +110,8 @@ import Header from '../components/Header.astro';
             btn.textContent = 'Asking...';
 
             try {
-                const res = await fetch(`/ask?${new URLSearchParams({ q: query, mode: 'generate' })}`);
+                const apiBase = window.location.hostname === 'localhost' ? 'https://joost.blog' : '';
+                const res = await fetch(`${apiBase}/ask?${new URLSearchParams({ q: query, mode: 'generate' })}`);
                 const data = await res.json();
 
                 if (!res.ok || data.error) throw new Error(data.error || 'Request failed');
