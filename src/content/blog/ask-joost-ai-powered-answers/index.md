@@ -65,7 +65,7 @@ I wanted something that:
 - **Degrades gracefully.** If the AI call fails or times out, the endpoint falls back to a deterministic summary built from the search results. You always get something useful.
 - **Stays fast.** The embedding lookup is cosine similarity against an in-memory array. The LLM call adds latency, but the context is capped so it stays reasonable.
 - **Doesn't require a vector database.** For a blog with ~100 posts, storing embeddings in the index file adds ~3MB. Cosine similarity over 100 vectors is instant. No Pinecone, no pgvector, no Vectorize.
-- **Is NLWeb-compatible.** The `/ask` endpoint follows the [NLWeb protocol](https://github.com/nlweb-ai/NLWeb), so AI agents and tools that speak NLWeb can query my blog directly. The site also advertises its capabilities via `/.well-known/nlweb` and a `<link rel="nlweb">` tag on every page.
+- **Is NLWeb-compatible.** The `/ask` endpoint follows the [NLWeb protocol](https://github.com/nlweb-ai/NLWeb), so AI agents and tools that speak NLWeb can query my blog directly.
 
 ## The tech stack
 
