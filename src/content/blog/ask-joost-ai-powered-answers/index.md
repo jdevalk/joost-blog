@@ -41,6 +41,10 @@ When you use `mode=generate` (which the Ask Joost page does by default), the top
 
 The system prompt keeps the model honest: it can only answer based on the provided context. If my blog doesn't cover your question, it says so instead of making things up.
 
+Each post in the context includes its publication date. When posts contain conflicting or evolving views — which happens when you blog over many years — the model is instructed to prefer the most recent post, and can acknowledge how my thinking has changed.
+
+The page also supports **follow-up questions**. Ask something, then ask a follow-up — the previous exchanges are sent along so the model understands what "that" or "tell me more" refers to. Answers include inline links to the referenced posts, so you can always read the full source.
+
 ## Why this architecture
 
 I wanted something that:
@@ -68,10 +72,6 @@ The answers aren't perfect — they're limited to what I've written, and the mod
 
 ## What's next
 
-A few things I'm considering:
-
-- **Conversation context.** The NLWeb protocol supports a `prev` parameter for follow-up questions. Right now each question is independent.
-- **Streaming responses.** The current implementation waits for the full answer before displaying it. Streaming would make it feel faster.
-- **Better answer formatting.** Right now the answers are plain text. Adding links to the referenced posts inline would make the answers more useful.
+The main thing I'd like to add is **streaming responses** — the current implementation waits for the full answer before displaying it. Streaming would make it feel faster, especially for longer answers.
 
 But honestly, the current version already does what I wanted: it makes my blog's content more accessible to people who have questions but don't want to browse through archives.

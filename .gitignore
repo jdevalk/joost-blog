@@ -2,8 +2,9 @@
 dist/
 # generated types
 .astro/
-# generated build artifacts
-src/generated/
+# generated build artifacts (index is regenerated, cache is committed)
+src/generated/nlweb-index.json
+src/generated/nlweb-index.mjs
 
 # dependencies
 node_modules/
