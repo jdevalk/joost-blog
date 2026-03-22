@@ -140,18 +140,33 @@ import Header from '../components/Header.astro';
         }
 
         function formatAnswer(text) {
-            // Basic markdown-ish formatting
-            return text
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/\n\n/g, '</p><p>')
-                .replace(/\n/g, '<br>')
+            // Extract markdown links first, replace with placeholders
+            const links = [];
+            text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, (_, label, url) => {
+                links.push({ label, url });
+                return `%%LINK${links.length - 1}%%`;
+            });
+
+            // Escape HTML
+            text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+            // Markdown formatting
+            text = text
                 .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.+?)\*/g, '<em>$1</em>')
                 .replace(/`(.+?)`/g, '<code>$1</code>')
-                .replace(/^/, '<p>')
-                .replace(/$/, '</p>');
+                .replace(/^- (.+)$/gm, '<li>$1</li>')
+                .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+
+            // Restore links
+            for (let i = 0; i < links.length; i++) {
+                const { label, url } = links[i];
+                text = text.replace(`%%LINK${i}%%`, `<a href="${url}" class="text-primary hover:text-secondary dark:text-accent dark:hover:text-white underline">${label}</a>`);
+            }
+
+            return `<p>${text}</p>`;
         }
     });
 </script>

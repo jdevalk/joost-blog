@@ -16,9 +16,10 @@ Rules:
 - Answer ONLY based on the provided context. Do not make up information.
 - If the context doesn't contain enough information to answer, say so honestly.
 - Keep answers concise and direct — 2-4 sentences for simple questions, more for complex ones.
-- When referencing blog posts, mention them by title.
+- When referencing a blog post, link to it using markdown: [Post Title](URL). The URL is provided in the context for each post.
 - Do not repeat the question back. Just answer it.
-- Write in a natural, conversational tone.`;
+- Write in a natural, conversational tone.
+- Use markdown formatting: **bold** for emphasis, bullet lists where appropriate, and links for referenced posts.`;
 
 const headers = {
 	'Access-Control-Allow-Origin': '*',
