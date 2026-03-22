@@ -1,10 +1,12 @@
 import { getCollection } from 'astro:content';
+import { readFileSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { SITE_URL } from './constants';
 import { buildSchemaGraph } from './index';
 import type { SchemaPageContext } from './types';
 import { isPublished } from '../post-utils';
 
-const ARTICLE_BODY_MAX_LENGTH = 500;
+const ARTICLE_BODY_MAX_LENGTH = 10000;
 
 function stripMarkdown(md: string): string {
     return md
@@ -107,7 +109,24 @@ export async function aggregateVideos(): Promise<AggregatedSchema> {
         };
 
         const schema = buildSchemaGraph(ctx);
-        allEntities.push(...(schema['@graph'] as Record<string, unknown>[]));
+        const graph = schema['@graph'] as Record<string, unknown>[];
+
+        // Enrich VideoObject with transcript text if available
+        if (video.data.youtubeId) {
+            const transcriptPath = join(process.cwd(), 'src/generated/transcripts', `${video.data.youtubeId}.txt`);
+            if (existsSync(transcriptPath)) {
+                const transcript = readFileSync(transcriptPath, 'utf8').trim();
+                if (transcript) {
+                    for (const entity of graph) {
+                        if (entity['@type'] === 'VideoObject') {
+                            entity.transcript = truncateBody(transcript);
+                        }
+                    }
+                }
+            }
+        }
+
+        allEntities.push(...graph);
 
         if (video.data.publishDate > lastModified) lastModified = video.data.publishDate;
     }
@@ -134,7 +153,16 @@ export async function aggregatePages(): Promise<AggregatedSchema> {
         };
 
         const schema = buildSchemaGraph(ctx);
-        allEntities.push(...(schema['@graph'] as Record<string, unknown>[]));
+        const graph = schema['@graph'] as Record<string, unknown>[];
+
+        // Enrich WebPage with text content
+        for (const entity of graph) {
+            if (entity['@type'] === 'WebPage' && page.body) {
+                entity.text = truncateBody(page.body);
+            }
+        }
+
+        allEntities.push(...graph);
 
         // Pages don't have dates — use current build time
         lastModified = new Date();
