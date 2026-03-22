@@ -75,6 +75,9 @@ function scoreDocument(document, tokens, fullQuery) {
 		if (document.url.toLowerCase().includes(token)) score += 3;
 	}
 
+	// Pages are authoritative/canonical — boost them over blog posts and videos
+	if (score > 0 && document.type === 'WebPage') score += 15;
+
 	return score;
 }
 
@@ -125,13 +128,20 @@ function search(query, queryEmbedding) {
 }
 
 function buildContext(scoredResults) {
-	const maxResults = Math.min(scoredResults.length, 5);
+	// Sort pages first within the results so the LLM sees canonical info before blog posts
+	const sorted = [...scoredResults].sort((a, b) => {
+		const aPage = a.document.type === 'WebPage' ? 1 : 0;
+		const bPage = b.document.type === 'WebPage' ? 1 : 0;
+		return bPage - aPage || b.score - a.score;
+	});
+
+	const maxResults = Math.min(sorted.length, 5);
 	const perResultBudget = Math.floor(MAX_CONTEXT_CHARS / maxResults);
 	let context = '';
 	const sources = [];
 
 	for (let i = 0; i < maxResults; i++) {
-		const { document } = scoredResults[i];
+		const { document } = sorted[i];
 		const text = document.text.length > perResultBudget
 			? document.text.slice(0, perResultBudget) + '...'
 			: document.text;
