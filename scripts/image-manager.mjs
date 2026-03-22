@@ -22,6 +22,11 @@ import sharp from 'sharp';
 const PORT = 3456;
 const BLOG_DIR = path.resolve('src/content/blog');
 
+// Cloudflare Workers AI config (image generation, localhost only)
+const CF_ACCOUNT_ID = process.env.CF_ACCOUNT_ID || 'c53e64d218c83cb220b523a637ffd079';
+const CF_API_TOKEN = process.env.CF_API_TOKEN || 'cfut_6j0n95cS6YyGuKHIBC8k02gwVYhlOBboAe4z7S4g756be1c8';
+const CF_IMAGE_MODEL = '@cf/black-forest-labs/flux-1-schnell';
+
 // ============================================================
 // Shared prompt logic (same as generate-featured-images.mjs)
 // ============================================================
@@ -364,7 +369,10 @@ function renderHTML() {
                     <div class="prompt-box">
                         <pre>${promptEscaped}</pre>
                     </div>
-                    <button class="copy-btn" onclick='copyPrompt(${promptForCopy})'>Copy prompt</button>
+                    <div class="btn-row">
+                        <button class="copy-btn" onclick='copyPrompt(${promptForCopy})'>Copy prompt</button>
+                        <button class="generate-btn" onclick="generateImage('${post.slug}', this)">Generate</button>
+                    </div>
                 </div>
             </div>
         </div>`;
@@ -418,6 +426,10 @@ function renderHTML() {
     .regen-btn:hover { background: #7c2d4b; color: #fff; border-color: #7c2d4b; }
     .regen-btn.spinning { animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-row { display: flex; gap: 0.5rem; }
+    .generate-btn { padding: 0.4rem 1rem; border: 1px solid #2a5a3a; border-radius: 6px; background: #1a3a2a; color: #4ade80; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+    .generate-btn:hover { background: #2a5a3a; color: #fff; }
+    .generate-btn:disabled { opacity: 0.5; cursor: wait; }
     .copy-btn:hover { background: #7c2d4b; border-color: #7c2d4b; color: #fff; }
     .toast { position: fixed; bottom: 2rem; right: 2rem; background: #1a3a2a; color: #4ade80; padding: 0.75rem 1.25rem; border-radius: 8px; font-size: 0.9rem; transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 100; }
     .toast.show { transform: translateY(0); opacity: 1; }
@@ -480,6 +492,37 @@ async function regenerateOg(slug, btn) {
         showToast('Failed: ' + err.message);
     }
     btn.classList.remove('spinning');
+}
+
+async function generateImage(slug, btn) {
+    btn.disabled = true;
+    btn.textContent = 'Generating...';
+    try {
+        const res = await fetch('/generate/' + slug, { method: 'POST' });
+        const data = await res.json();
+        if (data.ok) {
+            showToast('Image generated + saved');
+            // Refresh the post card
+            const post = btn.closest('.post');
+            const zone = post.querySelector('.drop-zone');
+            zone.innerHTML = '<img src="/image/' + slug + '?' + Date.now() + '" alt="Featured image" /><p class="drop-hint">Drop new image to replace</p>';
+            post.classList.remove('needs-image');
+            post.classList.add('has-image');
+            post.querySelector('.status').className = 'status done';
+            post.querySelector('.status').textContent = 'Has image';
+            const ogPreview = post.querySelector('.og-preview');
+            if (ogPreview) {
+                ogPreview.classList.remove('no-og');
+                ogPreview.querySelector('img').src = '/og/' + slug + '.jpg?' + Date.now();
+            }
+        } else {
+            showToast('Error: ' + data.error);
+        }
+    } catch (err) {
+        showToast('Generate failed: ' + err.message);
+    }
+    btn.disabled = false;
+    btn.textContent = 'Generate';
 }
 
 // Drag & drop
@@ -594,6 +637,55 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
+    // Generate image via Cloudflare Workers AI
+    if (req.method === 'POST' && req.url.startsWith('/generate/')) {
+        const slug = req.url.replace('/generate/', '');
+        const chunks = [];
+        req.on('data', chunk => chunks.push(chunk));
+        req.on('end', async () => {
+            try {
+                let body = {};
+                if (chunks.length) body = JSON.parse(Buffer.concat(chunks).toString());
+
+                const all = scanAll();
+                const item = all.find(p => p.slug === slug);
+                if (!item) throw new Error(`"${slug}" not found`);
+
+                const prompt = body.prompt || buildPrompt(item.title, item.category, item.imageHint);
+
+                console.log(`Generating image for: ${item.title}`);
+                const cfRes = await fetch(
+                    `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/ai/run/${CF_IMAGE_MODEL}`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${CF_API_TOKEN}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ prompt }),
+                    }
+                );
+
+                const cfData = await cfRes.json();
+                if (!cfData.success || !cfData.result?.image) {
+                    const errMsg = cfData.errors?.[0]?.message || 'Image generation failed';
+                    throw new Error(errMsg);
+                }
+
+                const imageBuffer = Buffer.from(cfData.result.image, 'base64');
+                const result = await handleUpload(slug, imageBuffer, 'generated.png');
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ ok: true, path: result.imagePath, ogPath: result.ogPath }));
+            } catch (err) {
+                console.error('Generate failed:', err.message);
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ ok: false, error: err.message }));
+            }
+        });
+        return;
+    }
+
     // Handle image upload
     if (req.method === 'POST' && req.url.startsWith('/upload/')) {
         const slug = req.url.replace('/upload/', '');
@@ -665,7 +757,7 @@ function parseMultipart(body, boundary) {
     return parts;
 }
 
-server.listen(PORT, () => {
+server.listen(PORT, '127.0.0.1', () => {
     console.log(`\n  Featured Image Manager running at http://localhost:${PORT}\n`);
     console.log(`  - Copy prompts → paste into ChatGPT`);
     console.log(`  - Drop generated images back onto posts`);
