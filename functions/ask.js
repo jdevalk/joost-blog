@@ -78,6 +78,9 @@ function scoreDocument(document, tokens, fullQuery) {
 	// Pages are authoritative/canonical — boost them over blog posts and videos
 	if (score > 0 && document.type === 'WebPage') score += 15;
 
+	// Videos (transcript-heavy) are less useful as sources — demote slightly
+	if (score > 0 && document.type === 'VideoObject') score = Math.round(score * 0.7);
+
 	return score;
 }
 
