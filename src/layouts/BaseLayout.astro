@@ -34,7 +34,7 @@ const { ...head } = Astro.props;
                 <Header />
                 <div class="h-[52px] sm:h-[56px]"></div>
             </slot>
-            <div id="main-content" transition:animate={fade({ duration: '0.15s' })}>
+            <div id="main-content" class="grow flex flex-col" transition:animate={fade({ duration: '0.15s' })}>
                 <slot />
             </div>
             <slot name="footer">
