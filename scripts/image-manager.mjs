@@ -25,7 +25,7 @@ const BLOG_DIR = path.resolve('src/content/blog');
 // Cloudflare Workers AI config (image generation, localhost only)
 const CF_ACCOUNT_ID = process.env.CF_ACCOUNT_ID || 'c53e64d218c83cb220b523a637ffd079';
 const CF_API_TOKEN = process.env.CF_API_TOKEN || 'cfut_6j0n95cS6YyGuKHIBC8k02gwVYhlOBboAe4z7S4g756be1c8';
-const CF_IMAGE_MODEL = '@cf/black-forest-labs/flux-1-schnell';
+const CF_IMAGE_MODEL = '@cf/black-forest-labs/flux-2-dev';
 
 // ============================================================
 // Shared prompt logic (same as generate-featured-images.mjs)
@@ -665,15 +665,22 @@ const server = http.createServer(async (req, res) => {
                 const prompt = body.prompt || buildPrompt(item.title, item.category, item.imageHint);
 
                 console.log(`Generating image for: ${item.title}`);
+                console.log(`Prompt (first 200 chars): ${prompt.slice(0, 200)}`);
+
+                const formData = new FormData();
+                formData.append('prompt', prompt);
+                formData.append('width', '1536');
+                formData.append('height', '864');
+                formData.append('steps', '25');
+
                 const cfRes = await fetch(
                     `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/ai/run/${CF_IMAGE_MODEL}`,
                     {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${CF_API_TOKEN}`,
-                            'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ prompt }),
+                        body: formData,
                     }
                 );
 

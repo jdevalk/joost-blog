@@ -14,6 +14,7 @@ export type Props = {
     publishDate?: Date;
     updatedDate?: Date;
     categories?: string[];
+    noindex?: boolean;
 };
 
 const {
@@ -58,6 +59,7 @@ const articleOg = pageType === 'article' && publishDate ? {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
+{Astro.props.noindex && <meta name="robots" content="noindex, follow" />}
 
 <!-- Font preloads -->
 <link rel="preload" as="font" type="font/woff2" href={monaSansWoff2} crossorigin="anonymous" />
