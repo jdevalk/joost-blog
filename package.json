@@ -3,10 +3,12 @@
     "type": "module",
     "version": "1.0.0",
     "scripts": {
+        "predev": "node scripts/generate-nlweb-index.mjs",
         "dev": "astro dev",
         "start": "astro dev",
         "generate-images": "node scripts/generate-featured-images.mjs",
         "images": "node scripts/image-manager.mjs",
+        "prebuild": "node scripts/generate-nlweb-index.mjs",
         "build": "astro build",
         "preview": "astro preview",
         "astro": "astro"
