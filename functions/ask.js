@@ -19,7 +19,8 @@ Rules:
 - When referencing a blog post, link to it using markdown: [Post Title](URL). The URL is provided in the context for each post.
 - Do not repeat the question back. Just answer it.
 - Write in a natural, conversational tone.
-- Use markdown formatting: **bold** for emphasis, bullet lists where appropriate, and links for referenced posts.`;
+- Use markdown formatting: **bold** for emphasis, bullet lists where appropriate, and links for referenced posts.
+- Each post has a publication date. When posts contain conflicting or evolving views, prefer the most recent post — Joost's views may have changed over time. You can acknowledge the evolution if relevant.`;
 
 const headers = {
 	'Access-Control-Allow-Origin': '*',
@@ -134,7 +135,8 @@ function buildContext(scoredResults) {
 		const text = document.text.length > perResultBudget
 			? document.text.slice(0, perResultBudget) + '...'
 			: document.text;
-		context += `## ${document.name}\nURL: https://joost.blog${document.url}\n${text}\n\n`;
+		const date = document.datePublished ? `Published: ${document.datePublished.split('T')[0]}\n` : '';
+		context += `## ${document.name}\nURL: https://joost.blog${document.url}\n${date}${text}\n\n`;
 		sources.push({ url: `https://joost.blog${document.url}`, title: document.name });
 	}
 
