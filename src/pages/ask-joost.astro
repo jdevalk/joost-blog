@@ -123,8 +123,8 @@ import Header from '../components/Header.astro';
             try {
                 const apiBase = window.location.hostname === 'localhost' ? 'https://joost.blog' : '';
                 const fetchParams = { q: query, mode: 'generate' };
-                if (history.length > 0) {
-                    fetchParams.prev = JSON.stringify(history.slice(-3));
+                if (exchanges.length > 0) {
+                    fetchParams.prev = JSON.stringify(exchanges.slice(-3));
                 }
                 const res = await fetch(`${apiBase}/ask?${new URLSearchParams(fetchParams)}`);
                 const data = await res.json();
@@ -134,8 +134,8 @@ import Header from '../components/Header.astro';
                 const answer = data.answer || data.summary || 'No answer available.';
                 addAnswerBubble(formatAnswer(answer), data.sources);
 
-                // Store in history for follow-up context
-                history.push({ query, answer });
+                // Store for follow-up context
+                exchanges.push({ query, answer });
 
                 loading.classList.add('hidden');
             } catch (err) {
