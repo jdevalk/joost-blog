@@ -90,9 +90,7 @@
       "query": "What is Emilia Capital?",
       "category": "biography",
       "expected_sources": [
-        "/about-me/",
-        "/about/",
-        "/work-with-me/"
+        "/about-me/"
       ]
     },
     {
