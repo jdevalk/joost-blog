@@ -1,13 +1,13 @@
 ---
 title: 'Ask Joost: AI-powered answers from my blog'
-publishDate: 2026-03-22T00:00:00.000Z
+publishDate: 2026-03-26T00:00:00.000Z
 excerpt: >-
   I built an AI-powered Q&A feature that lets you ask questions about anything
   I've written. Here's how it works, and why I built it on Cloudflare Workers
   AI.
 categories:
   - Development
-draft: true
+draft: false
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Ask Joost: AI-powered answers from my blog'
 ---
@@ -16,7 +16,7 @@ I have written quite a bit. Over the years, this blog has accumulated posts abou
 
 So I built [Ask Joost](/ask-joost/): a page where you can ask a natural language question and get a direct answer, sourced from my blog posts.
 
-*Want this on your own site? I've [open sourced it on GitHub](https://github.com/jdevalk/nlweb-cloudflare).*
+*Want this on your own site? I've [open sourced it on GitHub](https://github.com/jdevalk/ask-endpoint).*
 
 ## How it works
 
@@ -38,7 +38,7 @@ When you ask a question, it hits the `/ask` endpoint — a Cloudflare Pages Func
 
 **Semantic search** uses Cloudflare Workers AI’s `bge-base-en-v1.5` embedding model. At build time, each indexed document gets embedded. At query time, the question gets embedded too, and cosine similarity finds content that’s conceptually related even when the exact words differ.
 
-On top of that, the retrieval layer does a little bit of query normalization. It expands common aliases and shorthand — things like `wp` to `WordPress`, or `cms share` to `cms market share` — so short or informal queries still find the right content.
+On top of that, the retrieval layer does a little bit of query normalization. It expands common aliases and shorthand, things like `wp` to `WordPress`, or `gutenberg` to `gutenberg block editor` and `block editor` to the same, so short or informal queries still find the right content.
 
 For follow-up questions, it also augments vague queries with the previous turn. So if you ask “what about governance?” after a WordPress question, retrieval gets a bit more context before the model ever sees anything.
 
@@ -64,9 +64,7 @@ If the model fails, times out, or returns something unusable, the endpoint falls
 
 ## Better sources, better answers
 
-One thing I cared about a lot was source quality.
-
-Not all content is equally good source material. Pages like “About” are often more authoritative than an old blog post. Video transcripts are useful for retrieval, but they’re rougher as quoted sources because they’re derived from captions. So the system uses them for discovery, while still preferring cleaner written sources in the final answer when possible.
+One thing I cared about a lot was source quality. Not all content is equally good source material. Pages like “[About](/about-me)” are often more authoritative than an old blog post. Video transcripts are useful for retrieval, but they’re rougher as quoted sources because they’re derived from captions. So the system uses them for discovery, while still preferring cleaner written sources in the final answer when possible.
 
 The source list shown below each answer is also filtered down to the posts the model actually referenced. The function parses the markdown links in the answer and only shows those sources, instead of dumping every item that happened to be in the retrieval context.
 
@@ -112,7 +110,7 @@ That’s been useful while tuning things like alias expansion, follow-up handlin
 
 ## Use it on your own site
 
-I’ve extracted the core into an open source package: [nlweb-cloudflare](https://github.com/jdevalk/nlweb-cloudflare). It gives you a drop-in NLWeb-compatible `/ask` endpoint for markdown-based sites on Cloudflare Pages.
+I’ve extracted the core into an open source package: [ask-endpoint](https://github.com/jdevalk/ask-endpoint). It gives you a drop-in NLWeb-compatible `/ask` endpoint for markdown-based sites on Cloudflare Pages.
 
 The setup is straightforward: point it at your content, generate the index during build, add the function, and connect a Workers AI binding. The README has the full walkthrough.
 
