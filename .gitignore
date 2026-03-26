@@ -2,9 +2,7 @@
 dist/
 # generated types
 .astro/
-# generated build artifacts (index is regenerated, cache is committed)
-src/generated/nlweb-index.json
-src/generated/nlweb-index.mjs
+# generated build artifacts (committed so deploys use the pre-built index)
 
 # dependencies
 node_modules/
