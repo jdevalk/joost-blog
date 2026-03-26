@@ -28,7 +28,7 @@ import Header from '../components/Header.astro';
             </div>
 
             <div id="error-content" class="hidden rounded-lg border border-red-200 bg-red-50 p-6 text-red-800 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300">
-                Something went wrong. Please try again.
+                <p id="error-message">Something went wrong. Please try again.</p>
             </div>
 
             <form id="ask-form" class="mt-6 flex gap-3 sticky bottom-4">
@@ -64,6 +64,7 @@ import Header from '../components/Header.astro';
         const conversation = document.getElementById('conversation');
         const loading = document.getElementById('loading');
         const errorContent = document.getElementById('error-content');
+        const errorMessage = document.getElementById('error-message');
 
         if (!form) return;
 
@@ -153,10 +154,19 @@ import Header from '../components/Header.astro';
             try {
                 const res = await fetch(`${apiBase}/ask?${new URLSearchParams(fetchParams)}`);
 
+                if (!res.ok && !res.headers.get('content-type')?.includes('text/event-stream')) {
+                    let msg = 'Request failed';
+                    try {
+                        const data = await res.json();
+                        msg = data.error || msg;
+                    } catch { /* not JSON */ }
+                    throw new Error(msg);
+                }
+
                 // Non-streaming fallback (JSON response)
                 if (res.headers.get('content-type')?.includes('application/json')) {
                     const data = await res.json();
-                    if (!res.ok || data.error) throw new Error(data.error || 'Request failed');
+                    if (data.error) throw new Error(data.error);
                     const answer = data.answer || data.summary || 'No answer available.';
                     loading.classList.add('hidden');
                     addExchange(query, formatAnswer(answer), data.sources);
@@ -188,6 +198,17 @@ import Header from '../components/Header.astro';
                                     fullAnswer += data.token;
                                     target.innerHTML = formatAnswer(fullAnswer);
                                 }
+                                if (data.error) {
+                                    // Server-side error during streaming
+                                    if (!fullAnswer) {
+                                        target.innerHTML = `<p class="text-red-600 dark:text-red-400">${escapeHtml(data.error)}</p>`;
+                                    }
+                                }
+                                if (data.fallback) {
+                                    // LLM returned garbage, server sent deterministic fallback
+                                    fullAnswer = data.fallback;
+                                    target.innerHTML = formatAnswer(fullAnswer);
+                                }
                                 if (data.sources) {
                                     sources = data.sources;
                                 }
@@ -202,6 +223,10 @@ import Header from '../components/Header.astro';
                 }
             } catch (err) {
                 loading.classList.add('hidden');
+                const msg = err.message === 'Failed to fetch'
+                    ? 'Could not reach the server. Check your connection and try again.'
+                    : err.message || 'Something went wrong. Please try again.';
+                errorMessage.textContent = msg;
                 errorContent.classList.remove('hidden');
             }
 

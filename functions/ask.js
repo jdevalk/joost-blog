@@ -7,6 +7,8 @@ const STOPWORDS = new Set([
 ]);
 
 const MAX_CONTEXT_CHARS = 10000;
+const MAX_QUERY_LENGTH = 500;
+const AI_TIMEOUT_MS = 10000;
 const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const EMBEDDING_MODEL = '@cf/baai/bge-base-en-v1.5';
 
@@ -70,6 +72,16 @@ const headers = {
 	'Access-Control-Allow-Headers': 'Content-Type',
 	'Content-Type': 'application/json; charset=utf-8',
 };
+
+function withTimeout(promise, ms) {
+	return new Promise((resolve, reject) => {
+		const timer = setTimeout(() => reject(new Error('AI request timed out')), ms);
+		promise.then(
+			(val) => { clearTimeout(timer); resolve(val); },
+			(err) => { clearTimeout(timer); reject(err); },
+		);
+	});
+}
 
 function json(body, status = 200) {
 	return new Response(JSON.stringify(body, null, 2), {
@@ -142,7 +154,7 @@ function cosineSimilarity(a, b) {
 async function embedQuery(ai, query) {
 	if (!ai) return null;
 	try {
-		const res = await ai.run(EMBEDDING_MODEL, { text: [query] });
+		const res = await withTimeout(ai.run(EMBEDDING_MODEL, { text: [query] }), AI_TIMEOUT_MS);
 		return res?.data?.[0] || null;
 	} catch {
 		return null;
@@ -292,14 +304,17 @@ async function generateStreamingAnswer(ai, query, scoredResults, prevExchanges, 
 
 	const messages = buildMessages(query, context, prevExchanges);
 
-	const response = await ai.run(MODEL, {
-		messages,
-		max_tokens: 512,
-		temperature: 0.3,
-		stream: true,
-	}, {
-		headers: { 'x-session-affinity': sessionId },
-	});
+	const response = await withTimeout(
+		ai.run(MODEL, {
+			messages,
+			max_tokens: 512,
+			temperature: 0.3,
+			stream: true,
+		}, {
+			headers: { 'x-session-affinity': sessionId },
+		}),
+		AI_TIMEOUT_MS,
+	);
 
 	return { stream: response, sources };
 }
@@ -314,18 +329,23 @@ async function generateAnswer(ai, query, scoredResults, prevExchanges, sessionId
 	try {
 		const messages = buildMessages(query, context, prevExchanges);
 
-		const response = await ai.run(MODEL, {
-			messages,
-			max_tokens: 512,
-			temperature: 0.3,
-		}, {
-			headers: { 'x-session-affinity': sessionId },
-		});
+		const response = await withTimeout(
+			ai.run(MODEL, {
+				messages,
+				max_tokens: 512,
+				temperature: 0.3,
+			}, {
+				headers: { 'x-session-affinity': sessionId },
+			}),
+			AI_TIMEOUT_MS,
+		);
 
 		const answer = response.response
 			|| response.result?.response
 			|| response.choices?.[0]?.message?.content;
-		if (!answer) throw new Error('Empty model response');
+		if (!answer || typeof answer !== 'string' || answer.trim().length < 5) {
+			throw new Error('Empty or malformed model response');
+		}
 
 		return { answer, sources: extractSources(answer, sources) };
 	} catch (err) {
@@ -340,15 +360,19 @@ async function normalizeRequest(request) {
 	let body = {};
 
 	if (request.method !== 'GET' && request.headers.get('content-type')?.includes('application/json')) {
-		body = await request.json();
+		try {
+			body = await request.json();
+		} catch {
+			throw new Error('Invalid JSON body');
+		}
 	}
 
 	return {
-		query: body.query || body.q || query.get('query') || query.get('q') || '',
+		query: String(body.query || body.q || query.get('query') || query.get('q') || '').slice(0, MAX_QUERY_LENGTH),
 		mode: body.mode || query.get('mode') || 'list',
 		site: body.site || query.get('site') || 'joost.blog',
-		prev: body.prev || query.get('prev') || '',
-		decontextualized_query: body.decontextualized_query || query.get('decontextualized_query') || '',
+		prev: String(body.prev || query.get('prev') || '').slice(0, 10000),
+		decontextualized_query: String(body.decontextualized_query || query.get('decontextualized_query') || '').slice(0, MAX_QUERY_LENGTH),
 		query_id: body.query_id || query.get('query_id') || crypto.randomUUID(),
 		debug: body.debug || query.get('debug') === 'true',
 	};
@@ -356,7 +380,14 @@ async function normalizeRequest(request) {
 
 async function handle(request, env) {
 	const startTime = Date.now();
-	const payload = await normalizeRequest(request);
+
+	let payload;
+	try {
+		payload = await normalizeRequest(request);
+	} catch (err) {
+		return json({ error: err.message }, 400);
+	}
+
 	const query = payload.decontextualized_query || payload.query;
 
 	if (!query.trim()) {
@@ -364,6 +395,14 @@ async function handle(request, env) {
 			error: 'Missing required query parameter: query',
 			query_id: payload.query_id,
 		}, 400);
+	}
+
+	// Guard against empty or corrupt index
+	if (!Array.isArray(nlwebIndex) || nlwebIndex.length === 0) {
+		return json({
+			error: 'Search index is unavailable. Please try again later.',
+			query_id: payload.query_id,
+		}, 503);
 	}
 
 	// Parse previous exchanges early so we can use them for query augmentation
@@ -432,9 +471,19 @@ async function handle(request, env) {
 				'Connection': 'keep-alive',
 			};
 
-			// Process stream in background
+			// Process stream in background with a safety timeout
 			(async () => {
 				let fullAnswer = '';
+				const streamTimeout = setTimeout(async () => {
+					try {
+						const msg = fullAnswer
+							? 'Response was cut short due to a timeout.'
+							: 'The AI took too long to respond. Please try again.';
+						await writer.write(encoder.encode(`data: ${JSON.stringify({ error: msg, done: true })}\n\n`));
+						await writer.close();
+					} catch { /* already closed */ }
+				}, AI_TIMEOUT_MS * 3); // 30s total for streaming (tokens arrive incrementally)
+
 				try {
 					const reader = stream.getReader ? stream.getReader() : null;
 					if (reader) {
@@ -464,13 +513,21 @@ async function handle(request, env) {
 						}
 					}
 
-					// Send sources as final event
-					const usedSources = extractSources(fullAnswer, sources);
-					await writer.write(encoder.encode(`data: ${JSON.stringify({ sources: usedSources, done: true })}\n\n`));
+					clearTimeout(streamTimeout);
+
+					// Send sources as final event (with fallback if answer was empty/garbage)
+					if (fullAnswer.trim().length < 5) {
+						const fallback = fallbackSummarize(query, scoredResults.map((r) => r.document));
+						await writer.write(encoder.encode(`data: ${JSON.stringify({ fallback: fallback.answer, sources: fallback.sources, done: true })}\n\n`));
+					} else {
+						const usedSources = extractSources(fullAnswer, sources);
+						await writer.write(encoder.encode(`data: ${JSON.stringify({ sources: usedSources, done: true })}\n\n`));
+					}
 				} catch (err) {
+					clearTimeout(streamTimeout);
 					await writer.write(encoder.encode(`data: ${JSON.stringify({ error: err.message, done: true })}\n\n`));
 				} finally {
-					await writer.close();
+					try { await writer.close(); } catch { /* already closed */ }
 				}
 			})();
 
