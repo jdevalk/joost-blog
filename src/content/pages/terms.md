@@ -1,5 +1,6 @@
 ---
 title: Terms of Service
+searchWeight: 0.3
 ---
 
 **Last updated on June 1, 2023**

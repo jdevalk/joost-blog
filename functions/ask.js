@@ -124,11 +124,10 @@ function scoreDocument(document, tokens, fullQuery) {
 		if (urlLower.includes(token)) score += 4;
 	}
 
-	// Pages are authoritative/canonical — boost them
-	if (score > 0 && document.type === 'WebPage') score += 15;
-
-	// Videos (transcript-heavy) are less useful as standalone sources
-	if (score > 0 && document.type === 'VideoObject') score = Math.round(score * 0.5);
+	// Apply per-document searchWeight from frontmatter (default 1.0)
+	// Use this to boost authoritative pages or dampen low-value ones
+	const weight = document.searchWeight ?? 1.0;
+	score = score * weight;
 
 	return score;
 }

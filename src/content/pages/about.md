@@ -1,5 +1,6 @@
 ---
 title: About
+searchWeight: 0.3
 featureImage:
   src: '../../assets/images/about.jpg'
   alt: The portrait of a person

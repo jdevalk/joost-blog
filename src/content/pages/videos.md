@@ -1,5 +1,6 @@
 ---
 title: Videos
+searchWeight: 0.5
 ---
 ## Want to see me speak?
 

@@ -16,9 +16,9 @@ const EMBEDDING_MODEL = '@cf/baai/bge-base-en-v1.5';
 const MAX_EMBED_CHARS = 2000; // ~500 tokens, enough to capture the gist
 
 const CONTENT_TYPES = [
-  { dir: 'blog', type: 'BlogPosting', baseUrl: '/' },
-  { dir: 'pages', type: 'WebPage', baseUrl: '/' },
-  { dir: 'videos', type: 'VideoObject', baseUrl: '/videos/' }
+  { dir: 'blog', type: 'BlogPosting', baseUrl: '/', defaultSearchWeight: 1.0 },
+  { dir: 'pages', type: 'WebPage', baseUrl: '/', defaultSearchWeight: 1.2 },
+  { dir: 'videos', type: 'VideoObject', baseUrl: '/videos/', defaultSearchWeight: 0.5 }
 ];
 
 const MARKDOWN_EXTENSIONS = new Set(['.md', '.mdx']);
@@ -108,6 +108,7 @@ function buildRecord(contentType, filePath, parsedFile, transcript) {
     description: excerpt,
     datePublished: normalizeDate(data.publishDate),
     keywords: categories,
+    searchWeight: data.searchWeight ?? contentType.defaultSearchWeight ?? 1.0,
     text: fullText,
     schema_object: {
       '@context': 'https://schema.org',

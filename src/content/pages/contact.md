@@ -1,5 +1,6 @@
 ---
 title: Get in touch
+searchWeight: 0.7
 seo:
   title: Contact
   description: Get in touch through email or social media! Let me know how I can help.

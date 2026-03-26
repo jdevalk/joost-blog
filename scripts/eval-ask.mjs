@@ -130,8 +130,8 @@ async function runOffline(fixtures) {
 			if (keywordsLower.some((kw) => kw.includes(token))) score += 7;
 			if (urlLower.includes(token)) score += 4;
 		}
-		if (score > 0 && doc.type === 'WebPage') score += 15;
-		if (score > 0 && doc.type === 'VideoObject') score = Math.round(score * 0.5);
+		const weight = doc.searchWeight ?? 1.0;
+		score = score * weight;
 		return score;
 	}
 

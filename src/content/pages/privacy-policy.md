@@ -1,5 +1,6 @@
 ---
 title: Privacy policy
+searchWeight: 0.3
 ---
 I deeply value your privacy and aim to keep things simple. Here’s what you need to know:
 

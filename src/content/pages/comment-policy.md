@@ -1,5 +1,6 @@
 ---
 title: Comment policy
+searchWeight: 0.3
 ---
 I welcome and encourage thoughtful discussions, feedback, and questions on my blog. To maintain a respectful and positive environment, I ask all commenters to follow these simple guidelines:
 
