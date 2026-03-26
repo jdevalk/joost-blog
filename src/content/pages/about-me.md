@@ -1,5 +1,10 @@
 ---
 title: About Joost de Valk
+categories:
+  - Emilia Capital
+  - Yoast
+  - WordPress
+  - SEO
 ---
 
 <div class="not-prose">
