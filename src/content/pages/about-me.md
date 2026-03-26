@@ -1,6 +1,6 @@
 ---
 title: About Joost de Valk
-searchWeight: 1.5
+searchWeight: 2.0
 ---
 
 <div class="not-prose">
