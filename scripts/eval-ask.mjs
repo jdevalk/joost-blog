@@ -130,8 +130,6 @@ async function runOffline(fixtures) {
 			if (keywordsLower.some((kw) => kw.includes(token))) score += 7;
 			if (urlLower.includes(token)) score += 4;
 		}
-		const weight = doc.searchWeight ?? 1.0;
-		score = score * weight;
 		return score;
 	}
 
@@ -141,8 +139,10 @@ async function runOffline(fixtures) {
 		const tokens = tokenize(expanded);
 		const scored = nlwebIndex
 			.map((doc) => {
-				const score = scoreDocument(doc, tokens, expanded);
-				return { url: doc.url, name: doc.name, score, keywordScore: score, semanticScore: 0 };
+				const keywordScore = scoreDocument(doc, tokens, expanded);
+				const weight = doc.searchWeight ?? 1.0;
+				const score = keywordScore * weight;
+				return { url: doc.url, name: doc.name, score, keywordScore, semanticScore: 0 };
 			})
 			.filter((r) => r.score > 2)
 			.sort((a, b) => b.score - a.score)

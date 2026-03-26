@@ -124,11 +124,6 @@ function scoreDocument(document, tokens, fullQuery) {
 		if (urlLower.includes(token)) score += 4;
 	}
 
-	// Apply per-document searchWeight from frontmatter (default 1.0)
-	// Use this to boost authoritative pages or dampen low-value ones
-	const weight = document.searchWeight ?? 1.0;
-	score = score * weight;
-
 	return score;
 }
 
@@ -170,8 +165,9 @@ function search(query, queryEmbedding) {
 				semanticScore = Math.max(0, similarity - 0.3) * 100;
 			}
 
-			// Blend: keyword and semantic scores complement each other
-			const score = keywordScore + semanticScore;
+			// Blend keyword + semantic, then apply per-document searchWeight
+			const weight = document.searchWeight ?? 1.0;
+			const score = (keywordScore + semanticScore) * weight;
 			return { document, score, keywordScore, semanticScore };
 		})
 		.filter((item) => item.score > 2)
