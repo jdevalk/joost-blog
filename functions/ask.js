@@ -242,6 +242,68 @@ function augmentQuery(query, prevExchanges) {
 	return query;
 }
 
+function buildMessages(query, context, prevExchanges) {
+	const messages = [{ role: 'system', content: SYSTEM_PROMPT }];
+
+	if (prevExchanges && prevExchanges.length > 0) {
+		const recent = prevExchanges.slice(-3);
+		for (const exchange of recent) {
+			messages.push({ role: 'user', content: exchange.query });
+			const prevAnswer = exchange.answer.length > 500
+				? exchange.answer.slice(0, 500) + '...'
+				: exchange.answer;
+			messages.push({ role: 'assistant', content: prevAnswer });
+		}
+	}
+
+	messages.push({ role: 'user', content: `Context from joost.blog:\n\n${context}\n\nQuestion: ${query}` });
+	return messages;
+}
+
+function extractSources(answer, allSources) {
+	const usedUrlSet = new Set();
+	const usedTitleSet = new Set();
+
+	const linkPattern = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g;
+	let match;
+	while ((match = linkPattern.exec(answer)) !== null) {
+		usedUrlSet.add(match[2].replace(/\/$/, ''));
+		usedTitleSet.add(match[1].toLowerCase());
+	}
+
+	let usedSources = allSources.filter((s) => {
+		const urlNorm = s.url.replace(/\/$/, '');
+		if (usedUrlSet.has(urlNorm)) return true;
+		if (usedTitleSet.has(s.title.toLowerCase())) return true;
+		return false;
+	});
+
+	if (usedSources.length === 0) usedSources = allSources.slice(0, 3);
+	return usedSources;
+}
+
+async function generateStreamingAnswer(ai, query, scoredResults, prevExchanges, sessionId) {
+	const { context, sources } = buildContext(scoredResults);
+
+	if (!context.trim()) {
+		const fallback = fallbackSummarize(query, scoredResults.map((r) => r.document));
+		return { stream: null, fallback };
+	}
+
+	const messages = buildMessages(query, context, prevExchanges);
+
+	const response = await ai.run(MODEL, {
+		messages,
+		max_tokens: 512,
+		temperature: 0.3,
+		stream: true,
+	}, {
+		headers: { 'x-session-affinity': sessionId },
+	});
+
+	return { stream: response, sources };
+}
+
 async function generateAnswer(ai, query, scoredResults, prevExchanges, sessionId) {
 	const { context, sources } = buildContext(scoredResults);
 
@@ -250,23 +312,7 @@ async function generateAnswer(ai, query, scoredResults, prevExchanges, sessionId
 	}
 
 	try {
-		// Build message history — include only the most recent exchanges to avoid stale context
-		const messages = [{ role: 'system', content: SYSTEM_PROMPT }];
-
-		if (prevExchanges && prevExchanges.length > 0) {
-			// Keep last 3 exchanges max, but summarize older ones to save tokens
-			const recent = prevExchanges.slice(-3);
-			for (const exchange of recent) {
-				messages.push({ role: 'user', content: exchange.query });
-				// Truncate long previous answers to save context budget
-				const prevAnswer = exchange.answer.length > 500
-					? exchange.answer.slice(0, 500) + '...'
-					: exchange.answer;
-				messages.push({ role: 'assistant', content: prevAnswer });
-			}
-		}
-
-		messages.push({ role: 'user', content: `Context from joost.blog:\n\n${context}\n\nQuestion: ${query}` });
+		const messages = buildMessages(query, context, prevExchanges);
 
 		const response = await ai.run(MODEL, {
 			messages,
@@ -281,33 +327,8 @@ async function generateAnswer(ai, query, scoredResults, prevExchanges, sessionId
 			|| response.choices?.[0]?.message?.content;
 		if (!answer) throw new Error('Empty model response');
 
-		// Extract sources the model actually referenced
-		const usedUrlSet = new Set();
-		const usedTitleSet = new Set();
-
-		// Match markdown links: [Title](URL)
-		const linkPattern = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g;
-		let match;
-		while ((match = linkPattern.exec(answer)) !== null) {
-			usedUrlSet.add(match[2].replace(/\/$/, ''));
-			usedTitleSet.add(match[1].toLowerCase());
-		}
-
-		// Filter sources: match by URL first, then by title mention as fallback
-		let usedSources = sources.filter((s) => {
-			const urlNorm = s.url.replace(/\/$/, '');
-			if (usedUrlSet.has(urlNorm)) return true;
-			// Title-based fallback: model may reference a post by name without linking
-			if (usedTitleSet.has(s.title.toLowerCase())) return true;
-			return false;
-		});
-
-		// If the model didn't link to anything, fall back to top 3 context sources
-		if (usedSources.length === 0) usedSources = sources.slice(0, 3);
-
-		return { answer, sources: usedSources };
+		return { answer, sources: extractSources(answer, sources) };
 	} catch (err) {
-		// Fallback to deterministic summary on any LLM failure
 		console.error('AI generation failed, falling back:', err.message);
 		return fallbackSummarize(query, scoredResults.map((r) => r.document));
 	}
@@ -384,6 +405,82 @@ async function handle(request, env) {
 		query,
 		results,
 	};
+
+	// Streaming mode: return SSE stream with tokens + final sources event
+	if (payload.mode === 'stream' && ai) {
+		try {
+			const { stream, fallback, sources } = await generateStreamingAnswer(
+				ai, query, scoredResults, prevExchanges, payload.query_id
+			);
+
+			// If retrieval found nothing, return fallback as a single non-streamed response
+			if (!stream && fallback) {
+				return json({ ...fallback, query_id: payload.query_id, mode: 'stream' });
+			}
+
+			// Build an SSE response that pipes the AI stream and appends sources
+			const { readable, writable } = new TransformStream();
+			const writer = writable.getWriter();
+			const encoder = new TextEncoder();
+
+			const sseHeaders = {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+				'Access-Control-Allow-Headers': 'Content-Type',
+				'Content-Type': 'text/event-stream',
+				'Cache-Control': 'no-cache',
+				'Connection': 'keep-alive',
+			};
+
+			// Process stream in background
+			(async () => {
+				let fullAnswer = '';
+				try {
+					const reader = stream.getReader ? stream.getReader() : null;
+					if (reader) {
+						const decoder = new TextDecoder();
+						while (true) {
+							const { done, value } = await reader.read();
+							if (done) break;
+							const chunk = typeof value === 'string' ? value : decoder.decode(value, { stream: true });
+							// Workers AI SSE format: lines starting with "data: "
+							const lines = chunk.split('\n');
+							for (const line of lines) {
+								if (line.startsWith('data: ')) {
+									const data = line.slice(6);
+									if (data === '[DONE]') continue;
+									try {
+										const parsed = JSON.parse(data);
+										const token = parsed.response || parsed.choices?.[0]?.delta?.content || '';
+										if (token) {
+											fullAnswer += token;
+											await writer.write(encoder.encode(`data: ${JSON.stringify({ token })}\n\n`));
+										}
+									} catch {
+										// Non-JSON data line, skip
+									}
+								}
+							}
+						}
+					}
+
+					// Send sources as final event
+					const usedSources = extractSources(fullAnswer, sources);
+					await writer.write(encoder.encode(`data: ${JSON.stringify({ sources: usedSources, done: true })}\n\n`));
+				} catch (err) {
+					await writer.write(encoder.encode(`data: ${JSON.stringify({ error: err.message, done: true })}\n\n`));
+				} finally {
+					await writer.close();
+				}
+			})();
+
+			return new Response(readable, { headers: sseHeaders });
+		} catch (err) {
+			// Fall back to non-streaming on any error
+			const generated = fallbackSummarize(query, scoredResults.map((r) => r.document));
+			return json({ ...generated, query_id: payload.query_id, mode: 'stream', fallback: true });
+		}
+	}
 
 	let generateMs = 0;
 	if (payload.mode === 'summarize' || payload.mode === 'generate') {
