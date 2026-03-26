@@ -39,7 +39,7 @@ The two scores are blended, so you get the precision of keyword matching and the
 
 ### 3. An LLM that generates the answer
 
-When you use `mode=generate` (which the Ask Joost page does by default), the top search results are sent as context to Llama 3.1 70B running on [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/). The model reads the relevant excerpts from my posts and writes a concise answer to your question, grounded in what I've actually written.
+When you use `mode=generate` (which the Ask Joost page does by default), the top search results are sent as context to Llama 3.3 70B running on [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/). The model reads the relevant excerpts from my posts and writes a concise answer to your question, grounded in what I've actually written.
 
 The system prompt keeps the model honest: it can only answer based on the provided context. If my blog doesn't cover your question, it says so instead of making things up.
 
@@ -71,10 +71,10 @@ I wanted something that:
 
 - **Astro** for the static site
 - **Cloudflare Pages Functions** for the `/ask` endpoint
-- **Cloudflare Workers AI** — `bge-base-en-v1.5` for embeddings, Llama 3.1 70B for answer generation
+- **Cloudflare Workers AI** — `bge-base-en-v1.5` for embeddings, Llama 3.3 70B for answer generation
 - **A build-time script** that generates the search index and embeddings from markdown content, with content-hash caching
 
-The whole thing is about 200 lines of code in a single Cloudflare Function, plus a build script. No framework, no SDK, no orchestration layer.
+The whole thing is about 330 lines of code in a single Cloudflare Function, plus a build script. No framework, no SDK, no orchestration layer.
 
 ## Use it on your own site
 

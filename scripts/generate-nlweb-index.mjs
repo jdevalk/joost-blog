@@ -226,6 +226,13 @@ async function main() {
     for (const filePath of files) {
       const raw = await fs.readFile(filePath, 'utf8');
       const parsedFile = matter(raw);
+
+      // Skip draft content — it should never appear in the public index
+      if (parsedFile.data.draft === true) {
+        console.log(`  Skipping draft: ${path.relative(contentDir, filePath)}`);
+        continue;
+      }
+
       const transcript = await loadTranscript(parsedFile.data.youtubeId);
       records.push(buildRecord(contentType, filePath, parsedFile, transcript));
     }

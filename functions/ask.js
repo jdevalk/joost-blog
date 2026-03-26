@@ -10,17 +10,59 @@ const MAX_CONTEXT_CHARS = 10000;
 const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const EMBEDDING_MODEL = '@cf/baai/bge-base-en-v1.5';
 
+// Query alias/synonym expansion — applied before tokenization and embedding
+const QUERY_ALIASES = [
+	[/\bwp\b/gi, 'wordpress'],
+	[/\bcms share\b/gi, 'cms market share'],
+	[/\bseo plugin\b/gi, 'yoast seo plugin'],
+	[/\bgutenberg\b/gi, 'gutenberg block editor'],
+	[/\bblock editor\b/gi, 'gutenberg block editor'],
+	[/\bemilia\b/gi, 'emilia capital'],
+	[/\bdev-?rel\b/gi, 'developer relations'],
+	[/\bprogress ?planner\b/gi, 'progress planner plugin'],
+];
+
+function expandAliases(query) {
+	let expanded = query;
+	for (const [pattern, replacement] of QUERY_ALIASES) {
+		expanded = expanded.replace(pattern, replacement);
+	}
+	return expanded;
+}
+
+const TYPE_LABELS = {
+	'WebPage': 'page',
+	'BlogPosting': 'blog post',
+	'VideoObject': 'video',
+};
+
 const SYSTEM_PROMPT = `You are a helpful assistant answering questions about Joost de Valk and his blog joost.blog. Joost is an internet entrepreneur from the Netherlands, founder of Yoast (the WordPress SEO plugin company), and investor at Emilia Capital.
 
 Rules:
 - Answer ONLY based on the provided context. Do not make up information.
 - If the context doesn't contain enough information to answer, say so honestly.
 - Keep answers concise and direct — 2-4 sentences for simple questions, more for complex ones.
-- ALWAYS link to the blog posts you reference using markdown: [Post Title](URL). The URL is provided in the context for each post. Every answer should include at least one link.
 - Do not repeat the question back. Just answer it.
 - Write in a natural, conversational tone.
 - Use markdown formatting: **bold** for emphasis, bullet lists where appropriate, and links for referenced posts.
-- Each post has a publication date. When posts contain conflicting or evolving views, prefer the most recent post — Joost's views may have changed over time. You can acknowledge the evolution if relevant.`;
+
+Attribution:
+- ALWAYS link to the sources you reference using markdown: [Post Title](URL). Every answer must include at least one link.
+- Only cite sources that directly support your answer. Do not link to sources just because they were provided.
+- Prefer blog posts and pages over video transcripts as sources — video transcripts are rougher and less authoritative.
+
+Temporal awareness:
+- Each source has a publication date and content type. Pay attention to dates.
+- When sources contain conflicting or evolving views, prefer the most recent source — Joost's views may have changed over time.
+- If a question asks about Joost's current view, base your answer on the most recent relevant source.
+- When views have clearly evolved, briefly acknowledge the change (e.g., "Joost initially thought X, but as of [date] his view is Y").
+- For factual/historical questions (e.g., "when did X happen?"), older sources are fine.
+
+Follow-up questions:
+- This may be a multi-turn conversation. Previous exchanges are included in the message history.
+- When the user asks a vague follow-up (e.g., "what about that?", "tell me more", "and governance?"), interpret it in the context of the prior conversation.
+- Base your answer on the NEW context provided with the follow-up question, not on the previous answer's context. The retrieval system has already searched for relevant content based on the follow-up.
+- If the follow-up doesn't make sense without prior context and the new context doesn't help, ask the user to clarify.`;
 
 const headers = {
 	'Access-Control-Allow-Origin': '*',
@@ -57,6 +99,10 @@ function buildNeedle(document) {
 
 function scoreDocument(document, tokens, fullQuery) {
 	const needle = buildNeedle(document);
+	const nameLower = document.name.toLowerCase();
+	const descLower = document.description.toLowerCase();
+	const urlLower = document.url.toLowerCase();
+	const keywordsLower = (document.keywords || []).map((k) => String(k).toLowerCase());
 	let score = 0;
 
 	// Exact phrase match bonus
@@ -68,18 +114,21 @@ function scoreDocument(document, tokens, fullQuery) {
 		const occurrences = needle.split(token).length - 1;
 		if (!occurrences) continue;
 
-		score += occurrences;
-		if (document.name.toLowerCase().includes(token)) score += 8;
-		if (document.description.toLowerCase().includes(token)) score += 4;
-		if ((document.keywords || []).some((keyword) => String(keyword).toLowerCase().includes(token))) score += 6;
-		if (document.url.toLowerCase().includes(token)) score += 3;
+		// Cap body occurrence score with log scaling — prevents long transcripts from dominating
+		score += Math.min(occurrences, 3) + Math.log2(Math.max(occurrences - 3, 1));
+
+		// Structured field matches are the strongest signal
+		if (nameLower.includes(token)) score += 10;
+		if (descLower.includes(token)) score += 5;
+		if (keywordsLower.some((kw) => kw.includes(token))) score += 7;
+		if (urlLower.includes(token)) score += 4;
 	}
 
-	// Pages are authoritative/canonical — boost them over blog posts and videos
+	// Pages are authoritative/canonical — boost them
 	if (score > 0 && document.type === 'WebPage') score += 15;
 
-	// Videos (transcript-heavy) are less useful as sources — demote slightly
-	if (score > 0 && document.type === 'VideoObject') score = Math.round(score * 0.7);
+	// Videos (transcript-heavy) are less useful as standalone sources
+	if (score > 0 && document.type === 'VideoObject') score = Math.round(score * 0.5);
 
 	return score;
 }
@@ -107,11 +156,12 @@ async function embedQuery(ai, query) {
 }
 
 function search(query, queryEmbedding) {
-	const tokens = tokenize(query);
+	const expanded = expandAliases(query);
+	const tokens = tokenize(expanded);
 
 	return nlwebIndex
 		.map((document) => {
-			const keywordScore = scoreDocument(document, tokens, query);
+			const keywordScore = scoreDocument(document, tokens, expanded);
 
 			// Semantic score: cosine similarity scaled to comparable range
 			let semanticScore = 0;
@@ -148,9 +198,16 @@ function buildContext(scoredResults) {
 		const text = document.text.length > perResultBudget
 			? document.text.slice(0, perResultBudget) + '...'
 			: document.text;
-		const date = document.datePublished ? `Published: ${document.datePublished.split('T')[0]}\n` : '';
-		context += `## ${document.name}\nURL: https://joost.blog${document.url}\n${date}${text}\n\n`;
-		sources.push({ url: `https://joost.blog${document.url}`, title: document.name });
+		const typeLabel = TYPE_LABELS[document.type] || 'content';
+		const date = document.datePublished ? document.datePublished.split('T')[0] : null;
+		const meta = [`Type: ${typeLabel}`, date ? `Published: ${date}` : null].filter(Boolean).join(' | ');
+		context += `## ${document.name}\nURL: https://joost.blog${document.url}\n${meta}\n${text}\n\n`;
+		sources.push({
+			url: `https://joost.blog${document.url}`,
+			title: document.name,
+			type: typeLabel,
+			datePublished: date,
+		});
 	}
 
 	return { context, sources };
@@ -173,6 +230,23 @@ function fallbackSummarize(query, results) {
 	};
 }
 
+// Build a lightweight query augmentation from conversation history for retrieval
+function augmentQuery(query, prevExchanges) {
+	if (!prevExchanges || prevExchanges.length === 0) return query;
+
+	// Short/vague follow-ups likely need context from the previous turn
+	const isVagueFollowUp = query.split(/\s+/).length <= 5
+		|| /^(what about|tell me more|and |how about|why|can you|more on)/i.test(query);
+
+	if (!isVagueFollowUp) return query;
+
+	// Append the previous query to give retrieval more signal
+	const lastQuery = prevExchanges[prevExchanges.length - 1]?.query;
+	if (lastQuery) return `${query} (context: ${lastQuery})`;
+
+	return query;
+}
+
 async function generateAnswer(ai, query, scoredResults, prevExchanges, sessionId) {
 	const { context, sources } = buildContext(scoredResults);
 
@@ -181,14 +255,19 @@ async function generateAnswer(ai, query, scoredResults, prevExchanges, sessionId
 	}
 
 	try {
-		// Build message history from previous exchanges
+		// Build message history — include only the most recent exchanges to avoid stale context
 		const messages = [{ role: 'system', content: SYSTEM_PROMPT }];
 
 		if (prevExchanges && prevExchanges.length > 0) {
-			// Include up to 3 previous exchanges for context
-			for (const exchange of prevExchanges.slice(-3)) {
+			// Keep last 3 exchanges max, but summarize older ones to save tokens
+			const recent = prevExchanges.slice(-3);
+			for (const exchange of recent) {
 				messages.push({ role: 'user', content: exchange.query });
-				messages.push({ role: 'assistant', content: exchange.answer });
+				// Truncate long previous answers to save context budget
+				const prevAnswer = exchange.answer.length > 500
+					? exchange.answer.slice(0, 500) + '...'
+					: exchange.answer;
+				messages.push({ role: 'assistant', content: prevAnswer });
 			}
 		}
 
@@ -207,19 +286,29 @@ async function generateAnswer(ai, query, scoredResults, prevExchanges, sessionId
 			|| response.choices?.[0]?.message?.content;
 		if (!answer) throw new Error('Empty model response');
 
-		// Extract sources the model actually referenced (by URL in markdown links)
-		const usedUrls = new Set();
+		// Extract sources the model actually referenced
+		const usedUrlSet = new Set();
+		const usedTitleSet = new Set();
+
+		// Match markdown links: [Title](URL)
 		const linkPattern = /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g;
 		let match;
 		while ((match = linkPattern.exec(answer)) !== null) {
-			usedUrls.add(match[2].replace(/\/$/, ''));
+			usedUrlSet.add(match[2].replace(/\/$/, ''));
+			usedTitleSet.add(match[1].toLowerCase());
 		}
 
-		// Filter sources to only those referenced in the answer, preserving order
-		let usedSources = sources.filter((s) => usedUrls.has(s.url.replace(/\/$/, '')));
+		// Filter sources: match by URL first, then by title mention as fallback
+		let usedSources = sources.filter((s) => {
+			const urlNorm = s.url.replace(/\/$/, '');
+			if (usedUrlSet.has(urlNorm)) return true;
+			// Title-based fallback: model may reference a post by name without linking
+			if (usedTitleSet.has(s.title.toLowerCase())) return true;
+			return false;
+		});
 
-		// If the model didn't link to anything, fall back to all context sources
-		if (usedSources.length === 0) usedSources = sources;
+		// If the model didn't link to anything, fall back to top 3 context sources
+		if (usedSources.length === 0) usedSources = sources.slice(0, 3);
 
 		return { answer, sources: usedSources };
 	} catch (err) {
@@ -245,10 +334,12 @@ async function normalizeRequest(request) {
 		prev: body.prev || query.get('prev') || '',
 		decontextualized_query: body.decontextualized_query || query.get('decontextualized_query') || '',
 		query_id: body.query_id || query.get('query_id') || crypto.randomUUID(),
+		debug: body.debug || query.get('debug') === 'true',
 	};
 }
 
 async function handle(request, env) {
+	const startTime = Date.now();
 	const payload = await normalizeRequest(request);
 	const query = payload.decontextualized_query || payload.query;
 
@@ -259,11 +350,28 @@ async function handle(request, env) {
 		}, 400);
 	}
 
-	// Embed query for semantic search (runs in parallel with keyword search intent)
-	const ai = env?.AI;
-	const queryEmbedding = ai ? await embedQuery(ai, query) : null;
+	// Parse previous exchanges early so we can use them for query augmentation
+	let prevExchanges = [];
+	if (payload.prev) {
+		try {
+			prevExchanges = JSON.parse(payload.prev);
+		} catch {
+			// prev can also be a comma-separated list of queries (NLWeb format) — ignore
+		}
+	}
 
-	const scoredResults = search(query, queryEmbedding);
+	// Augment vague follow-ups with context from previous turn for better retrieval
+	const searchQuery = augmentQuery(query, prevExchanges);
+
+	// Embed query for semantic search
+	const ai = env?.AI;
+	const embedStart = Date.now();
+	const queryEmbedding = ai ? await embedQuery(ai, searchQuery) : null;
+	const embedMs = Date.now() - embedStart;
+
+	const searchStart = Date.now();
+	const scoredResults = search(searchQuery, queryEmbedding);
+	const searchMs = Date.now() - searchStart;
 
 	const results = scoredResults.map(({ document, score }) => ({
 		url: document.url,
@@ -282,29 +390,46 @@ async function handle(request, env) {
 		results,
 	};
 
+	let generateMs = 0;
 	if (payload.mode === 'summarize' || payload.mode === 'generate') {
 		let generated;
 
-		// Parse previous exchanges from prev parameter (JSON array of {query, answer} objects)
-		let prevExchanges = [];
-		if (payload.prev) {
-			try {
-				prevExchanges = JSON.parse(payload.prev);
-			} catch {
-				// prev can also be a comma-separated list of queries (NLWeb format) — ignore for now
-			}
-		}
-
+		const genStart = Date.now();
 		if (ai) {
 			generated = await generateAnswer(ai, query, scoredResults, prevExchanges, payload.query_id);
 		} else {
 			// No AI binding available (local dev) — use deterministic fallback
 			generated = fallbackSummarize(query, scoredResults.map((r) => r.document));
 		}
+		generateMs = Date.now() - genStart;
 
 		response.answer = generated.answer;
 		response.summary = generated.answer;
 		response.sources = generated.sources;
+	}
+
+	if (payload.debug) {
+		response.debug = {
+			timing: {
+				total_ms: Date.now() - startTime,
+				embed_ms: embedMs,
+				search_ms: searchMs,
+				generate_ms: generateMs,
+			},
+			retrieval: scoredResults.map(({ document, score, keywordScore, semanticScore }) => ({
+				id: document.id || document.url,
+				name: document.name,
+				url: document.url,
+				type: document.type,
+				datePublished: document.datePublished,
+				score,
+				keywordScore,
+				semanticScore,
+			})),
+			index_size: nlwebIndex.length,
+			had_embedding: !!queryEmbedding,
+			model: MODEL,
+		};
 	}
 
 	return json(response);

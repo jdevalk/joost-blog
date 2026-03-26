@@ -1,0 +1,133 @@
+{
+  "description": "Evaluation fixtures for Ask Joost retrieval quality. Each query lists expected top sources (by URL slug) that should appear in the top 3 results.",
+  "queries": [
+    {
+      "query": "What is Joost's view on WordPress market share?",
+      "category": "cms",
+      "expected_sources": [
+        "/wordpress-market-share-shrinking/",
+        "/cms-market-share-june-2024-commentary/",
+        "/cms-market-share/"
+      ]
+    },
+    {
+      "query": "CMS market share",
+      "category": "cms",
+      "expected_sources": [
+        "/cms-market-share/",
+        "/cms-market-share-measured-right/",
+        "/wordpress-market-share-shrinking/"
+      ]
+    },
+    {
+      "query": "Who is Joost de Valk?",
+      "category": "biography",
+      "expected_sources": [
+        "/about-me/",
+        "/about/"
+      ]
+    },
+    {
+      "query": "What happened with WordPress governance?",
+      "category": "wordpress-governance",
+      "expected_sources": [
+        "/path-forward-for-wordpress/",
+        "/fair-wordpress-and-knowing-when-to-stop/",
+        "/transparency-contribution-and-the-future-of-wordpress/"
+      ]
+    },
+    {
+      "query": "What is FAIR?",
+      "category": "wordpress-governance",
+      "expected_sources": [
+        "/fair-wordpress-and-knowing-when-to-stop/",
+        "/path-forward-for-wordpress/"
+      ]
+    },
+    {
+      "query": "Yoast SEO plugin",
+      "category": "yoast",
+      "expected_sources": [
+        "/stepping-down-at-yoast/",
+        "/yoast-joins-newfold/",
+        "/innovation-in-wordpress/"
+      ]
+    },
+    {
+      "query": "Why did Joost step down at Yoast?",
+      "category": "biography",
+      "expected_sources": [
+        "/stepping-down-at-yoast/",
+        "/new-role-at-yoast/",
+        "/yoast-joins-newfold/"
+      ]
+    },
+    {
+      "query": "WordPress admin UI",
+      "category": "wordpress",
+      "expected_sources": [
+        "/wordpress-admin-ui-needs-to-be-better/",
+        "/vibe-coding-is-a-trap-why-wordpress-needs-a-design-system-now/"
+      ]
+    },
+    {
+      "query": "plugin security",
+      "category": "wordpress",
+      "expected_sources": [
+        "/plugin-security-issues/",
+        "/github-actions-wordpress/"
+      ]
+    },
+    {
+      "query": "How does crawling affect the environment?",
+      "category": "seo",
+      "expected_sources": [
+        "/optimize-crawling-for-the-environment/",
+        "/optimize-crawling-lets-turn-things-around/"
+      ]
+    },
+    {
+      "query": "What is Emilia Capital?",
+      "category": "biography",
+      "expected_sources": [
+        "/about-me/",
+        "/about/",
+        "/work-with-me/"
+      ]
+    },
+    {
+      "query": "WordPress Gutenberg",
+      "category": "wordpress",
+      "expected_sources": [
+        "/gutenberg-and-yoast-seo/",
+        "/the-after-wcus-wordpress-gutenberg-faq/",
+        "/wordpress-5-0-needs-a-different-timeline/"
+      ]
+    },
+    {
+      "query": "How do I make my GitHub repo look professional?",
+      "category": "development",
+      "expected_sources": [
+        "/healthy-github-repository/",
+        "/good-looking-github-profile-pages/",
+        "/github-actions-wordpress/"
+      ]
+    },
+    {
+      "query": "AI and SEO",
+      "category": "seo",
+      "expected_sources": [
+        "/ai-optimization-is-replaying-early-seo-just-faster/",
+        "/deafening-silence-google-wordpress-agentic/"
+      ]
+    },
+    {
+      "query": "WordPress roadmap",
+      "category": "wordpress",
+      "expected_sources": [
+        "/wordpress-roadmap/",
+        "/wordpress-admin-ui-needs-to-be-better/"
+      ]
+    }
+  ]
+}
