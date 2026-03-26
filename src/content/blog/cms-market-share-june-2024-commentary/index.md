@@ -7,9 +7,8 @@ excerpt: >-
   I’m writin
 categories:
   - Market Share Analysis
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: CMS market share June 2024 commentary'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: CMS market share June 2024 commentary'
 ---
 This commentary focuses on the data found in my monthly [CMS market share report](/cms-market-share/), which is generated automatically every month. This is the first time I’m writing the commentary separately from the data, so I’m still figuring things out, but as I was building this, I had so many interesting tidbits that I wanted to share immediately, but I also *really* had to finish the code for the report. So, here it is, all these things I noticed:
 

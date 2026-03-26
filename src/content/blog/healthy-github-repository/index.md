@@ -7,9 +7,8 @@ excerpt: >-
   GitHub reposit
 categories:
   - Development
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: How to create a healthy GitHub repository'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: How to create a healthy GitHub repository'
 ---
 As a result of [investing in a fair few companies](https://emilia.capital/) and getting a lot more requests to invest, I look at GitHub repositories a lot. I often run into GitHub repositories that don’t look well maintained. So, I thought I’d write a small article on what a healthy GitHub repository should look like.
 

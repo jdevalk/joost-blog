@@ -8,11 +8,10 @@ excerpt: >-
 categories:
   - Development
   - WordPress
-featureImage:
-  src: ./images/featured.webp
-  alt: >-
-    Illustration for: Vibe coding is a trap: why WordPress needs a design system
-    NOW
+featureImage: ./images/featured.webp
+featureImageAlt: >-
+  Illustration for: Vibe coding is a trap: why WordPress needs a design system
+  NOW
 ---
 In my [last post](/wordpress-architecture-base-ai/), I argued that WordPress needs to become a “Base AI”: a structured foundation that AI can understand and build upon. Before that, I wrote about [The Rise of the Architect](/rise-architect/), the person who will shift from writing code to orchestrating systems.
 

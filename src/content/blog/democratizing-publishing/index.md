@@ -7,9 +7,8 @@ excerpt: >-
 categories:
   - WordPress
   - Yoast
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Democratizing publishing'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Democratizing publishing'
 ---
 Matt blogged, in response to a question asked at WordCamp US: what does “democratizing publishing” mean to you? His answer:
 

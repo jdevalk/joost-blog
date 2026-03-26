@@ -23,11 +23,9 @@ const blog = defineCollection({
             excerpt: z.string().optional(),
             publishDate: z.coerce.date(),
             updatedDate: z.coerce.date().optional(),
-            featureImage: imageSchema(image)
-                .extend({
-                    caption: z.string().optional()
-                })
-                .optional(),
+            featureImage: image().optional(),
+            featureImageAlt: z.string().optional(),
+            featureImageCaption: z.string().optional(),
             imageHint: z.string().optional(),
             categories: z.array(z.string()).optional(),
             isFeatured: z.boolean().default(false),
@@ -41,11 +39,9 @@ const pages = defineCollection({
     schema: ({ image }) =>
         z.object({
             title: z.string(),
-            featureImage: imageSchema(image)
-                .extend({
-                    caption: z.string().optional()
-                })
-                .optional(),
+            featureImage: image().optional(),
+            featureImageAlt: z.string().optional(),
+            featureImageCaption: z.string().optional(),
             seo: seoSchema(image).optional()
         })
 });
@@ -62,11 +58,9 @@ const videos = defineCollection({
             videoPressId: z.string().optional(),
             featured: z.boolean().default(false),
             thumbnailUrl: z.string().url().optional(),
-            featureImage: imageSchema(image)
-                .extend({
-                    caption: z.string().optional()
-                })
-                .optional(),
+            featureImage: image().optional(),
+            featureImageAlt: z.string().optional(),
+            featureImageCaption: z.string().optional(),
             seo: seoSchema(image).optional()
         })
 });

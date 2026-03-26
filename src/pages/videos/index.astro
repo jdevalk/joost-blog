@@ -79,10 +79,11 @@ const pageContext: SchemaPageContext = {
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                     </a>
                 </div>
-                {featuredVideo.data.featureImage?.src && (
+                {featuredVideo.data.featureImage && (
                     <a href={`/videos/${featuredVideo.id}/`} class="hidden md:block">
                         <CustomImage
-                            {...featuredVideo.data.featureImage}
+                            src={featuredVideo.data.featureImage}
+                            alt={featuredVideo.data.featureImageAlt}
                             class="rounded-lg shadow-card-hover w-full aspect-video object-cover"
                             widths={[440, 880]}
                         />
@@ -104,9 +105,10 @@ const pageContext: SchemaPageContext = {
                         <a href={`/videos/${video.id}/`} class="group block h-full">
                             <article class="h-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-700 dark:bg-slate-900">
                                 <div class="relative overflow-hidden">
-                                    {video.data.featureImage?.src && (
+                                    {video.data.featureImage && (
                                         <CustomImage
-                                            {...video.data.featureImage}
+                                            src={video.data.featureImage}
+                                            alt={video.data.featureImageAlt}
                                             class="w-full aspect-video object-cover transition-transform duration-300 group-hover:scale-105"
                                             loading="lazy"
                                             widths={[400, 600]}

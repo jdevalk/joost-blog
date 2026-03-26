@@ -7,9 +7,8 @@ excerpt: >-
   month
 categories:
   - Market Share Analysis
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: CMS Market share measured “right”'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: CMS Market share measured “right”'
 ---
 Today, I’m introducing a new [CMS market share report](/cms-market-share/) on this site based on the [HTTP Archive’s dataset](https://httparchive.org/). This report will be updated – automatically – every month. It doesn’t just contain CMSes; it also contains the most popular eCommerce platforms, WordPress page builders, and SEO plugins. Over time, we might expand this to more; suggestions are most certainly welcome.
 

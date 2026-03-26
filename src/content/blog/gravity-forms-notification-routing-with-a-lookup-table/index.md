@@ -7,9 +7,8 @@ excerpt: >-
   recipient
 categories:
   - WordPress
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Gravity Forms notification routing with a lookup table'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Gravity Forms notification routing with a lookup table'
 ---
 I had a need for complex routing of notification messages in Gravity Forms. The email could, depending on a dropdown field, go to some 50-60 different recipients. So I needed a custom lookup table with notification recipients and a way to look up the recipient based on that dropdown field, without exposing all those recipient emails to the outside world. It turned out to be fairly simple once I knew how to approach it, but I thought I’d blog it to make it easier for everyone.
 

@@ -63,10 +63,11 @@ const pageContext: SchemaPageContext = {
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </a>
                     </div>
-                    {featuredPost.data.featureImage?.src && (
+                    {featuredPost.data.featureImage && (
                         <a href={`/${featuredPost.id}/`} class="hidden md:block">
                             <CustomImage
-                                {...featuredPost.data.featureImage}
+                                src={featuredPost.data.featureImage}
+                                alt={featuredPost.data.featureImageAlt}
                                 class="rounded-lg shadow-card-hover w-full aspect-[16/9] object-cover"
                                 widths={[440, 880]}
                             />

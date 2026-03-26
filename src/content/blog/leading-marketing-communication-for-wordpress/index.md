@@ -8,9 +8,8 @@ excerpt: >-
 categories:
   - Personal stuff
   - WordPress
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Leading marketing & communication for WordPress'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Leading marketing & communication for WordPress'
 ---
 Last week [I was appointed](https://make.wordpress.org/updates/2019/01/16/expanding-wordpress-leadership/) Marketing & Communications Lead of WordPress. I think WordPress is one of the most essential platforms on the web and I’m *really* proud to be able to do my part for it. I have been in the WordPress community for well over a decade now. In that time I’ve done a lot of different things but I think this will be my biggest challenge yet.
 

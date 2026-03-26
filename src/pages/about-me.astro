@@ -113,9 +113,10 @@ const pageContext: SchemaPageContext = {
                         {recentVideos.map((video) => (
                             <a href={`/videos/${video.id}/`} class="group">
                                 <div class="overflow-hidden rounded-lg">
-                                    {video.data.featureImage?.src && (
+                                    {video.data.featureImage && (
                                         <CustomImage
-                                            {...video.data.featureImage}
+                                            src={video.data.featureImage}
+                                            alt={video.data.featureImageAlt}
                                             class="aspect-video object-cover w-full transition-transform duration-300 group-hover:scale-105"
                                             widths={[300, 450]}
                                             sizes="(min-width: 640px) 33vw, 50vw"

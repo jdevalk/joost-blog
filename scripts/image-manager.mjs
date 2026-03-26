@@ -133,8 +133,8 @@ function scanBlogPosts() {
         // Check if current feature image file actually exists
         let hasImage = false;
         let currentImagePath = null;
-        if (data.featureImage?.src) {
-            const imgPath = path.resolve(path.dirname(filePath), data.featureImage.src);
+        if (data.featureImage) {
+            const imgPath = path.resolve(path.dirname(filePath), data.featureImage);
             hasImage = fs.existsSync(imgPath);
             if (hasImage) currentImagePath = imgPath;
         }
@@ -302,10 +302,8 @@ async function handleUpload(slug, imageBuffer, filename) {
         // Update frontmatter
         const raw = fs.readFileSync(item.filePath, 'utf8');
         const { data: frontmatter, content: body } = matter(raw);
-        frontmatter.featureImage = {
-            src: `./images/${imageFilename}`,
-            alt: `Illustration for: ${item.title}`,
-        };
+        frontmatter.featureImage = `./images/${imageFilename}`;
+        frontmatter.featureImageAlt = `Illustration for: ${item.title}`;
         fs.writeFileSync(item.filePath, matter.stringify(body, frontmatter));
     }
 

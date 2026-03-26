@@ -7,9 +7,8 @@ excerpt: >-
   on th
 categories:
   - Development
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: A right-click / contextmenu logo popover'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: A right-click / contextmenu logo popover'
 ---
 I always like it when I right-click a logo on a website because I need to get the logo, and the site’s designer has thought about this. If you right-click on the logo on our [Emilia Capital site](https://emilia.capital/), you’ll get a popup that sends you to our logo page. As of today, that’s not a popup, but technically a popover, using the new popover API in HTML.
 

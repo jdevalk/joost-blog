@@ -7,10 +7,9 @@ excerpt: >-
   critical.
 categories:
   - WordPress
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: FAIR, WordPress, and Knowing When to Stop'
+featureImage: ./images/featured.webp
 isFeatured: false
+featureImageAlt: 'Illustration for: FAIR, WordPress, and Knowing When to Stop'
 ---
 Over the past year, we, Karim & Joost, have written and talked extensively about the challenges facing WordPress. [We’ve been critical](https://marucchi.com/wordpress-leadership-continued/). At times, [very critical](/wordpress-leadership/). Of leadership, of governance, of the way decisions are made and enforced. We stand by that criticism.
 

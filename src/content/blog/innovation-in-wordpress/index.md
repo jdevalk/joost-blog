@@ -7,9 +7,8 @@ excerpt: >-
   that Automat
 categories:
   - WordPress
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Innovation in WordPress: a look at plugin development'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Innovation in WordPress: a look at plugin development'
 ---
 ## Introduction 
 

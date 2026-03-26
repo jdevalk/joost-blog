@@ -7,9 +7,8 @@ excerpt: >-
   here we g
 categories:
   - WordPress
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: After WCUS 2018: WordPress & Gutenberg FAQ'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: After WCUS 2018: WordPress & Gutenberg FAQ'
 ---
 I just came back from WordCamp US in Nashville, which was awesome. In this post I want to address some of the questions I’ve had a couple of times. So here we go:
 

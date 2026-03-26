@@ -7,9 +7,8 @@ excerpt: >-
   of our
 categories:
   - Travel
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Traveling to Peru'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Traveling to Peru'
 ---
 At the end of April, beginning of May, 2019, Marieke and I visited Peru with our kids. The main reason for going to Peru was to attend the wedding of two of our friends Jessie & Jorge. These friends also happen to own a [travel agency that specializes in travel to Peru](https://www.machupicchutravel.nl/), and helped us out a *lot* during this trip which was nice.
 

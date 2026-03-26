@@ -7,9 +7,8 @@ excerpt: >-
   between big co
 categories:
   - WordPress
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Transparency, Contribution, and the Future of WordPress'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Transparency, Contribution, and the Future of WordPress'
 ---
 When we sold Yoast to Newfold in 2021, I quickly learned we had been incredibly naive. While at Yoast, I hadn’t realized how many deals were made between big companies to promote their products. This was my first realization that not all companies thought and worked like we had been doing. I did learn a lot from the way Newfold Digital runs its businesses. Positive things!
 

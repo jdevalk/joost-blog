@@ -6,9 +6,8 @@ excerpt: >-
   Fewer Tags project site.
 categories:
   - WordPress
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Research: WordPress publications misuse tags'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Research: WordPress publications misuse tags'
 ---
 *This post was migrated to this site in January 2025 when we took down the Fewer Tags project site.*
 

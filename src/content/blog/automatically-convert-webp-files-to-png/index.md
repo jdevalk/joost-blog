@@ -7,9 +7,8 @@ excerpt: >-
   sup
 categories:
   - Productivity hacks
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Automatically convert WebP files to PNG'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Automatically convert WebP files to PNG'
 ---
 I love [CloudFlare](https://www.cloudflare.com/). It makes websites lots faster. One of the things it does is change PNG files to WebP automatically when your browser (f.i. Google Chrome) supports it. This is awesome, as they’re smaller and it thus loads faster.
 

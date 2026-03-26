@@ -7,9 +7,8 @@ excerpt: >-
   Munich f
 categories:
   - Search Opinion
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Build websites like it’s 2005 (and win in 2025)'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Build websites like it’s 2005 (and win in 2025)'
 ---
 Last week was a whirlwind, first diving deep into AI and WordPress while working with the WP CLI as MCP host team at Cloudfest, then heading off to SMX Munich for non-stop conversations about SEO, AI, and the future of search. Two very different settings, one clear takeaway:
 

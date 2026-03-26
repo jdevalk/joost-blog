@@ -7,9 +7,8 @@ excerpt: >-
   on here and
 categories:
   - WordPress
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Gutenberg and Yoast SEO'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Gutenberg and Yoast SEO'
 ---
 I’m typing this as I sit in Track 1 of WordCamp Europe in Paris. Matt Mullenweg just announced Gutenberg as a plugin is available, so I installed it on here and am writing this post in it.
 

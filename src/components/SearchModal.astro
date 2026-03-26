@@ -297,6 +297,7 @@
                 const pf = await loadPagefind();
                 if (!pf) return;
 
+                if (window.plausible) window.plausible('Search', { props: { query } });
                 const search = await pf.search(query);
                 const results = await Promise.all(
                     search.results.slice(0, 8).map((r: any) => r.data())

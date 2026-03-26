@@ -280,10 +280,8 @@ async function main() {
             const content = fs.readFileSync(post.filePath, 'utf8');
             const { data: frontmatter, content: body } = matter(content);
 
-            frontmatter.featureImage = {
-                src: './images/featured.png',
-                alt: `Illustration for: ${post.title}`,
-            };
+            frontmatter.featureImage = './images/featured.png';
+            frontmatter.featureImageAlt = `Illustration for: ${post.title}`;
 
             const updatedContent = matter.stringify(body, frontmatter);
             fs.writeFileSync(post.filePath, updatedContent);

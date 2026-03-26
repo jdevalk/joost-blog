@@ -7,9 +7,8 @@ excerpt: >-
   remain
 categories:
   - Yoast
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Yoast joins Newfold'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Yoast joins Newfold'
 ---
 Today we announced that [Yoast will join Newfold Digital](https://yoast.com/exciting-news-yoast-joins-newfold-digital/). Marieke and myself, as well as Omar, Chaya and Thijs have sold our shares. We will, however, all remain in our current roles, as will all of team Yoast.
 

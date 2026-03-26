@@ -7,9 +7,8 @@ excerpt: >-
   They
 categories:
   - WordPress
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Plugin demos with the WordPress playground'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Plugin demos with the WordPress playground'
 ---
 For years, plugin developers have been looking for ways to demo their plugins to users. Users don’t read `readme.txt` files or plugin pages on WordPress.org. They want to try and see a plugin in action for a bit, which is a much better way of seeing whether a plugin solves your problem. The new [WordPress playground](https://developer.wordpress.org/playground/) is a perfect way of doing that. So, the meta team at WordPress.org started building a preview button. While the first iteration was not ideal, a few weeks ago, @Tellyworth posted on Make WordPress about the [revisited Playground experiment](https://make.wordpress.org/meta/2023/11/22/plugin-directory-preview-button-revisited/). I, of course, started playing with this feature, and now I can’t wait for it to go live for all users.
 

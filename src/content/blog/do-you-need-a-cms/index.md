@@ -8,9 +8,8 @@ excerpt: >-
 categories:
   - Market Share Analysis
 isFeatured: true
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Do you need a CMS?'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Do you need a CMS?'
 ---
 For twenty years, "I want a website" meant "I need a CMS." WordPress, Joomla, Drupal: the conversation was always about *which* one. That framing is outdated. People never wanted a CMS. They want a website.
 

@@ -7,9 +7,8 @@ excerpt: >-
   impr
 categories:
   - Search Opinion
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Social & Schema images: naming considerations'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Social & Schema images: naming considerations'
 ---
 I’ve been playing a lot with Schema and Social images recently and one thing has become clear: we need better naming of these images and we should probably improve the Schema.org image standards a bit. In this post I want to briefly discuss the different needs and my proposed (very simple) naming scheme.
 

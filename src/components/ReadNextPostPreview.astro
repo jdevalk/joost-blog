@@ -4,7 +4,7 @@ import CustomImage from './CustomImage.astro';
 import FormattedDate from './FormattedDate.astro';
 
 const { post } = Astro.props as { post: CollectionEntry<'blog'> };
-const { title, publishDate, updatedDate, featureImage } = post.data;
+const { title, publishDate, updatedDate, featureImage, featureImageAlt } = post.data;
 ---
 
 <article class="flex flex-col mb-12 gap-x-8 gap-y-6 sm:flex-row">
@@ -27,11 +27,12 @@ const { title, publishDate, updatedDate, featureImage } = post.data;
         </h3>
     </header>
     {
-        featureImage?.src && (
+        featureImage && (
             <figure class="shrink-0 sm:w-40">
                 <a href={`/${post.id}/`}>
                     <CustomImage
-                        {...featureImage}
+                        src={featureImage}
+                        alt={featureImageAlt}
                         class="w-full rounded-md"
                         widths={[160, 320, 480, 640]}
                         sizes="(min-width: 640px) 160px, calc(100vw - 32px)"

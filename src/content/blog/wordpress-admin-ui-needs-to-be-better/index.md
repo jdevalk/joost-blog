@@ -8,9 +8,8 @@ excerpt: >-
 categories:
   - WordPress
   - Yoast
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: WordPress’ admin UI needs to be better'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: WordPress’ admin UI needs to be better'
 ---
 The WordPress’ admin UI needs to be drastically improved. It should be improved not just for WordPress core itself, but it should implement a simple and clearly defined open design system, so that plugins and themes can use it to build their own interfaces. Now that Yoast’s new Settings UI is out in the open for everyone, it’s also clear for everyone that we’ve deviated from what we used to do, which was to use the “standard” WordPress admin UI components. The reason for that is simple: WordPress’ admin components are old fashioned and haven’t progressed as they should. We simply can’t build a modern interface with them. It saddens me enormously though, that we’ve had to take this step.
 

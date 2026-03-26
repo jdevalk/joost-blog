@@ -8,12 +8,11 @@ excerpt: >-
 categories:
   - Development
 draft: true
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Ask Joost: AI-powered answers from my blog'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Ask Joost: AI-powered answers from my blog'
 ---
 
-I write a lot. Over the years, this blog has accumulated posts about WordPress, SEO, open source governance, CMS market share, and plenty more. Finding the right post for a specific question means searching, skimming, and hoping the title matches what you're looking for. That's not great.
+I have written quite a bit. Over the years, this blog has accumulated posts about WordPress, SEO, open source governance, CMS market share, and plenty more. Finding the right post for a specific question means searching, skimming, and hoping the title matches what you're looking for. That's not great.
 
 So I built [Ask Joost](/ask-joost/): a page where you can ask a natural language question and get a direct answer, sourced from my blog posts.
 
@@ -45,6 +44,8 @@ For follow-up questions, it also augments vague queries with the previous turn. 
 
 Each indexed document also has a search weight. Pages get a slight boost, videos get a slight demotion, and blog posts sit in the middle. That helps the system prefer cleaner, more authoritative written sources without making videos undiscoverable.
 
+Individual posts can also override their default weight by setting `searchWeight` in their frontmatter. A value above `1.0` promotes a page in results; a value below `1.0` demotes it. This is useful when you know a particular post is the canonical answer on a topic, or when an older post has been superseded and shouldn't rank as highly anymore.
+
 ### 3. An LLM that generates the answer
 
 When the Ask page calls the endpoint, it uses streaming generation by default. The top search results are packaged up as context and sent to Llama 3.3 70B running on [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/).
@@ -69,20 +70,15 @@ Not all content is equally good source material. Pages like “About” are ofte
 
 The source list shown below each answer is also filtered down to the posts the model actually referenced. The function parses the markdown links in the answer and only shows those sources, instead of dumping every item that happened to be in the retrieval context.
 
-Each visible source can also include a content-type label and publication date, which makes it easier to see whether you’re looking at a page, a blog post, or a video — and whether the source is current or old.
+Each visible source can also include a content-type label and publication date, which makes it easier to see whether you’re looking at a page, a blog post, or a video, and whether the source is current or old.
 
 ## Streaming and conversation support
-
-The current version is much nicer to use than the first draft I built.
 
 Answers stream in as they’re generated, so you don’t just sit there waiting for the full response to appear all at once. That improves perceived speed a lot, especially for longer answers.
 
 The page also supports follow-up questions within the same conversation. It keeps a short exchange history client-side, sends it along with new requests, and uses a stable session ID so Cloudflare can keep the conversation pinned to the same model instance.
 
 That last part matters because Workers AI supports [prompt caching](https://developers.cloudflare.com/workers-ai/features/prompt-caching/) via session affinity. In practice, that means the system prompt and recent conversation history can stay hot in memory, making follow-ups faster and cheaper.
-
-There are also some small UX improvements around the core Ask experience: starter questions, a “new conversation” reset, clearer error handling, and lightweight per-answer feedback.
-
 ## Why this architecture
 
 I wanted something that:
@@ -104,7 +100,7 @@ This is one of those cases where “boring architecture” is a feature. There�
   - `@cf/meta/llama-3.3-70b-instruct-fp8-fast` for answer generation
 - **A build-time indexing script** that generates the searchable index, embeddings, metadata, and transcript-backed content from markdown
 
-The code is still pretty small. The endpoint logic is now split into focused modules for config, retrieval, and generation, but it’s still a lightweight setup rather than a framework-heavy one.
+The code is pretty small. The endpoint logic is now split into focused modules for config, retrieval, and generation, but it’s still a lightweight setup rather than a framework-heavy one.
 
 ## Observability and tuning
 
@@ -112,7 +108,7 @@ As soon as you build something like this, you start wanting ways to inspect what
 
 So the Ask endpoint also has a debug mode for inspecting retrieval results, score breakdowns, and timing. That makes it easier to tune ranking, understand why a query matched a certain document, and test improvements without guessing.
 
-That’s been useful while improving things like alias expansion, follow-up handling, source extraction, and weighting between pages, posts, and videos.
+That’s been useful while tuning things like alias expansion, follow-up handling, source extraction, and weighting between pages, posts, and videos.
 
 ## Use it on your own site
 
@@ -124,14 +120,5 @@ The setup is straightforward: point it at your content, generate the index durin
 
 Head to [/ask-joost/](/ask-joost/) and ask something. Try “do you think I need a CMS?”, “what happened with WordPress governance?”, or “how do you think AI affects SEO?” and see what comes back.
 
-The answers still aren’t perfect. They’re constrained by what I’ve written, and the model can still miss nuance. But for a relatively small, low-cost system layered on top of a static site, it’s remarkably useful — and a lot more usable than making people dig through archives by hand.
+The answers still aren’t perfect. They’re constrained by what I’ve written, and the model can still miss nuance. But for a relatively small, low-cost system layered on top of a static site, it’s remarkably useful, and a lot more usable than making people dig through archives by hand.
 
-## What’s next
-
-I’m pretty happy with the current architecture now. The obvious future improvements are less about making it *exist* and more about making it *smarter*:
-
-- better evaluation datasets for retrieval quality,
-- more tuning around temporal questions and evolving opinions,
-- and potentially better ways to expose uncertainty when the source material is thin.
-
-But the core idea already works: it turns years of writing into something you can actually ask questions of.

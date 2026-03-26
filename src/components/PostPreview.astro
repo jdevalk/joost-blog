@@ -5,15 +5,16 @@ import FormattedDate from './FormattedDate.astro';
 import { slugify, getReadingTime } from '../utils/post-utils';
 
 const { post } = Astro.props as { post: CollectionEntry<'blog'> };
-const { title, publishDate, updatedDate, featureImage, excerpt, isFeatured, categories } = post.data;
+const { title, publishDate, updatedDate, featureImage, featureImageAlt, excerpt, isFeatured, categories } = post.data;
 const readingTime = getReadingTime(post.body ?? '');
 ---
 
 <article class="group flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-card transition duration-300 hover:shadow-card-hover hover:-translate-y-0.5 dark:border-[#2a2623] dark:bg-[#1e1b19]/50">
-    {featureImage?.src && (
+    {featureImage && (
         <a href={`/${post.id}/`} aria-label={title} class="block overflow-hidden">
             <CustomImage
-                {...featureImage}
+                src={featureImage}
+                alt={featureImageAlt}
                 class="w-full aspect-[16/9] object-cover transition-transform duration-500 group-hover:scale-105"
                 widths={[320, 480, 640, 768]}
                 sizes="(min-width: 1024px) 384px, (min-width: 640px) 50vw, calc(100vw - 32px)"

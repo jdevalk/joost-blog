@@ -7,9 +7,8 @@ excerpt: >-
   Desktop int
 categories:
   - Productivity hacks
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Organize your screenshots on MacOS'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Organize your screenshots on MacOS'
 ---
 MacOS has great built-in screenshot functionality. The problem is that, by default, it saves screenshots to your Desktop, which in my case turned my Desktop into a mess. I fixed this a while ago and today realized that this wasn’t an obvious thing for everybody, so I quickly wrote this blog post.
 

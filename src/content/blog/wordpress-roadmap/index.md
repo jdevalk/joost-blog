@@ -8,9 +8,8 @@ excerpt: >-
 categories:
   - Market Share Analysis
   - WordPress
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: WordPress, and what should be on its roadmap'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: WordPress, and what should be on its roadmap'
 ---
 I was reading Hendrik Luehrsen’s excellent post “[WordPress isn’t WordPress anymore](https://kraut.press/2024/wordpress-isnt-wordpress-anymore/)“, and I decided I had to write more about this. I recently spoke at WordCamp NL about “The missing features of WordPress”, and these two things “touch”, in an important way. I love WordPress. I love WordPress plugins. I don’t love some of the recent developments in WordPress and that’s not *just* talking about the recent Automattic – WP Engine drama.
 

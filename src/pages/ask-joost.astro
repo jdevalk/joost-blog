@@ -214,6 +214,8 @@ import Header from '../components/Header.astro';
             btn.disabled = true;
             btn.textContent = 'Asking...';
 
+            if (window.plausible) window.plausible('Ask Question', { props: { query } });
+
             const apiBase = window.location.hostname === 'localhost' ? 'https://joost.blog' : '';
             const fetchParams = { q: query, mode: 'stream', query_id: sessionId };
             if (exchanges.length > 0) {

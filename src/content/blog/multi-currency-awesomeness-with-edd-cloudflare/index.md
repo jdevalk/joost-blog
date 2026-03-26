@@ -7,9 +7,8 @@ excerpt: >-
   Tags. We
 categories:
   - WordPress
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: Multi-currency awesomeness with EDD & Cloudflare'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Multi-currency awesomeness with EDD & Cloudflare'
 ---
 We’re getting ready at Emilia Projects (which is the “run our own projects part” of [Emilia Capital](https://emilia.capital/)) to sell our first plugin, the Pro version of [Fewer Tags](/plugins/fewer-tags/). We will sell that using [Easy Digital Downloads](https://easydigitaldownloads.com/) (EDD), which I have not used for *years,* so I’ve been re-learning how to work with it. One of the things I’d found they had added since I started using it is a very nice [multi-currency plugin](https://easydigitaldownloads.com/downloads/multi-currency/).
 

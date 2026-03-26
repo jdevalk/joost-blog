@@ -321,10 +321,8 @@ async function migratePosts() {
         // Featured image
         if (data.featured_image) {
             const featFilename = filenameFromUrl(data.featured_image);
-            fm.featureImage = {
-                src: `./images/${featFilename}`,
-                alt: '',
-            };
+            fm.featureImage = `./images/${featFilename}`;
+            fm.featureImageAlt = '';
             imagesToDownload.push({
                 url: data.featured_image,
                 dest: path.join(destDir, 'images', featFilename),
@@ -518,10 +516,8 @@ async function migrateVideos() {
         const imagesToDownload = [];
         if (data.featured_image) {
             const featFilename = filenameFromUrl(data.featured_image);
-            fm.featureImage = {
-                src: `./images/${featFilename}`,
-                alt: '',
-            };
+            fm.featureImage = `./images/${featFilename}`;
+            fm.featureImageAlt = '';
             // Videos with featured images get co-located images too
             imagesToDownload.push({
                 url: data.featured_image,

@@ -6,9 +6,8 @@ excerpt: >-
   familiar. The difference is speed: what used to take years now takes weeks.
 categories:
   - Search Opinion
-featureImage:
-  src: ./images/featured.webp
-  alt: 'Illustration for: AI optimization is replaying early SEO, just faster'
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: AI optimization is replaying early SEO, just faster'
 ---
 *If you were around for early SEO, the current AI-content wave should feel familiar. The difference is speed: what used to take years now takes weeks.*
 
