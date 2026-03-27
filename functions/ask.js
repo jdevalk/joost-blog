@@ -20,6 +20,15 @@ function json(body, status = 200) {
 	});
 }
 
+function sanitizeQuery(raw) {
+	return raw
+		.replace(/\b(ignore|disregard|forget|override)\b.{0,30}\b(previous|above|prior|system|all)\b.{0,30}\b(instructions?|prompts?|rules?|context)\b/gi, '')
+		.replace(/\b(you are now|act as|pretend to be|roleplay as|new persona|system prompt)\b/gi, '')
+		.replace(/\b(do not follow|stop being|bypass|jailbreak)\b/gi, '')
+		.replace(/\b(translate|translation|respond in|answer in|reply in|write in)\b.{0,20}\b(french|german|spanish|chinese|japanese|korean|arabic|russian|hindi|portuguese|dutch|italian|polish|turkish|swedish|thai|indonesian|vietnamese|hebrew|czech|greek|danish|finnish|norwegian|romanian|hungarian|ukrainian|bengali|tamil|swahili)\b/gi, '')
+		.trim();
+}
+
 async function normalizeRequest(request) {
 	const url = new URL(request.url);
 	const query = url.searchParams;
@@ -34,7 +43,7 @@ async function normalizeRequest(request) {
 	}
 
 	return {
-		query: String(body.query || body.q || query.get('query') || query.get('q') || '').slice(0, MAX_QUERY_LENGTH),
+		query: sanitizeQuery(String(body.query || body.q || query.get('query') || query.get('q') || '').slice(0, MAX_QUERY_LENGTH)),
 		mode: body.mode || query.get('mode') || 'list',
 		site: body.site || query.get('site') || 'joost.blog',
 		prev: String(body.prev || query.get('prev') || '').slice(0, 10000),
