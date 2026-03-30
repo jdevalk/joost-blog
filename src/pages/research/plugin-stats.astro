@@ -1,0 +1,315 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import SchemaGraph from '../../components/SchemaGraph.astro';
+import type { SchemaPageContext } from '../../utils/schema';
+import { canonicalUrl } from '../../utils/schema/constants';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const title = 'Plugin Stats';
+const description = 'Active installs and downloads data for WordPress plugins.';
+
+const pageContext: SchemaPageContext = {
+    pageType: 'page',
+    canonicalUrl: canonicalUrl('/research/plugin-stats/'),
+    title,
+    description
+};
+
+// Build plugin list at build time
+const dataDir = path.join(process.cwd(), 'public/data/plugin-stats');
+const files = fs.readdirSync(dataDir).filter(f => f.endsWith('-active-installs.json'));
+
+function formatPluginName(slug: string): string {
+    let name = slug.replace(/-/g, ' ');
+    const replacements: Record<string, string> = {
+        'seo': 'SEO',
+        'wooc': 'WooC',
+        'aaa': 'AAA',
+        'wp': 'WP',
+    };
+    for (const [search, replace] of Object.entries(replacements)) {
+        name = name.replace(new RegExp(search, 'gi'), replace);
+    }
+    // Capitalize first letter of each word
+    name = name.replace(/\b\w/g, c => c.toUpperCase());
+    return name;
+}
+
+const plugins = files
+    .map(f => {
+        const slug = f.replace('-active-installs.json', '');
+        return { slug, name: formatPluginName(slug) };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
+---
+
+<BaseLayout title={title} description={description} noindex={true}>
+    <SchemaGraph pageContext={pageContext} />
+    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
+        <Header variant="dark" />
+        <div class="h-[52px] sm:h-[56px]"></div>
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">{title}</h1>
+                <p class="mt-3 text-lg text-slate-300">{description}</p>
+            </div>
+        </section>
+    </div>
+
+    <main class="px-4 py-10 sm:px-8 w-full">
+        <div class="mb-6 flex items-end justify-between gap-4">
+            <div>
+                <label for="plugin-select" class="block text-sm font-medium mb-2">Select a plugin:</label>
+                <select id="plugin-select" class="w-full max-w-sm rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 px-4 py-2 text-base focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option value="">— Select —</option>
+                    {plugins.map(p => (
+                        <option value={p.slug}>{p.name}</option>
+                    ))}
+                </select>
+            </div>
+            <p class="text-xl font-bold text-red-600 dark:text-red-400">Confidential - do not share!</p>
+        </div>
+
+        <div id="chart-container" class="hidden">
+            <div class="relative w-full bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
+                <div class="flex flex-wrap gap-4 mb-4 text-sm">
+                    <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-sm" style="background:#3b82f6"></span> Active installs</span>
+                    <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-sm" style="background:#ef4444"></span> Downloads per week</span>
+                </div>
+                <canvas id="chart" class="w-full" style="height:640px"></canvas>
+            </div>
+
+            <div class="mt-6 flex gap-4">
+                <button id="toggle-table" class="text-sm font-medium text-primary hover:underline">Show data as table</button>
+                <button id="download-csv" class="text-sm font-medium text-primary hover:underline">Download as CSV</button>
+            </div>
+
+            <div id="table-container" class="hidden mt-4 overflow-x-auto">
+                <table class="min-w-[400px] max-w-full text-sm border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-300 dark:border-slate-600">
+                            <th class="text-left py-2 pr-6">Date</th>
+                            <th class="text-right py-2 pr-6">Active installs</th>
+                            <th class="text-right py-2">Downloads</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</BaseLayout>
+
+<script>
+    const select = document.getElementById('plugin-select') as HTMLSelectElement;
+    const chartContainer = document.getElementById('chart-container')!;
+    const canvas = document.getElementById('chart') as HTMLCanvasElement;
+    const toggleBtn = document.getElementById('toggle-table')!;
+    const downloadBtn = document.getElementById('download-csv')!;
+    const tableContainer = document.getElementById('table-container')!;
+    const tableBody = document.getElementById('table-body')!;
+
+    let tableVisible = false;
+    let currentDates: string[] = [];
+    let currentInstalls: number[] = [];
+    let currentDownloads: number[] = [];
+
+    toggleBtn.addEventListener('click', () => {
+        tableVisible = !tableVisible;
+        tableContainer.classList.toggle('hidden', !tableVisible);
+        toggleBtn.textContent = tableVisible ? 'Hide table' : 'Show data as table';
+    });
+
+    downloadBtn.addEventListener('click', () => {
+        if (!currentDates.length) return;
+        const rows = [['Date', 'Active installs', 'Downloads']];
+        currentDates.forEach((d, i) => rows.push([d, String(currentInstalls[i]), String(currentDownloads[i])]));
+        const csv = rows.map(r => r.join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${select.value}-stats.csv`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+    });
+
+    select.addEventListener('change', () => {
+        const slug = select.value;
+        if (!slug) {
+            chartContainer.classList.add('hidden');
+            return;
+        }
+        loadPlugin(slug);
+    });
+
+    interface DataMap { [date: string]: string | number }
+
+    function aggregateDownloadsByWeek(activeInstalls: DataMap, downloads: DataMap): DataMap {
+        const weekDates = Object.keys(activeInstalls).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+        const totals: Record<string, number> = {};
+        weekDates.forEach(d => totals[d] = 0);
+
+        for (const [date, val] of Object.entries(downloads)) {
+            const dt = new Date(date).getTime();
+            let closest: string | null = null;
+            for (const wd of weekDates) {
+                if (dt < new Date(wd).getTime()) break;
+                closest = wd;
+            }
+            if (closest) {
+                totals[closest] += parseInt(String(val), 10) || 0;
+            }
+        }
+
+        const result: DataMap = {};
+        for (const [week, total] of Object.entries(totals)) {
+            if (total > 0) result[week] = total;
+        }
+        return result;
+    }
+
+    async function loadPlugin(slug: string) {
+        const [activeData, downloadsData] = await Promise.all([
+            fetch(`/data/plugin-stats/${slug}-active-installs.json`).then(r => r.json()),
+            fetch(`/data/plugin-stats/${slug}-downloads.json`).then(r => r.json())
+        ]);
+
+        const weeklyDownloads = aggregateDownloadsByWeek(activeData, downloadsData);
+        const dates = Object.keys(activeData);
+        const installs = dates.map(d => Number(activeData[d]));
+        const downloads = dates.map(d => Number(weeklyDownloads[d] || 0));
+
+        currentDates = dates;
+        currentInstalls = installs;
+        currentDownloads = downloads;
+
+        chartContainer.classList.remove('hidden');
+        drawChart(dates, installs, downloads);
+        fillTable(dates, installs, downloads);
+    }
+
+    function drawChart(dates: string[], installs: number[], downloads: number[]) {
+        const ctx = canvas.getContext('2d')!;
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+        const W = rect.width;
+        const H = rect.height;
+
+        ctx.clearRect(0, 0, W, H);
+
+        const padLeft = 80;
+        const padRight = 80;
+        const padTop = 20;
+        const padBottom = 50;
+        const chartW = W - padLeft - padRight;
+        const chartH = H - padTop - padBottom;
+
+        const n = dates.length;
+        if (n === 0) return;
+
+        const maxInstalls = Math.max(...installs);
+        const maxDownloads = Math.max(...downloads.filter(d => d > 0));
+
+        const isDark = document.documentElement.classList.contains('dark');
+        const textColor = isDark ? '#94a3b8' : '#64748b';
+        const gridColor = isDark ? 'rgba(148,163,184,0.15)' : 'rgba(100,116,139,0.15)';
+
+        // Draw grid
+        ctx.strokeStyle = gridColor;
+        ctx.lineWidth = 1;
+        const yTicks = 5;
+        ctx.font = '11px system-ui, sans-serif';
+        ctx.fillStyle = textColor;
+
+        for (let i = 0; i <= yTicks; i++) {
+            const y = padTop + (chartH / yTicks) * i;
+            ctx.beginPath();
+            ctx.moveTo(padLeft, y);
+            ctx.lineTo(padLeft + chartW, y);
+            ctx.stroke();
+
+            const installVal = maxInstalls - (maxInstalls / yTicks) * i;
+            ctx.textAlign = 'right';
+            ctx.fillText(formatNumber(installVal), padLeft - 8, y + 4);
+
+            const dlVal = maxDownloads - (maxDownloads / yTicks) * i;
+            ctx.textAlign = 'left';
+            ctx.fillText(formatNumber(dlVal), padLeft + chartW + 8, y + 4);
+        }
+
+        // X-axis labels
+        ctx.textAlign = 'center';
+        const labelInterval = Math.max(1, Math.floor(n / 8));
+        for (let i = 0; i < n; i += labelInterval) {
+            const x = padLeft + (i / (n - 1)) * chartW;
+            ctx.fillText(dates[i], x, H - padBottom + 20);
+        }
+
+        // Axis labels
+        ctx.fillStyle = '#3b82f6';
+        ctx.textAlign = 'right';
+        ctx.font = 'bold 12px system-ui, sans-serif';
+        ctx.save();
+        ctx.translate(14, padTop + chartH / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText('Active installs', 0, 0);
+        ctx.restore();
+
+        ctx.fillStyle = '#ef4444';
+        ctx.textAlign = 'left';
+        ctx.save();
+        ctx.translate(W - 14, padTop + chartH / 2);
+        ctx.rotate(Math.PI / 2);
+        ctx.fillText('Downloads', 0, 0);
+        ctx.restore();
+
+        // Draw lines
+        function drawLine(values: number[], max: number, color: string) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            for (let i = 0; i < n; i++) {
+                const x = padLeft + (i / (n - 1)) * chartW;
+                const y = padTop + chartH - (values[i] / max) * chartH;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+
+        drawLine(installs, maxInstalls, '#3b82f6');
+        drawLine(downloads, maxDownloads, '#ef4444');
+    }
+
+    function formatNumber(n: number): string {
+        if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
+        if (n >= 1_000) return (n / 1_000).toFixed(0) + 'K';
+        return Math.round(n).toString();
+    }
+
+    function fillTable(dates: string[], installs: number[], downloads: number[]) {
+        tableBody.innerHTML = dates.map((d, i) =>
+            `<tr class="border-b border-slate-200 dark:border-slate-700">
+                <td class="py-1.5 pr-6">${d}</td>
+                <td class="py-1.5 pr-6 text-right">${installs[i].toLocaleString()}</td>
+                <td class="py-1.5 text-right">${downloads[i].toLocaleString()}</td>
+            </tr>`
+        ).join('');
+    }
+
+    // Handle resize
+    let resizeTimer: number;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(() => {
+            if (!select.value) return;
+            loadPlugin(select.value);
+        }, 200);
+    });
+</script>
