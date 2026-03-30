@@ -139,10 +139,19 @@ const plugins = files
         const slug = select.value;
         if (!slug) {
             chartContainer.classList.add('hidden');
+            history.replaceState(null, '', location.pathname);
             return;
         }
+        history.replaceState(null, '', `#${slug}`);
         loadPlugin(slug);
     });
+
+    // Load plugin from URL hash on page load
+    const initialPlugin = location.hash.slice(1);
+    if (initialPlugin && select.querySelector(`option[value="${initialPlugin}"]`)) {
+        select.value = initialPlugin;
+        loadPlugin(initialPlugin);
+    }
 
     interface DataMap { [date: string]: string | number }
 
