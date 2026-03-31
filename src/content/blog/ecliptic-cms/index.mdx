@@ -27,11 +27,11 @@ import { Image } from 'astro:assets';
 import seoPanelImage from './images/ecliptic-seo-panel.png';
 import adminImage from './images/ecliptic-admin.png';
 
-The way we build software changed forever at the end of 2025. Suddenly our AI agents went from smart auto-complete to actually being able to develop software. We stopped writing boilerplate and started describing intent. But the tools we build _with_ haven't caught up — especially content management systems. Most CMSes were designed for a world where humans click through admin panels, plugins run with full trust, and deployment means uploading files to a shared host.
+The way we build software changed forever at the end of 2025. Suddenly our AI agents went from smart auto-complete to actually being able to develop software. We stopped writing boilerplate and started describing intent. But the tools we build _with_ haven't caught up, especially content management systems. Most CMSes were designed for a world where humans click through admin panels, plugins run with full trust, and deployment means uploading files to a shared host.
 
 That world is gone. And today Cloudflare launched something built for the one we're actually in. And no, despite it being April 1st, it's not a joke.
 
-[Ecliptic](https://ecliptic.build) is the most interesting thing to happen to content management in years — not because it's built on Astro (though it is), but because it's the first CMS designed from the ground up for how we work in 2026: AI agents building sites, structured content that machines can parse and manipulate easily, and deployment at the edge.
+[Ecliptic](https://ecliptic.build) is the most interesting thing to happen to content management in years. Not because it's built on Astro (though it is), but because it's the first CMS designed from the ground up for how we work in 2026: AI agents building sites, structured content that machines can parse and manipulate easily, and deployment at the edge.
 
 ## What Ecliptic actually is
 
@@ -43,13 +43,13 @@ Every architectural decision in Ecliptic seems to have been made with the same q
 
 Editing happens on the frontend. You see your actual site while you edit it, not a disconnected admin panel (though you can edit there too). Internationalization is built in from day one. So is redirect management, full-text search, and core SEO functionality.
 
-And it looks a lot like WordPress, which will make people moving over feel right at home. There's even a [complete guide for porting WordPress themes](https://docs.ecliptic.press/themes/porting-wp-themes/) — with mapping tables from WordPress template tags to Ecliptic API calls that are practically designed to be fed to an AI agent.
+And it looks a lot like WordPress, which will make people moving over feel right at home. There's even a [complete guide for porting WordPress themes](https://docs.ecliptic.press/themes/porting-wp-themes/), with mapping tables from WordPress template tags to Ecliptic API calls that are practically designed to be fed to an AI agent.
 
 <Image src={adminImage} alt="Ecliptic's admin post editor showing a familiar WordPress-like interface with title, featured image, rich text editor, categories, and publish controls" class="rounded-lg border border-slate-200 dark:border-slate-700 shadow-card my-6 w-full cursor-zoom-in" data-zoomable />
 
 ## The plugin security model is the real story
 
-Any CMS lives or dies by its plugin ecosystem. The challenge has always been balancing extensibility with security — the more a plugin can do, the more damage a bad one can cause.
+Any CMS lives or dies by its plugin ecosystem. The challenge has always been balancing extensibility with security: the more a plugin can do, the more damage a bad one can cause.
 
 Ecliptic takes a fundamentally different approach. Each plugin runs in an isolated worker environment with granular permissions. A plugin has to explicitly request access to content, network calls, or specific APIs. The UI layer is defined through a JSON schema similar to Slack's Block Kit, which means plugins can't inject arbitrary HTML or JavaScript into the admin.
 
@@ -61,7 +61,7 @@ There's a plugin marketplace too, though currently API-only. Submissions go thro
 Most CMSes are bolting on AI features — a chatbot here, a content generator there. Ecliptic is different: the entire architecture assumes AI agents are first-class users. The MCP server means Claude, Cursor, or any agent can create content types, manage entries, configure plugins, and deploy — all programmatically. The CLI outputs JSON. The documentation is structured for machine consumption. Round-trip markdown support means you can export content, edit it in any tool (or let an agent edit it), and import it back without loss. This isn't an AI feature. It's an AI-native CMS.
 
 **The AI site generation shows where this is heading.**<br />
-Ecliptic includes a playground that spins up full sites from a prompt — theme, content structure, sample data, all generated by models running on Workers AI. Today it's a demo tool. But it shows the trajectory: describe what you want, get a working site. That's not a gimmick when the entire CMS is structured data an agent can manipulate.
+Ecliptic includes a playground that spins up full sites from a prompt: theme, content structure, sample data, all generated by models running on Workers AI. Today it's a demo tool. But it shows the trajectory: describe what you want, get a working site. That's not a gimmick when the entire CMS is structured data an agent can manipulate.
 
 **Authentication uses passkeys by default.**<br />
 No passwords to leak, no brute-force attacks to defend against. Combined with Cloudflare Access for role-based access control, the security posture is strong out of the box.
@@ -82,21 +82,21 @@ Let's be honest about the challenges.
 
 Ecliptic was built over two months using AI coding agents at a cost of roughly \$10k in tokens. That's remarkable speed, and it shows what's possible when you build on a modern foundation like Astro without decades of legacy to navigate. But a CMS is a long-term commitment, and two months of AI-assisted development is not the same as two months of battle-testing in production. The real test starts now.
 
-The plugin ecosystem is empty. WordPress has over 60,000 plugins. Ecliptic has a marketplace architecture but no community yet. History shows that CMS adoption is driven more by available plugins and themes than by technical merit. Ghost, Craft, Statamic — all technically excellent, none have built the ecosystem needed for broad adoption. Ecliptic will need to solve that same chicken-and-egg problem.
+The plugin ecosystem is empty. WordPress has over 60,000 plugins. Ecliptic has a marketplace architecture but no community yet. History shows that CMS adoption is driven more by available plugins and themes than by technical merit. Ghost, Craft, Statamic; all technically excellent, none have built the ecosystem needed for broad adoption. Ecliptic will need to solve that same chicken-and-egg problem.
 
 The open-source story needs clarity. It's MIT-licensed, which is great. Cloudflare says they're open to transitioning it to a foundation. But "open to" is not "committed to", and developers will want firmer guarantees before investing their time.
 
-And while the $5/month Cloudflare plan is cheap, the requirement for a Cloudflare account (with credit card for R2) does tie the "default" deployment to a single vendor. The multi-host story is real in theory — it runs on Netlify and Vercel too — but in practice, Cloudflare is the first-class citizen here for now. We'll want to test that and host it somewhere else quickly too.
+Deployment is flexible: one click deploys to Cloudflare Workers, Netlify, or Vercel, and it's supported on any modern hosting platform. That said, the Cloudflare integration is the most polished (D1 for the database, R2 for storage), and it'll be worth testing the other hosts to see how well the multi-platform story holds up in practice.
 
 ## Why I'm going to build on it
 
-Every CMS generation reflects the tools used to build with it. WordPress was shaped by FTP, PHP, and shared hosting. Squarespace by drag-and-drop visual builders. The next generation will be shaped by AI agents — and the CMS that wins will be the one those agents can work with most effectively.
+Every CMS generation reflects the tools used to build with it. WordPress was shaped by FTP, PHP, and shared hosting — and it shows. Squarespace by drag-and-drop visual builders. The next generation will be shaped by AI agents, and the CMS that wins will be the one those agents can work with most effectively.
 
-That's what Ecliptic gets right. Structured content an agent can read and write natively. A typed schema it can introspect. An MCP server it can talk to directly. A plugin system with clear boundaries it can develop within safely. This isn't a CMS with AI features added on top — it's a CMS where AI is a first-class builder.
+That's what Ecliptic gets right. Structured content an agent can read and write natively. A typed schema it can introspect. An MCP server it can talk to directly. A plugin system with clear boundaries it can develop within safely. This isn't a CMS with AI features added on top. It's a CMS where AI is a first-class builder.
 
 When I [moved this blog to Astro](/do-you-need-a-cms/), I thought I'd left CMSes behind. Then I spent an evening building an Ecliptic theme for this site and started migrating content — because a CMS that an AI agent can build on this naturally is hard to resist. But the bigger picture is agencies building client sites, creators who need multi-user workflows, anyone building more than a static site. For them, a CMS isn't optional. The question is what a good one looks like when your primary development partner is an AI agent.
 
-Ecliptic is my answer. It's built on Astro, deploys to Cloudflare, and adds the CMS layer with the kind of architecture I'd design if starting from scratch: sandboxed plugins, structured content, TypeScript throughout, edge deployment. But what seals it is that I can point Claude at it and say "build me a theme" — and the structured documentation, typed APIs, and MCP server mean it actually can.
+Ecliptic is my answer. It's built on Astro, deploys to Cloudflare, and adds the CMS layer with the kind of architecture I'd design if starting from scratch: sandboxed plugins, structured content, TypeScript throughout, edge deployment. But what seals it is that I can point Claude at it and say "build me a theme", and the structured documentation, typed APIs, and MCP server mean it actually can.
 
 I'm planning to develop on and with Ecliptic, and I'll share more about what I'm building as it takes shape. For now, go look at [Ecliptic](https://ecliptic.build) and form your own opinion. The launch is today, and regardless of where it ends up, it's asking the right question: what should a CMS look like when AI agents are doing most of the building?
 
