@@ -10,12 +10,17 @@ import matter from 'gray-matter';
 const draftSlugs = new Set();
 const blogDir = 'src/content/blog';
 for (const entry of fs.readdirSync(blogDir, { withFileTypes: true })) {
-    const mdPath = entry.isDirectory()
-        ? `${blogDir}/${entry.name}/index.md`
-        : entry.name.endsWith('.md') ? `${blogDir}/${entry.name}` : null;
+    let mdPath = null;
+    if (entry.isDirectory()) {
+        const md = `${blogDir}/${entry.name}/index.md`;
+        const mdx = `${blogDir}/${entry.name}/index.mdx`;
+        mdPath = fs.existsSync(md) ? md : fs.existsSync(mdx) ? mdx : null;
+    } else if (entry.name.endsWith('.md') || entry.name.endsWith('.mdx')) {
+        mdPath = `${blogDir}/${entry.name}`;
+    }
     if (!mdPath || !fs.existsSync(mdPath)) continue;
     const { data } = matter(fs.readFileSync(mdPath, 'utf-8'));
-    if (data.draft) draftSlugs.add(entry.isDirectory() ? entry.name : entry.name.replace(/\.md$/, ''));
+    if (data.draft) draftSlugs.add(entry.isDirectory() ? entry.name : entry.name.replace(/\.mdx?$/, ''));
 }
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
