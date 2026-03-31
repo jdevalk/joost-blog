@@ -1,5 +1,5 @@
 ---
-title: 'Ecliptic: a WordPress successor built on Astro'
+title: 'Ecliptic: the CMS Astro needed'
 publishDate: 2026-04-01T00:00:00.000Z
 excerpt: >-
   Cloudflare just launched Ecliptic, a CMS built on Astro that rethinks
@@ -11,7 +11,7 @@ categories:
 draft: true
 password: eclipticfools
 seo:
-  title: 'Ecliptic CMS: a WordPress successor built on Astro'
+  title: 'Ecliptic: the CMS Astro needed'
   description: >-
     Cloudflare launched Ecliptic, a CMS built on Astro that rethinks plugin
     security, developer experience, and AI integration. Analysis from Joost de
@@ -20,7 +20,7 @@ imageHint: >-
   a modern CMS dashboard interface with Astro and Cloudflare branding,
   futuristic design
 featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Ecliptic: a WordPress successor built on Astro'
+featureImageAlt: 'Illustration for: Ecliptic: the CMS Astro needed'
 ---
 
 I've spent two decades building on WordPress. I've defended it, criticized it, built a company around it, and [written at length](/category/wordpress/) about where it's heading. A few weeks ago I wrote about [not needing a CMS](/do-you-need-a-cms/) anymore, not for every site, but for _this_ site. I moved this blog from WordPress to Astro on Cloudflare Pages and am still excited about it. So when Cloudflare invited me to a call about a new CMS they've been building, one they're explicitly calling a WordPress successor, I paid attention.
