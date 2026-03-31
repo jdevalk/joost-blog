@@ -3,6 +3,20 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import pagefind from 'astro-pagefind';
 import { defineConfig } from 'astro/config';
+import fs from 'fs';
+import matter from 'gray-matter';
+
+// Collect draft slugs to exclude from sitemap
+const draftSlugs = new Set();
+const blogDir = 'src/content/blog';
+for (const entry of fs.readdirSync(blogDir, { withFileTypes: true })) {
+    const mdPath = entry.isDirectory()
+        ? `${blogDir}/${entry.name}/index.md`
+        : entry.name.endsWith('.md') ? `${blogDir}/${entry.name}` : null;
+    if (!mdPath || !fs.existsSync(mdPath)) continue;
+    const { data } = matter(fs.readFileSync(mdPath, 'utf-8'));
+    if (data.draft) draftSlugs.add(entry.isDirectory() ? entry.name : entry.name.replace(/\.md$/, ''));
+}
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -73,7 +87,12 @@ export default defineConfig({
 prefetch: {
         defaultStrategy: 'viewport',
     },
-    integrations: [mdx(), sitemap(), pagefind(), injectModulePreloads()],
+    integrations: [mdx(), sitemap({
+        filter: (page) => {
+            const slug = new URL(page).pathname.replace(/^\/|\/$/g, '');
+            return !draftSlugs.has(slug);
+        }
+    }), pagefind(), injectModulePreloads()],
     markdown: {
         shikiConfig: {
             themes: {
