@@ -33,7 +33,7 @@ export function getRelatedPosts(
     allPosts: CollectionEntry<'blog'>[],
     limit: number = 3
 ): CollectionEntry<'blog'>[] {
-    const otherPosts = allPosts.filter((post) => post.id !== currentPost.id);
+    const otherPosts = allPosts.filter((post) => post.id !== currentPost.id && isPublished(post));
     const currentCategories = currentPost.data.categories ?? [];
     const related: CollectionEntry<'blog'>[] = [];
     const usedIds = new Set<string>();
