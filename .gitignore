@@ -26,3 +26,6 @@ pnpm-debug.log*
 
 # Content exports
 content-export/
+
+# Generated draft slugs (built at deploy time)
+public/_draft-slugs.json

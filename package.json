@@ -9,7 +9,7 @@
         "generate-images": "node scripts/generate-featured-images.mjs",
         "fetch-transcripts": "node scripts/fetch-transcripts.mjs",
         "images": "node scripts/image-manager.mjs",
-        "build": "astro build",
+        "build": "node scripts/generate-draft-slugs.mjs && astro build",
         "preview": "astro preview",
         "astro": "astro"
     },
