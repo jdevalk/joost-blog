@@ -1,0 +1,229 @@
+{
+  "$schema": "https://ecliptic.press/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Luxe Blog",
+    "description": "A premium personal blog with burgundy palette, dark mode, hero section, and featured posts",
+    "author": "Joost de Valk"
+  },
+  "settings": {
+    "title": "My Blog",
+    "tagline": "Personal blog and portfolio",
+    "postsPerPage": 12
+  },
+  "collections": [
+    {
+      "slug": "posts",
+      "label": "Posts",
+      "labelSingular": "Post",
+      "supports": ["drafts", "revisions"],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText"
+        },
+        {
+          "slug": "excerpt",
+          "label": "Excerpt",
+          "type": "text"
+        },
+        {
+          "slug": "featured_image",
+          "label": "Featured Image",
+          "type": "image"
+        },
+        {
+          "slug": "is_featured",
+          "label": "Featured Post",
+          "type": "boolean",
+          "defaultValue": false
+        }
+      ]
+    },
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "supports": ["drafts", "revisions"],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText"
+        },
+        {
+          "slug": "featured_image",
+          "label": "Featured Image",
+          "type": "image"
+        },
+        {
+          "slug": "template",
+          "label": "Page Template",
+          "type": "string",
+          "widget": "select",
+          "options": {
+            "choices": [
+              { "value": "default", "label": "Default" },
+              { "value": "full-width", "label": "Full Width" }
+            ]
+          },
+          "defaultValue": "default"
+        }
+      ]
+    }
+  ],
+  "taxonomies": [
+    {
+      "name": "category",
+      "label": "Categories",
+      "labelSingular": "Category",
+      "hierarchical": true,
+      "collections": ["posts"],
+      "terms": [
+        { "slug": "general", "label": "General" },
+        { "slug": "tutorials", "label": "Tutorials" }
+      ]
+    },
+    {
+      "name": "tag",
+      "label": "Tags",
+      "labelSingular": "Tag",
+      "hierarchical": false,
+      "collections": ["posts"],
+      "terms": []
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        { "type": "custom", "label": "Home", "url": "/" },
+        { "type": "custom", "label": "Blog", "url": "/posts" },
+        { "type": "custom", "label": "About", "url": "/about" },
+        { "type": "custom", "label": "Contact", "url": "/contact" }
+      ]
+    }
+  ],
+  "sections": [
+    {
+      "slug": "hero-centered",
+      "title": "Centered Hero",
+      "description": "Full-width hero with centered heading and CTA",
+      "keywords": ["hero", "banner", "header", "landing"],
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [{ "_type": "span", "text": "Welcome" }]
+        },
+        {
+          "_type": "block",
+          "children": [
+            { "_type": "span", "text": "Your compelling tagline goes here." }
+          ]
+        }
+      ]
+    }
+  ],
+  "content": {
+    "posts": [
+      {
+        "id": "hello-world",
+        "slug": "hello-world",
+        "status": "published",
+        "data": {
+          "title": "Hello World",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "Welcome to your new blog! This is a sample post to get you started. Edit or delete it and start writing." }]
+            },
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "Getting Started" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "Head to the admin panel to create new posts, pages, and manage your content. The theme supports featured posts, categories, dark mode, and a search page." }]
+            }
+          ],
+          "excerpt": "Welcome to your new blog powered by Ecliptic. A sample post to get you started.",
+          "is_featured": true
+        },
+        "taxonomies": {
+          "category": ["general"]
+        }
+      },
+      {
+        "id": "customizing-your-theme",
+        "slug": "customizing-your-theme",
+        "status": "published",
+        "data": {
+          "title": "Customizing Your Theme",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "This theme comes with a luxe burgundy color palette, dark mode support, and responsive layouts. You can customize colors by editing the CSS custom properties in global.css." }]
+            }
+          ],
+          "excerpt": "Learn how to customize the Luxe Blog theme to match your brand.",
+          "is_featured": false
+        },
+        "taxonomies": {
+          "category": ["tutorials"]
+        }
+      }
+    ],
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "About",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "Tell your visitors about yourself. This page is a great place to share your story, your mission, and what drives you." }]
+            }
+          ]
+        }
+      },
+      {
+        "id": "contact",
+        "slug": "contact",
+        "status": "published",
+        "data": {
+          "title": "Contact",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "Get in touch! You can reach me via the form below or through social media." }]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "redirects": []
+}

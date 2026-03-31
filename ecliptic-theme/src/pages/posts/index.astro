@@ -1,0 +1,50 @@
+---
+import { getEclipticCollection, getSiteSettings } from 'ecliptic';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import PostCard from '../../components/PostCard.astro';
+import FeaturedPost from '../../components/FeaturedPost.astro';
+
+const settings = await getSiteSettings();
+const postsPerPage = settings.postsPerPage ?? 12;
+
+const { entries: posts } = await getEclipticCollection('posts', {
+    where: { status: 'published' },
+    orderBy: { publishedAt: 'desc' }
+});
+
+const featuredPost = posts.find((p) => p.data.is_featured) ?? posts[0];
+---
+
+<Base title="Blog" description="All posts">
+    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
+        <Header variant="dark" />
+        <div class="h-[52px] sm:h-[56px]"></div>
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Blog</h1>
+            </div>
+        </section>
+    </div>
+
+    <main class="grow">
+        {featuredPost && (
+            <section class="px-4 py-10 sm:px-8 sm:py-14 bg-surface dark:bg-[#1e1b19]/50 border-b border-slate-200 dark:border-[#2a2623]">
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="mb-6 text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Featured post</h2>
+                    <FeaturedPost post={featuredPost} />
+                </div>
+            </section>
+        )}
+
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Archive</span>
+                <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100 mb-8">All posts</h2>
+                <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {posts.map((post) => <PostCard post={post} />)}
+                </div>
+            </div>
+        </section>
+    </main>
+</Base>

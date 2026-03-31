@@ -1,0 +1,179 @@
+---
+import { getMenu, getSiteSettings } from 'ecliptic';
+import ThemeToggle from './ThemeToggle.astro';
+
+const settings = await getSiteSettings();
+const primaryMenu = await getMenu('primary');
+
+const { class: className, variant } = Astro.props;
+const isDark = variant === 'dark';
+---
+
+<header class:list={['fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-4 px-4 py-3 sm:px-8 sm:py-4 transition-colors duration-300', isDark ? '' : 'bg-[#4a1525]/90 backdrop-blur-lg border-b border-white/10 text-white dark:bg-[#1c1614]/90 dark:border-[#c9506a]/10', className]}>
+    <a class:list={["text-lg font-extrabold tracking-tight sm:text-xl", isDark ? "text-white" : "text-white dark:text-slate-100"]} href="/">
+        {settings.title}
+    </a>
+    <div class="flex items-center gap-1 sm:gap-2">
+        {primaryMenu?.items && primaryMenu.items.length > 0 && (
+            <nav class="hidden md:flex items-center gap-1" aria-label="Primary navigation">
+                {primaryMenu.items.map((item) => (
+                    <a
+                        class:list={["relative rounded-md px-3 py-1.5 text-sm font-medium transition duration-300", isDark ? "text-white/90 hover:text-white hover:bg-white/15" : "text-white/90 hover:text-white hover:bg-white/15 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50"]}
+                        href={item.url}
+                    >
+                        {item.label}
+                    </a>
+                ))}
+            </nav>
+        )}
+        <a
+            href="/search"
+            class:list={["inline-flex items-center justify-center w-9 h-9 rounded-md transition cursor-pointer", isDark ? "text-white/80 hover:text-white hover:bg-white/15" : "text-white/80 hover:text-white hover:bg-white/15 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50"]}
+            aria-label="Search"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+            </svg>
+        </a>
+        <ThemeToggle variant={isDark ? 'dark' : 'light'} />
+        {/* Mobile nav */}
+        {primaryMenu?.items && primaryMenu.items.length > 0 && (
+            <nav class="relative md:hidden" aria-label="Mobile navigation">
+                <button
+                    class:list={["relative z-20 inline-flex items-center justify-center w-9 h-9 rounded-md transition cursor-pointer menu-toggle", isDark ? "text-white/80 hover:text-white hover:bg-white/15" : "text-white/80 hover:text-white hover:bg-white/15 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50"]}
+                    aria-label="Open Menu"
+                    aria-expanded="false"
+                    aria-controls="menu-items"
+                >
+                    <span class="relative w-1 h-1 bg-current rounded-full menu-toggle-icon" />
+                </button>
+                <ul id="menu-items" class="absolute z-10 px-8 pt-16 pb-10 border menu -top-3 -right-3 border-slate-200/60 bg-white/90 dark:border-slate-600/40 dark:bg-slate-800/95 sm:px-12 sm:pt-20 sm:pb-16">
+                    {primaryMenu.items.map((item) => (
+                        <li class="mb-1 border-b border-slate-200/70 dark:border-slate-600/70">
+                            <a
+                                class="relative block py-1.5 pr-6 text-base font-semibold transition duration-300 text-slate-700 hover:text-primary dark:text-slate-200 dark:hover:text-accent"
+                                href={item.url}
+                            >
+                                {item.label}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
+        )}
+    </div>
+</header>
+
+<style>
+    @reference "tailwindcss";
+
+    header.header-scrolled {
+        background: rgba(74, 21, 37, 0.9);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .menu {
+        width: calc(100vw - 0.5rem);
+        max-width: 18.75rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(12px);
+        opacity: 0;
+        transform: scale(0.6);
+        transform-origin: top right;
+        transition:
+            transform 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s,
+            opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.25s,
+            visibility 0s 0.5s;
+        visibility: hidden;
+    }
+    .menu.is-visible {
+        opacity: 1;
+        transform: scale(1);
+        transition:
+            transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.25s,
+            opacity 0.15s 0.15s,
+            visibility 0s 0.25s;
+        visibility: visible;
+    }
+    .menu-toggle-icon {
+        transition:
+            height 0s 0.25s,
+            width 0s 0.25s;
+    }
+    .menu-toggle-icon.is-active {
+        height: 3px;
+        width: 3px;
+    }
+    .menu-toggle-icon:before,
+    .menu-toggle-icon:after {
+        @apply absolute top-1/2 left-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-current;
+        content: '';
+        transition:
+            width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+            height 0s 0.25s,
+            translate 0s 0.25s,
+            rotate 0s 0.25s,
+            margin 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.25s;
+    }
+    .menu-toggle-icon:before {
+        @apply -ml-2;
+    }
+    .menu-toggle-icon:after {
+        @apply ml-2;
+    }
+    .menu-toggle-icon.is-active:before,
+    .menu-toggle-icon.is-active:after {
+        @apply ml-0 w-5 rounded-md;
+        height: 3px;
+        transition:
+            margin 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+            height 0s 0.25s,
+            translate 0s 0.25s,
+            rotate 0s 0.25s,
+            width 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.25s;
+    }
+    .menu-toggle-icon.is-active:before {
+        @apply rotate-45;
+    }
+    .menu-toggle-icon.is-active:after {
+        @apply -rotate-45;
+    }
+</style>
+
+<script>
+    function menuToggle() {
+        const menu = document.querySelector('.menu');
+        const menuToggleBtn = document.querySelector('.menu-toggle');
+        const menuToggleIcon = document.querySelector('.menu-toggle-icon');
+        menuToggleBtn?.addEventListener('click', () => {
+            const isMenuExpanded = menuToggleBtn.getAttribute('aria-expanded') === 'true';
+            menuToggleBtn.setAttribute('aria-expanded', isMenuExpanded ? 'false' : 'true');
+            menuToggleBtn.setAttribute('aria-label', isMenuExpanded ? 'Open Menu' : 'Close Menu');
+            menuToggleIcon?.classList.toggle('is-active');
+            menu?.classList.toggle('is-visible');
+        });
+    }
+    menuToggle();
+    document.addEventListener('astro:after-swap', menuToggle);
+
+    function headerScroll() {
+        const header = document.querySelector('header');
+        if (!header) return;
+        const handler = () => {
+            if (window.scrollY > 60) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        };
+        window.addEventListener('scroll', handler, { passive: true });
+        handler();
+    }
+    headerScroll();
+    document.addEventListener('astro:after-swap', headerScroll);
+</script>

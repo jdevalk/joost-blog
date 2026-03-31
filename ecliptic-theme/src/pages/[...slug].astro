@@ -1,0 +1,46 @@
+---
+import { getEclipticEntry } from 'ecliptic';
+import { PortableText, Image } from 'ecliptic/ui';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+
+const { slug } = Astro.params;
+const { entry: page } = await getEclipticEntry('pages', slug!);
+
+if (!page) {
+    return Astro.redirect('/404');
+}
+---
+
+<Base title={page.data.title}>
+    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
+        <Header variant="dark" />
+        <div class="h-[52px] sm:h-[56px]"></div>
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">{page.data.title}</h1>
+            </div>
+        </section>
+    </div>
+
+    <main class="grow">
+        <article class="max-w-6xl mx-auto px-4 py-10 sm:px-8 sm:py-14">
+            {page.data.featured_image?.src && (
+                <figure class="mb-9">
+                    <Image
+                        image={page.data.featured_image}
+                        alt={page.data.featured_image.alt || page.data.title}
+                        width={1200}
+                        height={675}
+                        class="w-full rounded-lg"
+                    />
+                </figure>
+            )}
+            <div class="max-w-3xl mx-auto">
+                <div class="prose prose-slate sm:prose-lg max-w-none">
+                    <PortableText value={page.data.content} />
+                </div>
+            </div>
+        </article>
+    </main>
+</Base>

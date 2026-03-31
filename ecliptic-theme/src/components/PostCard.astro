@@ -1,0 +1,38 @@
+---
+import { Image } from 'ecliptic/ui';
+
+interface Props {
+    post: any;
+}
+
+const { post } = Astro.props;
+const publishedAt = post.publishedAt ? new Date(post.publishedAt) : null;
+const formattedDate = publishedAt?.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+---
+
+<article class="group flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-card transition duration-300 hover:shadow-card-hover hover:-translate-y-0.5 dark:border-[#2a2623] dark:bg-[#1e1b19]/50">
+    {post.data.featured_image?.src && (
+        <a href={`/posts/${post.slug}`} aria-label={post.data.title} class="block overflow-hidden">
+            <Image
+                image={post.data.featured_image}
+                alt={post.data.featured_image.alt || post.data.title}
+                width={640}
+                height={360}
+                class="w-full aspect-[16/9] object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+        </a>
+    )}
+    <div class="flex flex-1 flex-col p-5">
+        <h2 class="text-xl font-extrabold leading-snug text-slate-900 dark:text-slate-100">
+            <a href={`/posts/${post.slug}`} class="hover:text-primary dark:hover:text-accent transition-colors duration-300">{post.data.title}</a>
+        </h2>
+        {post.data.excerpt && (
+            <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-2">{post.data.excerpt}</p>
+        )}
+        {formattedDate && (
+            <div class="mt-auto pt-4 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                <time datetime={publishedAt?.toISOString()}>{formattedDate}</time>
+            </div>
+        )}
+    </div>
+</article>
