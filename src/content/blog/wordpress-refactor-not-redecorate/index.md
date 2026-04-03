@@ -15,7 +15,7 @@ featureImageAlt: 'Illustration for: WordPress needs to refactor, not redecorate'
 draft: true
 password: 'april3'
 ---
-When Cloudflare launched [EmDash CMS](/emdash-cms/) two days ago, the reactions came fast — from Matt Mullenweg [himself](https://ma.tt/2026/04/emdash-feedback/), from [Hendrik Luehrsen](https://kraut.press/2026/emdash-cms-shows-gutenberg-limits/) at Kraut.press, and from [Brian Coords](https://www.briancoords.com/emdash-first-thoughts-and-takeaways-for-wordpress/) (who is btw an Automattic employee). Each piece approached EmDash differently, but together they crystallized something I've been thinking about for years: WordPress's deepest technical problems aren't at the surface. They're architectural. And the WordPress project keeps treating them as cosmetic.
+When Cloudflare launched [EmDash CMS](/emdash-cms/) two days ago, the reactions came fast — from Matt Mullenweg [himself](https://ma.tt/2026/04/emdash-feedback/), from [Hendrik Luehrsen](https://kraut.press/2026/emdash-cms-shows-gutenberg-limits/) at Kraut.press, and from [Brian Coords](https://www.briancoords.com/emdash-first-thoughts-and-takeaways-for-wordpress/). Each piece approached EmDash differently, but together they crystallized something I've been thinking about for years: WordPress's deepest technical problems aren't at the surface. They're architectural. And the WordPress project keeps treating them as cosmetic.
 
 A Cloudflare piece on [application modernization](https://www.cloudflare.com/the-net/modernize-applications/) offers a useful way to think about this. When organizations modernize legacy applications, they generally pick from three approaches: cosmetic changes (move to new infrastructure, change nothing underneath), targeted refactoring (rework the architecture in specific areas while preserving what works), or a full rewrite (start from scratch).
 
@@ -59,7 +59,7 @@ Brian framed this as a prioritization problem, not an engineering one. He's righ
 
 I didn't write about EmDash because I think WordPress should die. I spent fifteen years building Yoast SEO, and I still run [Post Status](https://poststatus.com/), a community for WordPress professionals. I care about this ecosystem. But caring about it means being honest about where it is.
 
-WordPress doesn't need to become EmDash. A full refactor of the platform that runs over 40% of the web would be reckless. But it does need real refactoring: targeted, meaningful architectural changes that address the structural problems rather than just painting over them.
+WordPress doesn't need to become EmDash. A full refactor of the platform that still powers more of the web than any other CMS would be reckless. But it does need real refactoring: targeted, meaningful architectural changes that address the structural problems rather than just painting over them.
 
 Three changes would transform WordPress without breaking it.
 
