@@ -1,0 +1,88 @@
+---
+import { getEmDashCollection, getTermsForEntries } from 'emdash';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import PostCard from '../../components/PostCard.astro';
+
+const postsPerPage = 12;
+const page = Math.max(1, Number(Astro.url.searchParams.get('page')) || 1);
+
+const { entries: allPosts, cacheHint } = await getEmDashCollection('posts', {
+    orderBy: { published_at: 'desc' },
+});
+Astro.cache.set(cacheHint);
+
+const sortedPosts = [...allPosts].sort(
+    (a, b) => (b.data.publishedAt?.getTime() ?? 0) - (a.data.publishedAt?.getTime() ?? 0)
+);
+
+const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
+const pagePosts = sortedPosts.slice((page - 1) * postsPerPage, page * postsPerPage);
+
+// Fetch categories for displayed posts
+const displayedIds = pagePosts.map(p => p.data.id);
+const categoryMap = displayedIds.length > 0 ? await getTermsForEntries('posts', displayedIds, 'category') : new Map();
+---
+
+<Base title={page > 1 ? `Blog — Page ${page}` : 'Blog'} description="All posts">
+    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
+        <Header variant="dark" />
+        <div class="h-[52px] sm:h-[56px]"></div>
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Blog</h1>
+            </div>
+        </section>
+    </div>
+
+    <main class="grow">
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {pagePosts.map((post) => (
+                        <PostCard post={post} categories={categoryMap.get(post.data.id) || []} />
+                    ))}
+                </div>
+
+                {totalPages > 1 && (
+                    <nav class="mt-12 flex items-center justify-center gap-2" aria-label="Pagination">
+                        {page > 1 && (
+                            <a
+                                href={page === 2 ? '/posts' : `/posts?page=${page - 1}`}
+                                class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-[#2a2623] px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-[#1e1b19] transition-colors"
+                            >
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                                Previous
+                            </a>
+                        )}
+
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                            <a
+                                href={p === 1 ? '/posts' : `/posts?page=${p}`}
+                                class:list={[
+                                    "inline-flex items-center justify-center w-10 h-10 rounded-lg text-sm font-medium transition-colors",
+                                    p === page
+                                        ? "bg-primary text-white dark:bg-accent dark:text-slate-900"
+                                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-[#1e1b19]",
+                                ]}
+                                aria-current={p === page ? "page" : undefined}
+                            >
+                                {p}
+                            </a>
+                        ))}
+
+                        {page < totalPages && (
+                            <a
+                                href={`/posts?page=${page + 1}`}
+                                class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-[#2a2623] px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-[#1e1b19] transition-colors"
+                            >
+                                Next
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                            </a>
+                        )}
+                    </nav>
+                )}
+            </div>
+        </section>
+    </main>
+</Base>

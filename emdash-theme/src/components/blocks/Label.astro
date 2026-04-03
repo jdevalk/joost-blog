@@ -1,0 +1,12 @@
+---
+interface Props {
+    node: { id?: string };
+}
+
+const { node } = Astro.props;
+const text = node.id;
+---
+
+{text && (
+    <span class="not-prose block text-xs font-bold uppercase tracking-widest text-primary dark:text-accent mt-16 mb-0">{text}</span>
+)}

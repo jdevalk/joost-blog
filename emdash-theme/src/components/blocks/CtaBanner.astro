@@ -1,0 +1,76 @@
+---
+/**
+ * CTA Banner block for Portable Text.
+ *
+ * Renders a styled callout box with label, heading, body, and a CTA button.
+ * Content loaded from an EmDash section:
+ *   - Section description → label
+ *   - Section title → heading
+ *   - Section content → body paragraphs + optional link block for CTA
+ *
+ * The last link in the content becomes the CTA button.
+ *
+ * Block data: { _type: "ctaBanner", sectionSlug: "work-with-me" }
+ */
+import { getSection } from 'emdash';
+import { PortableText } from 'emdash/ui';
+
+interface Props {
+    node: { sectionSlug?: string };
+}
+
+const { node } = Astro.props;
+
+let label: string | undefined;
+let heading: string | undefined;
+let bodyBlocks: any[] = [];
+let ctaText: string | undefined;
+let ctaHref: string | undefined;
+
+if (node.sectionSlug) {
+    const section = await getSection(node.sectionSlug);
+    if (section) {
+        label = section.description || undefined;
+        heading = section.title || undefined;
+
+        // Check last block for a CTA link
+        const blocks = section.content || [];
+        for (const block of blocks) {
+            if (block._type === 'block' && block.markDefs?.length > 0) {
+                // Check if this block is just a link (CTA)
+                const children = block.children || [];
+                const linkMarks = children.filter((c: any) => c.marks?.length > 0);
+                if (linkMarks.length === 1 && children.length <= 2) {
+                    const linkMark = block.markDefs.find((m: any) => m._type === 'link');
+                    if (linkMark) {
+                        ctaText = linkMarks[0].text;
+                        ctaHref = linkMark.href;
+                        continue;
+                    }
+                }
+            }
+            bodyBlocks.push(block);
+        }
+    }
+}
+---
+
+<section class="not-prose my-12 rounded-xl border border-slate-200 dark:border-[#2a2623] bg-surface dark:bg-[#1e1b19]/50 p-8 sm:px-12">
+    {label && (
+        <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">{label}</span>
+    )}
+    {heading && (
+        <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100">{heading}</h2>
+    )}
+    {bodyBlocks.length > 0 && (
+        <div class="mt-3 text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
+            <PortableText value={bodyBlocks} />
+        </div>
+    )}
+    {ctaHref && (
+        <a href={ctaHref} class="mt-5 inline-flex items-center gap-2 rounded-lg bg-primary !text-white px-6 py-2.5 text-sm font-bold shadow-md transition duration-300 hover:bg-white hover:!text-primary hover:shadow-lg dark:bg-white dark:!text-primary dark:hover:bg-accent dark:hover:!text-white">
+            {ctaText || "Learn more"}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+    )}
+</section>

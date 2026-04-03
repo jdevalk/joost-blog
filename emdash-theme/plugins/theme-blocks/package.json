@@ -1,0 +1,10 @@
+{
+	"name": "@jdevalk/emdash-plugin-theme-blocks",
+	"version": "1.0.0",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./astro": "./src/astro/index.ts"
+	}
+}

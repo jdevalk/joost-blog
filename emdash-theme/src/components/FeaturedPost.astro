@@ -1,0 +1,46 @@
+---
+import { Image } from "emdash/ui";
+import { getReadingTime } from "../utils/reading-time";
+
+interface Props {
+    post: any;
+    categories?: { label: string; slug: string }[];
+}
+
+const { post, categories = [] } = Astro.props;
+const readingTime = getReadingTime(post.data.content);
+const publishedAt = post.data.publishedAt ?? null;
+const formattedDate = publishedAt?.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+---
+
+<article class="group">
+    <a href={`/posts/${post.id}`} class="relative block overflow-hidden rounded-xl">
+        {post.data.featured_image && (
+            <Image
+                image={post.data.featured_image}
+                class="w-full transition-transform duration-500 group-hover:scale-105"
+            />
+        )}
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+            {categories.length > 0 && (
+                <div class="mb-3 flex flex-wrap gap-1.5">
+                    {categories.map((cat) => (
+                        <span class="inline-block rounded-full bg-white/20 backdrop-blur-sm px-2.5 py-0.5 text-xs font-semibold text-white">{cat.label}</span>
+                    ))}
+                </div>
+            )}
+            <h2 class="text-2xl font-extrabold leading-snug tracking-tight text-white sm:text-3xl lg:text-4xl drop-shadow-lg">
+                {post.data.title}
+            </h2>
+            {post.data.excerpt && (
+                <p class="mt-2 text-sm sm:text-base leading-relaxed text-white/80 line-clamp-2 max-w-2xl">{post.data.excerpt}</p>
+            )}
+            {formattedDate && (
+                <p class="mt-2 text-sm text-white/60">
+                    <time datetime={publishedAt?.toISOString()}>{formattedDate}</time>{readingTime && <Fragment>&ensp;·&ensp;{readingTime} min read</Fragment>}
+                </p>
+            )}
+        </div>
+    </a>
+</article>

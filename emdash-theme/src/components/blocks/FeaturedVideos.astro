@@ -1,0 +1,87 @@
+---
+/**
+ * Featured Videos grid block for Portable Text.
+ *
+ * Displays a grid of featured videos from the videos collection.
+ * Section provides the label and heading.
+ *
+ * Block data: { _type: "featuredVideos", sectionSlug: "speaking-engagements", limit: 6 }
+ */
+import { getSection } from 'emdash';
+import { getEmDashCollection } from 'emdash';
+
+interface Props {
+    node: {
+        sectionSlug?: string;
+        limit?: number;
+        onStageOnly?: boolean;
+    };
+}
+
+const { node } = Astro.props;
+const limit = node.limit || 6;
+
+let label: string | undefined;
+let heading: string | undefined;
+
+if (node.sectionSlug) {
+    const section = await getSection(node.sectionSlug);
+    if (section) {
+        label = section.description || undefined;
+        heading = section.title || undefined;
+    }
+}
+
+// Get videos, fall back to most recent
+const { entries: allVideos } = await getEmDashCollection('videos', {
+    orderBy: { published_at: 'desc' },
+});
+
+const sorted = [...allVideos]
+    .filter(v => !(node.onStageOnly === 'yes' || node.onStageOnly === true) || v.data.on_stage)
+    .sort((a, b) => (b.data.publishedAt?.getTime() ?? 0) - (a.data.publishedAt?.getTime() ?? 0));
+
+// Prefer featured videos, then fill with recent
+const featured = sorted.filter(v => v.data.featured);
+const others = sorted.filter(v => !v.data.featured);
+const videos = [...featured, ...others].slice(0, limit);
+
+function getImageUrl(img: any): string | undefined {
+    if (!img) return undefined;
+    if (typeof img.src === 'string' && img.src) return img.src;
+    const storageKey = img.meta?.storageKey || img.storageKey || img.id;
+    if (storageKey) return `/_emdash/api/media/file/${storageKey}`;
+    return undefined;
+}
+---
+
+<section class="not-prose mt-8">
+    {label && (
+        <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">{label}</span>
+    )}
+    {heading && (
+        <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100 mb-6">{heading}</h2>
+    )}
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-5">
+        {videos.map((video) => {
+            const thumbUrl = getImageUrl(video.data.featured_image);
+            return (
+                <a href={`/videos/${video.id}/`} class="group !no-underline rounded-xl bg-white dark:bg-[#1e1b19] border border-slate-200 dark:border-[#2a2623] overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+                    <div class="overflow-hidden">
+                        {thumbUrl && (
+                            <img
+                                src={thumbUrl}
+                                alt={video.data.title}
+                                class="aspect-video object-cover w-full transition-transform duration-300 group-hover:scale-105"
+                                loading="lazy"
+                            />
+                        )}
+                    </div>
+                    <p class="px-3 py-2.5 text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-primary dark:group-hover:text-accent transition-colors">
+                        {video.data.title}
+                    </p>
+                </a>
+            );
+        })}
+    </div>
+</section>

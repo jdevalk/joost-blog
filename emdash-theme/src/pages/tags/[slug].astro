@@ -1,0 +1,51 @@
+---
+import { getTerm, getEmDashCollection, getEntryTerms } from "emdash";
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getReadingTime } from '../../utils/reading-time';
+
+const { slug } = Astro.params;
+const term = slug ? await getTerm("tag", slug) : null;
+
+if (!term) {
+    return Astro.redirect('/404');
+}
+
+const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
+    where: { tag: term.slug },
+    orderBy: { published_at: "desc" },
+});
+
+Astro.cache.set(cacheHint);
+
+const filteredPosts = await Promise.all(
+    posts.map(async (post) => {
+        const tags = await getEntryTerms("posts", post.data.id, "tag");
+        return { post, tags };
+    })
+);
+---
+
+<Base title={term.label} description={`Posts tagged ${term.label}`}>
+    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
+        <Header variant="dark" />
+        <div class="h-[52px] sm:h-[56px]"></div>
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Tag: {term.label}</h1>
+            </div>
+        </section>
+    </div>
+
+    <main class="grow">
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <p class="mb-8 text-lg text-slate-600 dark:text-slate-400">{posts.length} {posts.length === 1 ? 'post' : 'posts'} tagged {term.label}.</p>
+                <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {filteredPosts.map(({ post, tags }) => <PostCard post={post} tags={tags} readingTime={getReadingTime(post.data.content)} />)}
+                </div>
+            </div>
+        </section>
+    </main>
+</Base>

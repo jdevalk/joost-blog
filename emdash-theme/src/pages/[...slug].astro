@@ -1,0 +1,38 @@
+---
+import { getEmDashEntry } from "emdash";
+import { Image } from "emdash/ui";
+import Content from '../components/Content.astro';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+
+const { slug } = Astro.params;
+const slugStr = Array.isArray(slug) ? slug.join("/") : slug;
+
+if (!slugStr) {
+    return Astro.redirect('/404');
+}
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", slugStr);
+
+if (!page) {
+    return Astro.redirect('/404');
+}
+
+Astro.cache.set(cacheHint);
+---
+
+<Base title={page.data.title} content={{ collection: "pages", id: page.data.id, slug: slugStr }}>
+    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
+        <Header variant="dark" />
+        <div class="h-[52px] sm:h-[56px]"></div>
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl" {...page.edit.title}>{page.data.title}</h1>
+            </div>
+        </section>
+    </div>
+
+    <main class="grow" {...page.edit.content}>
+        <Content value={page.data.content} />
+    </main>
+</Base>

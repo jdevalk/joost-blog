@@ -1,0 +1,209 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Luxe Blog",
+		"description": "A premium personal blog with burgundy palette, dark mode, hero section, and featured posts",
+		"author": "Joost de Valk"
+	},
+
+	"settings": {
+		"title": "Joost de Valk",
+		"tagline": "Thoughts on SEO, WordPress, open source, and building things"
+	},
+
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "Posts",
+			"labelSingular": "Post",
+			"supports": ["drafts", "revisions", "search", "seo"],
+			"commentsEnabled": true,
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured Image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"supports": ["drafts", "revisions", "search"],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		}
+	],
+
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Categories",
+			"labelSingular": "Category",
+			"hierarchical": true,
+			"collections": ["posts"],
+			"terms": [
+				{ "slug": "ai", "label": "AI" },
+				{ "slug": "development", "label": "Development" },
+				{ "slug": "open-source", "label": "Open Source" },
+				{ "slug": "personal-stuff", "label": "Personal stuff" },
+				{ "slug": "productivity-hacks", "label": "Productivity hacks" },
+				{ "slug": "search-opinion", "label": "Search Opinion" },
+				{ "slug": "wordpress", "label": "WordPress" },
+				{ "slug": "yoast", "label": "Yoast" }
+			]
+		},
+		{
+			"name": "tag",
+			"label": "Tags",
+			"labelSingular": "Tag",
+			"hierarchical": false,
+			"collections": ["posts"],
+			"terms": []
+		}
+	],
+
+	"bylines": [
+		{
+			"id": "byline-joost",
+			"slug": "joost-de-valk",
+			"displayName": "Joost de Valk"
+		}
+	],
+
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{ "type": "custom", "label": "Home", "url": "/" },
+				{ "type": "custom", "label": "Blog", "url": "/posts" },
+				{ "type": "custom", "label": "About", "url": "/pages/about" }
+			]
+		}
+	],
+
+	"widgetAreas": [
+		{
+			"name": "sidebar",
+			"label": "Sidebar",
+			"description": "Widget area displayed on single post pages",
+			"widgets": [
+				{
+					"type": "component",
+					"componentId": "core:search",
+					"title": "Search"
+				},
+				{
+					"type": "component",
+					"componentId": "core:categories",
+					"title": "Categories"
+				},
+				{
+					"type": "component",
+					"componentId": "core:recent-posts",
+					"title": "Recent Posts",
+					"settings": {
+						"count": 5,
+						"showDate": true
+					}
+				}
+			]
+		},
+		{
+			"name": "footer",
+			"label": "Footer",
+			"description": "Widget area displayed in the site footer",
+			"widgets": []
+		}
+	],
+
+	"sections": [],
+
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "I'm Joost de Valk, founder of Yoast SEO. I write about SEO, WordPress, open source, AI, and building things on the web."
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "welcome",
+				"slug": "welcome",
+				"status": "published",
+				"data": {
+					"title": "Welcome",
+					"excerpt": "Welcome to the new blog, powered by EmDash.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This blog is now powered by EmDash, a CMS built on Astro for the way we build in 2026."
+								}
+							]
+						}
+					]
+				},
+				"bylines": [
+					{ "byline": "byline-joost" }
+				],
+				"taxonomies": {
+					"category": ["development"]
+				}
+			}
+		]
+	}
+}

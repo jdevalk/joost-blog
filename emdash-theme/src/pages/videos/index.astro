@@ -1,0 +1,145 @@
+---
+import { getEmDashCollection } from 'emdash';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+
+const { entries: allVideos, cacheHint } = await getEmDashCollection('videos', {
+    orderBy: { published_at: 'desc' },
+});
+Astro.cache.set(cacheHint);
+
+const sorted = [...allVideos].sort(
+    (a, b) => (b.data.publishedAt?.getTime() ?? 0) - (a.data.publishedAt?.getTime() ?? 0)
+);
+const featuredVideo = sorted.find((v) => v.data.featured) ?? sorted[0];
+const videos = featuredVideo ? sorted.filter((v) => v.id !== featuredVideo.id) : sorted;
+
+function formatDuration(isoDuration: string | undefined): string | null {
+    if (!isoDuration) return null;
+    const match = isoDuration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+    if (!match) return null;
+    const hours = parseInt(match[1] || '0');
+    const minutes = parseInt(match[2] || '0');
+    const seconds = parseInt(match[3] || '0');
+    if (hours > 0) {
+        return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+    return `${minutes}:${String(seconds).padStart(2, '0')}`;
+}
+
+function getImageUrl(img: unknown): string | undefined {
+    if (!img || typeof img !== "object") return undefined;
+    const image = img as Record<string, unknown>;
+    if (typeof image.src === "string" && image.src) return image.src;
+    const meta = image.meta as Record<string, unknown> | undefined;
+    const storageKey = (typeof meta?.storageKey === "string" ? meta.storageKey : undefined)
+        || (typeof image.id === "string" ? image.id : undefined);
+    if (storageKey) return `/_emdash/api/media/file/${storageKey}`;
+    return undefined;
+}
+
+function getImageAlt(img: unknown): string {
+    if (!img || typeof img !== "object") return "";
+    return (img as Record<string, unknown>).alt as string || "";
+}
+
+function formatDate(date: Date | null | undefined): string {
+    if (!date) return '';
+    return new Intl.DateTimeFormat('en', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    }).format(date);
+}
+---
+
+<Base title="Videos" description="Video presentations and talks by Joost de Valk">
+    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
+        <Header variant="dark" />
+        <div class="h-[52px] sm:h-[56px]"></div>
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Videos</h1>
+            </div>
+        </section>
+    </div>
+
+    <main class="grow">
+        {/* Featured video */}
+        {featuredVideo && (
+            <section class="px-4 py-10 sm:px-8 sm:py-14 bg-surface dark:bg-[#1e1b19]/50 border-b border-slate-200 dark:border-[#2a2623]">
+                <div class="max-w-5xl mx-auto">
+                    <p class="mb-8 text-lg text-slate-600 dark:text-slate-400 max-w-2xl">A curated archive of talks, interviews, podcasts, and conference sessions — ordered from newest to oldest.</p>
+                </div>
+                <div class="max-w-5xl mx-auto grid md:grid-cols-[1fr_440px] gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Featured video</span>
+                        <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100">{featuredVideo.data.title}</h2>
+                        {featuredVideo.data.excerpt && (
+                            <p class="mt-3 text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">{featuredVideo.data.excerpt}</p>
+                        )}
+                        <a href={`/videos/${featuredVideo.id}/`} class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300">
+                            Watch video
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                    {featuredVideo.data.featured_image && (
+                        <a href={`/videos/${featuredVideo.id}/`} class="hidden md:block">
+                            <img
+                                src={getImageUrl(featuredVideo.data.featured_image)}
+                                alt={getImageAlt(featuredVideo.data.featured_image)}
+                                class="rounded-lg shadow-card-hover w-full aspect-video object-cover"
+                                loading="eager"
+                            />
+                        </a>
+                    )}
+                </div>
+            </section>
+        )}
+
+        {/* All videos */}
+        <section class="px-4 py-10 sm:px-8 sm:py-14">
+            <div class="max-w-5xl mx-auto">
+                <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Archive</span>
+                <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100 mb-8">All videos</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {videos.map((video) => {
+                        const duration = formatDuration(video.data.duration);
+                        return (
+                            <a href={`/videos/${video.id}/`} class="group block h-full">
+                                <article class="h-full overflow-hidden rounded-lg border border-slate-200 bg-white shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover dark:border-[#2a2623] dark:bg-[#1e1b19]/50">
+                                    <div class="relative overflow-hidden">
+                                        {video.data.featured_image && (
+                                            <img
+                                                src={getImageUrl(video.data.featured_image)}
+                                                alt={getImageAlt(video.data.featured_image)}
+                                                class="w-full aspect-video object-cover transition-transform duration-300 group-hover:scale-105"
+                                                loading="lazy"
+                                            />
+                                        )}
+                                        {duration && (
+                                            <span class="absolute bottom-3 right-3 rounded bg-black/80 px-2 py-1 text-xs font-medium text-white">
+                                                {duration}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div class="p-5">
+                                        <p class="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                            {formatDate(video.data.publishedAt)}
+                                        </p>
+                                        <h2 class="text-lg font-extrabold leading-snug text-slate-900 transition-colors group-hover:text-primary dark:text-slate-100 dark:group-hover:text-accent">
+                                            {video.data.title}
+                                        </h2>
+                                        {video.data.excerpt && (
+                                            <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-2">{video.data.excerpt}</p>
+                                        )}
+                                    </div>
+                                </article>
+                            </a>
+                        );
+                    })}
+                </div>
+            </div>
+        </section>
+    </main>
+</Base>

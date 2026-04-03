@@ -1,0 +1,132 @@
+---
+import { getMenu, getSiteSettings } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import { ClientRouter, fade } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+    title: string;
+    description?: string | null;
+    image?: string | null;
+    canonical?: string | null;
+    robots?: string | null;
+    type?: "website" | "article";
+    publishedTime?: string | null;
+    modifiedTime?: string | null;
+    author?: string | null;
+    content?: { collection: string; id: string; slug?: string | null };
+}
+
+const { title, description, image, canonical, robots, type, publishedTime, modifiedTime, author, content } = Astro.props;
+
+const settings = await getSiteSettings();
+const siteTitle = settings?.title || "Joost de Valk";
+const fullTitle = title.includes(siteTitle) ? title : `${title} — ${siteTitle}`;
+
+const pageCtx = createPublicPageContext({
+    Astro,
+    kind: content ? "content" : "custom",
+    pageType: type,
+    title: fullTitle,
+    description,
+    canonical,
+    image,
+    content,
+    seo: { ogImage: image, robots },
+    articleMeta: { publishedTime, modifiedTime, author },
+    siteName: siteTitle,
+});
+
+const isLoggedIn = !!Astro.locals.user;
+---
+
+<!doctype html>
+<html lang="en" class="antialiased wrap-break-word">
+    <head>
+        <script is:inline>
+            const theme = (() => {
+                if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+                    return localStorage.getItem('theme');
+                }
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    return 'dark';
+                }
+                return 'light';
+            })();
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+        </script>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{fullTitle}</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <EmDashHead page={pageCtx} />
+        <ClientRouter />
+    </head>
+    <body class="bg-white text-slate-700 dark:bg-[#141211] dark:text-slate-300 transition-colors duration-300">
+        <EmDashBodyStart page={pageCtx} />
+        <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-white focus:shadow-lg">Skip to content</a>
+        <div class="flex flex-col min-h-screen">
+            <slot name="header">
+                <Header />
+                <div class="h-[52px] sm:h-[56px]"></div>
+            </slot>
+            <div id="main-content" class="grow flex flex-col" transition:animate={fade({ duration: '0.15s' })}>
+                <slot />
+            </div>
+            <slot name="footer">
+                <Footer />
+            </slot>
+        </div>
+        <EmDashBodyEnd page={pageCtx} />
+        {isLoggedIn && (
+            <script is:inline>
+            // Fix: EmDash toolbar's fetchManifest caches the raw API response
+            // ({ data: { collections: ... } }) but getFieldKind looks for
+            // manifest.collections. Patch the fetch to unwrap the data envelope.
+            (function() {
+                var origFetch = window.fetch;
+                window.fetch = function() {
+                    var url = arguments[0];
+                    if (typeof url === 'string' && url.includes('/_emdash/api/manifest')) {
+                        return origFetch.apply(this, arguments).then(function(res) {
+                            return new Response(res.body, res);
+                        }).then(function(res) {
+                            var origJson = res.json.bind(res);
+                            res.json = function() {
+                                return origJson().then(function(d) {
+                                    return d && d.data ? d.data : d;
+                                });
+                            };
+                            return res;
+                        });
+                    }
+                    return origFetch.apply(this, arguments);
+                };
+
+                // Also prevent toolbar from intercepting portableText field clicks.
+                // The InlinePortableTextEditor (TipTap) handles those natively.
+                document.addEventListener('click', function(e) {
+                    var target = e.target;
+                    while (target && target !== document.body) {
+                        if (target.hasAttribute && target.hasAttribute('data-emdash-editing')) return;
+                        var ref = target.getAttribute && target.getAttribute('data-emdash-ref');
+                        if (ref) {
+                            try {
+                                var ann = JSON.parse(ref);
+                                if (ann.field === 'content') {
+                                    e.stopImmediatePropagation();
+                                }
+                            } catch(err) {}
+                            return;
+                        }
+                        target = target.parentElement;
+                    }
+                }, true);
+            })();
+            </script>
+        )}
+    </body>
+</html>

@@ -1,0 +1,57 @@
+---
+/**
+ * Content renderer with layout-aware block splitting.
+ *
+ * Full-width blocks (heroBanner) render outside the prose container.
+ * Everything else renders inside the prose container, with plugin
+ * block components auto-wired by EmDash's PortableText.
+ */
+import { PortableText } from 'emdash/ui';
+
+interface Props {
+    value: any;
+    [key: string]: any;
+}
+
+const { value } = Astro.props;
+
+// Blocks that need full-width rendering (outside prose container)
+const fullWidthTypes = new Set(["heroBanner"]);
+
+type Segment =
+    | { type: 'fullWidth'; blocks: any[] }
+    | { type: 'prose'; blocks: any[] };
+
+const segments: Segment[] = [];
+let currentProse: any[] = [];
+
+function flushProse() {
+    if (currentProse.length) {
+        segments.push({ type: 'prose', blocks: currentProse });
+        currentProse = [];
+    }
+}
+
+for (const block of (value || [])) {
+    if (fullWidthTypes.has(block._type)) {
+        flushProse();
+        segments.push({ type: 'fullWidth', blocks: [block] });
+    } else {
+        currentProse.push(block);
+    }
+}
+flushProse();
+---
+
+{segments.map((seg) => {
+    if (seg.type === 'fullWidth') {
+        return <PortableText value={seg.blocks} />;
+    }
+    return (
+        <article class="max-w-3xl mx-auto px-4 py-10 sm:px-8 sm:py-14">
+            <div class="prose prose-slate sm:prose-lg max-w-none dark:prose-invert">
+                <PortableText value={seg.blocks} />
+            </div>
+        </article>
+    );
+})}

@@ -1,0 +1,97 @@
+---
+import { getEmDashEntry } from 'emdash';
+import Base from '../../layouts/Base.astro';
+
+const { slug } = Astro.params;
+
+if (!slug) {
+    return Astro.redirect("/404");
+}
+
+const { entry: video, cacheHint } = await getEmDashEntry("videos", slug);
+
+if (!video) {
+    return Astro.redirect("/404");
+}
+
+Astro.cache.set(cacheHint);
+
+function formatDuration(isoDuration: string | undefined): string | null {
+    if (!isoDuration) return null;
+    const match = isoDuration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+    if (!match) return null;
+    const hours = parseInt(match[1] || '0');
+    const minutes = parseInt(match[2] || '0');
+    const seconds = parseInt(match[3] || '0');
+    if (hours > 0) {
+        return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+    return `${minutes}:${String(seconds).padStart(2, '0')}`;
+}
+
+const duration = formatDuration(video.data.duration);
+const youtubeId = video.data.youtube_id;
+const transcript = video.data.transcript;
+---
+
+<Base
+    title={video.data.title}
+    description={video.data.excerpt || video.data.title}
+    content={{ collection: "videos", id: video.data.id, slug }}
+>
+    <main class="grow px-4 py-12 sm:px-8">
+        <div class="max-w-4xl mx-auto">
+            <nav class="mb-6 text-sm" aria-label="Breadcrumb">
+                <ol class="flex items-center gap-1.5">
+                    <li><a href="/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Home</a></li>
+                    <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href="/videos/" class="text-primary dark:text-accent hover:text-secondary dark:hover:text-white transition-colors">Videos</a></li>
+                    <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600 text-slate-900 dark:text-slate-100 font-medium truncate" aria-current="page">{video.data.title}</li>
+                </ol>
+            </nav>
+            <h1 class="text-4xl font-bold mb-6 text-slate-900 dark:text-slate-100" {...video.edit.title}>{video.data.title}</h1>
+            {duration && (
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Duration: {duration}</p>
+            )}
+            {youtubeId && (
+                <div class="mb-8">
+                    <div class="aspect-video w-full rounded-lg overflow-hidden">
+                        <iframe
+                            src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
+                            title={video.data.title}
+                            class="w-full h-full"
+                            allowfullscreen
+                            loading="lazy"
+                        ></iframe>
+                    </div>
+                </div>
+            )}
+            {!youtubeId && video.data.video_url && (
+                <div class="mb-8">
+                    <a
+                        href={video.data.video_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-white hover:opacity-90 transition"
+                    >
+                        Watch video
+                    </a>
+                </div>
+            )}
+            {video.data.excerpt && (
+                <div class="prose prose-slate dark:prose-invert max-w-none mb-8">
+                    <p>{video.data.excerpt}</p>
+                </div>
+            )}
+            {transcript && (
+                <details class="mt-8 rounded-lg border border-slate-200 dark:border-[#2a2623]">
+                    <summary class="cursor-pointer px-5 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-accent transition-colors">
+                        Show transcript
+                    </summary>
+                    <div class="px-5 pb-5 text-sm leading-relaxed text-slate-600 dark:text-slate-400 whitespace-pre-line">
+                        {transcript}
+                    </div>
+                </details>
+            )}
+        </div>
+    </main>
+</Base>

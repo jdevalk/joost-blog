@@ -1,0 +1,14 @@
+---
+import LiveSearch from 'emdash/ui/search';
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Search">
+    <main class="max-w-4xl mx-auto px-4 py-8 sm:py-12 grow">
+        <h1 class="text-3xl font-bold mb-8 dark:text-slate-100">Search</h1>
+        <LiveSearch
+            placeholder="Search posts and pages..."
+            collections={['posts', 'pages']}
+        />
+    </main>
+</Base>

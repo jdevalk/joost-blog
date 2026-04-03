@@ -1,0 +1,136 @@
+@import '@fontsource-variable/mona-sans' layer(base);
+@import '@fontsource-variable/mona-sans/wght-italic.css' layer(base);
+
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* Dark mode via class toggle (not media query) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Mona Sans Variable', sans-serif;
+
+    /* Luxe burgundy palette */
+    --color-primary: #7a1830;
+    --color-secondary: #5e1224;
+    --color-accent: #c9506a;
+    --color-warm: #b8962e;
+    --color-warm-hover: #9a7d24;
+    --color-base: #fffcf9;
+    --color-surface: #faf7f3;
+    --color-tertiary: #f3efe9;
+
+    /* Shadows */
+    --shadow-avatar: 0 0 0 6px rgba(122, 24, 48, 0.2), 0 0 0 14px rgba(122, 24, 48, 0.08);
+    --shadow-avatar-dark: 0 0 0 6px rgba(201, 80, 106, 0.25), 0 0 0 14px rgba(201, 80, 106, 0.1);
+    --shadow-button: 0 0 0 4px --alpha(var(--color-primary) / 20%);
+    --shadow-card: 0 1px 3px rgba(80, 30, 20, 0.05), 0 1px 2px rgba(80, 30, 20, 0.06);
+    --shadow-card-hover: 0 14px 32px -6px rgba(80, 30, 20, 0.14), 0 8px 12px -6px rgba(80, 30, 20, 0.06);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 300ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation-duration: 0.01ms !important;
+    }
+
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+@layer utilities {
+    .prose a {
+        @apply text-primary underline decoration-1 underline-offset-2 hover:no-underline;
+    }
+    .prose a[href^="http"]:not(:where(.not-prose, .not-prose *))::after {
+        content: '';
+        display: inline-block;
+        width: 0.7em;
+        height: 0.7em;
+        margin-left: 0.15em;
+        background-color: currentColor;
+        vertical-align: baseline;
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3Cpolyline points='15 3 21 3 21 9'/%3E%3Cline x1='10' y1='14' x2='21' y2='3'/%3E%3C/svg%3E");
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3Cpolyline points='15 3 21 3 21 9'/%3E%3Cline x1='10' y1='14' x2='21' y2='3'/%3E%3C/svg%3E");
+        -webkit-mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+    }
+    .prose a[href^="http"]:not(:where(.not-prose, .not-prose *)):hover::after {
+        @apply opacity-70;
+    }
+    .prose .not-prose a[href^="http"]::after {
+        content: none;
+    }
+    .prose a:not([href^="http"]) {
+        @apply decoration-primary/40 decoration-2;
+    }
+    .prose a:not([href^="http"]):hover {
+        @apply decoration-primary decoration-2 underline;
+    }
+    :is(h1, h2, h3, h4, h5, h6) {
+        scroll-margin-top: 5rem;
+    }
+    .prose :not(.not-prose) > :is(h2, h3),
+    .prose > :is(h2, h3) {
+        @apply border-l-0 ml-0 pl-0;
+        margin-bottom: 0.5em;
+    }
+    .prose span.not-prose + :is(h2, h3) {
+        margin-top: 0.25em;
+    }
+    .prose > span.not-prose:first-child {
+        margin-top: 0;
+    }
+    .prose blockquote {
+        @apply relative border-none pl-0 text-center text-[1.375em] leading-snug font-semibold not-italic sm:text-[1.66667em] lg:-mx-24 xl:-mx-40;
+    }
+    .prose blockquote:before {
+        @apply bg-primary mx-auto block h-0.75 w-15;
+        content: '';
+        margin-bottom: 1.375em;
+    }
+    .prose blockquote:after {
+        @apply bg-primary mx-auto block h-0.75 w-7.5;
+        content: '';
+        margin-top: 1.375em;
+    }
+}
+
+/* Dark mode prose overrides */
+@layer utilities {
+    .dark .prose {
+        --tw-prose-body: #d4cdc5;
+        --tw-prose-headings: #f5f0eb;
+        --tw-prose-links: #e88a9c;
+        --tw-prose-bold: #f5f0eb;
+        --tw-prose-counters: #a09789;
+        --tw-prose-bullets: #a09789;
+        --tw-prose-hr: #3a3330;
+        --tw-prose-quotes: #f5f0eb;
+        --tw-prose-quote-borders: #3a3330;
+        --tw-prose-captions: #a09789;
+        --tw-prose-code: #f5f0eb;
+        --tw-prose-pre-code: #f5f0eb;
+        --tw-prose-pre-bg: #161210;
+        --tw-prose-th-borders: #504840;
+        --tw-prose-td-borders: #3a3330;
+    }
+    .dark .prose a {
+        @apply text-accent hover:text-white;
+    }
+    .dark .prose blockquote:before,
+    .dark .prose blockquote:after {
+        @apply bg-accent;
+    }
+}
