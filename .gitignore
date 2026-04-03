@@ -29,3 +29,14 @@ content-export/
 
 # Generated draft slugs (built at deploy time)
 public/_draft-slugs.json
+
+# Database files
+data.db
+data.db-shm
+data.db-wal
+
+# Uploads
+uploads/
+
+# Nested theme artifact
+emdash-theme/emdash-theme/

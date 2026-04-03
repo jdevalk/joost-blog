@@ -2,7 +2,7 @@ import node from "@astrojs/node";
 import react from "@astrojs/react";
 import { formsPlugin } from "@emdash-cms/plugin-forms";
 import { themeBlocksPlugin } from "./plugins/theme-blocks/src/index.ts";
-import { seoPlugin } from "./plugins/seo/src/index.ts";
+import { seoPlugin } from "@jdevalk/emdash-plugin-seo";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import emdash, { local } from "emdash/astro";
