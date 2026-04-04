@@ -93,7 +93,7 @@ WordPress still doesn't have an autoloader. Every file is loaded via manual `req
 
 None of this is theoretical. The community has shown, repeatedly, that it can be done. The pattern is always the same: working code, proven approach, no action.
 
-These aren't small changes, but they're not a ground-up rewrite either. They're the refactoring work that WordPress has been deferring for a decade.
+These aren't small changes, but they're not a ground-up rewrite either. They're the refactoring work that WordPress has been deferring for more than a decade.
 
 ## The stakes
 
