@@ -79,7 +79,7 @@ The first step would be a real database abstraction layer: a WP-DBAL that lets `
 
 ### Store content as structured data
 
-Stop serializing blocks to HTML comments in `post_content`. Store them as JSON instead, or at minimum alongside the HTML. The block editor already maintains a structured tree while editing; the problem is that it throws that structure away on save. Keeping it as JSON means APIs, headless frontends, and AI agents can work with WordPress content natively, without reverse-engineering structure out of markup. This is what EmDash does with [Portable Text](https://github.com/portabletext/portabletext), and it's the single biggest unlock for making WordPress content machine-readable.
+Stop serializing blocks to HTML comments in `post_content`. Store them as JSON instead, or at minimum alongside the HTML. The block editor already maintains a structured tree while editing; the problem is that it throws that structure away on save. Keeping it as JSON means APIs, headless frontends, and AI agents can work with WordPress content natively, without reverse-engineering structure out of markup. This is what EmDash does with [Portable Text](https://github.com/portabletext/portabletext), and it's the single biggest unlock for making content machine-readable.
 
 ### Scope plugin permissions
 
