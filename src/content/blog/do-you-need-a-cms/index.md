@@ -7,7 +7,6 @@ excerpt: >-
   the web?
 categories:
   - Market Share Analysis
-isFeatured: true
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Do you need a CMS?'
 ---
