@@ -67,7 +67,7 @@ Brian also identified what he called "decision fatigue": WordPress now offers so
 
 I didn't write about EmDash because I think WordPress should die. I spent fifteen years building Yoast SEO, and I chair [Post Status](https://poststatus.com/), a foundation for the WordPress professional community. I care about this ecosystem. But caring about it means being honest about where it is.
 
-WordPress doesn't need to become EmDash. A full refactor of the platform that still powers more of the web than any other CMS would be reckless. But it does need real refactoring: targeted, meaningful architectural changes that address the structural problems rather than just painting over them.
+WordPress doesn't need to become EmDash. A ground-up rewrite of the platform that still powers more of the web than any other CMS would be reckless. But it does need real refactoring: targeted, meaningful architectural changes that address the structural problems rather than just painting over them.
 
 Four changes would transform WordPress without breaking it.
 
