@@ -28,6 +28,16 @@ export function getReadingTime(content: string): number {
     return Math.max(1, minutes);
 }
 
+function getLinkedSlugs(body: string): Set<string> {
+    const slugs = new Set<string>();
+    const linkPattern = /\]\(\/([\w-]+)\/?\)/g;
+    let match;
+    while ((match = linkPattern.exec(body)) !== null) {
+        slugs.add(match[1]);
+    }
+    return slugs;
+}
+
 export function getRelatedPosts(
     currentPost: CollectionEntry<'blog'>,
     allPosts: CollectionEntry<'blog'>[],
@@ -35,11 +45,26 @@ export function getRelatedPosts(
 ): CollectionEntry<'blog'>[] {
     const otherPosts = allPosts.filter((post) => post.id !== currentPost.id && isPublished(post));
     const currentCategories = currentPost.data.categories ?? [];
+    const linkedSlugs = getLinkedSlugs(currentPost.body ?? '');
     const related: CollectionEntry<'blog'>[] = [];
     const usedIds = new Set<string>();
 
-    // First: posts sharing the first category, sorted by date desc
-    if (currentCategories.length > 0) {
+    // First: posts linked from the current post
+    if (linkedSlugs.size > 0) {
+        const linked = otherPosts
+            .filter((post) => linkedSlugs.has(post.id))
+            .sort(sortPostsByDateDesc);
+        for (const post of linked) {
+            if (related.length >= limit) break;
+            if (!usedIds.has(post.id)) {
+                related.push(post);
+                usedIds.add(post.id);
+            }
+        }
+    }
+
+    // Second: posts sharing the first category, sorted by date desc
+    if (currentCategories.length > 0 && related.length < limit) {
         const firstCat = currentCategories[0];
         const sameCat = otherPosts
             .filter((post) => post.data.categories?.includes(firstCat))
@@ -53,7 +78,7 @@ export function getRelatedPosts(
         }
     }
 
-    // Second: posts from other shared categories
+    // Third: posts from other shared categories
     for (let i = 1; i < currentCategories.length && related.length < limit; i++) {
         const cat = currentCategories[i];
         const sameCat = otherPosts
@@ -68,7 +93,7 @@ export function getRelatedPosts(
         }
     }
 
-    // Third: fill with most recent posts
+    // Fourth: fill with most recent posts
     if (related.length < limit) {
         const recent = otherPosts.sort(sortPostsByDateDesc);
         for (const post of recent) {
