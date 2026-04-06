@@ -2,7 +2,7 @@ import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import { formsPlugin } from "@emdash-cms/plugin-forms";
 import { themeBlocksPlugin } from "./plugins/theme-blocks/src/index.ts";
-import { createPlugin as lettermintPlugin } from "@jdevalk/emdash-plugin-lettermint";
+import { lettermintPlugin } from "@jdevalk/emdash-plugin-lettermint";
 import { seoPlugin } from "@jdevalk/emdash-plugin-seo";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
