@@ -2,6 +2,7 @@ import node from "@astrojs/node";
 import react from "@astrojs/react";
 import { formsPlugin } from "@emdash-cms/plugin-forms";
 import { themeBlocksPlugin } from "./plugins/theme-blocks/src/index.ts";
+import { createPlugin as lettermintPlugin } from "@jdevalk/emdash-plugin-lettermint";
 import { seoPlugin } from "@jdevalk/emdash-plugin-seo";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
@@ -25,7 +26,7 @@ export default defineConfig({
 				directory: "./uploads",
 				baseUrl: "/_emdash/api/media/file",
 			}),
-			plugins: [formsPlugin(), themeBlocksPlugin(), seoPlugin()],
+			plugins: [formsPlugin(), themeBlocksPlugin(), seoPlugin(), lettermintPlugin()],
 		}),
 	],
 	vite: {

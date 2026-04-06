@@ -33,6 +33,7 @@
     "@emdash-cms/plugin-forms": "^0.0.3",
     "@emdash-cms/plugin-webhook-notifier": "^0.0.3",
     "@fontsource-variable/mona-sans": "^5.2.8",
+    "@jdevalk/emdash-plugin-lettermint": "github:jdevalk/emdash-plugin-lettermint",
     "@jdevalk/emdash-plugin-seo": "github:jdevalk/emdash-plugin-seo",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.16",
