@@ -1,5 +1,5 @@
 ---
-title: 'Defending the open web is not enough'
+title: Defending the open web is not enough
 publishDate: 2026-04-07T00:00:00.000Z
 excerpt: >-
   Anil Dash is right that the open web is under attack. But follow his own
@@ -7,10 +7,12 @@ excerpt: >-
   takes more than defense — it takes better governance, better technology, and
   better economics.
 draft: true
-password: 'april7'
+password: april7
 categories:
   - Open Source
   - Search Opinion
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Defending the open web is not enough'
 ---
 Anil Dash recently published [Endgame for the Open Web](https://anildash.com/2026/03/27/endgame-open-web/), and it's a piece worth reading. His argument: Big Tech is systematically dismantling the open web through AI scraping, API lockdowns, and the erosion of open source norms. His prescription: defend the institutions — support the Internet Archive, donate to the EFF, volunteer for Wikipedia.
 
