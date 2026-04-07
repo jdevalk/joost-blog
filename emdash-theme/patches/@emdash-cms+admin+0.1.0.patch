@@ -1,0 +1,140 @@
+diff --git a/node_modules/@emdash-cms/admin/dist/index.js b/node_modules/@emdash-cms/admin/dist/index.js
+index 49189f0..0a05b1a 100644
+--- a/node_modules/@emdash-cms/admin/dist/index.js
++++ b/node_modules/@emdash-cms/admin/dist/index.js
+@@ -7264,6 +7264,64 @@ function SeoPanel({ seo, onChange }) {
+ 		]
+ 	});
+ }
++function SeoImageField({ seo, onChange }) {
++	const [pickerOpen, setPickerOpen] = React.useState(false);
++	const imageUrl = seo?.image || null;
++	const displayUrl = imageUrl && imageUrl.startsWith("/") ? imageUrl : imageUrl;
++	const handleSelect = (item) => {
++		const isLocalProvider = !item.provider || item.provider === "local";
++		const url = isLocalProvider ? `/_emdash/api/media/file/${item.storageKey || item.id}` : item.url;
++		onChange({ ...seo, image: url });
++	};
++	const handleRemove = () => {
++		onChange({ ...seo, image: null });
++	};
++	return /* @__PURE__ */ jsxs("div", { children: [
++		/* @__PURE__ */ jsx(Label, { children: "OG Image" }),
++		displayUrl ? /* @__PURE__ */ jsxs("div", {
++			className: "mt-2 relative group",
++			children: [/* @__PURE__ */ jsx("img", {
++				src: displayUrl,
++				alt: "",
++				className: "max-h-48 rounded-lg border object-cover"
++			}), /* @__PURE__ */ jsxs("div", {
++				className: "absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1",
++				children: [/* @__PURE__ */ jsx(Button, {
++					type: "button",
++					size: "sm",
++					variant: "secondary",
++					onClick: () => setPickerOpen(true),
++					children: "Change"
++				}), /* @__PURE__ */ jsx(Button, {
++					type: "button",
++					shape: "square",
++					variant: "destructive",
++					className: "h-8 w-8",
++					onClick: handleRemove,
++					"aria-label": "Remove image",
++					children: /* @__PURE__ */ jsx(X, { className: "h-4 w-4" })
++				})]
++			})]
++		}) : /* @__PURE__ */ jsx(Button, {
++			type: "button",
++			variant: "outline",
++			className: "w-full h-24 border-dashed",
++			onClick: () => setPickerOpen(true),
++			children: /* @__PURE__ */ jsxs("div", {
++				className: "flex flex-col items-center gap-2 text-kumo-subtle",
++				children: [/* @__PURE__ */ jsx(Image$1, { className: "h-6 w-6" }), /* @__PURE__ */ jsx("span", { className: "text-sm", children: "Select OG image" })]
++			})
++		}),
++		/* @__PURE__ */ jsx("p", { className: "text-xs text-kumo-subtle mt-1", children: "Image shown when this page is shared on social media" }),
++		/* @__PURE__ */ jsx(MediaPickerModal, {
++			open: pickerOpen,
++			onOpenChange: setPickerOpen,
++			onSelect: handleSelect,
++			mimeTypeFilter: "image/",
++			title: "Select OG Image"
++		})
++	] });
++}
+ 
+ //#endregion
+ //#region src/components/TaxonomySidebar.tsx
+@@ -7818,18 +7876,30 @@ function ContentEditor({ collection, collectionLabel, item, fields, isNew, isSav
+ 					className: cn("rounded-lg border bg-kumo-base p-6", isDistractionFree && "border-0 bg-transparent p-0"),
+ 					children: /* @__PURE__ */ jsx("div", {
+ 						className: "space-y-4",
+-						children: Object.entries(fields).map(([name, field]) => /* @__PURE__ */ jsx(FieldRenderer, {
+-							name,
+-							field,
+-							value: formData[name],
+-							onChange: handleFieldChange,
+-							onEditorReady: field.kind === "portableText" ? setPortableTextEditor : void 0,
+-							minimal: isDistractionFree,
+-							pluginBlocks,
+-							onBlockSidebarOpen: field.kind === "portableText" ? handleBlockSidebarOpen : void 0,
+-							onBlockSidebarClose: field.kind === "portableText" ? handleBlockSidebarClose : void 0,
+-							manifest
+-						}, name))
++						children: Object.entries(fields).map(([name, field]) => {
++							const fieldEl = /* @__PURE__ */ jsx(FieldRenderer, {
++								name,
++								field,
++								value: formData[name],
++								onChange: handleFieldChange,
++								onEditorReady: field.kind === "portableText" ? setPortableTextEditor : void 0,
++								minimal: isDistractionFree,
++								pluginBlocks,
++								onBlockSidebarOpen: field.kind === "portableText" ? handleBlockSidebarOpen : void 0,
++								onBlockSidebarClose: field.kind === "portableText" ? handleBlockSidebarClose : void 0,
++								manifest
++							}, name);
++							if (field.kind === "image" && hasSeo && !isNew && onSeoChange) {
++								return /* @__PURE__ */ jsxs("div", {
++									className: "grid grid-cols-2 gap-6",
++									children: [/* @__PURE__ */ jsx("div", { children: fieldEl }), /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx(SeoImageField, {
++										seo: item?.seo,
++										onChange: onSeoChange
++									}) })]
++								}, name + "-with-seo");
++							}
++							return fieldEl;
++						})
+ 					})
+ 				})
+ 			}), /* @__PURE__ */ jsx("div", {
+@@ -8214,6 +8284,7 @@ function FieldRenderer({ name, field, value, onChange, onEditorReady, minimal, p
+ 		});
+ 		case "image": return /* @__PURE__ */ jsx(ImageFieldRenderer, {
+ 			label,
++			description: "Used as the main visual for this post on listing pages and at the top of the post",
+ 			value: value != null && typeof value === "object" ? value : void 0,
+ 			onChange: handleChange,
+ 			required: field.required
+@@ -8227,7 +8298,7 @@ function FieldRenderer({ name, field, value, onChange, onEditorReady, minimal, p
+ 		});
+ 	}
+ }
+-function ImageFieldRenderer({ label, value, onChange, required }) {
++function ImageFieldRenderer({ label, description, value, onChange, required }) {
+ 	const [pickerOpen, setPickerOpen] = React.useState(false);
+ 	const displayUrl = typeof value === "string" ? value : value?.previewUrl || value?.src || (value && (!value.provider || value.provider === "local") ? `/_emdash/api/media/file/${typeof value.meta?.storageKey === "string" ? value.meta.storageKey : value.id}` : void 0);
+ 	const handleSelect = (item) => {
+@@ -8291,6 +8362,10 @@ function ImageFieldRenderer({ label, value, onChange, required }) {
+ 			mimeTypeFilter: "image/",
+ 			title: `Select ${label}`
+ 		}),
++		description && /* @__PURE__ */ jsx("p", {
++			className: "text-xs text-kumo-subtle mt-1",
++			children: description
++		}),
+ 		required && !displayUrl && /* @__PURE__ */ jsx("p", {
+ 			className: "text-sm text-kumo-danger mt-1",
+ 			children: "This field is required"

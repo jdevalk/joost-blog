@@ -21,25 +21,28 @@
     "generate-index": "node scripts/generate-nlweb-index.mjs",
     "prebuild": "node scripts/generate-nlweb-index.mjs",
     "build": "astro build",
+    "build:staging": "astro build --config astro.config.cloudflare.mjs",
     "preview": "astro preview",
     "deploy": "wrangler deploy",
-    "typecheck": "astro check"
+    "deploy:staging": "npm run build:staging && node scripts/staging-config.mjs && wrangler deploy --config dist/server/wrangler.staging.json",
+    "typecheck": "astro check",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.1.6",
     "@astrojs/node": "^10.0.4",
     "@astrojs/react": "^5.0.0",
-    "@emdash-cms/cloudflare": "^0.0.3",
-    "@emdash-cms/plugin-forms": "^0.0.3",
-    "@emdash-cms/plugin-webhook-notifier": "^0.0.3",
+    "@emdash-cms/cloudflare": "^0.1.0",
+    "@emdash-cms/plugin-forms": "^0.1.0",
+    "@emdash-cms/plugin-webhook-notifier": "^0.1.0",
     "@fontsource-variable/mona-sans": "^5.2.8",
-    "@jdevalk/emdash-plugin-lettermint": "github:jdevalk/emdash-plugin-lettermint",
-    "@jdevalk/emdash-plugin-seo": "github:jdevalk/emdash-plugin-seo",
+    "@jdevalk/emdash-plugin-lettermint": "^0.3.0",
+    "@jdevalk/emdash-plugin-seo": "^0.1.2",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.16",
     "astro": "^6.1.2",
     "better-sqlite3": "^12.8.0",
-    "emdash": "^0.0.3",
+    "emdash": "^0.1.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "tailwindcss": "^4.1.16"
@@ -51,6 +54,7 @@
     "@astrojs/check": "^0.9.7",
     "@cloudflare/workers-types": "^4.20260401.1",
     "agent-browser": "^0.23.4",
+    "patch-package": "^8.0.1",
     "wrangler": "^4.79.0"
   }
 }

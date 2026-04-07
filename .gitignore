@@ -40,3 +40,6 @@ uploads/
 
 # Nested theme artifact
 emdash-theme/emdash-theme/
+
+# Wrangler state
+.wrangler/

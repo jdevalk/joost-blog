@@ -13,13 +13,19 @@
 		{
 			"binding": "DB",
 			"database_name": "joost-blog-emdash",
-			// Run `wrangler d1 create joost-blog-emdash` and paste the ID here
+			"database_id": "09cbdb8e-f904-4dd7-a695-1bbaace7bab2",
 		},
 	],
 	"r2_buckets": [
 		{
 			"binding": "MEDIA",
 			"bucket_name": "joost-blog-media",
+		},
+	],
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "d2445f037015457f8348209132b2cbdb",
 		},
 	],
 	"ai": {
