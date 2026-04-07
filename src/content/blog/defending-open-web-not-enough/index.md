@@ -69,7 +69,7 @@ You can't sustain open source on volunteer labor and moral arguments when the ot
 
 The open web needs business models that make openness economically sustainable, not just philosophically desirable. And the companies that profit most from it — hosting companies, search engines, ad networks, AI companies — have every reason to fund the rebuild. If the open web empties out, hosting companies have nothing to host, search engines have nothing to index, and AI companies lose the high-quality content they need to train on — they can generate commodity content themselves, but they can't generate expertise. This isn't charity. It's maintaining the ecosystem their revenue depends on. Right now, they're extracting value from infrastructure they're not investing in. That's not sustainable for anyone.
 
-There are promising signs here: Cloudflare and Coinbase recently launched the [x402 Foundation](https://blog.cloudflare.com/x402/), standardizing how AI agents can *pay* for content via HTTP. If bots can pay instead of just scrape, publishing openly stops being charity and starts being a business again.
+There are promising signs here: Cloudflare and Coinbase recently launched the [x402 Foundation](https://blog.cloudflare.com/x402/), standardizing how AI agents can *pay* for content via HTTP. If bots can pay instead of just scrape, publishing openly stops being charity and starts being a business again. Anthropic is investing $100M in credits and $4M in donations through [Project Glasswing](https://www.anthropic.com/glasswing) to find and fix security vulnerabilities in open source software — an AI company putting real money back into the infrastructure it was built on.
 
 ## The open web doesn't need defenders.<br />It needs builders.
 
