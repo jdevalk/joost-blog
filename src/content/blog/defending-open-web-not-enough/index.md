@@ -16,7 +16,7 @@ featureImageAlt: 'Illustration for: Defending the open web is not enough'
 ---
 Anil Dash recently published [Endgame for the Open Web](https://anildash.com/2026/03/27/endgame-open-web/), and it's a piece worth reading. His argument: Big Tech is systematically dismantling the open web through AI scraping, API lockdowns, and the erosion of open source norms. His prescription: defend the institutions — support the Internet Archive, donate to the EFF, volunteer for Wikipedia.
 
-He's right about the threats. But I think he stops short of the conclusion his own argument demands — and he ignores the part where the open web is failing itself.
+He's right about the threats. But I think his argument leads somewhere he doesn't go — and the open web's own failures deserve a harder look than he gives them.
 
 Let me start with what we're actually talking about. The open web is the part of the internet anyone can access without permission — websites you can visit without an app or an account, content you can link to, read, and build on. A personal blog is the open web. A Squarespace site is the open web. A WordPress site is the open web. A post that lives primarily inside a walled platform like Facebook or TikTok — where the platform controls who sees it and whether it's linkable — is not. The open web is defined by *access*, not by what software powers it.
 
@@ -28,12 +28,15 @@ Anil documents real threats: AI scrapers that take everything and send nothing b
 
 But he frames these as attacks. They're not just attacks. They're incentives. Follow each one to where it actually leads:
 
-- Bots scrape your content, send no traffic back → you lose your audience → you lose your revenue → you paywall or quit.
-- Conventions like robots.txt get ignored → you can't set terms anyone respects → you lock content behind authentication or accept the loss.
-- Revenue collapses → you move to Substack or Spotify, where the platform monetizes for you → you trade ownership for survival.
-- Open source projects drown in junk contributions → they close to outsiders → development slows → the tools powering the open web stagnate.
+When bots scrape your content and send no traffic back, you lose your audience. When you lose your audience, you lose your revenue. When you lose your revenue, you paywall or quit.
 
-Every chain ends the same way: content leaves the open web.
+When conventions like robots.txt get ignored, you can't set terms anyone respects. Your only options are locking content behind authentication or accepting the loss.
+
+When revenue collapses, you move to Substack or Spotify, where the platform monetizes for you. You trade ownership for survival.
+
+When open source projects drown in junk contributions, they close to outsiders. Development slows. The tools powering the open web stagnate.
+
+Every one of these ends the same way: content leaves the open web.
 
 And there's a fifth chain that Anil doesn't mention: AI makes generic content free to produce. Just like generic code is now basically free, generic articles, summaries, and how-to guides cost nothing to generate. That collapses the value of commodity content to zero. If you were already struggling to monetize, you're now competing with infinite free alternatives to your work. There's an irony here: SEOs, the people who once helped grow the open web by making content discoverable, spent years flooding it with content optimized for search engines rather than readers. AI just automated what they were already doing — and made the economics of it collapse.
 
@@ -45,17 +48,15 @@ Anil says we should fight back "with the same ferocity with which we're being at
 
 ## Meanwhile, the biggest open source project on the web is busy suing itself
 
-WordPress powers a huge chunk of the open web. If any project should be leading the response to these threats, it's WordPress. Instead, the ecosystem's two biggest players are spending their energy [suing each other](https://wpengine.com/wp-content/uploads/2024/10/Complaint-WP-Engine-v-Automattic-et-al.pdf).
+WordPress powers a huge chunk of the open web. If any project should be leading the response to these threats, it's WordPress. Instead, the ecosystem's two biggest players are spending their energy [suing each other](https://www.therepository.email/category/business-enterprise/wp-engine-v-automattic).
 
 While the open web's economics collapse and AI reshapes how content is consumed, WordPress is litigating trademark disputes. Not building trust infrastructure. Not making content machine-readable. Not competing with managed platforms on experience. The leadership that should be defending and advancing the open web is too busy fighting to do either — and too distracted to address the [deep architectural problems](/wordpress-refactor-not-redecorate/) that have been holding the platform back for years.
 
 This isn't just a WordPress problem — it's a symptom. The open web's biggest institutions aren't focused on the existential threats. They're distracted by internal politics while the ground shifts beneath them.
 
-Regulation can help: the EU AI Act, the Cyber Resilience Act, and emerging copyright frameworks are starting to put legal teeth behind the norms that voluntary compliance failed to enforce. But regulation alone won't build what's missing.
-
 ## What building looks like
 
-The open web needs an offensive strategy. Not just protecting what exists, but building what's missing.
+Regulation helps set the floor: the EU AI Act, the Cyber Resilience Act, and emerging copyright frameworks are starting to put legal teeth behind the norms that voluntary compliance failed to enforce. But regulation doesn't build what's missing. The open web needs an offensive strategy — not just protecting what exists, but building what comes next.
 
 **Trust infrastructure.**<br />
 The open web has no native way to prove who published something first, or whether content has been modified since publication. Provenance isn't a nice-to-have anymore. When AI can generate content indistinguishable from human writing, cryptographic proof of origin becomes foundational. Author credibility, entity consistency, first-party verification — these are the [signals that platforms are already weighting](/ai-optimization-is-replaying-early-seo-just-faster/) more heavily.
