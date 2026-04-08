@@ -12,7 +12,6 @@ categories:
   - Development
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: WordPress needs to refactor, not redecorate'
-isFeatured: true
 ---
 When Cloudflare launched [EmDash CMS](/emdash-cms/) on April 1st, the reactions came fast — from Matt Mullenweg [himself](https://ma.tt/2026/04/emdash-feedback/), from [Hendrik Luehrsen](https://kraut.press/2026/emdash-cms-shows-gutenberg-limits/) at Kraut.press, and from [Brian Coords](https://www.briancoords.com/emdash-first-thoughts-and-takeaways-for-wordpress/). Each piece approached EmDash differently, but together they crystallized something I've been thinking about for years: WordPress's deepest technical problems aren't at the surface. They're architectural. And the WordPress project keeps treating them as cosmetic.
 

@@ -6,13 +6,12 @@ excerpt: >-
   structural collapse has already started. The indie web is mostly gone,
   the winners have already left, and defense alone won't fix it. The
   question isn't how to protect what remains. It's what to build next.
-draft: true
-password: april7
 categories:
   - Open Source
-  - Search Opinion
+  - AI
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Defending the open web is not enough'
+isFeatured: true
 ---
 Anil Dash recently published [Endgame for the Open Web](https://anildash.com/2026/03/27/endgame-open-web/), and it's a piece worth reading. His argument: Big Tech is systematically dismantling the open web through AI scraping, API lockdowns, and the erosion of open source norms. His prescription: defend the institutions. Support the Internet Archive, donate to the EFF, volunteer for Wikipedia.
 
