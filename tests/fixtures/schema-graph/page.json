@@ -1,0 +1,711 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://joost.blog/#/schema.org/WebSite",
+      "url": "https://joost.blog/",
+      "name": "Joost.blog",
+      "description": "Joost de Valk - internet entrepreneur, founder of Yoast, investor at Emilia Capital",
+      "publisher": {
+        "@id": "https://joost.blog/about-me/#/schema.org/Person"
+      },
+      "inLanguage": "en-US",
+      "hasPart": {
+        "@id": "https://joost.blog/#site-navigation"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://joost.blog/about-me/#/schema.org/Person",
+      "name": "Joost de Valk",
+      "familyName": "de Valk",
+      "birthDate": "1982-02-16",
+      "gender": "https://schema.org/Male",
+      "nationality": {
+        "@id": "https://joost.blog/#/schema.org/Country/nl"
+      },
+      "description": "Internet entrepreneur from Wijchen, the Netherlands. Investor at Emilia Capital and actively working on Progress Planner. Founder of Yoast.",
+      "jobTitle": "Partner",
+      "knowsLanguage": [
+        "Dutch",
+        "English",
+        "German",
+        "French",
+        "Italian"
+      ],
+      "url": "https://joost.blog/about-me/",
+      "image": {
+        "@id": "https://joost.blog/#personlogo"
+      },
+      "sameAs": [
+        "https://joost.blog/about-me/",
+        "https://www.facebook.com/jdevalk",
+        "https://www.instagram.com/joostdevalk",
+        "https://www.linkedin.com/in/jdevalk",
+        "https://x.com/jdevalk",
+        "https://bsky.app/profile/joost.blog",
+        "https://www.youtube.com/user/jdevalk",
+        "https://en.wikipedia.org/wiki/Joost_de_Valk",
+        "https://joost.net/@joost",
+        "https://github.com/jdevalk",
+        "https://profiles.wordpress.org/joostdevalk",
+        "https://emilia.capital/joost/"
+      ],
+      "worksFor": [
+        {
+          "@type": "EmployeeRole",
+          "roleName": "Partner",
+          "startDate": "2020",
+          "worksFor": {
+            "@id": "https://joost.blog/#/schema.org/Organization/emilia-capital"
+          }
+        },
+        {
+          "@type": "EmployeeRole",
+          "roleName": "Chair of the Board",
+          "startDate": "2024",
+          "worksFor": {
+            "@id": "https://joost.blog/#/schema.org/Organization/post-status"
+          }
+        },
+        {
+          "@type": "EmployeeRole",
+          "roleName": "Advisor",
+          "startDate": "2020",
+          "worksFor": {
+            "@id": "https://joost.blog/#/schema.org/Organization/wordproof"
+          }
+        },
+        {
+          "@type": "EmployeeRole",
+          "roleName": "Board Member",
+          "startDate": "2022-08-01",
+          "worksFor": {
+            "@id": "https://joost.blog/#/schema.org/Organization/atarim"
+          }
+        },
+        {
+          "@type": "EmployeeRole",
+          "roleName": "Board Member",
+          "startDate": "2024-08-01",
+          "worksFor": {
+            "@id": "https://joost.blog/#/schema.org/Organization/patchstack"
+          }
+        },
+        {
+          "@type": "EmployeeRole",
+          "roleName": "CEO",
+          "startDate": "2023",
+          "worksFor": {
+            "@id": "https://joost.blog/#/schema.org/Organization/blokjes"
+          }
+        },
+        {
+          "@type": "EmployeeRole",
+          "roleName": "CEO",
+          "startDate": "2010",
+          "endDate": "2019",
+          "worksFor": {
+            "@id": "https://joost.blog/#/schema.org/Organization/yoast"
+          }
+        }
+      ],
+      "spouse": {
+        "@id": "https://joost.blog/#/schema.org/Person/marieke",
+        "name": "Marieke van de Rakt"
+      },
+      "children": [
+        {
+          "@type": "Person",
+          "@id": "https://joost.blog/#/schema.org/Person/tycho",
+          "name": "Tycho de Valk"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://joost.blog/#/schema.org/Person/wende",
+          "name": "Wende de Valk"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://joost.blog/#/schema.org/Person/ravi",
+          "name": "Ravi de Valk"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://joost.blog/#/schema.org/Person/borre",
+          "name": "Borre de Valk"
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://joost.blog/about-me/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://joost.blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "About Joost de Valk",
+          "item": "https://joost.blog/about-me/"
+        }
+      ]
+    },
+    {
+      "@type": "ImageObject",
+      "@id": "https://joost.blog/#personlogo",
+      "url": "https://joost.blog/images/joost-profile.jpg",
+      "contentUrl": "https://joost.blog/images/joost-profile.jpg",
+      "width": 400,
+      "height": 400,
+      "caption": "Joost de Valk",
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "@id": "https://joost.blog/#site-navigation",
+      "name": "Main navigation",
+      "isPartOf": {
+        "@id": "https://joost.blog/#/schema.org/WebSite"
+      },
+      "hasPart": [
+        {
+          "@type": "SiteNavigationElement",
+          "name": "Blog",
+          "url": "https://joost.blog/blog/"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "name": "About",
+          "url": "https://joost.blog/about-me/"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "name": "Code",
+          "url": "https://joost.blog/code/"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "name": "CMS Market Share",
+          "url": "https://joost.blog/cms-market-share/"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "name": "Videos",
+          "url": "https://joost.blog/videos/"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "name": "Contact",
+          "url": "https://joost.blog/contact-me/"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "name": "Ask",
+          "url": "https://joost.blog/ask-joost/"
+        }
+      ]
+    },
+    {
+      "@type": "Country",
+      "@id": "https://joost.blog/#/schema.org/Country/nl",
+      "name": "The Netherlands"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://joost.blog/#/schema.org/Organization/emilia-capital",
+      "name": "Emilia Capital",
+      "url": "https://emilia.capital/"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://joost.blog/#/schema.org/Organization/post-status",
+      "name": "Post Status",
+      "url": "https://poststatus.com/"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://joost.blog/#/schema.org/Organization/wordproof",
+      "name": "WordProof",
+      "url": "https://wordproof.com/"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://joost.blog/#/schema.org/Organization/blokjes",
+      "name": "Blokjes",
+      "url": "https://blokjes.co/"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://joost.blog/#/schema.org/Organization/atarim",
+      "name": "Atarim",
+      "url": "https://atarim.io/"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://joost.blog/#/schema.org/Organization/patchstack",
+      "name": "Patchstack",
+      "url": "https://patchstack.com/"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://joost.blog/#/schema.org/Organization/yoast",
+      "name": "Yoast",
+      "url": "https://yoast.com/"
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": "https://joost.blog/about-me/",
+      "url": "https://joost.blog/about-me/",
+      "name": "About Joost de Valk",
+      "isPartOf": {
+        "@id": "https://joost.blog/#/schema.org/WebSite"
+      },
+      "breadcrumb": {
+        "@id": "https://joost.blog/about-me/#breadcrumb"
+      },
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "https://joost.blog/about-me/"
+          ]
+        }
+      ],
+      "about": {
+        "@id": "https://joost.blog/about-me/#/schema.org/Person"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://joost.blog/#/schema.org/Person/marieke",
+      "name": "Marieke van de Rakt"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://joost.blog/#/schema.org/Person/tycho",
+      "name": "Tycho de Valk"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://joost.blog/#/schema.org/Person/wende",
+      "name": "Wende de Valk"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://joost.blog/#/schema.org/Person/ravi",
+      "name": "Ravi de Valk"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://joost.blog/#/schema.org/Person/borre",
+      "name": "Borre de Valk"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://joost.blog/alfred-quix/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://joost.blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Quix with AlfredApp",
+          "item": "https://joost.blog/alfred-quix/"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://joost.blog/alfred-quix/",
+      "url": "https://joost.blog/alfred-quix/",
+      "name": "Quix with AlfredApp",
+      "isPartOf": {
+        "@id": "https://joost.blog/#/schema.org/WebSite"
+      },
+      "breadcrumb": {
+        "@id": "https://joost.blog/alfred-quix/#breadcrumb"
+      },
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "https://joost.blog/alfred-quix/"
+          ]
+        }
+      ],
+      "text": "Quix is an AlfredApp workflow that makes quick analyses of websites for SEO, page speed and other things a lot easier. It prevents you from copy and pasting URLs into different tools a lot, instead opening them up with a few keystrokes.\nTable of contents\n- Demo\n- Requirements\n- Frequently asked questions\n- Download\n- Changelog\n    - 3.0\n    - 2.1\n    - 2.0.1\n    - 2.0\n    - 1.0\nDemo\nAfter you install this your workflow, the following magic happens when you hit Alt-Q ( ⎇-Q ) or type quix in Alfred:\nA gif of Quix in actionOnce you select one of the actions, it’ll take the foremost URL of your browser and perform it. This way I can literally run a speed test, a schema test and some social snippet tests in a few seconds, without copying and pasting URLs all the time or using 5 different bookmarklets.\nRequirements\nFor this to work you need a Mac, with AlfredApp (version 5), and since it is a workflow, you’ll need their paid Powerpack too. Don’t worry it really is worth it on its own, even without this new added Quix goodness.\nQuix currently works with Safari, Safari Technology Preview, Chrome, Chrome Canary, Firefox (including its development edition) Brave Browser (including its beta) and Vivaldi.\nFrequently asked questions\nThe Twitter command or SEOCSS command isn’t working, what’s wrong?You have to enable “JavaScript from Apple Events” for this to work. In most browsers this is under View - Developer - Allow JavaScript from Apple events  \n  \n \nHow do I get updates for Quix?The workflow will auto-update to the latest version!\n \nDo you support Firefox?As of version 3.0: yes we do!\n \nCould you support <insert browser here?If your browser doesn’t already work and you’d like to have support for it, please open an issue on GitHub!\n \n \nDownload\nYou only have to download Quix once, after that it should auto-update from Quix’s Github automatically.\nDownload Quix AlfredApp workflow\nChangelog\n3.0\n- Major browser support improvements: added support for Firefox, Firefox developer edition, Chrome Canary Safari Technology Preview, Brave Beta and Vivaldi.\n- Added a user config option to select a default browser, for cases when you open Quix from outside a browser.\n- Added an “is this site down for everyone” command.\n- Added a “who hosts this site” command.\n- Re-built much of the workflow to work a bit more intuitive.\n2.1\n- Added support for Brave Browser.\n2.0.1\n- Some fixes as AlfredApp updated how the automation tasks work slightly.\n2.0\n- Made Alfred Quix compatible with AlfredApp V5 workflow builder.\n- Added OneUpdater so the Workflow can be updated easily.\n1.0\n- Initial version."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://joost.blog/clicky/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://joost.blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Clicky Analytics",
+          "item": "https://joost.blog/clicky/"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://joost.blog/clicky/",
+      "url": "https://joost.blog/clicky/",
+      "name": "Clicky Analytics",
+      "isPartOf": {
+        "@id": "https://joost.blog/#/schema.org/WebSite"
+      },
+      "breadcrumb": {
+        "@id": "https://joost.blog/clicky/#breadcrumb"
+      },
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "https://joost.blog/clicky/"
+          ]
+        }
+      ],
+      "text": "The Clicky for WordPress plugin makes it easy for you to add your Clicky analytics tracking code to your WordPress install, while also giving you some advanced tracking options.\nInstallation of the Clicky WordPress plugin\n1. Search for clicky in the plugin install screen under Plugins - Add New\n2. Install & activate Clicky for WordPress\n3. Click the link that appears or go to Settings - Clicky and enter your Site ID, Site Key and Site Admin Key, you can find those on your Clicky homepage.\n4. Save settings: you’re done.\nClicky Analytics dashboard\nThe plugin adds a page under the Dashboard, called Clicky stats, that gives you a quick overview of the stats for your site. It also adds a small image to your WordPress toolbar showing you the visits to your site in the last 48 hours:\nClicky site stats in the WP admin barAdvanced settings for the Clicky WordPress plugin\nThe Clicky plugin has a couple of advanced settings. They mostly speak for themselves; but let’s go over them:\n- Ignore admin users makes Clicky ignore the admin user when they’re logged in.\n- Disable cookies makes Clicky track without using any cookies. It still tracks personal data, but it doesn’t use cookies anymore.\n- Track names of commenters allows you to see the names of people who commented on your site in your Clicky Analytics.\n- The outbound link pattern option allows you to track certain kinds of links as outbound links, when they’re actually internal. This is useful when you redirect, for instance, your affiliate links through a /out/ or /go/ redirect script or plugin locally.\nDownload\nDownload the plugin on WordPress.org:\nDownload Clicky\nGitHub\nWant to follow development, submit an issue or a patch? Come to the Clicky GitHub repo.\nSecurity issues\nPlease report security issues through our Patchstack VDP."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://joost.blog/cms-market-share/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://joost.blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "CMS Market Share",
+          "item": "https://joost.blog/cms-market-share/"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://joost.blog/cms-market-share/",
+      "url": "https://joost.blog/cms-market-share/",
+      "name": "CMS Market Share",
+      "isPartOf": {
+        "@id": "https://joost.blog/#/schema.org/WebSite"
+      },
+      "breadcrumb": {
+        "@id": "https://joost.blog/cms-market-share/#breadcrumb"
+      },
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "https://joost.blog/cms-market-share/"
+          ]
+        }
+      ],
+      "text": "I'm currently working on fresh CMS market share data. I'll be releasing comprehensive, updated statistics soon — stay tuned."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://joost.blog/comment-policy/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://joost.blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Comment policy",
+          "item": "https://joost.blog/comment-policy/"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://joost.blog/comment-policy/",
+      "url": "https://joost.blog/comment-policy/",
+      "name": "Comment policy",
+      "isPartOf": {
+        "@id": "https://joost.blog/#/schema.org/WebSite"
+      },
+      "breadcrumb": {
+        "@id": "https://joost.blog/comment-policy/#breadcrumb"
+      },
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "https://joost.blog/comment-policy/"
+          ]
+        }
+      ],
+      "text": "I welcome and encourage thoughtful discussions, feedback, and questions on my blog. To maintain a respectful and positive environment, I ask all commenters to follow these simple guidelines:\n1. Be respectful: Treat others with kindness and courtesy, even when opinions differ. Personal attacks, insults, or inflammatory remarks are not allowed and will be deleted.\n2. Stay on-topic: Please keep comments relevant to the content of the post or discussion. Off-topic comments may be removed.\n3. No hate speech or harassment: Comments containing discriminatory, offensive, or threatening language are strictly prohibited and will be deleted immediately.\n4. Constructive criticism: Disagreeing is fine, but make your points constructively and respectfully. Comments that are unnecessarily aggressive or unproductive will be removed.\n5. No spam: Self-promotion, irrelevant links, or spammy content will not be published or will be edited out of your comment.\n6. Moderation rights: I reserve the right to delete or edit any comments that violate these guidelines or are deemed inappropriate for the discussion.\nBy leaving a comment, you agree to adhere to this policy. Let’s work together to maintain a respectful and engaging community."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://joost.blog/contact/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://joost.blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Get in touch",
+          "item": "https://joost.blog/contact/"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://joost.blog/contact/",
+      "url": "https://joost.blog/contact/",
+      "name": "Get in touch",
+      "isPartOf": {
+        "@id": "https://joost.blog/#/schema.org/WebSite"
+      },
+      "breadcrumb": {
+        "@id": "https://joost.blog/contact/#breadcrumb"
+      },
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "https://joost.blog/contact/"
+          ]
+        }
+      ],
+      "text": "Thank you for reaching out! Whether you have a question, a suggestion, or just want to share your thoughts, I'm all ears. Feel free to get in touch through any of the methods below:\nEmail:\nFeel free to drop me an email at example@example.com, and I'll do my best to respond as soon as possible.\nSocial Media:\nConnect with me on social media as well. Find me on X/Twitter or LinkedIn."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://joost.blog/contact-me/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://joost.blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Contact",
+          "item": "https://joost.blog/contact-me/"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://joost.blog/contact-me/",
+      "url": "https://joost.blog/contact-me/",
+      "name": "Contact",
+      "isPartOf": {
+        "@id": "https://joost.blog/#/schema.org/WebSite"
+      },
+      "breadcrumb": {
+        "@id": "https://joost.blog/contact-me/#breadcrumb"
+      },
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "https://joost.blog/contact-me/"
+          ]
+        }
+      ],
+      "text": "import ContactForm from '../../components/ContactForm.astro';\nI love hearing from people, seriously. If you want to get in touch with me, use one of the following ways, or the form below! I usually reply within a few days. Note that if you're looking for investment, it's better to use the contact form at Emilia Capital, as it asks more questions and guides you towards our investment philosophy.\nContact form\n<ContactForm /\nSlack\nI'm @joostdevalk on the official WordPress Slack and @jdevalk on the Post Status Slack.\nPostal Address\nEmilia Capital\nAtt Joost de Valk\nEmilia van Nassaustraat 20\n6602 GW Wijchen\nThe Netherlands\nAcross Social Media\n<div class=\"not-prose flex flex-wrap gap-2\"\n  <a href=\"https://gravatar.com/joostdevalk\" class=\"inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-primary hover:text-white dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-primary transition-colors duration-200\"\n    <svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"currentColor\"<path d=\"M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm0 3.6c2.32 0 4.2 1.88 4.2 4.2S14.32 12 12 12s-4.2-1.88-4.2-4.2S9.68 3.6 12 3.6zm0 17.04c-2.97 0-5.58-1.53-7.11-3.84C5.07 14.88 9.6 13.8 12 13.8s6.93 1.08 7.11 2.99c-1.53 2.32-4.14 3.84-7.11 3.84z\"/</svg\n    Gravatar\n  </a\n  <a href=\"https://github.com/jdevalk\" class=\"inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-primary hover:text-white dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-primary transition-colors duration-200\"\n    <svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"currentColor\"<path d=\"M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z\"/</svg\n    GitHub\n  </a\n  <a href=\"https://www.linkedin.com/in/jdevalk/\" class=\"inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-primary hover:text-white dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-primary transition-colors duration-200\"\n    <svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"currentColor\"<path d=\"M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z\"/</svg\n    LinkedIn\n  </a\n  <a href=\"https://bsky.app/profile/joost.blog\" class=\"inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-primary hover:text-white dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-primary transition-colors duration-200\"\n    <svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"currentColor\"<path d=\"M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.596 6.449.77 2.819 3.516 3.745 6.104 3.471-3.662.625-6.879 2.142-4.156 7.504 2.997 4.702 7.418 1.454 9.456-.834 2.038 2.288 4.848 5.087 9.456.834C24.14 15.83 20.962 14.313 17.3 13.688c2.588.274 5.334-.652 6.104-3.471C23.622 9.418 24 4.458 24 3.768c0-.69-.139-1.861-.902-2.203-.659-.3-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z\"/</svg\n    Bluesky\n  </a\n  <a href=\"https://www.threads.net/@joostdevalk\" class=\"inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-primary hover:text-white dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-primary transition-colors duration-200\"\n    <svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"currentColor\"<path d=\"M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.34-.776-.94-1.403-1.758-1.838-.143 3.333-1.85 5.293-4.783 5.492-1.86.127-3.675-.442-4.577-1.837-.474-.733-.703-1.63-.654-2.58.093-1.776 1.158-3.2 2.91-3.885.81-.317 1.74-.478 2.635-.478 1.078 0 2.06.22 2.862.637.09-.57.134-1.167.124-1.778C16.822 6.3 15.791 4.76 13.508 4.76c-1.444.01-2.505.6-3.152 1.756l-1.808-.99C9.539 3.85 11.18 2.88 13.508 2.86c1.544 0 2.832.49 3.727 1.407.88.9 1.37 2.14 1.42 3.603.077 2.232-.236 3.58-.836 4.63a4.553 4.553 0 01.757 1.063c.795 1.814.676 4.635-1.496 6.788C15.36 22.067 13.12 22.855 9.92 22.88z\"/</svg\n    Threads\n  </a\n  <a href=\"https://profiles.wordpress.org/joostdevalk\" class=\"inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-primary hover:text-white dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-primary transition-colors duration-200\"\n    <svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"currentColor\"<path d=\"M21.469 6.825c.84 1.537 1.318 3.3 1.318 5.175 0 3.979-2.156 7.456-5.363 9.325l3.295-9.527c.615-1.54.82-2.771.82-3.864 0-.405-.027-.78-.07-1.109m-7.981.105c.647-.034 1.233-.1 1.233-.1.584-.068.516-.928-.068-.895 0 0-1.755.138-2.89.138-1.067 0-2.872-.138-2.872-.138-.583-.033-.65.861-.066.895 0 0 .554.066 1.134.1l1.684 4.622-2.37 7.108L5.691 6.93c.649-.034 1.236-.1 1.236-.1.585-.068.516-.928-.067-.895 0 0-1.755.138-2.89.138-.203 0-.443-.005-.693-.014C4.952 3.012 8.19 1.126 11.87 1.126c2.741 0 5.238 1.049 7.109 2.766-.045-.003-.089-.009-.136-.009-1.067 0-1.823.929-1.823 1.928 0 .895.516 1.654 1.067 2.55.414.717.895 1.636.895 2.963 0 .92-.354 1.989-.82 3.477l-1.075 3.591-3.894-11.567h.001zm-3.62 15.58A10.894 10.894 0 011.124 12c0-1.593.34-3.104.953-4.472l5.25 14.382c.009.021.018.042.028.062zM11.87 0C5.318 0 0 5.318 0 11.87S5.318 24 11.87 24c6.553 0 12-5.318 12-12.13C23.87 5.318 18.423 0 11.87 0z\"/</svg\n    WordPress\n  </a\n  <a href=\"https://www.instagram.com/joostdevalk\" class=\"inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-primary hover:text-white dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-primary transition-colors duration-200\"\n    <svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"currentColor\"<path d=\"M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z\"/</svg\n    Instagram\n  </a\n  <a href=\"https://joost.net/@joost\" rel=\"me\" class=\"inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-primary hover:text-white dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-primary transition-colors duration-200\"\n    <svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"currentColor\"<path d=\"M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 00.023-.043v-1.809a.052.052 0 00-.02-.041.053.053 0 00-.046-.01 20.282 20.282 0 01-4.709.547c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 01-.319-1.433.053.053 0 01.066-.054 19.648 19.648 0 004.581.536h.344c1.587 0 3.176-.088 4.748-.339 .04-.006.08-.015.118-.023 2.348-.427 4.584-1.756 4.814-5.544.009-.152.025-.917.025-1.074 0-.329.083-2.333-.034-3.562zM19.903 12.77h-3.158v5.607c0 1.18-.492 1.78-1.475 1.78-.89 0-1.335-.477-1.335-1.422V14.21h-3.136v4.526c0 .945-.446 1.422-1.335 1.422-.983 0-1.475-.6-1.475-1.78V12.77H4.83c0-1.206.025-2.41.366-3.057.392-.745 1.245-1.169 2.135-1.169 1.009 0 1.772.385 2.237 1.154l.483.812.483-.812c.465-.769 1.228-1.154 2.237-1.154.89 0 1.743.424 2.135 1.169.341.647.366 1.851.366 3.057z\"/</svg\n    Mastodon\n  </a\n</div"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://joost.blog/embedded-playground/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://joost.blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Embedded playground",
+          "item": "https://joost.blog/embedded-playground/"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://joost.blog/embedded-playground/",
+      "url": "https://joost.blog/embedded-playground/",
+      "name": "Embedded playground",
+      "isPartOf": {
+        "@id": "https://joost.blog/#/schema.org/WebSite"
+      },
+      "breadcrumb": {
+        "@id": "https://joost.blog/embedded-playground/#breadcrumb"
+      },
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "https://joost.blog/embedded-playground/"
+          ]
+        }
+      ],
+      "text": "This playground below is embedded through the playground embedder plugin, with a simple blueprint to log in and install & activate a plugin (Yoast SEO):\nThe embed code used is:\njson\n[wpplayground width=1100 height=1000]\n{\n    \"landingPage\": \"/wp-admin/\",\n    \"preferredVersions\": {\n        \"php\": \"8.0\",\n        \"wp\": \"latest\"\n    },\n    \"steps\": [\n        {\n            \"step\": \"login\",\n            \"username\": \"admin\",\n            \"password\": \"password\"\n        },\n        {\n            \"step\": \"installPlugin\",\n            \"pluginZipFile\": {\n                \"resource\": \"wordpress.org/plugins\",\n                \"slug\": \"wordpress-seo\"\n            },\n            \"options\": {\n                \"activate\": true\n            }\n        }\n    ]\n}\n[/wpplayground]"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://joost.blog/privacy-policy/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://joost.blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Privacy policy",
+          "item": "https://joost.blog/privacy-policy/"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://joost.blog/privacy-policy/",
+      "url": "https://joost.blog/privacy-policy/",
+      "name": "Privacy policy",
+      "isPartOf": {
+        "@id": "https://joost.blog/#/schema.org/WebSite"
+      },
+      "breadcrumb": {
+        "@id": "https://joost.blog/privacy-policy/#breadcrumb"
+      },
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "https://joost.blog/privacy-policy/"
+          ]
+        }
+      ],
+      "text": "I deeply value your privacy and aim to keep things simple. Here’s what you need to know:\nCookies\n- This website only uses cookies when you leave a comment or fill out a contact form. These cookies are used to improve your experience, like remembering your details for future comments.\n- No other tracking cookies are used.\nAnalytics\n- I use Plausible Analytics to understand how visitors use my site. Plausible is privacy-friendly and fully compliant with GDPR. It doesn’t use cookies or collect personal data.\nUse of Cloudflare Turnstile\nI use Cloudflare Turnstile on this site to protect my forms (both comment- and contact forms) from spam and abuse. When you interact with a form protected by Turnstile, Cloudflare may collect and process the following data:\n- IP address and other connection-related information.\n- Browser and device information, such as operating system, user agent, and cookies.\n- Behavioral data, such as mouse movements or interactions with the CAPTCHA widget.\nThis data is processed by Cloudflare to determine whether the interaction is from a human, or automated (e.g., from a bot). For more information about how Cloudflare processes this data, please refer to Cloudflare’s Privacy Policy.\nThe information collected by Turnstile is sent directly to Cloudflare and is not stored on my server.\nYour data\n- If you leave a comment, I collect the information you provide (like your name and email) to display your comment.\n- If you fill out a contact form, I only use your information to respond to your inquiry.\nSharing your data\n- I don’t share your data with anyone, ever, except perhaps with my team at Emilia Capital if your inquiry makes that necessary (for instance for fixing bugs, or for setting up meetings).\nYour rights\n- You can request to see, update, or delete any personal data I have about you. Just contact me here.\nThat’s it! Simple, transparent, and privacy-focused. If you have any questions, feel free to reach out."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://joost.blog/terms/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://joost.blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Terms of Service",
+          "item": "https://joost.blog/terms/"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://joost.blog/terms/",
+      "url": "https://joost.blog/terms/",
+      "name": "Terms of Service",
+      "isPartOf": {
+        "@id": "https://joost.blog/#/schema.org/WebSite"
+      },
+      "breadcrumb": {
+        "@id": "https://joost.blog/terms/#breadcrumb"
+      },
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "https://joost.blog/terms/"
+          ]
+        }
+      ],
+      "text": "Last updated on June 1, 2023\nThese Terms of Service (\"Terms\") govern your access to and use of [Website Name] (\"the Website\") and any related services provided by [Website Owner/Company] (\"we,\" \"us,\" or \"our\"). Please read these Terms carefully before using the Website.\n1. Acceptance of Terms\nBy accessing or using the Website, you agree to be bound by these Terms and our Privacy Policy. If you do not agree to these Terms or the Privacy Policy, please do not use the Website.\n2. Changes to Terms\nWe reserve the right to modify, amend, or update these Terms at any time. Such changes will be effective upon posting on the Website. It is your responsibility to review these Terms regularly. Your continued use of the Website after any changes indicates your acceptance of the revised Terms.\n3. Use of the Website\nYou agree to use the Website for lawful purposes and in a manner consistent with these Terms. You are responsible for any content you post or submit on the Website.\n4. Registration and Account\nCertain areas of the Website may require registration or the creation of an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate, current, and complete. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.\n5. Content and Intellectual Property\nThe content on the Website, including text, graphics, logos, images, audio, video, software, and other materials, is owned or licensed by us and is protected by copyright and other intellectual property laws. You may not use, reproduce, or distribute the content without our prior written consent.\n6. Third-Party Links\nThe Website may contain links to third-party websites or resources. We do not endorse and are not responsible for the content, products, or services provided by third parties. Your use of such websites is at your own risk.\n7. Termination\nWe may, at our sole discretion, terminate or suspend your access to the Website at any time and for any reason, without notice.\n8. Disclaimer\nThe Website and its content are provided on an \"as is\" and \"as available\" basis. We make no warranties or representations about the accuracy or completeness of the content. We do not guarantee that the Website will be error-free or uninterrupted.\n9. Limitation of Liability\nTo the fullest extent permitted by law, we shall not be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to damages for loss of profits, goodwill, use, data, or other intangible losses, arising out of or in connection with the use or inability to use the Website.\n10. Governing Law\nThese Terms are governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to its conflict of laws principles. Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the courts of [Your Jurisdiction].\nThank you for reading our Terms of Service. By using the Website, you agree to be bound by these Terms."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://joost.blog/videos/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://joost.blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Videos",
+          "item": "https://joost.blog/videos/"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://joost.blog/videos/",
+      "url": "https://joost.blog/videos/",
+      "name": "Videos",
+      "isPartOf": {
+        "@id": "https://joost.blog/#/schema.org/WebSite"
+      },
+      "breadcrumb": {
+        "@id": "https://joost.blog/videos/#breadcrumb"
+      },
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "https://joost.blog/videos/"
+          ]
+        }
+      ],
+      "text": "Want to see me speak?\nOn this page, you’ll find talks, interviews, podcasts and keynote sessions featuring Joost de Valk. The collection is ordered from newest to oldest and includes both conference sessions and longer interview appearances.\nAre you looking for a speaker?\nI love the opportunity to speak at conferences all over the world.\nContact me"
+    }
+  ]
+}

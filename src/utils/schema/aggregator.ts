@@ -1,5 +1,6 @@
 import { getCollection } from 'astro:content';
 import { readFileSync, existsSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 import { join } from 'node:path';
 import { SITE_URL } from './constants';
 import { buildSchemaGraph } from './index';
@@ -141,7 +142,20 @@ export async function aggregateVideos(): Promise<AggregatedSchema> {
 export async function aggregatePages(): Promise<AggregatedSchema> {
     const pages = await getCollection('pages');
     const allEntities: Record<string, unknown>[] = [];
+
+    // Pages have no frontmatter dates. Use git history of src/content/pages as
+    // the canonical "when did this collection last change" signal. Falls back
+    // to epoch if git isn't available (shallow clones, non-git contexts).
     let lastModified = new Date(0);
+    try {
+        const iso = execSync('git log -1 --format=%cI -- src/content/pages', {
+            cwd: process.cwd(),
+            encoding: 'utf8'
+        }).trim();
+        if (iso) lastModified = new Date(iso);
+    } catch {
+        // fallback: epoch
+    }
 
     for (const page of pages) {
         const canonicalUrl = `${SITE_URL}/${page.id}/`;
@@ -163,9 +177,6 @@ export async function aggregatePages(): Promise<AggregatedSchema> {
         }
 
         allEntities.push(...graph);
-
-        // Pages don't have dates — use current build time
-        lastModified = new Date();
     }
 
     return {
