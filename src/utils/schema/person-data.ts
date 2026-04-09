@@ -1,104 +1,155 @@
-import { IDS, SITE_URL } from './constants';
+import type { IdFactory, PersonInput } from '@jdevalk/seo-graph-core';
+import { SITE_URL } from './constants';
 
-export const joostPersonData = {
-    '@type': 'Person' as const,
-    '@id': IDS.person,
-    name: 'Joost de Valk',
-    familyName: 'de Valk',
-    birthDate: '1982-02-16',
-    gender: 'https://schema.org/Male',
-    nationality: { '@id': IDS.countryNl },
-    description:
-        'Internet entrepreneur from Wijchen, the Netherlands. Investor at Emilia Capital and actively working on Progress Planner. Founder of Yoast.',
-    jobTitle: 'Partner',
-    knowsLanguage: ['Dutch', 'English', 'German', 'French', 'Italian'],
-    url: `${SITE_URL}/about-me/`,
-    image: { '@id': IDS.personImage },
-    sameAs: [
-        `${SITE_URL}/about-me/`,
-        'https://www.facebook.com/jdevalk',
-        'https://www.instagram.com/joostdevalk',
-        'https://www.linkedin.com/in/jdevalk',
-        'https://x.com/jdevalk',
-        'https://bsky.app/profile/joost.blog',
-        'https://www.youtube.com/user/jdevalk',
-        'https://en.wikipedia.org/wiki/Joost_de_Valk',
-        'https://joost.net/@joost',
-        'https://github.com/jdevalk',
-        'https://profiles.wordpress.org/joostdevalk',
-        'https://emilia.capital/joost/'
-    ],
-    worksFor: [
-        {
-            '@type': 'EmployeeRole',
-            roleName: 'Partner',
-            startDate: '2020',
-            worksFor: { '@id': IDS.org('emilia-capital') }
+/**
+ * Joost's `PersonInput` as consumed by `@jdevalk/seo-graph-core`'s
+ * `buildPerson`. The shape is static except for the handful of `@id`
+ * references that need to be resolved against the monorepo's IdFactory,
+ * so this is exposed as a factory rather than a plain const.
+ */
+export function getJoostPersonData(ids: IdFactory): PersonInput {
+    return {
+        name: 'Joost de Valk',
+        familyName: 'de Valk',
+        birthDate: '1982-02-16',
+        gender: 'https://schema.org/Male',
+        nationality: { '@id': ids.country('NL') },
+        description:
+            'Internet entrepreneur from Wijchen, the Netherlands. Investor at Emilia Capital and actively working on Progress Planner. Founder of Yoast.',
+        jobTitle: 'Partner',
+        knowsLanguage: ['Dutch', 'English', 'German', 'French', 'Italian'],
+        url: `${SITE_URL}/about-me/`,
+        image: { '@id': ids.personImage },
+        sameAs: [
+            `${SITE_URL}/about-me/`,
+            'https://www.facebook.com/jdevalk',
+            'https://www.instagram.com/joostdevalk',
+            'https://www.linkedin.com/in/jdevalk',
+            'https://x.com/jdevalk',
+            'https://bsky.app/profile/joost.blog',
+            'https://www.youtube.com/user/jdevalk',
+            'https://en.wikipedia.org/wiki/Joost_de_Valk',
+            'https://joost.net/@joost',
+            'https://github.com/jdevalk',
+            'https://profiles.wordpress.org/joostdevalk',
+            'https://emilia.capital/joost/',
+        ],
+        worksFor: [
+            {
+                '@type': 'EmployeeRole',
+                roleName: 'Partner',
+                startDate: '2020',
+                worksFor: { '@id': ids.organization('emilia-capital') },
+            },
+            {
+                '@type': 'EmployeeRole',
+                roleName: 'Chair of the Board',
+                startDate: '2024',
+                worksFor: { '@id': ids.organization('post-status') },
+            },
+            {
+                '@type': 'EmployeeRole',
+                roleName: 'Advisor',
+                startDate: '2020',
+                worksFor: { '@id': ids.organization('wordproof') },
+            },
+            {
+                '@type': 'EmployeeRole',
+                roleName: 'Board Member',
+                startDate: '2022-08-01',
+                worksFor: { '@id': ids.organization('atarim') },
+            },
+            {
+                '@type': 'EmployeeRole',
+                roleName: 'Board Member',
+                startDate: '2024-08-01',
+                worksFor: { '@id': ids.organization('patchstack') },
+            },
+            {
+                '@type': 'EmployeeRole',
+                roleName: 'CEO',
+                startDate: '2023',
+                worksFor: { '@id': ids.organization('blokjes') },
+            },
+            {
+                '@type': 'EmployeeRole',
+                roleName: 'CEO',
+                startDate: '2010',
+                endDate: '2019',
+                worksFor: { '@id': ids.organization('yoast') },
+            },
+        ],
+        spouse: {
+            '@id': `${SITE_URL}/#/schema.org/Person/marieke`,
+            name: 'Marieke van de Rakt',
         },
-        {
-            '@type': 'EmployeeRole',
-            roleName: 'Chair of the Board',
-            startDate: '2024',
-            worksFor: { '@id': IDS.org('post-status') }
-        },
-        {
-            '@type': 'EmployeeRole',
-            roleName: 'Advisor',
-            startDate: '2020',
-            worksFor: { '@id': IDS.org('wordproof') }
-        },
-        {
-            '@type': 'EmployeeRole',
-            roleName: 'Board Member',
-            startDate: '2022-08-01',
-            worksFor: { '@id': IDS.org('atarim') }
-        },
-        {
-            '@type': 'EmployeeRole',
-            roleName: 'Board Member',
-            startDate: '2024-08-01',
-            worksFor: { '@id': IDS.org('patchstack') }
-        },
-        {
-            '@type': 'EmployeeRole',
-            roleName: 'CEO',
-            startDate: '2023',
-            worksFor: { '@id': IDS.org('blokjes') }
-        },
-        {
-            '@type': 'EmployeeRole',
-            roleName: 'CEO',
-            startDate: '2010',
-            endDate: '2019',
-            worksFor: { '@id': IDS.org('yoast') }
-        }
-    ],
-    spouse: {
-        '@id': `${SITE_URL}/#/schema.org/Person/marieke`,
-        name: 'Marieke van de Rakt'
-    },
-    children: [
-        { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/tycho`, name: 'Tycho de Valk' },
-        { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/wende`, name: 'Wende de Valk' },
-        { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/ravi`, name: 'Ravi de Valk' },
-        { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/borre`, name: 'Borre de Valk' }
-    ]
-};
+        children: [
+            {
+                '@type': 'Person' as const,
+                '@id': `${SITE_URL}/#/schema.org/Person/tycho`,
+                name: 'Tycho de Valk',
+            },
+            {
+                '@type': 'Person' as const,
+                '@id': `${SITE_URL}/#/schema.org/Person/wende`,
+                name: 'Wende de Valk',
+            },
+            {
+                '@type': 'Person' as const,
+                '@id': `${SITE_URL}/#/schema.org/Person/ravi`,
+                name: 'Ravi de Valk',
+            },
+            {
+                '@type': 'Person' as const,
+                '@id': `${SITE_URL}/#/schema.org/Person/borre`,
+                name: 'Borre de Valk',
+            },
+        ],
+    };
+}
 
-export const countryNl = {
-    '@type': 'Country' as const,
-    '@id': IDS.countryNl,
-    name: 'The Netherlands'
-};
+/**
+ * The `Country` entity for the Netherlands. Not a piece builder in core
+ * (too narrow), so it's pushed to the graph as a raw entity.
+ */
+export function getCountryNl(ids: IdFactory) {
+    return {
+        '@type': 'Country' as const,
+        '@id': ids.country('NL'),
+        name: 'The Netherlands',
+    };
+}
 
+/**
+ * Family member `Person` references — just `@id` + `name` pairs that link
+ * out to the same entities used in `spouse` and `children` on the main Person.
+ * These are pushed to the graph as raw entities for the homepage and about
+ * pages so the references resolve.
+ */
 export const familyMembers = [
     {
         '@type': 'Person' as const,
         '@id': `${SITE_URL}/#/schema.org/Person/marieke`,
-        name: 'Marieke van de Rakt'
+        name: 'Marieke van de Rakt',
     },
-    { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/tycho`, name: 'Tycho de Valk' },
-    { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/wende`, name: 'Wende de Valk' },
-    { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/ravi`, name: 'Ravi de Valk' },
-    { '@type': 'Person' as const, '@id': `${SITE_URL}/#/schema.org/Person/borre`, name: 'Borre de Valk' }
+    {
+        '@type': 'Person' as const,
+        '@id': `${SITE_URL}/#/schema.org/Person/tycho`,
+        name: 'Tycho de Valk',
+    },
+    {
+        '@type': 'Person' as const,
+        '@id': `${SITE_URL}/#/schema.org/Person/wende`,
+        name: 'Wende de Valk',
+    },
+    {
+        '@type': 'Person' as const,
+        '@id': `${SITE_URL}/#/schema.org/Person/ravi`,
+        name: 'Ravi de Valk',
+    },
+    {
+        '@type': 'Person' as const,
+        '@id': `${SITE_URL}/#/schema.org/Person/borre`,
+        name: 'Borre de Valk',
+    },
 ];

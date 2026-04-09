@@ -1,46 +1,44 @@
-import { IDS } from './constants';
+import type { OrganizationInput } from '@jdevalk/seo-graph-core';
 
-export const organizations = [
+/**
+ * Organizations Joost is or has been affiliated with. Fed one-by-one
+ * into `@jdevalk/seo-graph-core`'s `buildOrganization` so they become
+ * referenced entities the Person's `worksFor` list can point at.
+ */
+export const organizationInputs: OrganizationInput[] = [
     {
-        '@type': 'Organization' as const,
-        '@id': IDS.org('emilia-capital'),
+        slug: 'emilia-capital',
         name: 'Emilia Capital',
-        url: 'https://emilia.capital/'
+        url: 'https://emilia.capital/',
     },
     {
-        '@type': 'Organization' as const,
-        '@id': IDS.org('post-status'),
+        slug: 'post-status',
         name: 'Post Status',
-        url: 'https://poststatus.com/'
+        url: 'https://poststatus.com/',
     },
     {
-        '@type': 'Organization' as const,
-        '@id': IDS.org('wordproof'),
+        slug: 'wordproof',
         name: 'WordProof',
-        url: 'https://wordproof.com/'
+        url: 'https://wordproof.com/',
     },
     {
-        '@type': 'Organization' as const,
-        '@id': IDS.org('blokjes'),
+        slug: 'blokjes',
         name: 'Blokjes',
-        url: 'https://blokjes.co/'
+        url: 'https://blokjes.co/',
     },
     {
-        '@type': 'Organization' as const,
-        '@id': IDS.org('atarim'),
+        slug: 'atarim',
         name: 'Atarim',
-        url: 'https://atarim.io/'
+        url: 'https://atarim.io/',
     },
     {
-        '@type': 'Organization' as const,
-        '@id': IDS.org('patchstack'),
+        slug: 'patchstack',
         name: 'Patchstack',
-        url: 'https://patchstack.com/'
+        url: 'https://patchstack.com/',
     },
     {
-        '@type': 'Organization' as const,
-        '@id': IDS.org('yoast'),
+        slug: 'yoast',
         name: 'Yoast',
-        url: 'https://yoast.com/'
-    }
+        url: 'https://yoast.com/',
+    },
 ];

@@ -2,6 +2,7 @@ import { getCollection } from 'astro:content';
 import { readFileSync, existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { join } from 'node:path';
+import { deduplicateByGraphId } from '@jdevalk/seo-graph-core';
 import { SITE_URL } from './constants';
 import { buildSchemaGraph } from './index';
 import type { SchemaPageContext } from './types';
@@ -24,24 +25,6 @@ function truncateBody(body: string): string {
     const plain = stripMarkdown(body);
     if (plain.length <= ARTICLE_BODY_MAX_LENGTH) return plain;
     return plain.slice(0, ARTICLE_BODY_MAX_LENGTH).replace(/\s+\S*$/, '') + '…';
-}
-
-/**
- * Deduplicate schema entities by @id.
- * When duplicates exist, the first occurrence wins.
- */
-function deduplicateEntities(entities: Record<string, unknown>[]): Record<string, unknown>[] {
-    const seen = new Set<string>();
-    const result: Record<string, unknown>[] = [];
-    for (const entity of entities) {
-        const id = entity['@id'] as string | undefined;
-        if (id) {
-            if (seen.has(id)) continue;
-            seen.add(id);
-        }
-        result.push(entity);
-    }
-    return result;
 }
 
 export interface AggregatedSchema {
@@ -86,7 +69,7 @@ export async function aggregateBlogPosts(): Promise<AggregatedSchema> {
     }
 
     return {
-        entities: deduplicateEntities(allEntities),
+        entities: deduplicateByGraphId(allEntities),
         lastModified,
         count: posts.length
     };
@@ -133,7 +116,7 @@ export async function aggregateVideos(): Promise<AggregatedSchema> {
     }
 
     return {
-        entities: deduplicateEntities(allEntities),
+        entities: deduplicateByGraphId(allEntities),
         lastModified,
         count: videos.length
     };
@@ -180,7 +163,7 @@ export async function aggregatePages(): Promise<AggregatedSchema> {
     }
 
     return {
-        entities: deduplicateEntities(allEntities),
+        entities: deduplicateByGraphId(allEntities),
         lastModified,
         count: pages.length
     };
