@@ -1,6 +1,6 @@
 ---
 import monaSansWoff2 from '@fontsource-variable/mona-sans/files/mona-sans-latin-wght-normal.woff2?url';
-import { SEO } from 'astro-seo';
+import Seo from '@jdevalk/astro-seo-graph/Seo.astro';
 import siteConfig from '../data/site-config';
 import { SITE_URL } from '../utils/schema/constants';
 
@@ -23,6 +23,7 @@ const {
     publishDate,
     updatedDate,
     categories,
+    noindex,
 } = Astro.props;
 const title = [Astro.props.title, siteConfig.title].filter(Boolean).join(' | ');
 
@@ -47,19 +48,23 @@ function formatCanonicalURL(url: string | URL) {
 }
 
 // Build article-specific OG data
-const articleOg = pageType === 'article' && publishDate ? {
-    publishedTime: publishDate.toISOString(),
-    ...(updatedDate ? { modifiedTime: updatedDate.toISOString() } : {}),
-    authors: ['https://joost.blog/about-me/'],
-    ...(categories?.length ? { tags: categories } : {}),
-} : undefined;
+const articleMeta =
+    pageType === 'article' && publishDate
+        ? {
+              publishedTime: publishDate,
+              ...(updatedDate ? { modifiedTime: updatedDate } : {}),
+              authors: ['https://joost.blog/about-me/'],
+              ...(categories?.length ? { tags: [...categories] } : {}),
+          }
+        : undefined;
+
+const ogImageAlt = Astro.props.title ?? siteConfig.title;
 ---
 
 <!-- High Priority Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
-{Astro.props.noindex && <meta name="robots" content="noindex, follow" />}
 
 <!-- Font preloads -->
 <link rel="preload" as="font" type="font/woff2" href={monaSansWoff2} crossorigin="anonymous" />
@@ -72,52 +77,34 @@ const articleOg = pageType === 'article' && publishDate ? {
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
 <!-- SEO -->
-<SEO
+<Seo
     title={title}
     description={description}
     canonical={formatCanonicalURL(canonicalURL)}
-    openGraph={{
-        basic: {
-            title,
-            type: pageType,
-            image: ogImage,
-            url: formatCanonicalURL(canonicalURL),
-        },
-        optional: {
-            description,
-            locale: 'en_US',
-            siteName: siteConfig.title,
-        },
-        image: {
-            alt: Astro.props.title ?? siteConfig.title,
-            width: 1200,
-            height: 675,
-        },
-        ...(articleOg ? { article: articleOg } : {}),
-    }}
-    twitter={{
-        card: 'summary_large_image',
-        site: '@jdevalk',
-        creator: '@jdevalk',
-        title,
-        description,
-        image: ogImage,
-        imageAlt: Astro.props.title ?? siteConfig.title,
-    }}
-    extend={{
-        link: [
-            { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-            { rel: 'sitemap', href: '/sitemap-index.xml' },
-            { rel: 'alternate', type: 'application/rss+xml', href: '/feed.xml', title: 'RSS' },
-        ],
-        meta: [
-            { name: 'author', content: 'Joost de Valk' },
-        ],
-    }}
+    ogType={pageType}
+    ogImage={ogImage}
+    ogImageAlt={ogImageAlt}
+    ogImageWidth={1200}
+    ogImageHeight={675}
+    siteName={siteConfig.title}
+    locale="en_US"
+    twitter={{ card: 'summary_large_image', site: '@jdevalk', creator: '@jdevalk' }}
+    article={articleMeta}
+    noindex={noindex}
+    extraLinks={[
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'sitemap', href: '/sitemap-index.xml' },
+        { rel: 'alternate', type: 'application/rss+xml', href: '/feed.xml', title: 'RSS' },
+    ]}
+    extraMeta={[{ name: 'author', content: 'Joost de Valk' }]}
 />
 
 <!-- Analytics (Cloudflare Pages Functions — only works in production) -->
-{!import.meta.env.DEV && <script defer data-domain="joost.blog" data-api="/api/event" src="/api/s"></script>}
+{
+    !import.meta.env.DEV && (
+        <script defer data-domain="joost.blog" data-api="/api/event" src="/api/s" />
+    )
+}
 <script>
     // Track pageviews on View Transitions navigation
     document.addEventListener('astro:page-load', () => {
