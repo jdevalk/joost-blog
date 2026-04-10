@@ -23,6 +23,12 @@ importers:
       '@fontsource-variable/mona-sans':
         specifier: ^5.2.8
         version: 5.2.8
+      '@jdevalk/astro-seo-graph':
+        specifier: ^0.4.1
+        version: 0.4.2(astro@6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2))(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@5.9.3)
+      '@jdevalk/seo-graph-core':
+        specifier: ^0.5.2
+        version: 0.5.2(typescript@5.9.3)
       '@tailwindcss/vite':
         specifier: ^4.1.16
         version: 4.2.2(vite@7.3.1(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.2))
@@ -32,9 +38,6 @@ importers:
       astro-pagefind:
         specifier: ^1.8.5
         version: 1.8.5(astro@6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2))
-      astro-seo:
-        specifier: ^1.1.0
-        version: 1.1.0(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@5.9.3)
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
@@ -493,6 +496,14 @@ packages:
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [x64]
     os: [win32]
+
+  '@jdevalk/astro-seo-graph@0.4.2':
+    resolution: {integrity: sha512-USMv3RIKDL0ly9M5J7zq2pTLhIMASMIRptHCyJzI4MZKSL/xYudo+58gSFJ61UUbTeGeC0FZ7s60+s81uRMvVg==}
+    peerDependencies:
+      astro: ^5.0.0 || ^6.0.0
+
+  '@jdevalk/seo-graph-core@0.5.2':
+    resolution: {integrity: sha512-tQyNpKFuSDDZdjbhevidRb3m/7h9EZ7VzTLU4qFRL9zi79OAjbDvV2fgiEM6Fs5GZ3ZXGL04XXJ/tQDp6G4cvA==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -2025,6 +2036,15 @@ packages:
     resolution: {integrity: sha512-6R3J5M4AcbtLUdZmRv2SygeVaM7IhrLXu9BmnOGmmACak8fiUtOsYNWUS4uK7upbmHIBbLBeFeI//477BKLBzA==}
     engines: {node: '>=11.0.0'}
 
+  schema-dts-lib@1.0.0:
+    resolution: {integrity: sha512-9MEO5vpQH9JdBioUupqluzxSYxPLjhmqRUudk15adUl/ypnRsM2/M1kN3AmVJQeG7nZqcL68H8JlGqQQT6vy9A==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      typescript: '>=4.9.5'
+
+  schema-dts@2.0.0:
+    resolution: {integrity: sha512-t7NoCy3Rn5GHGx6p7s1qIYK/AeIb8ZxJNR9WUNFkwMv2CiiGZBmqqYWc2FlZVm5ZbiHMY4OvBWhj7QtyrFO2Jw==}
+
   section-matter@1.0.0:
     resolution: {integrity: sha512-vfD3pmTzGpufjScBh50YHKzEu2lxBWhVEHsNGoEXmCmn2hKGfeNLYMzCJpe8cD7gqX7TJluOVpBkAequ6dgMmA==}
     engines: {node: '>=4'}
@@ -2492,6 +2512,9 @@ packages:
     resolution: {integrity: sha512-KK1OparV3kpIIRkMgLRsQPE73Tu0hYy0CDKcWkF8O3eikyib0IqVjoDNDiGt0KhGbg0/jhh+VUOCcWn/G6nvAw==}
     engines: {node: '>=14.0.0'}
 
+  zod@3.25.76:
+    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+
   zod@4.3.6:
     resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
@@ -2854,6 +2877,24 @@ snapshots:
 
   '@img/sharp-win32-x64@0.34.5':
     optional: true
+
+  '@jdevalk/astro-seo-graph@0.4.2(astro@6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2))(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@5.9.3)':
+    dependencies:
+      '@jdevalk/seo-graph-core': 0.5.2(typescript@5.9.3)
+      astro: 6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2)
+      astro-seo: 1.1.0(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@5.9.3)
+      schema-dts: 2.0.0(typescript@5.9.3)
+      zod: 3.25.76
+    transitivePeerDependencies:
+      - prettier
+      - prettier-plugin-astro
+      - typescript
+
+  '@jdevalk/seo-graph-core@0.5.2(typescript@5.9.3)':
+    dependencies:
+      schema-dts: 2.0.0(typescript@5.9.3)
+    transitivePeerDependencies:
+      - typescript
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -4784,6 +4825,16 @@ snapshots:
 
   sax@1.6.0: {}
 
+  schema-dts-lib@1.0.0(typescript@5.9.3):
+    dependencies:
+      typescript: 5.9.3
+
+  schema-dts@2.0.0(typescript@5.9.3):
+    dependencies:
+      schema-dts-lib: 1.0.0(typescript@5.9.3)
+    transitivePeerDependencies:
+      - typescript
+
   section-matter@1.0.0:
     dependencies:
       extend-shallow: 2.0.1
@@ -5216,6 +5267,8 @@ snapshots:
     dependencies:
       he: 1.2.0
       striptags: 3.2.0
+
+  zod@3.25.76: {}
 
   zod@4.3.6: {}
 
