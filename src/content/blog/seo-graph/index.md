@@ -56,7 +56,7 @@ The real test of an abstraction is whether it works for cases you didn't design 
 
 ## What the output looks like
 
-Here's what seo-graph produces for a blog post on this site. You can [visualize the full graph](https://classyschema.org/Visualisation?url=https%3A%2F%2Fjoost.blog%2Fdefending-open-web-not-enough%2F) to see how the entities connect:
+Here's what seo-graph produces for a blog post on this site. You can [visualize the full graph for this post](https://classyschema.org/Visualisation?url=https%3A%2F%2Fjoost.blog%2Fseo-graph%2F) to see how the entities connect:
 
 ```json
 {
