@@ -78,6 +78,13 @@
     .prose a:not([href^="http"]):hover {
         @apply decoration-primary decoration-2 underline;
     }
+    .prose :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *, pre *)) {
+        @apply rounded bg-stone-200/70 px-1.5 py-0.5 text-[0.875em] font-medium dark:bg-stone-700/70;
+    }
+    .prose :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *, pre *))::before,
+    .prose :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *, pre *))::after {
+        content: none;
+    }
     :is(h1, h2, h3, h4, h5, h6) {
         scroll-margin-top: 5rem;
     }

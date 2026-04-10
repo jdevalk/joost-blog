@@ -1,14 +1,14 @@
-import type { IdFactory, PersonInput } from '@jdevalk/seo-graph-core';
+import type { IdFactory } from '@jdevalk/seo-graph-core';
 import { SITE_URL } from './constants';
 
 /**
- * Joost's `PersonInput` as consumed by `@jdevalk/seo-graph-core`'s
- * `buildPerson`. The shape is static except for the handful of `@id`
- * references that need to be resolved against the monorepo's IdFactory,
- * so this is exposed as a factory rather than a plain const.
+ * Joost's Person data as consumed by `buildPiece<Person>`. The shape is
+ * static except for the `@id` references that need the IdFactory.
  */
-export function getJoostPersonData(ids: IdFactory): PersonInput {
+export function getJoostPersonData(ids: IdFactory) {
     return {
+        '@type': 'Person' as const,
+        '@id': ids.person,
         name: 'Joost de Valk',
         familyName: 'de Valk',
         birthDate: '1982-02-16',
@@ -20,6 +20,16 @@ export function getJoostPersonData(ids: IdFactory): PersonInput {
         knowsLanguage: ['Dutch', 'English', 'German', 'French', 'Italian'],
         url: `${SITE_URL}/about-me/`,
         image: { '@id': ids.personImage },
+        publishingPrinciples: `${SITE_URL}/about-me/`,
+        knowsAbout: [
+            'Search Engine Optimization',
+            'WordPress',
+            'Open Source',
+            'Web Development',
+            'Artificial Intelligence',
+            'Schema.org',
+            'Content Management Systems',
+        ],
         sameAs: [
             `${SITE_URL}/about-me/`,
             'https://www.facebook.com/jdevalk',

@@ -1,9 +1,9 @@
 import {
+    assembleGraph,
     buildArticle,
     buildBreadcrumbList,
     buildImageObject,
-    buildOrganization,
-    buildPerson,
+    buildPiece,
     buildSiteNavigationElement,
     buildVideoObject,
     buildWebPage,
@@ -12,6 +12,7 @@ import {
     type BreadcrumbItem,
     type WebPageType,
 } from '@jdevalk/seo-graph-core';
+import type { Blog } from 'schema-dts';
 
 import siteConfig from '../../data/site-config';
 import { slugify } from '../post-utils';
@@ -22,6 +23,8 @@ import type { SchemaPageContext } from './types';
 
 export type { SchemaPageContext } from './types';
 export { buildSchemaGraph };
+
+const BLOG_ID = `${SITE_URL}/blog/#blog`;
 
 /**
  * IdFactory for joost.blog. The Person lives at `/about-me/` (not the
@@ -40,14 +43,42 @@ function buildJoostWebSite(): Record<string, unknown> {
             description:
                 'Joost de Valk - internet entrepreneur, founder of Yoast, investor at Emilia Capital',
             publisher: { '@id': ids.person },
-            hasPart: { '@id': ids.navigation },
+            hasPart: [{ '@id': ids.navigation }, { '@id': BLOG_ID }],
+            inLanguage: 'en-US',
+            copyrightHolder: { '@id': ids.person },
+            potentialAction: {
+                '@type': 'SearchAction',
+                target: {
+                    '@type': 'EntryPoint',
+                    urlTemplate: `${SITE_URL}/search/?q={search_term_string}`,
+                },
+                'query-input': {
+                    '@type': 'PropertyValueSpecification',
+                    valueRequired: true,
+                    valueName: 'search_term_string',
+                },
+            },
         },
         ids,
     );
 }
 
+function buildJoostBlog(): Record<string, unknown> {
+    return buildPiece<Blog>({
+        '@type': 'Blog',
+        '@id': BLOG_ID,
+        name: 'Joost.blog',
+        description: 'Writing about the open web, AI, WordPress, and building things.',
+        url: `${SITE_URL}/blog/`,
+        isPartOf: { '@id': ids.website },
+        publisher: { '@id': ids.person },
+        inLanguage: 'en-US',
+        publishingPrinciples: `${SITE_URL}/about-me/`,
+    });
+}
+
 function buildJoostPerson(): Record<string, unknown> {
-    return buildPerson(getJoostPersonData(ids), ids);
+    return buildPiece(getJoostPersonData(ids));
 }
 
 function buildJoostPersonImage(): Record<string, unknown> {
@@ -90,7 +121,7 @@ function buildBreadcrumbItems(ctx: SchemaPageContext): BreadcrumbItem[] {
             return [home];
 
         case 'blogListing':
-            return [home, { name: 'Blog', url: `${SITE_URL}/blog/` }];
+            return [home, { name: 'Blog', url: ctx.canonicalUrl, id: BLOG_ID }];
 
         case 'videoListing':
             return [home, { name: 'Videos', url: `${SITE_URL}/videos/` }];
@@ -99,13 +130,13 @@ function buildBreadcrumbItems(ctx: SchemaPageContext): BreadcrumbItem[] {
             const catName = ctx.categoryName ?? ctx.categories?.[0] ?? 'Category';
             return [
                 home,
-                { name: 'Blog', url: `${SITE_URL}/blog/` },
+                { name: 'Blog', url: `${SITE_URL}/blog/`, id: BLOG_ID },
                 { name: catName, url: ctx.canonicalUrl },
             ];
         }
 
         case 'blogPost': {
-            const items: BreadcrumbItem[] = [home, { name: 'Blog', url: `${SITE_URL}/blog/` }];
+            const items: BreadcrumbItem[] = [home, { name: 'Blog', url: `${SITE_URL}/blog/`, id: BLOG_ID }];
             if (ctx.categories && ctx.categories.length > 0) {
                 const cat = ctx.categories[0];
                 items.push({
@@ -163,12 +194,15 @@ function buildJoostWebPage(ctx: SchemaPageContext): Record<string, unknown> {
             name: ctx.title,
             isPartOf: { '@id': ids.website },
             breadcrumb: { '@id': ids.breadcrumb(ctx.canonicalUrl) },
+            inLanguage: 'en-US',
             datePublished: ctx.publishDate,
             dateModified: ctx.updatedDate,
             primaryImage: isBlogPostWithImage
                 ? { '@id': ids.primaryImage(ctx.canonicalUrl) }
                 : undefined,
             about: isAboutOrHomepage ? { '@id': ids.person } : undefined,
+            copyrightHolder: { '@id': ids.person },
+            copyrightYear: ctx.publishDate?.getFullYear(),
         },
         ids,
         getWebPageType(ctx.pageType),
@@ -182,11 +216,15 @@ function buildJoostArticle(ctx: SchemaPageContext): Record<string, unknown> {
     return buildArticle(
         {
             url: ctx.canonicalUrl,
-            isPartOf: { '@id': ids.webPage(ctx.canonicalUrl) },
+            isPartOf: [
+                { '@id': ids.webPage(ctx.canonicalUrl) },
+                { '@id': BLOG_ID },
+            ] as unknown as { '@id': string },
             author: { name: 'Joost de Valk', '@id': ids.person },
             publisher: { '@id': ids.person },
             headline: ctx.title,
             description: ctx.description,
+            inLanguage: 'en-US',
             datePublished: ctx.publishDate,
             dateModified: ctx.updatedDate,
             image:
@@ -195,8 +233,11 @@ function buildJoostArticle(ctx: SchemaPageContext): Record<string, unknown> {
                     : undefined,
             articleSection: ctx.categories?.[0],
             wordCount: ctx.wordCount,
+            copyrightHolder: { '@id': ids.person },
+            copyrightYear: ctx.publishDate.getFullYear(),
         },
         ids,
+        'BlogPosting',
     );
 }
 
@@ -207,6 +248,7 @@ function buildJoostVideo(ctx: SchemaPageContext): Record<string, unknown> {
             name: ctx.title,
             description: ctx.description,
             isPartOf: { '@id': ids.webPage(ctx.canonicalUrl) },
+            inLanguage: 'en-US',
             youtubeId: ctx.youtubeId,
             uploadDate: ctx.publishDate,
             duration: ctx.duration,
@@ -237,48 +279,48 @@ function buildJoostPrimaryImage(ctx: SchemaPageContext): Record<string, unknown>
  * captured fixture at `tests/fixtures/schema-graph/`.
  */
 function buildSchemaGraph(ctx: SchemaPageContext): Record<string, unknown> {
-    const graph: Record<string, unknown>[] = [];
+    const pieces: Record<string, unknown>[] = [];
 
     // Always included: core entities
-    graph.push(buildJoostWebSite());
-    graph.push(buildJoostPerson());
-    graph.push(buildBreadcrumbList({ url: ctx.canonicalUrl, items: buildBreadcrumbItems(ctx) }, ids));
-    graph.push(buildJoostPersonImage());
-    graph.push(buildJoostNavigation());
+    pieces.push(buildJoostWebSite());
+    pieces.push(buildJoostPerson());
+    pieces.push(buildBreadcrumbList({ url: ctx.canonicalUrl, items: buildBreadcrumbItems(ctx) }, ids));
+    pieces.push(buildJoostPersonImage());
+    pieces.push(buildJoostNavigation());
+    pieces.push(buildJoostBlog());
 
     // Always include referenced entities
-    graph.push(getCountryNl(ids));
-    for (const orgInput of organizationInputs) {
-        graph.push(buildOrganization(orgInput, ids));
+    pieces.push(getCountryNl(ids));
+    for (const org of organizationInputs) {
+        pieces.push(buildPiece({
+            '@type': 'Organization' as const,
+            '@id': ids.organization(org.slug),
+            name: org.name,
+            url: org.url,
+        }));
+    }
+    for (const member of familyMembers) {
+        pieces.push(member);
     }
 
     // Page-type specific pieces
     switch (ctx.pageType) {
         case 'blogPost':
-            graph.push(buildJoostWebPage(ctx));
-            graph.push(buildJoostArticle(ctx));
+            pieces.push(buildJoostWebPage(ctx));
+            pieces.push(buildJoostArticle(ctx));
             if (ctx.featureImageUrl) {
-                graph.push(buildJoostPrimaryImage(ctx));
+                pieces.push(buildJoostPrimaryImage(ctx));
             }
             break;
 
         case 'video':
-            graph.push(buildJoostWebPage(ctx));
-            graph.push(buildJoostVideo(ctx));
+            pieces.push(buildJoostWebPage(ctx));
+            pieces.push(buildJoostVideo(ctx));
             break;
 
         case 'homepage':
-            graph.push(buildJoostWebPage(ctx));
-            for (const member of familyMembers) {
-                graph.push(member);
-            }
-            break;
-
         case 'about':
-            graph.push(buildJoostWebPage(ctx));
-            for (const member of familyMembers) {
-                graph.push(member);
-            }
+            pieces.push(buildJoostWebPage(ctx));
             break;
 
         case 'blogListing':
@@ -286,12 +328,9 @@ function buildSchemaGraph(ctx: SchemaPageContext): Record<string, unknown> {
         case 'videoListing':
         case 'page':
         default:
-            graph.push(buildJoostWebPage(ctx));
+            pieces.push(buildJoostWebPage(ctx));
             break;
     }
 
-    return {
-        '@context': 'https://schema.org',
-        '@graph': graph,
-    };
+    return assembleGraph(pieces, { warnOnDanglingReferences: true });
 }

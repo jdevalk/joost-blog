@@ -1,11 +1,15 @@
-import type { OrganizationInput } from '@jdevalk/seo-graph-core';
+interface OrgData {
+    slug: string;
+    name: string;
+    url: string;
+}
 
 /**
- * Organizations Joost is or has been affiliated with. Fed one-by-one
- * into `@jdevalk/seo-graph-core`'s `buildOrganization` so they become
- * referenced entities the Person's `worksFor` list can point at.
+ * Organizations Joost is or has been affiliated with. Built via
+ * `buildPiece<Organization>` so they become referenced entities
+ * the Person's `worksFor` list can point at.
  */
-export const organizationInputs: OrganizationInput[] = [
+export const organizationInputs: OrgData[] = [
     {
         slug: 'emilia-capital',
         name: 'Emilia Capital',
