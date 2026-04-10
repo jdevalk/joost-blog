@@ -29,6 +29,3 @@ content-export/
 
 # Generated draft slugs (built at deploy time)
 public/_draft-slugs.json
-
-# Blog content lives in Obsidian vault, symlinked in locally
-src/content/blog
