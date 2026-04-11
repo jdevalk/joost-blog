@@ -6,22 +6,33 @@ import { defineConfig } from 'astro/config';
 import fs from 'fs';
 import matter from 'gray-matter';
 
-// Collect draft slugs to exclude from sitemap
+// Collect draft slugs and lastmod dates from content frontmatter
 const draftSlugs = new Set();
-const blogDir = 'src/content/blog';
-for (const entry of fs.readdirSync(blogDir, { withFileTypes: true })) {
-    let mdPath = null;
-    if (entry.isDirectory()) {
-        const md = `${blogDir}/${entry.name}/index.md`;
-        const mdx = `${blogDir}/${entry.name}/index.mdx`;
-        mdPath = fs.existsSync(md) ? md : fs.existsSync(mdx) ? mdx : null;
-    } else if (entry.name.endsWith('.md') || entry.name.endsWith('.mdx')) {
-        mdPath = `${blogDir}/${entry.name}`;
+const lastmodMap = new Map(); // pathname → Date
+
+function scanContent(dir, urlPrefix) {
+    if (!fs.existsSync(dir)) return;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        let mdPath = null;
+        if (entry.isDirectory()) {
+            const md = `${dir}/${entry.name}/index.md`;
+            const mdx = `${dir}/${entry.name}/index.mdx`;
+            mdPath = fs.existsSync(md) ? md : fs.existsSync(mdx) ? mdx : null;
+        } else if (entry.name.endsWith('.md') || entry.name.endsWith('.mdx')) {
+            mdPath = `${dir}/${entry.name}`;
+        }
+        if (!mdPath || !fs.existsSync(mdPath)) continue;
+        const { data } = matter(fs.readFileSync(mdPath, 'utf-8'));
+        const slug = entry.isDirectory() ? entry.name : entry.name.replace(/\.mdx?$/, '');
+        if (data.draft) draftSlugs.add(slug);
+        const date = data.updatedDate ?? data.publishDate;
+        if (date) lastmodMap.set(`${urlPrefix}${slug}/`, new Date(date));
     }
-    if (!mdPath || !fs.existsSync(mdPath)) continue;
-    const { data } = matter(fs.readFileSync(mdPath, 'utf-8'));
-    if (data.draft) draftSlugs.add(entry.isDirectory() ? entry.name : entry.name.replace(/\.mdx?$/, ''));
 }
+
+scanContent('src/content/blog', '/');
+scanContent('src/content/videos', '/videos/');
+scanContent('src/content/pages', '/');
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -96,7 +107,13 @@ prefetch: {
         filter: (page) => {
             const slug = new URL(page).pathname.replace(/^\/|\/$/g, '');
             return !draftSlugs.has(slug);
-        }
+        },
+        serialize: (item) => {
+            const pathname = new URL(item.url).pathname;
+            const date = lastmodMap.get(pathname);
+            if (date) item.lastmod = date.toISOString();
+            return item;
+        },
     }), pagefind(), injectModulePreloads()],
     markdown: {
         shikiConfig: {

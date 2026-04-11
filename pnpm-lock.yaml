@@ -24,8 +24,8 @@ importers:
         specifier: ^5.2.8
         version: 5.2.8
       '@jdevalk/astro-seo-graph':
-        specifier: ^0.4.1
-        version: 0.4.2(astro@6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2))(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@5.9.3)
+        specifier: ^0.5.2
+        version: 0.5.2(astro@6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2))(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@5.9.3)
       '@jdevalk/seo-graph-core':
         specifier: ^0.5.2
         version: 0.5.2(typescript@5.9.3)
@@ -497,8 +497,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@jdevalk/astro-seo-graph@0.4.2':
-    resolution: {integrity: sha512-USMv3RIKDL0ly9M5J7zq2pTLhIMASMIRptHCyJzI4MZKSL/xYudo+58gSFJ61UUbTeGeC0FZ7s60+s81uRMvVg==}
+  '@jdevalk/astro-seo-graph@0.5.2':
+    resolution: {integrity: sha512-OIo6yqmfFJsCHfDDgNPp5G4t2EHxipEsP6zyfBieySpXTKGP35RdoRWz/xWWOvx8Zz5JPQ3Bj0j1Jsn28geAPA==}
     peerDependencies:
       astro: ^5.0.0 || ^6.0.0
 
@@ -2878,7 +2878,7 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
-  '@jdevalk/astro-seo-graph@0.4.2(astro@6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2))(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@5.9.3)':
+  '@jdevalk/astro-seo-graph@0.5.2(astro@6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2))(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@5.9.3)':
     dependencies:
       '@jdevalk/seo-graph-core': 0.5.2(typescript@5.9.3)
       astro: 6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2)
