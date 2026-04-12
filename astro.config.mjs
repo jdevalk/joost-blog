@@ -135,6 +135,10 @@ prefetch: {
             key: '3d70c7d340f8e0fda71beb6d32006a55',
             host: 'joost.blog',
             siteUrl: 'https://joost.blog',
+            filter: (url) => {
+                const slug = new URL(url).pathname.replace(/^\/|\/$/g, '');
+                return !draftSlugs.has(slug);
+            },
         },
     }), pagefind(), injectModulePreloads()],
     markdown: {
