@@ -2,22 +2,29 @@
 title: 'Astro SEO: the definitive guide'
 publishDate: 2026-04-12T00:00:00.000Z
 excerpt: >-
-  In 2008 I wrote "WordPress SEO: the definitive guide." Eighteen years
-  later, this is the Astro version. The full SEO stack: linked JSON-LD
-  graphs, per-collection sitemaps, auto-generated OG images, IndexNow,
-  schema endpoints for agent discovery, and why keyphrase optimization
-  matters less than you think.
+  In 2008 I wrote "WordPress SEO: the definitive guide." Eighteen years later,
+  this is the Astro version. The full SEO stack: linked JSON-LD graphs,
+  per-collection sitemaps, auto-generated OG images, IndexNow, schema endpoints
+  for agent discovery, and why keyphrase optimization matters less than you
+  think.
 categories:
+  - SEO
   - Development
-draft: true
-password: astro-seo-2026
+isFeatured: true
 toc: true
+featureImage: ./images/featured.webp
+featureImageAlt: 'Illustration for: Astro SEO: the definitive guide'
 ---
 In 2008, I wrote [WordPress SEO: the definitive guide](https://yoast.com/wordpress-seo/). It became one of the most-linked SEO articles on the internet and laid the groundwork for what eventually became Yoast SEO. The tools have changed, the web has changed, and my thinking on several fundamentals has evolved. This is the Astro version.
 
 When I [moved this blog to Astro](/do-you-need-a-cms/), people asked: what about SEO? The answer is that everything I did on WordPress, I do on Astro. And because I control the entire HTML output, most of it is easier to get right. No theme conflicts, no plugin fights over head tags, no render-blocking resources injected by something I forgot I installed.
 
 No server to compromise, no database to inject into, no login to brute force. From an SEO perspective, static HTML on a CDN is a better starting point than most CMSes will ever give you.
+
+<div class="not-prose rounded-lg border-2 border-primary/20 bg-tertiary px-6 py-5 dark:border-accent/20 dark:bg-stone-900">
+<p class="mb-2 text-lg font-semibold text-primary dark:text-accent">Want your AI agent to do this for you?</p>
+<p class="text-base leading-relaxed text-stone-700 dark:text-stone-300">Install my <a href="https://github.com/jdevalk/skills?tab=readme-ov-file#-astro-seo" class="text-primary underline decoration-1 underline-offset-2 hover:no-underline dark:text-accent">Astro SEO skill</a>, or point your AI coding agent at this article. Everything below is written so an agent can read it and implement it directly.</p>
+</div>
 
 Here's the full stack.
 
@@ -61,6 +68,7 @@ The component handles several SEO details automatically:
 - **Robots meta** always includes `max-snippet:-1`, `max-image-preview:large`, `max-video-preview:-1` for maximum snippet sizes
 - **Canonical is omitted when `noindex` is true**, per Google's recommendation
 - **Twitter tags** that duplicate their Open Graph equivalents are suppressed (Twitter falls back to OG automatically)
+- **Hreflang alternates** for multilingual sites. This blog is English-only so it doesn't need them, but [limonaia.house](https://limonaia.house) uses the same `<Seo>` component with `alternates` to tell search engines which page is the Italian version and which is the English version. Without hreflang, Google may show the wrong language version in search results, or treat the translations as duplicate content.
 
 ### Auto-generated OG images
 
@@ -84,6 +92,8 @@ The `seoGraph()` integration that handles IndexNow also validates your built HTM
 - **H1 validation:** Warns about pages with zero or more than one `<h1>` element, a common SEO and accessibility issue that's easy to miss in templates.
 - **Duplicate title/description detection:** Checks across all built pages for duplicate `<title>` or meta description values. Here, it caught paginated blog pages all sharing the same title, a corpus-level SEO problem that per-page checks can't find.
 - **Schema validation:** Validates the JSON-LD structured data on every page, which brings us to the next layer.
+
+Beyond build-time checks, add a **broken link checker** to your CI pipeline. A [lychee](https://github.com/lycheeverse/lychee-action) GitHub Action that runs on every push to your content files catches dead links before they go live, and a weekly scheduled run catches link rot as external sites move or disappear. Broken outbound links are a bad user experience and a negative trust signal.
 
 ## 2. Structured data
 
@@ -184,9 +194,9 @@ Performance is where Astro's architecture does most of the work for you.
 
 **View Transitions.** Astro's `<ClientRouter />` with `defaultStrategy: 'viewport'` prefetches links as they scroll into view, making navigation feel instant while keeping the initial load minimal.
 
-**CDN headers.** Hashed assets under `/_astro/` get `Cache-Control: public, max-age=31536000, immutable`. They never need revalidation because the filename changes when the content changes.
+**CDN headers.** Hashed assets under `/_astro/` get `Cache-Control: public, max-age=31536000, immutable`. They never need revalidation because the filename changes when the content changes. How you set these headers depends on your platform: Cloudflare Pages and Netlify use a `_headers` file, Vercel uses `vercel.json`, and other hosts typically use server config.
 
-**No-Vary-Search.** UTM parameters break browser caching: `?utm_source=linkedin` and `?utm_source=email` are treated as different resources. The `No-Vary-Search` response header tells the browser to ignore specified query parameters when matching cached responses:
+**[No-Vary-Search](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search).** UTM parameters break browser caching: `?utm_source=linkedin` and `?utm_source=email` are treated as different resources. The `No-Vary-Search` response header tells the browser to ignore specified query parameters when matching cached responses:
 
 ```
 No-Vary-Search: key-order, params=("utm_source" "utm_medium" "utm_campaign" "utm_content" "utm_term")
@@ -266,7 +276,13 @@ import { createIndexNowKeyRoute } from '@jdevalk/astro-seo-graph';
 export const GET = createIndexNowKeyRoute({ key: 'your-indexnow-key' });
 ```
 
-The first build submitted 153 URLs and got a 202 response within seconds. Instead of waiting for crawlers, the search engine already knows.
+When I first enabled this, the build pinged Bing with all 153 URLs on the site. Without IndexNow, you publish and wait for search engines to discover your changes on their next crawl, which can take days or weeks. With it, the search engine knows about your new or updated pages within seconds of the build finishing.
+
+### RSS feed
+
+An RSS feed is still one of the most reliable discovery mechanisms. Feed readers, podcast apps, and an increasing number of AI agents consume RSS directly. Astro's [`@astrojs/rss`](https://docs.astro.build/en/guides/rss/) package makes this straightforward: you create a route that pulls your content collection, renders each post's body to HTML, and returns a valid RSS 2.0 feed. The `<Seo>` component advertises it with a `<link rel="alternate" type="application/rss+xml">` tag in the head so browsers and agents can discover it automatically.
+
+Include the full post content in your feed, not just excerpts. Truncated feeds frustrate readers and give AI systems less to work with. If someone is subscribed to your feed, they've already opted in to reading your writing.
 
 ### robots.txt
 
@@ -288,20 +304,7 @@ Sitemaps and IndexNow help search engines find your content. Agent discovery hel
 
 Schema endpoints serve a corpus-wide JSON-LD graph that lets an agent understand your entire site in one request. This is part of Microsoft's [NLWeb](https://github.com/nlweb-ai/NLWeb) specification. It's still early, but the setup is simple enough that it's worth having ready:
 
-```ts
-// src/pages/schema/post.json.ts
-import { createSchemaEndpoint } from '@jdevalk/astro-seo-graph';
-
-export const GET = createSchemaEndpoint({
-    entries: () => getCollection('blog'),
-    mapper: (post) => [
-        buildWebPage({ url, name: post.data.title, ... }, ids),
-        buildArticle({ url, headline: post.data.title, ... }, ids, 'BlogPosting'),
-    ],
-});
-```
-
-This site serves three schema endpoints and a schema map at `/schemamap.xml` that lists them, like a sitemap but for structured data. The `Schemamap:` directive in `robots.txt` points agents to it.
+Each endpoint collects every entry in a content collection, builds the full JSON-LD graph for each entry, and serves the combined result as `application/ld+json`. This site has three: `/schema/post.json`, `/schema/page.json`, and `/schema/video.json`. A schema map at `/schemamap.xml` lists them all, like a sitemap but for structured data. The `Schemamap:` directive in `robots.txt` points agents to it. See the [`astro-seo-graph` documentation](https://github.com/jdevalk/seo-graph/tree/main/packages/astro-seo-graph#schema-endpoints) for the full implementation.
 
 ### NLWeb discovery
 
@@ -311,15 +314,9 @@ A `<link rel="nlweb">` tag in the head points to the site's conversational endpo
 
 ### Redirects
 
-When you change a URL, delete a page, or consolidate duplicate content, you need redirects. On Cloudflare Pages, a `_redirects` file in your `public/` directory handles this:
+When you change a URL, delete a page, or consolidate duplicate content, you need redirects. How you configure them depends on your hosting platform. On Cloudflare Pages, a `_redirects` file in `public/` works. On Netlify, you can use the same `_redirects` format or `netlify.toml`. On Vercel, redirects go in `vercel.json`. The syntax differs but the principle is the same: map every old URL to its new location with a 301 status.
 
-```
-/feed /feed.xml 301
-/plugins /code/ 301
-/contact /contact-me/ 301
-```
-
-Keep this file maintained. Every URL that ever existed and moved should have a redirect. Search engines transfer link equity through 301 redirects, and users who bookmarked the old URL still arrive where they should.
+Keep this maintained. Every URL that ever existed and moved should have a redirect. Search engines transfer link equity through 301 redirects, and users who bookmarked the old URL still arrive where they should.
 
 ### FuzzyRedirect on 404
 

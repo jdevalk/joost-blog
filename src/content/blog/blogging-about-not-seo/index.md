@@ -6,7 +6,7 @@ excerpt: >-
   separate from Yoast.com. Blogging about stuff I do outside of Yoast, which,
   surprisingly
 categories:
-  - Search Opinion
+  - SEO
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Blogging about not SEO'
 ---

@@ -12,7 +12,7 @@ categories:
   - Open Source
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Shipping pieces of the machine-readable web'
-isFeatured: true
+isFeatured: false
 ---
 Recently I wrote that the open web doesn't need more defenders, it needs [builders](/defending-open-web-not-enough/). That the next open web needs machine-readable architecture: content structured for machines, not just rendered for browsers. Linked knowledge graphs that search engines and AI agents can consume without reverse-engineering HTML.
 

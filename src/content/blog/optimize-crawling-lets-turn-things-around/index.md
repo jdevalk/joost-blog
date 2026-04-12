@@ -6,7 +6,7 @@ excerpt: >-
   you don’t want crawled to not be crawled. There’s more to say about that, and
   I will
 categories:
-  - Search Opinion
+  - SEO
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Optimize crawling: let’s turn things around!'
 ---

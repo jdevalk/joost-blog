@@ -6,7 +6,7 @@ excerpt: >-
   works for them. They would start treating nofollow as a “hint” instead of a
   “direc
 categories:
-  - Search Opinion
+  - SEO
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Google’s robots changes, the web & the law'
 ---

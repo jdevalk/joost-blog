@@ -6,7 +6,7 @@ excerpt: >-
   has become clear: we need better naming of these images and we should probably
   impr
 categories:
-  - Search Opinion
+  - SEO
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Social & Schema images: naming considerations'
 ---

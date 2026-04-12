@@ -6,7 +6,7 @@ excerpt: >-
   domains, or within a domain) is that you run into redirects that go “wrong”. A
   syste
 categories:
-  - Search Opinion
+  - SEO
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Redirect-By HTTP headers'
 ---

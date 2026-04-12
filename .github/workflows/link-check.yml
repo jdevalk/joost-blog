@@ -1,0 +1,22 @@
+name: Link Check
+
+on:
+  push:
+    branches: [main]
+    paths: ['src/content/**/*.md']
+  pull_request:
+    branches: [main]
+    paths: ['src/content/**/*.md']
+  schedule:
+    - cron: '0 9 * * 1'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: --no-progress 'src/content/**/*.md'
+          fail: true

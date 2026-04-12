@@ -6,7 +6,7 @@ excerpt: >-
   working with the WP CLI as MCP host team at Cloudfest, then heading off to SMX
   Munich f
 categories:
-  - Search Opinion
+  - SEO
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Build websites like it’s 2005 (and win in 2025)'
 ---

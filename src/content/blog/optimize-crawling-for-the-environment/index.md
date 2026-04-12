@@ -6,7 +6,7 @@ excerpt: >-
   Every time they find a URL, they crawl it and if it’s interesting to them,
   they’l
 categories:
-  - Search Opinion
+  - SEO
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Optimize crawling, for the environment'
 ---

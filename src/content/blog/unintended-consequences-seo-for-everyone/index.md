@@ -6,7 +6,7 @@ excerpt: >-
   everyone was Yoast’s tagline, and we meant it. We helped millions of people
   optimize the
 categories:
-  - Search Opinion
+  - SEO
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: The unintended consequences of making SEO “for everyone”'
 ---
