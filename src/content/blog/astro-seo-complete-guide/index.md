@@ -15,25 +15,17 @@ toc: true
 ---
 In 2008, I wrote [WordPress SEO: the definitive guide](https://yoast.com/wordpress-seo/). It became one of the most-linked SEO articles on the internet and laid the groundwork for what eventually became Yoast SEO. The tools have changed, the web has changed, and my thinking on several fundamentals has evolved. This is the Astro version.
 
-When I [moved this blog to Astro](/do-you-need-a-cms/), people asked: what about SEO? The answer is that everything I did on WordPress, I do on Astro. And because I control the entire HTML output, most of it is easier to get right. No theme conflicts, no plugin fights over head tags, no render-blocking resources injected by something I forgot I installed. No server to compromise, no database to inject into, no login to brute force. From an SEO perspective, static HTML on a CDN is a better starting point than most CMSes will ever give you.
+When I [moved this blog to Astro](/do-you-need-a-cms/), people asked: what about SEO? The answer is that everything I did on WordPress, I do on Astro. And because I control the entire HTML output, most of it is easier to get right. No theme conflicts, no plugin fights over head tags, no render-blocking resources injected by something I forgot I installed.
+
+No server to compromise, no database to inject into, no login to brute force. From an SEO perspective, static HTML on a CDN is a better starting point than most CMSes will ever give you.
 
 Here's the full stack.
-
-**Table of contents:**
-
-1. [Technical foundation](#1-technical-foundation) — the `<Seo>` component, canonical URLs, OG images
-2. [Structured data](#2-structured-data) — linked JSON-LD knowledge graphs, trust signals
-3. [Content optimization](#3-content-optimization) — topics over keyphrases, writing for AI extraction
-4. [Site structure](#4-site-structure) — content collections, one taxonomy, breadcrumbs, internal linking
-5. [Performance](#5-performance) — static by default, image optimization, caching, No-Vary-Search
-6. [Sitemaps and discovery](#6-sitemaps-and-discovery) — XML sitemaps, IndexNow, schema endpoints, NLWeb
-7. [Analytics and measurement](#7-analytics-and-measurement) — Search Console, Bing, structured data validation
 
 ## 1. Technical foundation
 
 ### One component for all head metadata
 
-The starting point is [`@jdevalk/astro-seo-graph`](https://github.com/jdevalk/seo-graph), a package I [built for exactly this purpose](/seo-graph/). The `<Seo>` component handles everything you'd normally scatter across your `<head>`: title, meta description, canonical URL, Open Graph tags, Twitter cards, hreflang alternates, and the JSON-LD knowledge graph. One component, one call.
+The starting point is [`@jdevalk/astro-seo-graph`](https://github.com/jdevalk/seo-graph), a package I [built for exactly this purpose](/seo-graph/). The `<Seo>` component handles everything you'd normally scatter across your `<head>`: title, description, canonical, Open Graph, Twitter cards, hreflang, and the JSON-LD graph.
 
 ```astro
 ---
@@ -61,7 +53,7 @@ import Seo from '@jdevalk/astro-seo-graph/Seo.astro';
 />
 ```
 
-That's the entire `BaseHead.astro` on this site (minus font preloads and analytics). It used to be 130 lines.
+That's the entire `BaseHead.astro` here (minus font preloads and analytics). It used to be 130 lines.
 
 The component handles several SEO details automatically:
 
@@ -72,7 +64,9 @@ The component handles several SEO details automatically:
 
 ### Auto-generated OG images
 
-Every page on this site gets a 1200×675 Open Graph image generated at build time. That size matters: Google Discover requires images at least 1200px wide, and the 16:9 ratio works well across social platforms. The route at `/og/[...slug].jpg` uses [satori](https://github.com/vercel/satori) to render a template to SVG, then [sharp](https://sharp.pixelplumbing.com/) to convert it to JPEG. If the post has a featured image, it's composited into the design. If not, the template fills with the title and site branding.
+Every page gets a 1200×675 Open Graph image generated at build time. That size matters: Google Discover requires images at least 1200px wide, and the 16:9 ratio works well across social platforms. The route at `/og/[...slug].jpg` uses [satori](https://github.com/vercel/satori) to render a template to SVG, then [sharp](https://sharp.pixelplumbing.com/) to convert it to JPEG. If the post has a featured image, it's composited into the design. If not, the template fills with the title and site branding.
+
+[Why JPEG and not WebP or AVIF?](/use-avif-webp-share-images/) Because social platforms don't reliably support modern formats yet.
 
 The `<Seo>` component derives the OG image URL from the page slug automatically:
 
@@ -88,17 +82,25 @@ No manual image creation, no missing OG images, no forgetting to update them whe
 The `seoGraph()` integration that handles IndexNow also validates your built HTML on every build:
 
 - **H1 validation:** Warns about pages with zero or more than one `<h1>` element, a common SEO and accessibility issue that's easy to miss in templates.
-- **Duplicate title/description detection:** Checks across all built pages for duplicate `<title>` or meta description values. On this site, it caught paginated blog pages all sharing the same title, a corpus-level SEO problem that per-page checks can't find.
+- **Duplicate title/description detection:** Checks across all built pages for duplicate `<title>` or meta description values. Here, it caught paginated blog pages all sharing the same title, a corpus-level SEO problem that per-page checks can't find.
+- **Schema validation:** Validates the JSON-LD structured data on every page, which brings us to the next layer.
 
 ## 2. Structured data
 
 Most sites that have structured data at all output a flat snippet: a single `Article` or `WebPage` object. That's better than nothing, but it doesn't tell search engines or AI agents how things connect. Who wrote this article? What site is it on? What organization does the author work for?
 
-I [wrote about this in detail](/seo-graph/) when I shipped `@jdevalk/seo-graph-core`, the graph engine that powers this site's structured data. The short version: every page outputs a linked `@graph` with `WebSite`, `Blog`, `Person`, `WebPage`, `BlogPosting`, `BreadcrumbList`, and `ImageObject` entities, all wired together with `@id` references so an agent can walk the relationships.
+I [wrote about this in detail](/seo-graph/) when I shipped `@jdevalk/seo-graph-core`, the graph engine that powers this site's structured data. The short version: every page outputs a linked `@graph` with `WebSite`, `Blog`, `Person`, `WebPage`, `BlogPosting`, `BreadcrumbList`, and `ImageObject` entities. They're wired together with `@id` references so an agent can walk the relationships.
 
-The entities include trust signals that are increasingly important: `publishingPrinciples` tells agents where your editorial policy lives, `copyrightHolder` and `copyrightYear` communicate rights, `knowsAbout` helps topical authority, and `SearchAction` on the `WebSite` tells agents how to search your content. You can [visualize this site's graph](https://classyschema.org/Visualisation?url=https%3A%2F%2Fjoost.blog%2F) to see how the entities connect.
+Trust signals in your graph matter more than they used to:
 
-The `<Seo>` component takes the assembled graph as a prop and renders it as `<script type="application/ld+json">` alongside all the meta tags. One component, one graph, one place to get it right.
+- `publishingPrinciples` tells agents where your editorial policy lives
+- `copyrightHolder` and `copyrightYear` communicate rights
+- `knowsAbout` helps topical authority
+- `SearchAction` on the `WebSite` tells agents how to search your content
+
+You can [visualize this blog's graph](https://classyschema.org/Visualisation?url=https%3A%2F%2Fjoost.blog%2F) to see how the entities connect.
+
+The `<Seo>` component takes the assembled graph as a prop and renders it as `<script type="application/ld+json">` alongside all the meta tags. Everything in one place.
 
 The seo-graph repo includes a [3,000-line AGENTS.md](https://github.com/jdevalk/seo-graph/blob/main/AGENTS.md) with recipes for fourteen site types (blog, e-commerce, vacation rental, podcast, documentation, and more), so your AI coding agent knows which entities to pick for your specific case.
 
@@ -110,19 +112,27 @@ This is where my thinking has changed the most since 2008.
 
 The original WordPress SEO guide spent a lot of time on keyphrase optimization: pick a focus keyword, use it in your title, heading, first paragraph, meta description. That advice was correct for a world where search engines matched strings. It's much less relevant in 2026.
 
-Modern search is vectorized. Engines and AI models convert your content into high-dimensional embeddings that capture *meaning*, not exact word matches. Writing about "building websites with Astro" will rank for "static site generators" and "modern web development" without those phrases ever appearing in your text. What matters is covering the *topic* thoroughly, not placing specific keywords in specific locations.
+Modern search is vectorized. Engines and AI models convert your content into mathematical representations that capture *meaning*, not exact word matches. Writing about "building websites with Astro" has a much better chance of surfacing for related queries like "static site generators" than it used to. You don't need those exact phrases in your text. Exact keyword placement still has some effect, but it's far less important than covering the topic thoroughly and clearly.
 
 That doesn't mean titles and descriptions don't matter. They do, because humans read them in search results and social shares. But optimizing them for exact keyword placement is solving a problem from 2015.
 
-### Write for extraction
+### Write for humans and extraction
 
-Readability has always mattered, but the reason has shifted. It's no longer just about keeping humans engaged. AI systems pull answers from your content, and the unit of extraction is the paragraph. A self-contained paragraph that makes its point without requiring context from surrounding paragraphs is the one that gets surfaced in AI-generated answers. If your paragraph can't stand on its own, an AI agent can't use it.
+Readability has always mattered, but the reason has expanded. It's no longer just about keeping humans engaged. AI systems pull answers from your content, and the unit of extraction is the paragraph. A self-contained paragraph that makes its point without requiring context from surrounding paragraphs is the one that gets surfaced in AI-generated answers. If your paragraph can't stand on its own, an AI agent can't use it.
 
-This means: clear topic sentences, one idea per paragraph, conclusions stated rather than implied. The same writing discipline that makes content readable to humans makes it useful to machines.
+Several specific things matter more than they used to:
+
+- **Lead with the point.** Every paragraph should open with its most important sentence. That's what AI systems quote, and it's what L2 English readers use to decide whether to keep reading.
+- **Keep sentences short.** Sentences over 20 words are harder to parse, especially for readers who aren't native English speakers. Most of your audience reads English as a second language. Write for them.
+- **One idea per paragraph.** When a paragraph does two things, neither is extractable. Break it.
+- **Use transitions.** Words like "because", "however", "for example" tell readers (and machines) how paragraphs connect. Without them, your post reads like a list of unrelated statements.
+- **Avoid filler.** Words like "basically", "simply", "really", "just" add length without meaning. Cut them.
+
+The same writing discipline that makes content readable to humans makes it useful to machines. If you write with an AI agent, the [readability-check skill](https://github.com/jdevalk/skills#-readability-check) can audit your drafts against these criteria automatically.
 
 ### Enforce structure at the content level
 
-Astro's content collections let you enforce SEO fields at the schema level using Zod validation. On this site, `@jdevalk/astro-seo-graph` provides `seoSchema` which enforces title length (5-120 characters) and description length (15-160 characters):
+Astro's content collections let you enforce SEO fields at the schema level using Zod validation. `@jdevalk/astro-seo-graph` provides `seoSchema` which enforces title length (5-120 characters) and description length (15-160 characters):
 
 ```ts
 import { seoSchema } from '@jdevalk/astro-seo-graph';
@@ -146,15 +156,15 @@ The schema endpoints also include `articleBody` with the full text of each post 
 
 On WordPress, your site structure lives in the database: posts, pages, categories, tags, custom post types. On Astro, it lives in the file system as content collections with typed schemas. Each collection is a directory of Markdown files with frontmatter validated against a Zod schema at build time.
 
-This is more rigorous than WordPress taxonomies. A blog post that's missing a required `publishDate` or has a malformed `category` array won't build. The site structure is enforced by the type system, not by conventions that plugins may or may not follow.
+This is stricter than WordPress taxonomies. A blog post that's missing a required `publishDate` or has a malformed `category` array won't build. The site structure is enforced by the type system, not by conventions that plugins may or may not follow.
 
 ### One taxonomy, not two
 
-Most sites should not use both categories and tags. Pick one taxonomy and commit to it. If you have both, one of them is almost certainly adding clutter without adding navigational value. I [researched this](/research-wordpress-publications-misuse-tags/) and wrote [a plugin](https://progressplanner.com/plugins/fewer-tags/) about it for WordPress; on Astro I simply didn't build tags. This site uses categories only.
+Most sites should not use both categories and tags. Pick one taxonomy and commit to it. If you have both, one of them is almost certainly adding clutter without adding navigational value. I [researched this](/research-wordpress-publications-misuse-tags/) and wrote [a plugin](https://progressplanner.com/plugins/fewer-tags/) about it for WordPress. On Astro, I simply didn't build tags. This site uses categories only.
 
 ### Breadcrumbs linked to the graph
 
-Breadcrumbs aren't just a visual navigation aid. In the JSON-LD graph, each breadcrumb item can reference a schema entity via `@id`. On this site, the "Blog" crumb in every blog post's breadcrumb trail links directly to the `Blog` entity in the graph, not just to the `/blog/` URL. That tells agents the structural relationship between the breadcrumb and the blog as a publication.
+Breadcrumbs aren't just a visual navigation aid. In the JSON-LD graph, each breadcrumb item can reference a schema entity via `@id`. Here, the "Blog" crumb in every blog post's breadcrumb trail links directly to the `Blog` entity in the graph, not just to the `/blog/` URL. That tells agents the structural relationship between the breadcrumb and the blog as a publication.
 
 ### Internal linking
 
@@ -162,7 +172,7 @@ Internal linking doesn't need to be a manual process. Tools like [Graphify](http
 
 ## 5. Performance
 
-This is where Astro's architecture does most of the work for you.
+Performance is where Astro's architecture does most of the work for you.
 
 **Static by default.** Every page is pre-rendered to HTML at build time. No server-side rendering, no database queries, no PHP execution. The baseline is already fast because there's nothing slow to do.
 
@@ -170,9 +180,7 @@ This is where Astro's architecture does most of the work for you.
 
 **Image optimization.** Astro's built-in `<Image>` component generates responsive `srcset` attributes, converts to WebP, and adds `loading="lazy"` and `decoding="async"` automatically.
 
-**Font preloading.** Preload your primary web font in woff2 format. On this site, Mona Sans is preloaded in the `<head>` so it's available before the first paint.
-
-**Module preloads.** A custom Astro integration scans the built output, traces JavaScript import chains, and injects `<link rel="modulepreload">` tags for transitive dependencies. This eliminates the waterfall where the browser discovers imports only after parsing the parent module.
+**Font preloading.** Preload your primary web font in woff2 format. Mona Sans is preloaded in the `<head>` so it's available before the first paint.
 
 **View Transitions.** Astro's `<ClientRouter />` with `defaultStrategy: 'viewport'` prefetches links as they scroll into view, making navigation feel instant while keeping the initial load minimal.
 
@@ -186,7 +194,7 @@ No-Vary-Search: key-order, params=("utm_source" "utm_medium" "utm_campaign" "utm
 
 Same page, different UTM tags, one cached response. Supported in Chrome, degrades gracefully elsewhere.
 
-## 6. Sitemaps and discovery
+## 6. Sitemaps and indexing
 
 ### Per-collection sitemaps
 
@@ -208,7 +216,7 @@ sitemap({
 })
 ```
 
-On this site, this produces `sitemap-posts-0.xml`, `sitemap-videos-0.xml`, and `sitemap-pages-0.xml` (the default bucket for unmatched URLs). Per-collection sitemaps make it much easier to debug indexing issues in Google Search Console and Bing Webmaster Tools, since each collection shows separately.
+For this blog, that produces `sitemap-posts-0.xml`, `sitemap-videos-0.xml`, and `sitemap-pages-0.xml` (the default bucket for unmatched URLs). Per-collection sitemaps make it much easier to debug indexing issues in Google Search Console and Bing Webmaster Tools, since each collection shows separately.
 
 ### Git-based lastmod
 
@@ -258,11 +266,27 @@ import { createIndexNowKeyRoute } from '@jdevalk/astro-seo-graph';
 export const GET = createIndexNowKeyRoute({ key: 'your-indexnow-key' });
 ```
 
-On this site, the first build submitted 153 URLs and got a 202 response within seconds. Instead of waiting for crawlers, the search engine already knows.
+The first build submitted 153 URLs and got a 202 response within seconds. Instead of waiting for crawlers, the search engine already knows.
+
+### robots.txt
+
+A dynamic `robots.txt` route references the sitemap index and the schema map (see next section):
+
+```
+User-agent: *
+Allow: /
+
+Sitemap: https://joost.blog/sitemap-index.xml
+Schemamap: https://joost.blog/schemamap.xml
+```
+
+## 7. Agent discovery
+
+Sitemaps and IndexNow help search engines find your content. Agent discovery helps AI systems understand it.
 
 ### Schema endpoints and schema map
 
-Schema endpoints serve a corpus-wide JSON-LD graph that lets an agent understand your entire site in one request. This is part of Microsoft's [NLWeb](https://github.com/nlweb-ai/NLWeb) specification. It's still early, but the infrastructure is simple enough that there's no reason not to have it ready:
+Schema endpoints serve a corpus-wide JSON-LD graph that lets an agent understand your entire site in one request. This is part of Microsoft's [NLWeb](https://github.com/nlweb-ai/NLWeb) specification. It's still early, but the setup is simple enough that it's worth having ready:
 
 ```ts
 // src/pages/schema/post.json.ts
@@ -277,35 +301,37 @@ export const GET = createSchemaEndpoint({
 });
 ```
 
-This site serves three schema endpoints and a schema map at `/schemamap.xml` that lists them, like a sitemap but for structured data.
-
-### robots.txt
-
-A dynamic `robots.txt` route references both the sitemap index and the schema map:
-
-```
-User-agent: *
-Allow: /
-
-Sitemap: https://joost.blog/sitemap-index.xml
-Schemamap: https://joost.blog/schemamap.xml
-```
+This site serves three schema endpoints and a schema map at `/schemamap.xml` that lists them, like a sitemap but for structured data. The `Schemamap:` directive in `robots.txt` points agents to it.
 
 ### NLWeb discovery
 
 A `<link rel="nlweb">` tag in the head points to the site's conversational endpoint, for AI agents that support Microsoft's [NLWeb protocol](https://github.com/nlweb-ai/NLWeb). Early days, but the tag is one line.
 
+## 8. Redirects and error handling
+
+### Redirects
+
+When you change a URL, delete a page, or consolidate duplicate content, you need redirects. On Cloudflare Pages, a `_redirects` file in your `public/` directory handles this:
+
+```
+/feed /feed.xml 301
+/plugins /code/ 301
+/contact /contact-me/ 301
+```
+
+Keep this file maintained. Every URL that ever existed and moved should have a redirect. Search engines transfer link equity through 301 redirects, and users who bookmarked the old URL still arrive where they should.
+
 ### FuzzyRedirect on 404
 
-The `FuzzyRedirect` component from `@jdevalk/astro-seo-graph` fetches your sitemap, computes Levenshtein distance against the current URL, and either auto-redirects (above 95% similarity) or shows a "Did you mean..." suggestion. Catches typos and old URL patterns without maintaining a redirect table.
+For the URLs that slip through, the [`FuzzyRedirect`](https://github.com/jdevalk/seo-graph/tree/main/packages/astro-seo-graph#fuzzy-404-redirect) component from `@jdevalk/astro-seo-graph` acts as a safety net. It fetches your sitemap, computes Levenshtein distance against the current URL, and either auto-redirects (above 85% similarity) or shows a "Did you mean..." suggestion. Catches typos and old URL patterns without maintaining a redirect table.
 
-## 7. Analytics and measurement
+## 9. Analytics and measurement
 
-**Plausible** for traffic analytics. Privacy-friendly, no cookie banner needed, lightweight script that doesn't slow down the page.
+**[Plausible](https://plausible.io/)** for traffic analytics. Privacy-friendly, no cookie banner needed, lightweight script that doesn't slow down the page.
 
-**Google Search Console** for indexing status, structured data validation, and search performance. The per-collection sitemaps make debugging easier: if something isn't being indexed, you can see immediately whether it's a posts problem, a videos problem, or something else.
+**[Google Search Console](https://search.google.com/search-console)** for indexing status, structured data validation, and search performance. The per-collection sitemaps make debugging easier: if something isn't being indexed, you can see immediately whether it's a posts problem, a videos problem, or something else.
 
-**Bing Webmaster Tools** for the same reasons, and because Bing's index feeds AI products like Copilot and ChatGPT. If your content isn't indexed by Bing, it's invisible to a growing share of how people find information.
+**[Bing Webmaster Tools](https://www.bing.com/webmasters)** for the same reasons, and because Bing's index feeds AI products like Copilot and ChatGPT. If your content isn't indexed by Bing, it's invisible to a growing share of how people find information.
 
 **Structured data validation.** Use Google's [Rich Results Test](https://search.google.com/test/rich-results) and [ClassySchema](https://classyschema.org/Visualisation) to verify your JSON-LD graph. Check that every `@id` reference resolves, that the entity relationship tree is complete, and that trust signals like `publishingPrinciples` and `copyrightHolder` are present.
 
@@ -317,7 +343,7 @@ Here's what it looks like assembled:
 - [`@astrojs/sitemap`](https://docs.astro.build/en/guides/integrations-guide/sitemap/) with `chunks` for per-collection sitemaps and `serialize` for git-based lastmod
 - [satori](https://github.com/vercel/satori) + [sharp](https://sharp.pixelplumbing.com/) for auto-generated OG images
 - [astro-pagefind](https://github.com/shishkin/astro-pagefind) for client-side search (which the `SearchAction` in the schema points to)
-- A custom integration for module preloads
+- [readability-check skill](https://github.com/jdevalk/skills#-readability-check) for AI-assisted content auditing
 
 All of it is open source. You can see it running live on this site: view source on any page for the JSON-LD graph, check the [sitemap index](/sitemap-index.xml), the [schema map](/schemamap.xml), or [visualize the full graph](https://classyschema.org/Visualisation?url=https%3A%2F%2Fjoost.blog%2F) for the homepage.
 

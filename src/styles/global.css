@@ -92,6 +92,9 @@
     .prose > :is(h2, h3) {
         @apply border-l-3 border-primary dark:border-accent -ml-5 pl-[17px];
     }
+    .prose pre {
+        @apply rounded-lg border border-stone-200 dark:border-stone-700/50;
+    }
     .prose blockquote {
         @apply relative border-none pl-0 text-center text-[1.375em] leading-snug font-semibold not-italic sm:text-[1.66667em] lg:-mx-24 xl:-mx-40;
     }
