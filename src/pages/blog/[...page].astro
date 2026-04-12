@@ -28,12 +28,12 @@ const featuredPost = allPosts.find((p) => p.data.isFeatured) ?? allPosts[0];
 const pageContext: SchemaPageContext = {
     pageType: 'blogListing',
     canonicalUrl: canonicalUrl(Astro.url.pathname),
-    title: 'Blog',
-    description: 'Articles about WordPress, SEO, open source, and more by Joost de Valk'
+    title: isFirstPage ? 'Blog' : `Blog — Page ${page.currentPage}`,
+    description: isFirstPage ? 'Articles about WordPress, SEO, open source, and more by Joost de Valk' : `Page ${page.currentPage} of articles about WordPress, SEO, open source, and more by Joost de Valk`
 };
 ---
 
-<BaseLayout title="Blog" description="Articles about WordPress, SEO, open source, and more by Joost de Valk">
+<BaseLayout title={isFirstPage ? 'Blog' : `Blog — Page ${page.currentPage}`} description={isFirstPage ? 'Articles about WordPress, SEO, open source, and more by Joost de Valk' : `Page ${page.currentPage} of articles about WordPress, SEO, open source, and more by Joost de Valk`}>
     <SchemaGraph pageContext={pageContext} />
     <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
         <Header variant="dark" />

@@ -27,7 +27,7 @@ export async function getStaticPaths() {
     }));
 
     const pagePaths = pages
-        .filter((page) => page.id !== 'videos' && page.id !== 'clicky' && page.id !== 'about-me' && page.id !== 'contact-me' && page.id !== 'cms-market-share')
+        .filter((page) => page.id !== 'videos' && page.id !== 'clicky' && page.id !== 'about-me' && page.id !== 'contact-me' && page.id !== 'contact' && page.id !== 'cms-market-share')
         .map((page) => ({
             params: { slug: page.id },
             props: {

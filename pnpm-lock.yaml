@@ -24,11 +24,11 @@ importers:
         specifier: ^5.2.8
         version: 5.2.8
       '@jdevalk/astro-seo-graph':
-        specifier: ^0.7.0
-        version: 0.7.0(astro@6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2))(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@5.9.3)
+        specifier: ^0.8.0
+        version: 0.8.0(astro@6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2))(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@5.9.3)
       '@jdevalk/seo-graph-core':
-        specifier: ^0.6.0
-        version: 0.6.0(typescript@5.9.3)
+        specifier: ^0.6.1
+        version: 0.6.1(typescript@5.9.3)
       '@tailwindcss/vite':
         specifier: ^4.1.16
         version: 4.2.2(vite@7.3.1(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.2))
@@ -497,13 +497,13 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@jdevalk/astro-seo-graph@0.7.0':
-    resolution: {integrity: sha512-aYQi680n3zey8XBkN1w7L0rK20mV6/y0xA4gFbWXPgCMip7bd3d195Qn88Xg46NqQ0wm6BuASemU0YzC6Wr35Q==}
+  '@jdevalk/astro-seo-graph@0.8.0':
+    resolution: {integrity: sha512-I7w+Wbv6cO3tMdl0RO8wwGctPipAtoCcCGdxIBvnzrs56OTQn8NicxotsVib8zAbTDp7V1aKsfQLgBS00l/iZw==}
     peerDependencies:
       astro: ^5.0.0 || ^6.0.0
 
-  '@jdevalk/seo-graph-core@0.6.0':
-    resolution: {integrity: sha512-v1UdAl2+H1qEc2E1yPecNw4Zs7sNqJPB0zRDUXya4YSrYd3wJMy/yk6JlYEzoELbH48ZDc00TB+nD+MqI9imOA==}
+  '@jdevalk/seo-graph-core@0.6.1':
+    resolution: {integrity: sha512-ORZYtfhSOqj2hHDKruPAK4AEgfhKwmGnS5twzUAImu2/TXC5hGk9FY8d9/aC3wMV3uGd5c/qxK2gULZOsgdlwA==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -2878,9 +2878,9 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
-  '@jdevalk/astro-seo-graph@0.7.0(astro@6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2))(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@5.9.3)':
+  '@jdevalk/astro-seo-graph@0.8.0(astro@6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2))(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@5.9.3)':
     dependencies:
-      '@jdevalk/seo-graph-core': 0.6.0(typescript@5.9.3)
+      '@jdevalk/seo-graph-core': 0.6.1(typescript@5.9.3)
       astro: 6.0.6(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2)
       astro-seo: 1.1.0(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@5.9.3)
       schema-dts: 2.0.0(typescript@5.9.3)
@@ -2890,7 +2890,7 @@ snapshots:
       - prettier-plugin-astro
       - typescript
 
-  '@jdevalk/seo-graph-core@0.6.0(typescript@5.9.3)':
+  '@jdevalk/seo-graph-core@0.6.1(typescript@5.9.3)':
     dependencies:
       schema-dts: 2.0.0(typescript@5.9.3)
     transitivePeerDependencies:

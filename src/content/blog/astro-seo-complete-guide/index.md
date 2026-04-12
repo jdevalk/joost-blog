@@ -83,9 +83,12 @@ const ogImage = new URL(`/og/${slug || 'index'}.jpg`, SITE_URL).toString();
 
 No manual image creation, no missing OG images, no forgetting to update them when you change the title.
 
-### Build-time H1 validation
+### Build-time validation
 
-The same `seoGraph()` integration that handles IndexNow also validates your built HTML. It warns about pages with zero or more than one `<h1>` element, a common SEO and accessibility issue that's easy to miss in templates. The check runs automatically on every build.
+The `seoGraph()` integration that handles IndexNow also validates your built HTML on every build:
+
+- **H1 validation:** Warns about pages with zero or more than one `<h1>` element, a common SEO and accessibility issue that's easy to miss in templates.
+- **Duplicate title/description detection:** Checks across all built pages for duplicate `<title>` or meta description values. On this site, it caught paginated blog pages all sharing the same title, a corpus-level SEO problem that per-page checks can't find.
 
 ## 2. Structured data
 
