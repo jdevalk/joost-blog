@@ -30,6 +30,7 @@ const blog = defineCollection({
             categories: z.array(z.string()).optional(),
             isFeatured: z.boolean().default(false),
             draft: z.boolean().default(false),
+            toc: z.boolean().default(false),
             password: z.string().optional(),
             seo: seoSchema(image).optional()
         })

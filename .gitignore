@@ -29,3 +29,10 @@ content-export/
 
 # Generated draft slugs (built at deploy time)
 public/_draft-slugs.json
+
+# Local data
+data.db
+data.db-shm
+data.db-wal
+emdash-theme/
+graphify-out/

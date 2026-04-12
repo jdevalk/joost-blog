@@ -3,6 +3,7 @@ import { type CollectionEntry, getCollection, render } from 'astro:content';
 import CustomImage from '../components/CustomImage.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
+import TableOfContents from '../components/TableOfContents.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
 import Subscribe from '../components/Subscribe.astro';
@@ -39,7 +40,7 @@ export async function getStaticPaths() {
 }
 
 const { entry, type, relatedPosts, readingTime } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 const { href } = Astro.url;
 
 // Extract typed data for blog posts
@@ -140,7 +141,9 @@ const pageContext: SchemaPageContext = isBlog ? {
                     </div>
                 </header>
             )}
-            <div class="max-w-3xl mx-auto">
+            <div class:list={[blogData!.toc ? 'max-w-5xl mx-auto lg:grid lg:grid-cols-[14rem_1fr] lg:gap-10' : 'max-w-3xl mx-auto']}>
+                {blogData!.toc && <TableOfContents headings={headings} />}
+                <div class="max-w-3xl">
                 <div class="prose prose-slate sm:prose-lg max-w-none">
                     <Content />
                 </div>
@@ -191,6 +194,7 @@ const pageContext: SchemaPageContext = isBlog ? {
                         </a>
                     </div>
                 </div>
+            </div>
             </div>
             <div data-pagefind-ignore="all"><Giscus /></div>
         </article>

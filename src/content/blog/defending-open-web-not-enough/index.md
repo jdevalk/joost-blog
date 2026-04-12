@@ -12,6 +12,7 @@ categories:
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Defending the open web is not enough'
 isFeatured: false
+toc: true
 ---
 Anil Dash recently published [Endgame for the Open Web](https://anildash.com/2026/03/27/endgame-open-web/), and it's a piece worth reading. His argument: Big Tech is systematically dismantling the open web through AI scraping, API lockdowns, and the erosion of open source norms. His prescription: defend the institutions. Support the Internet Archive, donate to the EFF, volunteer for Wikipedia.
 

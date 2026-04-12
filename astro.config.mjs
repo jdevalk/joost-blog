@@ -1,14 +1,16 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import seoGraph from '@jdevalk/astro-seo-graph/integration';
 import tailwindcss from '@tailwindcss/vite';
 import pagefind from 'astro-pagefind';
 import { defineConfig } from 'astro/config';
 import fs from 'fs';
 import matter from 'gray-matter';
+import { gitLastmod } from './src/utils/sitemap.ts';
 
-// Collect draft slugs and lastmod dates from content frontmatter
+// Collect draft slugs and lastmod dates
 const draftSlugs = new Set();
-const lastmodMap = new Map(); // pathname → Date
+const lastmodMap = new Map();
 
 function scanContent(dir, urlPrefix) {
     if (!fs.existsSync(dir)) return;
@@ -25,8 +27,8 @@ function scanContent(dir, urlPrefix) {
         const { data } = matter(fs.readFileSync(mdPath, 'utf-8'));
         const slug = entry.isDirectory() ? entry.name : entry.name.replace(/\.mdx?$/, '');
         if (data.draft) draftSlugs.add(slug);
-        const date = data.updatedDate ?? data.publishDate;
-        if (date) lastmodMap.set(`${urlPrefix}${slug}/`, new Date(date));
+        const date = gitLastmod(mdPath) ?? (data.updatedDate ? new Date(data.updatedDate) : data.publishDate ? new Date(data.publishDate) : null);
+        if (date) lastmodMap.set(`${urlPrefix}${slug}/`, date);
     }
 }
 
@@ -104,6 +106,7 @@ prefetch: {
         defaultStrategy: 'viewport',
     },
     integrations: [mdx(), sitemap({
+        entryLimit: 1000,
         filter: (page) => {
             const slug = new URL(page).pathname.replace(/^\/|\/$/g, '');
             return !draftSlugs.has(slug);
@@ -113,6 +116,25 @@ prefetch: {
             const date = lastmodMap.get(pathname);
             if (date) item.lastmod = date.toISOString();
             return item;
+        },
+        chunks: {
+            'posts': (item) => {
+                const path = new URL(item.url).pathname;
+                if (path !== '/' && !path.startsWith('/blog/') && !path.startsWith('/videos/') && !path.startsWith('/category/') && lastmodMap.has(path) && !path.startsWith('/videos/')) {
+                    return item;
+                }
+            },
+            'videos': (item) => {
+                if (/\/videos\/[^/]+/.test(new URL(item.url).pathname)) {
+                    return item;
+                }
+            },
+        },
+    }), seoGraph({
+        indexNow: {
+            key: '3d70c7d340f8e0fda71beb6d32006a55',
+            host: 'joost.blog',
+            siteUrl: 'https://joost.blog',
         },
     }), pagefind(), injectModulePreloads()],
     markdown: {
