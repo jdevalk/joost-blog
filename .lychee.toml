@@ -1,0 +1,25 @@
+# Lychee link checker configuration
+# https://lychee.cli.rs/usage/config/
+
+# Exclude root-relative links (e.g. /contact-me/) since lychee can't resolve them without a server
+exclude_path = []
+
+# Accept 403s and 429s (rate limiting / bot blocking)
+accept = ["100..=399"]
+
+# Skip URLs that block bots, are flaky, or are known dead
+exclude = [
+    # Sites that block automated requests
+    "alfredforum\\.com",
+    "researchgate\\.net",
+    "sciencedirect\\.com",
+    "igi-global\\.com",
+    "d1wqtxts1xzle7\\.cloudfront\\.net",
+    # YouTube often returns 404 for valid videos when hit by bots
+    "youtube\\.com/watch",
+    # Dead shortlinks
+    "wplv\\.io",
+]
+
+# Skip root-relative links that can't be checked without a running server
+exclude_all_private = true

@@ -2,7 +2,7 @@
 title: Embedded playground
 searchWeight: 0.5
 ---
-This playground below is embedded through the [playground embedder plugin](https://github.com/jdevalk/playground-embedder/), with a simple [blueprint](https://wordpress.github.io/wordpress-playground/docs/blueprints-api/index) to log in and install & activate a plugin (Yoast SEO):
+This playground below is embedded through the [playground embedder plugin](https://github.com/jdevalk/playground-embedder/), with a simple [blueprint](https://wordpress.github.io/wordpress-playground/blueprints) to log in and install & activate a plugin (Yoast SEO):
 
 The embed code used is:
 
