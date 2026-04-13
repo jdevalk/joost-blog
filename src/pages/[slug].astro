@@ -91,7 +91,7 @@ const pageContext: SchemaPageContext = isBlog ? {
                 </ol>
             </nav>
             {blogData!.featureImage ? (
-                <header class="relative mb-8 sm:mb-10 rounded-lg overflow-hidden">
+                <header class="relative mb-8 sm:mb-10 rounded-lg overflow-hidden" style={`view-transition-name: post-image-${entry.id}`}>
                     <CustomImage
                         src={blogData!.featureImage}
                         alt={blogData!.featureImageAlt}

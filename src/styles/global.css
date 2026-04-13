@@ -28,17 +28,11 @@
     --shadow-card-hover: 0 14px 32px -6px rgba(80, 30, 20, 0.14), 0 8px 12px -6px rgba(80, 30, 20, 0.06);
 }
 
-::view-transition-old(root),
-::view-transition-new(root) {
-    animation-duration: 300ms;
+@view-transition {
+    navigation: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-        animation-duration: 0.01ms !important;
-    }
-
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;

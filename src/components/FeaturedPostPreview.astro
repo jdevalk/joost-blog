@@ -12,7 +12,7 @@ const readingTime = getReadingTime(post.body ?? '');
 <article class="group">
     <div class="grid gap-6 lg:grid-cols-2 lg:gap-10 items-center">
         {featureImage && (
-            <a href={`/${post.id}/`} aria-label={title} class="block overflow-hidden rounded-lg">
+            <a href={`/${post.id}/`} aria-label={title} class="block overflow-hidden rounded-lg" style={`view-transition-name: post-image-${post.id}`}>
                 <CustomImage
                     src={featureImage}
                     alt={featureImageAlt}

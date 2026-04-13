@@ -1,5 +1,4 @@
 ---
-import { fade } from 'astro:transitions';
 import BaseHead, { type Props as HeadProps } from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
@@ -34,7 +33,7 @@ const { ...head } = Astro.props;
                 <Header />
                 <div class="h-[52px] sm:h-[56px]"></div>
             </slot>
-            <div id="main-content" class="grow flex flex-col" transition:animate={fade({ duration: '0.15s' })}>
+            <div id="main-content" class="grow flex flex-col">
                 <slot />
             </div>
             <slot name="footer">

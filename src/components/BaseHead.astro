@@ -4,7 +4,6 @@ import Seo from '@jdevalk/astro-seo-graph/Seo.astro';
 import siteConfig from '../data/site-config';
 import { SITE_URL } from '../utils/schema/constants';
 
-import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 
 export type Props = {
@@ -105,14 +104,15 @@ const ogImageAlt = Astro.props.title ?? siteConfig.title;
         <script defer data-domain="joost.blog" data-api="/api/event" src="/api/s" />
     )
 }
-<script>
-    // Track pageviews on View Transitions navigation
-    document.addEventListener('astro:page-load', () => {
-        if (window.plausible) {
-            window.plausible('pageview');
-        }
-    });
-</script>
-
-<!-- View Transitions -->
-<ClientRouter />
+<!-- Speculation Rules: prefetch same-origin links on hover/touchstart -->
+<script type="speculationrules" is:inline set:html={JSON.stringify({
+    prefetch: [{
+        source: 'document',
+        where: { and: [
+            { href_matches: '/*' },
+            { not: { href_matches: '/*\\?*' } },
+            { not: { selector_matches: '[rel~="nofollow"]' } },
+        ] },
+        eagerness: 'moderate',
+    }],
+})} />

@@ -102,10 +102,7 @@ export default defineConfig({
     vite: {
         plugins: [tailwindcss()]
     },
-prefetch: {
-        defaultStrategy: 'viewport',
-    },
-    integrations: [mdx(), sitemap({
+integrations: [mdx(), sitemap({
         entryLimit: 1000,
         filter: (page) => {
             const slug = new URL(page).pathname.replace(/^\/|\/$/g, '');
