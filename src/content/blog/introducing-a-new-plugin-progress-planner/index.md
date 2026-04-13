@@ -12,7 +12,7 @@ featureImageAlt: 'Illustration for: Introducing a new plugin: Progress Planner'
 ---
 Ever since Marieke and I [left Yoast](/yoast-joins-newfold/), we’ve considered building a new WordPress product. We love working on something that people can use—something that will improve their website or make working on their website easier. About a year ago, we came up with something, and we’ve been playing with that idea ever since. We’ve been creating and developing in the past few months, and today, the first version is done! Let me tell you everything about Progress Planner!
 
-# Planning and organizing
+## Planning and organizing
 
 Both Marieke and I aren’t particularly good at planning and organizing. [Marieke noticed that when leaving Yoast](https://marieke.com/hyperfocusing-on-procrastination/). Over the years, we have built-in strategies and tactics for getting our own work organized. Managing a website consists of all these tasks that people easily forget or postpone. Could we build something that would make working on your website easier and more fun? Something like Duolingo or Fitbit for your website. That’ll keep you motivated to update and add stuff.
 
