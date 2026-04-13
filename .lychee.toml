@@ -14,6 +14,10 @@ exclude = [
     "newfold\\.com",
     "inc\\.com",
     "core\\.trac\\.wordpress\\.org",
+    "unsplash\\.com",
+    "instagram\\.com",
+    # Invalid SSL cert
+    "fewertags\\.com",
     # YouTube often returns 404 for valid videos when hit by bots
     "youtube\\.com/watch",
     # Dead shortlinks
