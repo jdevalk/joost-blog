@@ -132,7 +132,7 @@ prefetch: {
         },
     }), seoGraph({
         indexNow: {
-            key: '3d70c7d340f8e0fda71beb6d32006a55',
+            key: '6b7e19e7ee59d4ccf983fd71c479f0f4',
             host: 'joost.blog',
             siteUrl: 'https://joost.blog',
             filter: (url) => {

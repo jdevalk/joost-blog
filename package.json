@@ -19,7 +19,7 @@
         "@astrojs/rss": "^4.0.17",
         "@astrojs/sitemap": "^3.7.1",
         "@fontsource-variable/mona-sans": "^5.2.8",
-        "@jdevalk/astro-seo-graph": "^0.9.0",
+        "@jdevalk/astro-seo-graph": "^1.0.0",
         "@jdevalk/seo-graph-core": "^0.6.1",
         "@tailwindcss/vite": "^4.1.16",
         "astro": "^6.0.5",
