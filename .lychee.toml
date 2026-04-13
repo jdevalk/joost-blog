@@ -1,13 +1,9 @@
 # Lychee link checker configuration
 # https://lychee.cli.rs/usage/config/
 
-# Exclude root-relative links (e.g. /contact-me/) since lychee can't resolve them without a server
 exclude_path = []
 
-# Accept 403s and 429s (rate limiting / bot blocking)
-accept = ["100..=399"]
-
-# Skip URLs that block bots, are flaky, or are known dead
+# Skip URLs that block bots, are flaky, are known dead, or are local image assets
 exclude = [
     # Sites that block automated requests
     "alfredforum\\.com",
@@ -19,7 +15,9 @@ exclude = [
     "youtube\\.com/watch",
     # Dead shortlinks
     "wplv\\.io",
+    # Relative image paths resolved against --base become invalid URLs;
+    # these are Astro content collection assets processed at build time
+    "joost\\.blog/images/",
 ]
 
-# Skip root-relative links that can't be checked without a running server
 exclude_all_private = true

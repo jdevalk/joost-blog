@@ -11,4 +11,4 @@ featureImageAlt: >-
   SEO Secrets with Joost de Valk - WP Elevation WordPress Business Podcast -
   Episode 126
 ---
-Love this interview? Why not subscribe to the Podcast - https://wplv.io/v1mlrd As of right now, there are 6.5 million people with the Yoast plugin, and that number keeps growing. ...
+As of right now, there are 6.5 million people with the Yoast plugin, and that number keeps growing.
