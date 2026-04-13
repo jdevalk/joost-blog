@@ -140,6 +140,19 @@ prefetch: {
                 return !draftSlugs.has(slug);
             },
         },
+        llmsTxt: {
+            title: 'joost.blog',
+            siteUrl: 'https://joost.blog',
+            summary: 'Joost de Valk\'s personal blog about SEO, WordPress, the open web, AI, and building things.',
+            filter: (url) => {
+                const path = new URL(url).pathname;
+                if (path === '/404') return false;
+                if (/^\/blog\/\d+\/$/.test(path)) return false;
+                if (/^\/videos\/\d+\/$/.test(path)) return false;
+                const slug = path.replace(/^\/|\/$/g, '');
+                return !draftSlugs.has(slug);
+            },
+        },
     }), pagefind(), injectModulePreloads()],
     markdown: {
         shikiConfig: {

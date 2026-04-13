@@ -306,6 +306,22 @@ Schema endpoints serve a corpus-wide JSON-LD graph that lets an agent understand
 
 Each endpoint collects every entry in a content collection, builds the full JSON-LD graph for each entry, and serves the combined result as `application/ld+json`. This site has three: `/schema/post.json`, `/schema/page.json`, and `/schema/video.json`. A schema map at `/schemamap.xml` lists them all, like a sitemap but for structured data. The `Schemamap:` directive in `robots.txt` points agents to it. See the [`astro-seo-graph` documentation](https://github.com/jdevalk/seo-graph/tree/main/packages/astro-seo-graph#schema-endpoints) for the full implementation.
 
+### llms.txt
+
+The [`llms.txt` standard](https://llmstxt.org) provides a machine-readable summary of your site at `/llms.txt`. Think of it as a `robots.txt` for AI: it tells language models what your site is about, what content is available, and where to find it. The `seoGraph()` integration generates it automatically at build time from your built pages:
+
+```js
+seoGraph({
+    llmsTxt: {
+        title: 'My Site',
+        siteUrl: 'https://example.com',
+        summary: 'What this site is about.',
+    },
+})
+```
+
+No AI bot widely requests `llms.txt` today. [That's not the point](/standards-dont-prove-themselves/). Standards don't prove themselves before adoption. SEO plugins that ship `llms.txt` across millions of sites create the supply that gives crawlers a reason to look for it.
+
 ### NLWeb discovery
 
 A `<link rel="nlweb">` tag in the head points to the site's conversational endpoint, for AI agents that support Microsoft's [NLWeb protocol](https://github.com/nlweb-ai/NLWeb). Early days, but the tag is one line.
@@ -336,7 +352,7 @@ For the URLs that slip through, the [`FuzzyRedirect`](https://github.com/jdevalk
 
 Here's what it looks like assembled:
 
-- [`@jdevalk/astro-seo-graph`](https://github.com/jdevalk/seo-graph) for the `<Seo>` component, schema endpoints, schema map, IndexNow, FuzzyRedirect, and build-time H1 validation (includes `@jdevalk/seo-graph-core` for the JSON-LD graph engine)
+- [`@jdevalk/astro-seo-graph`](https://github.com/jdevalk/seo-graph) for the `<Seo>` component, schema endpoints, schema map, IndexNow, `llms.txt`, FuzzyRedirect, and build-time validation (includes `@jdevalk/seo-graph-core` for the JSON-LD graph engine)
 - [`@astrojs/sitemap`](https://docs.astro.build/en/guides/integrations-guide/sitemap/) with `chunks` for per-collection sitemaps and `serialize` for git-based lastmod
 - [satori](https://github.com/vercel/satori) + [sharp](https://sharp.pixelplumbing.com/) for auto-generated OG images
 - [astro-pagefind](https://github.com/shishkin/astro-pagefind) for client-side search (which the `SearchAction` in the schema points to)
