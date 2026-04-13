@@ -35,7 +35,7 @@ To make things worse, *all* other open source, self-hosted technologies are losi
 
   
 
- I’ll give my sharper analysis: if WordPress hadn’t had [Elementor](/cms/elementor/), it would have shrunk ([something I’ve been saying for a while](/elementor-wordpress-secret-growth-driver/)). This is definitely *also* true, though with less big of an impact, for [WooCommerce](/cms/woocommerce/), the other driver for WordPress growth. Which shows that it’s not that people don’t want Open Source. Let me show this with a graph too:
+ I’ll give my sharper analysis: if WordPress hadn’t had [Elementor](https://elementor.com/), it would have shrunk ([something I’ve been saying for a while](/elementor-wordpress-secret-growth-driver/)). This is definitely *also* true, though with less big of an impact, for [WooCommerce](https://woocommerce.com/), the other driver for WordPress growth. Which shows that it’s not that people don’t want Open Source. Let me show this with a graph too:
 
   
 

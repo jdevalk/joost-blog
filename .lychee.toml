@@ -11,6 +11,9 @@ exclude = [
     "sciencedirect\\.com",
     "igi-global\\.com",
     "d1wqtxts1xzle7\\.cloudfront\\.net",
+    "newfold\\.com",
+    "inc\\.com",
+    "core\\.trac\\.wordpress\\.org",
     # YouTube often returns 404 for valid videos when hit by bots
     "youtube\\.com/watch",
     # Dead shortlinks
