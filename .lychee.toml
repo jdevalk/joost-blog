@@ -3,27 +3,51 @@
 
 exclude_path = []
 
-# Skip URLs that block bots, are flaky, are known dead, or are local image assets
+# Treat 403/401/429 as acceptable (sites blocking bots, rate limiting)
+accept = ["100..=429"]
+
+# Skip URLs that are known-flaky, dead, or are internal paths that no longer exist
 exclude = [
-    # Sites that block automated requests
-    "alfredforum\\.com",
+    # Academic publishers and paywalled sites that block bots
     "researchgate\\.net",
     "sciencedirect\\.com",
     "igi-global\\.com",
     "d1wqtxts1xzle7\\.cloudfront\\.net",
-    "newfold\\.com",
-    "inc\\.com",
-    "core\\.trac\\.wordpress\\.org",
+    "dl\\.acm\\.org",
+    "myscp\\.onlinelibrary\\.wiley\\.com",
+
+    # Social platforms that block or rate-limit bots
     "unsplash\\.com",
     "instagram\\.com",
-    # Invalid SSL cert
-    "fewertags\\.com",
-    # YouTube often returns 404 for valid videos when hit by bots
     "youtube\\.com/watch",
-    # Dead shortlinks
+
+    # Sites with aggressive bot protection
+    "alfredforum\\.com",
+    "newfold\\.com",
+    "inc\\.com",
+    "nytimes\\.com",
+    "axios\\.com",
+    "radar\\.cloudflare\\.com",
+    "pragmatic\\.agency",
+    "core\\.trac\\.wordpress\\.org",
+    "meta\\.trac\\.wordpress\\.org",
+    "docs\\.astro\\.build",
+
+    # Invalid SSL certs
+    "fewertags\\.com",
+    "sebastiaans\\.blog",
+
+    # Dead shortlinks and domains
     "wplv\\.io",
-    # Relative image paths resolved against --base become invalid URLs;
-    # these are Astro content collection assets processed at build time
+    "marketplace\\.emdashcms\\.com",
+
+    # Moved/gone pages
+    "webmasters\\.googleblog\\.com",
+    "yoast\\.com/joost-transitions",
+
+    # Internal paths that no longer exist (old CMS market share report pages)
+    "joost\\.blog/cms/",
+    "joost\\.blog/plugins/",
     "joost\\.blog/images/",
 ]
 
