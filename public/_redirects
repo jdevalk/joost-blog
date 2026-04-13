@@ -14,3 +14,6 @@
 /category/search-opinion/ /category/seo/ 301
 /videos/joost-de-valk-discusses-the-yoast-diversity-fund /videos/ 301
 /videos/joost-de-valk-discusses-the-yoast-diversity-fund/ /videos/ 301
+/terms / 301
+/terms/ / 301
+/cms/* /cms-market-share/ 301

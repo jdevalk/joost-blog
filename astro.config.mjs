@@ -136,7 +136,9 @@ prefetch: {
             host: 'joost.blog',
             siteUrl: 'https://joost.blog',
             filter: (url) => {
-                const slug = new URL(url).pathname.replace(/^\/|\/$/g, '');
+                const path = new URL(url).pathname;
+                if (path === '/404') return false;
+                const slug = path.replace(/^\/|\/$/g, '');
                 return !draftSlugs.has(slug);
             },
         },
