@@ -31,7 +31,7 @@ The pattern is always the same: someone builds it, someone else adopts it, adopt
 
 ## The multiplier effect
 
-Here's what makes this particularly relevant for SEO plugins. Yoast SEO runs on [over 10 million WordPress sites](https://wordpress.org/plugins/wordpress-seo/). Rank Math runs on a few million more. When those plugins ship a feature, it doesn't create one data point. It creates millions of endpoints overnight.
+Here's what makes this particularly relevant for SEO plugins. Yoast SEO runs on [over 10 million WordPress sites](https://wordpress.org/plugins/wordpress-seo/). Rank Math runs on [over 3 million](https://wordpress.org/plugins/seo-by-rank-math/). When those plugins ship a feature, it doesn't create one data point. It creates millions of endpoints overnight.
 
 That's the multiplier effect. SEO plugins don't just implement standards. They *create the supply* that gives crawlers a reason to consume them. When Yoast shipped XML sitemaps, it didn't help a few individual sites get indexed. It made sitemaps ubiquitous enough that every search engine had to support them. When Yoast added IndexNow, it turned a niche protocol into infrastructure overnight.
 
