@@ -10,6 +10,8 @@ categories:
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Democratizing publishing'
 ---
+**Update:** Six years later, the question of what "democratizing publishing" means in practice became central to the [WordPress governance discussion](/transparency-contribution-and-the-future-of-wordpress/).
+
 Matt blogged, in response to a question asked at WordCamp US: what does “democratizing publishing” mean to you? His answer:
 
 > … the mission of “Democratize Publishing” to me means that people of all backgrounds, interests, and abilities should be able to access Free-as-in-speech software that empowers them to express themselves on the open web and to own their content. …

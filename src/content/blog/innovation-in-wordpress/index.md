@@ -16,6 +16,8 @@ Recent observations have highlighted a significant surge in new plugin submissio
 
 The increase in plugin submissions got Marieke and me wondering about the relationship between plugin submission, actual plugin availability, and innovation within the WordPress ecosystem. As a result of all the recent changes, WordPress core releases can be somewhat sporadic. Marieke and I wanted to explore whether plugins are now the primary driver of innovation. Marieke took it upon herself to investigate how much plugin development contributes to WordPress’s evolution by going through heaps of changelogs, while I grabbed and analyzed a lot of data from WordPress.org.
 
+This is a different angle on a question I’ve explored before: what the [unintended consequences of making SEO accessible](/unintended-consequences-seo-for-everyone/) have been, and how WordPress’s [governance challenges](/transparency-contribution-and-the-future-of-wordpress/) affect what gets built.
+
 ## Problem statement and research questions
 
 While we see an increase in plugin submissions, it’s unclear if this translates to a proportional increase in plugin installations and overall platform innovation. Many plugins in the repository have minimal installations, suggesting a potential disconnect between plugin development and actual user adoption. With this in mind, we’re asking these research questions:

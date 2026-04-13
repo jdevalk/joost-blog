@@ -11,6 +11,8 @@ categories:
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Leading marketing & communication for WordPress'
 ---
+**Update:** Marieke and I later wrote about the [people behind the platform](/people-behind-the-platform/) and the role community marketing played in WordPress's growth.
+
 Last week [I was appointed](https://make.wordpress.org/updates/2019/01/16/expanding-wordpress-leadership/) Marketing & Communications Lead of WordPress. I think WordPress is one of the most essential platforms on the web and I’m *really* proud to be able to do my part for it. I have been in the WordPress community for well over a decade now. In that time I’ve done a lot of different things but I think this will be my biggest challenge yet.
 
 WordPress currently [powers 32.9% of websites](https://w3techs.com/) on the web, which, especially in absolute number of sites, is an incomprehensible number. It is also a wonderful project with a great community around it. Many people outside of WordPress don’t know much about the community, something I think we should change. Very often, people don’t even know about the great steps WordPress is making in re-defining content editing. We have to get that knowledge out there. The next phases of Gutenberg will even redefine website building. I hope to be instrumental in spreading this message. Let’s show the 67,1% that’s not using WordPress that maybe they should be.

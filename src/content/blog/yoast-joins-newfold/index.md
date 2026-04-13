@@ -10,6 +10,8 @@ categories:
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Yoast joins Newfold'
 ---
+**Update:** Since this acquisition, I've written about how the [WordPress admin UI needs to improve](/wordpress-admin-ui-needs-to-be-better/) and eventually [transitioned to a new role](/new-role-at-yoast/) before leaving Yoast entirely.
+
 Today we announced that [Yoast will join Newfold Digital](https://yoast.com/exciting-news-yoast-joins-newfold-digital/). Marieke and myself, as well as Omar, Chaya and Thijs have sold our shares. We will, however, all remain in our current roles, as will all of team Yoast.
 
 ## Why this step?

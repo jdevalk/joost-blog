@@ -16,6 +16,8 @@ I had been slacking for more than a year in publishing a new version of the CMS 
 
 The report now also contains a list of all the technologies we track, allowing you to click on pages for each.
 
+This replaces the analysis in my earlier posts on [WordPress's shrinking market share](/wordpress-market-share-shrinking/) and [Elementor as a growth driver](/elementor-wordpress-secret-growth-driver/), both of which relied on W3Techs data.
+
 ## Separating data from commentary
 
 In my previous reports, I added my commentary throughout the report. However, as this report will now be updated automatically every month, that’s no longer possible. So, instead, I will post more regularly on this blog in this category.

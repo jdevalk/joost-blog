@@ -63,3 +63,5 @@ The growth of WordPress is a testament to what a passionate community can achiev
 The WordPress journey from a simple blogging tool to the world’s leading CMS has been made possible by the passion and dedication of its community. From early bloggers to today’s YouTube influencers, countless voices have spread the WordPress mission. This collaboration — where Automattic’s innovations and the community’s marketing meet —demonstrates that true growth comes from empowering others. Together, we’ve created something much greater than any one brand or platform alone could achieve.
 
 Let’s hope that WordPress remains a tool by the people, for the people.
+
+For more on how we approached WordPress marketing, see the posts on [leading marketing for WordPress](/leading-marketing-communication-for-wordpress/) and the [first steps we took](/marketing-wordpress-first-steps/).

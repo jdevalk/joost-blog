@@ -10,6 +10,8 @@ categories:
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Transparency, Contribution, and the Future of WordPress'
 ---
+**Update:** This post was the start of a longer series. I followed it with posts on [WordPress leadership](/wordpress-leadership/), [what should be on the roadmap](/wordpress-roadmap/), and eventually [a path forward through FAIR](/path-forward-for-wordpress/).
+
 When we sold Yoast to Newfold in 2021, I quickly learned we had been incredibly naive. While at Yoast, I hadn’t realized how many deals were made between big companies to promote their products. This was my first realization that not all companies thought and worked like we had been doing. I did learn a lot from the way Newfold Digital runs its businesses. Positive things!
 
 But I remember the way I felt back in 2021 so well. I was so disappointed in the community, these large WP businesses, and even the world. And I don’t want to presume that everyone is as naive as I was, but I think there’s a big gap between the community and the ‘big WordPress companies’. It is very hard for community members to understand why these companies are making so much money and are still fighting. So why is that? And is there a solution?

@@ -11,7 +11,7 @@ featureImage: ./images/featured.webp
 isFeatured: false
 featureImageAlt: 'Illustration for: FAIR, WordPress, and Knowing When to Stop'
 ---
-Over the past year, we, Karim & Joost, have written and talked extensively about the challenges facing WordPress. [We’ve been critical](https://marucchi.com/wordpress-leadership-continued/). At times, [very critical](/wordpress-leadership/). Of leadership, of governance, of the way decisions are made and enforced. We stand by that criticism.
+Over the past year, we, Karim & Joost, have written and talked extensively about the challenges facing WordPress. We [proposed a path forward](/path-forward-for-wordpress/), [laid out what should be on the roadmap](/wordpress-roadmap/), and [been critical](https://marucchi.com/wordpress-leadership-continued/). At times, [very critical](/wordpress-leadership/). Of leadership, of governance, of the way decisions are made and enforced. We stand by that criticism.
 
 Matt’s way of operating has, in our view, been harmful. It has led to a fractured community. It has created distrust. It has made contributors feel unsafe or unheard. That is not good for WordPress. It is not good for open source. And it is not something we should normalize.
 
