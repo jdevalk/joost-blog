@@ -1,5 +1,7 @@
 ---
 title: 'From installation to integration: Making plugins “agent-ready”'
+seo:
+  title: Making WordPress plugins agent-ready
 publishDate: 2025-12-24T00:00:00.000Z
 excerpt: >-
   In my last post, I discussed why a design system is the “visual rail” AI

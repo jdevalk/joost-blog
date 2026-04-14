@@ -71,7 +71,7 @@ To use these modern image formats on your site you can install the [Modern Image
 
 When you install this plugin, go into its settings, and set them like this if you want to make sure your images are always recognized by social platforms:
 
-![](./images/modern-image-formats-setting-webp-1600x596.avif)
+![Modern Image Formats plugin settings configured to output WebP for social compatibility](./images/modern-image-formats-setting-webp-1600x596.avif)
 
 ### Modern images in the &lt;head&gt;
 

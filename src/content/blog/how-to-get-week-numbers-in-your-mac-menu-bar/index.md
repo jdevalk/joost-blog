@@ -18,10 +18,10 @@ On my Mac the menu bar looked liked this:
 
 So, I set out to change this.
 
-1. **First, we install Itsycal**Itsycal is a nice, free, calendar integration in your menu bar, for me it looks like this when I open it, showing a nice outline of my next 3 days:![](./images/itsycal-screenshot.webp)
-2. **We configure Itsycal to show the week number**Copy the top settings, under “Menu Bar” from the screenshot below. The content of the field is `E d MMM H:mmm / w`![](./images/istycal-settings-screenshot.webp)
+1. **First, we install Itsycal**Itsycal is a nice, free, calendar integration in your menu bar, for me it looks like this when I open it, showing a nice outline of my next 3 days:![Itsycal window showing an outline of the next three days](./images/itsycal-screenshot.webp)
+2. **We configure Itsycal to show the week number**Copy the top settings, under “Menu Bar” from the screenshot below. The content of the field is `E d MMM H:mmm / w`![Itsycal Menu Bar settings with the week number format configured](./images/istycal-settings-screenshot.webp)
 3. **Make sure Itsycal starts on system boot**To make sure all of this isn’t gone when you reboot your Mac, check the box on the General tab next to “Launch at Login”:![Screenshot of Itsycal's general settings](./images/itsycal-general-settings.webp)
-4. **The menu bar should update**And it should now look something like this, with the Week number nicely showing after the date and time, on the left:![](./images/itsycal-menu-bar-screenshot.webp)
+4. **The menu bar should update**And it should now look something like this, with the Week number nicely showing after the date and time, on the left:![Mac menu bar showing the date, time, and week number after Itsycal setup](./images/itsycal-menu-bar-screenshot.webp)
 5. **Get rid of the default calendar**Open System Preferences and go to Date & Time, uncheck “Show date and time in menu bar”. This takes the default date & time *out* of the menu bar.![Date & Time settings in Mac System Preferences](./images/date-time-menu-bar-setting-preferences.webp)
 6. **Move the date & time to the right**You don’t have to do this if you’re fine with the date & time on the left of your icons, but personally I dislike that. Luckily it’s very simple to rearrange your menu bar. Just press & hold `cmd` on your keyboard and then drag the date & time to the right:![Animated gif showing how to drag a menu bar icon to the right](./images/drag-date-time.gif)
 

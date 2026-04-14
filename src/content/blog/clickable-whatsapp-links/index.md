@@ -32,7 +32,7 @@ On [their official support page](https://faq.whatsapp.com/5913398998672934), Wha
 
 And then it could look something like this:
 
-![](./images/whatsapp-email-links-after.webp)
+![SuitSupply FAQ page with WhatsApp numbers and email address rendered as clickable links](./images/whatsapp-email-links-after.webp)
 
 Now, of course, they really should underline their links too, but that’s another matter.
 

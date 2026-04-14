@@ -1,5 +1,7 @@
 ---
 title: The death of Code Copyright (and the rise of the Architect)
+seo:
+  title: Code copyright is dead, long live the Architect
 publishDate: 2025-12-21T00:00:00.000Z
 excerpt: >-
   We are witnessing a strange paradox in software development. Thanks to AI code

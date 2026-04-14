@@ -37,7 +37,7 @@ When you install the plugin, it measures the current standings immediately and s
 
 Then you go to the plugin’s page. It’s under Tools. It’ll look something like this:
 
-![](./images/aaa-option-optimizer-screenshot-1.webp)On this page, you remove the options that you no longer need, and you can optimize away. Be sure to make a backup before you do this, because you might of course break things. This is a power tool, don’t give it to people who don’t know what to do with it.
+![AAA Option Optimizer plugin screen listing unused WordPress options with remove actions](./images/aaa-option-optimizer-screenshot-1.webp)On this page, you remove the options that you no longer need, and you can optimize away. Be sure to make a backup before you do this, because you might of course break things. This is a power tool, don’t give it to people who don’t know what to do with it.
 
 ## Future versions: auto optimization?
 

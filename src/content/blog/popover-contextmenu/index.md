@@ -12,7 +12,7 @@ featureImageAlt: 'Illustration for: A right-click / contextmenu logo popover'
 ---
 I always like it when I right-click a logo on a website because I need to get the logo, and the site’s designer has thought about this. If you right-click on the logo on our [Emilia Capital site](https://emilia.capital/), you’ll get a popup that sends you to our logo page. As of today, that’s not a popup, but technically a popover, using the new popover API in HTML.
 
-![](./images/cleanshot-2024-05-27-at-15.23.48@2x-1600x1044.webp)An example of what we’re going to build in this post.## Step 1: the HTML
+![Custom right-click popover context menu on the Emilia Capital logo](./images/cleanshot-2024-05-27-at-15.23.48@2x-1600x1044.webp)An example of what we’re going to build in this post.## Step 1: the HTML
 
 The HTML for this is extremely simple, and the magic is in line 1:
 

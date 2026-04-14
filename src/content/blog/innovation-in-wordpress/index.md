@@ -71,17 +71,17 @@ Looking at WooCommerce, we see they released many new features from 2021 onwards
 
 Also, for Jetpack, 2024 was a low point since 2019, and 2025 isn’t looking much better regarding new or enhanced features.
 
-![WooCommerce additions and enhancements over time.](./images/woocommerce-additions-and-enhancements-1.webp)    ![](./images/jetpack-major-enhancements-and-enhancements-1.webp)    ### The SEO plugins
+![WooCommerce additions and enhancements over time.](./images/woocommerce-additions-and-enhancements-1.webp)    ![Jetpack major enhancements per year](./images/jetpack-major-enhancements-and-enhancements-1.webp)    ### The SEO plugins
 
 The three major SEO plugins, Yoast SEO, Rank Math, and All in One SEO (AIOSEO), are substantial projects with large codebases and extensive functionality. They account for over 16 million active installations according to .org’s public numbers (Yoast SEO: 10+ million, Rank Math and AIOSEO: 3+ million each).
 
 Since 2021, Yoast SEO has introduced fewer enhancements, with a notable decline in 2024, and early indications for 2025 suggest a continued downturn. Rank Math exhibits a similar trend, with a marked slowdown in innovation during 2024 and 2025. In contrast, AIOSEO experienced a surge in new features in 2024, but projections for 2025 (based on changelogs so far) also indicate a significant decline.
 
-![](./images/all-in-one-seo-pack-new-features.webp)    ![](./images/rankmath-additions-and-improvements.webp)    ![](./images/yoast-seo-enhancements-and-yoast-seo-premium-enhancements.webp)    ## Other notable plugins
+![All in One SEO Pack new features per year](./images/all-in-one-seo-pack-new-features.webp)    ![Rank Math additions and improvements per year](./images/rankmath-additions-and-improvements.webp)    ![Yoast SEO and Yoast SEO Premium enhancements per year](./images/yoast-seo-enhancements-and-yoast-seo-premium-enhancements.webp)    ## Other notable plugins
 
 Marieke then further analyzed the innovation trends of five other notable plugins, revealing a mixed picture. WP Rocket and Elementor have demonstrated steady, consistent innovation, although 2025 shows a slight slowdown, possibly indicating an upcoming major release. Contact Form 7 has exhibited a gradual decline in innovation since 2022. Easy Digital Downloads (EDD) experienced a growth in new features during 2024, yet 2025 appears to lag behind. GiveWP, on the other hand, has maintained a relatively stable pace of innovation. While 2025 shows a dip, this pattern mirrors 2022, and innovation rebounded in 2023.
 
-![](./images/edd-new-features-and-improvements.webp)    ![](./images/elementor-new-features-and-tweaks-1.webp)    ![](./images/givewp-new-features-and-enhancements-1.webp)    ![](./images/wp-rocket-new-features-and-enhancements-1.webp)    ![](./images/contact-form-7-major-changes.webp)    ## What does this mean?
+![Easy Digital Downloads new features and improvements per year](./images/edd-new-features-and-improvements.webp)    ![Elementor new features and tweaks per year](./images/elementor-new-features-and-tweaks-1.webp)    ![GiveWP new features and enhancements per year](./images/givewp-new-features-and-enhancements-1.webp)    ![WP Rocket new features and enhancements per year](./images/wp-rocket-new-features-and-enhancements-1.webp)    ![Contact Form 7 major changes per year](./images/contact-form-7-major-changes.webp)    ## What does this mean?
 
 The current state of innovation within the WordPress ecosystem is concerning. Core updates have slowed, and contributions from key players are either leveling or even declining.
 

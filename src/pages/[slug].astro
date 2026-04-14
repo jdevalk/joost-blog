@@ -7,7 +7,6 @@ import TableOfContents from '../components/TableOfContents.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
 import Subscribe from '../components/Subscribe.astro';
-import Giscus from '../components/Giscus.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import { sortPostsByDateDesc, slugify, getReadingTime, getRelatedPosts } from '../utils/post-utils';
@@ -148,10 +147,17 @@ const pageContext: SchemaPageContext = isBlog ? {
                     <Content />
                 </div>
 
-                {/* Share buttons */}
-                <div class="mt-10 flex items-center gap-3 border-t border-slate-200 pt-6 dark:border-[#2a2623] sm:mt-14" data-pagefind-ignore="all">
-                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Share</span>
-                    <div class="flex gap-2">
+                {/* Discuss */}
+                <div class="mt-10 border-t border-slate-200 pt-6 dark:border-[#2a2623] sm:mt-14" data-pagefind-ignore="all">
+                    <p class="mb-3 text-sm text-slate-600 dark:text-slate-400">
+                        Thoughts, corrections, or something to add? Reply on
+                        <a class="font-semibold text-primary hover:text-secondary dark:text-accent dark:hover:text-white" href={`https://bsky.app/intent/compose?text=${encodeURIComponent(blogData!.title + ' ' + href)}`} target="_blank" rel="noopener noreferrer">Bluesky</a>
+                        or
+                        <a class="font-semibold text-primary hover:text-secondary dark:text-accent dark:hover:text-white" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(href)}&summary=${encodeURIComponent(blogData!.title)}`} target="_blank" rel="noopener noreferrer">LinkedIn</a>.
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Share</span>
+                        <div class="flex gap-2">
                         <a
                             class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors duration-300 hover:bg-[#0085ff] hover:text-white dark:bg-[#2a2623] dark:text-slate-300"
                             href={`https://bsky.app/intent/compose?text=${encodeURIComponent(blogData!.title + ' ' + href)}`}
@@ -193,10 +199,10 @@ const pageContext: SchemaPageContext = isBlog ? {
                             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                         </a>
                     </div>
+                    </div>
                 </div>
             </div>
             </div>
-            <div data-pagefind-ignore="all"><Giscus /></div>
         </article>
 
         {/* Related posts */}

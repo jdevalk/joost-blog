@@ -25,7 +25,7 @@ Elementor raised $15M in capital in February 2020 and it looks like it’s apply
 
 Let’s start with the basic raw numbers. Elementor’s market share growth looks like this for the last 11 months:
 
-![](./images/Elementor-market-share-1.svg)Elementor market share within the top 10 million sites of the world.As you can see, Elementor has almost doubled in 11 months time. They are showing *incredible* growth. Note that this is market share of the top 10 million sites in the world, all the [caveats](/cms-market-share/#notes-about-these-numbers) that apply to my CMS market share post apply here too.
+![Elementor market share growth within the top 10 million sites over the last 11 months](./images/Elementor-market-share-1.svg)Elementor market share within the top 10 million sites of the world.As you can see, Elementor has almost doubled in 11 months time. They are showing *incredible* growth. Note that this is market share of the top 10 million sites in the world, all the [caveats](/cms-market-share/#notes-about-these-numbers) that apply to my CMS market share post apply here too.
 
 ## How about other page builders?
 
@@ -35,6 +35,6 @@ W3Techs tracks some other page builders too, all since last February. The most i
 
 When you compare all these growth numbers, it immediately becomes apparent what’s happening: Elementor is taking a bigger and bigger part of the WordPress “pie”. In the graph below, I’ve shown the relative growth of the market share percentage of both WordPress & Elementor and compared it with the delta between them: WordPress without Elementor. When Elementor grows 0.1% and WordPress grows 0.1%, the delta is 0%. In a few recent months, WordPress without Elementor has actually *shrunken*.
 
-![](./images/WordPress-vs-Elementor-market-share-growth.svg)Elementor sites cannot exist without WordPress, so they are tied to each other. But I think the conclusion is fair that of all those new sites being built with WordPress, a *very* large portion of them is being built with Elementor.
+![Chart comparing WordPress, Elementor, and WordPress-without-Elementor market share growth](./images/WordPress-vs-Elementor-market-share-growth.svg)Elementor sites cannot exist without WordPress, so they are tied to each other. But I think the conclusion is fair that of all those new sites being built with WordPress, a *very* large portion of them is being built with Elementor.
 
 I’ll make sure to make Elementor a part of my CMS market share analysis going forward as it has proven itself to be an important factor.

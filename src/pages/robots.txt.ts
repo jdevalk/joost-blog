@@ -8,6 +8,7 @@ export const GET: APIRoute = ({ url, site }) => {
     return new Response(
         `User-agent: *
 Allow: /
+Disallow: /cdn-cgi/l/email-protection
 
 Sitemap: ${siteUrl}/sitemap-index.xml
 Schemamap: ${siteUrl}/schemamap.xml

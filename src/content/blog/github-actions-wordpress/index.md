@@ -36,7 +36,7 @@ Another thing you should be running on every commit and pull request is a linter
 
 These actions will make a human-readable version of changes to your `package-lock.json` or `yarn.lock` file, which can otherwise be quite opaque. For Yarn, you can use [this action](https://github.com/marketplace/actions/yarn-lock-changes). I would recommend [a setup like this](https://gist.github.com/jdevalk/da9ac8f2acc6eada6dd10a8b114bc6cf), where it only runs if your `yarn.lock` actually changes. Similarly, you can use [this action](https://github.com/marketplace/actions/npm-lockfile-changes) to create a human-readable comment for your `package-lock.json` file, with a setup [like this example](https://gist.github.com/jdevalk/daa721c3f7af75255f8562820cbaab9a) to only run when the `package-lock.json` file has actually been changed.
 
-![](./images/yarn-lock-changes.webp)## Testing
+![Yarn lockfile diff GitHub Action comment on a pull request](./images/yarn-lock-changes.webp)## Testing
 
 ### PHPUnit
 
@@ -46,7 +46,7 @@ If you have unit tests (you should!!), you can, of course, run them. Feel free t
 
 For very simple manual testing, I recommend using the WordPress playground (which [I recently wrote about](/plugin-demos-with-the-wordpress-playground/)). I’ve created a [very simple workflow](https://gist.github.com/jdevalk/62d523be19743fd495144ade4c65e54c) action that leaves a comment on every pull request, with a link that opens the zip of that pull request in the Playground. This only works for plugins without a build process, so if you have an autoloader, it should work without that build, or you should adapt the workflow. But it’s proven very useful for quick testing of changes without having to spin up local environments or do *anything* else, really. It looks like this:
 
-![](./images/wordpress-playground-zip.webp)
+![GitHub Actions pull request comment with a link to open the PR zip in WordPress Playground](./images/wordpress-playground-zip.webp)
 
 It automatically updates the comment after each commit on a pull request, to the latest commit.
 

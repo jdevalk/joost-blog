@@ -28,11 +28,11 @@ There are a two main reasons why the November 19th timeline is in my opinion unt
 
 The amount of work being done every day right now by the development team is bordering on the insane. Look at the work for the last three days:
 
-![](./images/image.webp)I’d normally be happy with this for a week. This is 3 days, also including a Sunday. It’s been like this for a while. I appreciate all these people doing the hard work, but moving this fast only increases the chance of regressions.
+![GitHub commit activity on the WordPress 5.0 Gutenberg repository over three days](./images/image.webp)I’d normally be happy with this for a week. This is 3 days, also including a Sunday. It’s been like this for a while. I appreciate all these people doing the hard work, but moving this fast only increases the chance of regressions.
 
 When [I mentioned earlier today](https://wordpress.slack.com/archives/C02QB2JS7/p1541503290677300) in the WordPress Slack’s #core-editor channel that I think we should push back, the response was pretty positive:
 
-![](./images/image-1.webp)Let’s get this straight: *this is in the channel with a large part of the people working on this release*. I’m not the first to say this. I hope this post will help the powers that be come to the same conclusion.
+![Slack thread in the WordPress core-editor channel supporting pushing back on the 5.0 timeline](./images/image-1.webp)Let’s get this straight: *this is in the channel with a large part of the people working on this release*. I’m not the first to say this. I hope this post will help the powers that be come to the same conclusion.
 
 ## Conclusion: push back, and zoom out
 

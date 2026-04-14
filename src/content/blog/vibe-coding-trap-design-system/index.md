@@ -1,5 +1,7 @@
 ---
 title: 'Vibe coding is a trap: why WordPress needs a design system NOW'
+seo:
+  title: Why WordPress needs a design system now
 publishDate: 2025-12-23T00:00:00.000Z
 excerpt: >-
   In my last post, I argued that WordPress needs to become a “Base AI”: a

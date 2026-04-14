@@ -33,7 +33,7 @@ The repository description should not be empty. If you go to your repository and
 
 If you haven’t set a URL for your project, add it now, too.
 
-![](./images/CleanShot-2023-12-19-at-12.41.14@2x.webp)
+![GitHub repository description and website URL settings panel](./images/CleanShot-2023-12-19-at-12.41.14@2x.webp)
 
 ## README file
 

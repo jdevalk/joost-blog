@@ -1,5 +1,7 @@
 ---
 title: Great minds think alike? My WordPress take on Markdown for Agents
+seo:
+  title: My WordPress take on Markdown for Agents
 publishDate: 2026-02-12T00:00:00.000Z
 excerpt: >-
   Today, Cloudflare announced Markdown for Agents, a feature that automatically

@@ -24,7 +24,7 @@ const {
     categories,
     noindex,
 } = Astro.props;
-const title = [Astro.props.title, siteConfig.title].filter(Boolean).join(' | ');
+const title = [Astro.props.title, siteConfig.title].filter(Boolean).join(' · ');
 
 // OG image: always use auto-generated image from slug
 const slug = Astro.url.pathname.replace(/^\/|\/$/g, '');
@@ -72,7 +72,6 @@ const ogImageAlt = Astro.props.title ?? siteConfig.title;
 <link rel="nlweb" href="https://joost.blog/ask" />
 
 <!-- DNS prefetch for external resources -->
-<link rel="dns-prefetch" href="https://giscus.app" />
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
 <!-- SEO -->

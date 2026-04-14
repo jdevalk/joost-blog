@@ -20,7 +20,7 @@ I started with an approach using [cookies and a worker](https://gist.github.com/
 
 Cloudflare has added a *very* nifty feature called transform rules that allow you to change URLs based on a number of variables. One of them is the country that people are visiting your site from. So, I created a transform rule that adds `?currency=EUR` to every URL on the site for visitors from the EU (and GB). Here’s the “request match” part of that rule:
 
-![](./images/edd-transform-rules.webp)Clicking this together in Cloudflare can be some work, so here’s the full expression. You can just put that in by clicking “Edit expression”:
+![Cloudflare Transform Rule 'request match' configuration for EU visitors](./images/edd-transform-rules.webp)Clicking this together in Cloudflare can be some work, so here’s the full expression. You can just put that in by clicking “Edit expression”:
 
 ```plaintext
 (
@@ -36,17 +36,17 @@ The first bit is simple: target everyone in these countries. The second “And�
 
 And here’s the “Then” part of this rule:
 
-![](./images/cloudflare-transform-url.webp)What’s probably not immediately clear to you but is super valuable: **the user does not see that `?currency=EUR` is secretly being added to the URL**! It only gets added in the communication between CloudFlare and your server and not towards the user. So, the cache is different because the URL that CloudFlare is requesting is different, but the user sees the exact same URL as his friend in the US! This isn’t just great for the user but also for your SEO *and* your caching.
+![Cloudflare Transform Rule 'then' action rewriting the URL with ?currency=EUR](./images/cloudflare-transform-url.webp)What’s probably not immediately clear to you but is super valuable: **the user does not see that `?currency=EUR` is secretly being added to the URL**! It only gets added in the communication between CloudFlare and your server and not towards the user. So, the cache is different because the URL that CloudFlare is requesting is different, but the user sees the exact same URL as his friend in the US! This isn’t just great for the user but also for your SEO *and* your caching.
 
 ## Displaying the right price
 
 Now, the next challenge is displaying the right price and the right currency! Luckily, EDD has a shortcode for that: `[edd_price id=<ID of download>]`; this will output the price correctly. So, you need to drop the habit of mentioning price straight in your copy and instead use that shortcode everywhere. And yes, you can use that shortcode within blocks, for instance, buttons. Doing this in the editor:
 
-![](./images/CleanShot-2024-01-26-at-11.43.41.webp)Will show this on the front of the site:
+![WordPress block editor using the edd_price shortcode inside a button block](./images/CleanShot-2024-01-26-at-11.43.41.webp)Will show this on the front of the site:
 
-![](./images/CleanShot-2024-01-26-at-11.44.01.webp)Or this if you’re from the US:
+![Button rendered with price in euros for EU visitors](./images/CleanShot-2024-01-26-at-11.44.01.webp)Or this if you’re from the US:
 
-![](./images/CleanShot-2024-01-26-at-11.45.09.webp)## You don’t need a currency switcher!
+![Button rendered with price in US dollars for US visitors](./images/CleanShot-2024-01-26-at-11.45.09.webp)## You don’t need a currency switcher!
 
 By doing this, I would argue you do not need a currency switcher dropdown or buttons on your EDD site, and you can give people the correct currency, depending on where they come from, without any coding!
 

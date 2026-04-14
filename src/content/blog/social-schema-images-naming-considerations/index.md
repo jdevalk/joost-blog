@@ -34,7 +34,7 @@ For example, compare this post’s featured image and post image:
 
 ![Image showing torn promotional flyers](./images/alice-donovan-rouse-yu68fUQDvOI-unsplash-1600x1068.jpg)This post’s featured image
 
-![](./images/joost.blog-social-schema-images-1.jpg)This posts’s poster image
+![Poster image for this post with joost.blog branding overlaid on the featured image](./images/joost.blog-social-schema-images-1.jpg)This posts’s poster image
 
 ## So what’s the problem?
 

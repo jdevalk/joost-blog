@@ -2,6 +2,8 @@
 title: >-
   The silence is deafening: Google’s “agentic” future leaves the WordPress
   economy behind
+seo:
+  title: Google’s agentic future leaves WordPress behind
 publishDate: 2026-01-12T00:00:00.000Z
 excerpt: >-
   Google just announced a massive shift in how the internet shops, and the
