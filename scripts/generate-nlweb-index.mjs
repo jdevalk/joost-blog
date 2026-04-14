@@ -10,9 +10,14 @@ const outputModulePath = path.join(rootDir, 'src', 'generated', 'nlweb-index.mjs
 const embeddingCachePath = path.join(rootDir, 'src', 'generated', 'embedding-cache.json');
 
 // Cloudflare Workers AI config for embeddings
-const CF_ACCOUNT_ID = process.env.CF_ACCOUNT_ID || 'c53e64d218c83cb220b523a637ffd079';
-const CF_API_TOKEN = process.env.CF_API_TOKEN || 'cfut_6j0n95cS6YyGuKHIBC8k02gwVYhlOBboAe4z7S4g756be1c8';
+const CF_ACCOUNT_ID = process.env.CF_ACCOUNT_ID;
+const CF_API_TOKEN = process.env.CF_API_TOKEN;
 const EMBEDDING_MODEL = '@cf/baai/bge-base-en-v1.5';
+
+if (!CF_ACCOUNT_ID || !CF_API_TOKEN) {
+    console.error('Missing CF_ACCOUNT_ID or CF_API_TOKEN. Set them in .env.');
+    process.exit(1);
+}
 const MAX_EMBED_CHARS = 2000; // ~500 tokens, enough to capture the gist
 
 const CONTENT_TYPES = [

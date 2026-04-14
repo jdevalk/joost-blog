@@ -12,6 +12,11 @@ featureImageAlt: 'Illustration for: Good-looking GitHub profile pages'
 ---
 After my [blog post about healthy GitHub repositories](/healthy-github-repository/), I learned that many people didn’t know how to create `.github` repositories and what you can do with those. That automatically also means that you don’t know about organization profile pages, so I wrote a quick post about those, too, which you’re reading now. I’ll start by explaining how to make a good-looking organization page, and then we’ll talk about your [*personal* GitHub profile](#h-personal-github-profile).
 
+<div class="not-prose rounded-lg border-2 border-primary/20 bg-tertiary px-6 py-5 dark:border-accent/20 dark:bg-stone-900">
+<p class="mb-2 text-lg font-semibold text-primary dark:text-accent">Want your AI agent to do this for you?</p>
+<p class="text-base leading-relaxed text-stone-700 dark:text-stone-300">Install my <a href="https://github.com/jdevalk/skills?tab=readme-ov-file#-github-profile-optimizer" class="text-primary underline decoration-1 underline-offset-2 hover:no-underline dark:text-accent">GitHub Profile Optimizer skill</a>, or point your AI coding agent at this article. The skill reviews your personal or organization profile and generates an optimized profile README.</p>
+</div>
+
 ## A good-looking GitHub organization page
 
 The Emilia Capital GitHub organization profile is very new and a bit empty, but it already looks quite good:

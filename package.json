@@ -3,12 +3,12 @@
     "type": "module",
     "version": "1.0.0",
     "scripts": {
-        "predev": "node scripts/generate-nlweb-index.mjs",
+        "predev": "node --env-file-if-exists=.env scripts/generate-nlweb-index.mjs",
         "dev": "astro dev",
         "start": "astro dev",
-        "generate-images": "node scripts/generate-featured-images.mjs",
+        "generate-images": "node --env-file-if-exists=.env scripts/generate-featured-images.mjs",
         "fetch-transcripts": "node scripts/fetch-transcripts.mjs",
-        "images": "node scripts/image-manager.mjs",
+        "images": "node --env-file-if-exists=.env scripts/image-manager.mjs",
         "build": "node scripts/generate-draft-slugs.mjs && astro build",
         "preview": "astro preview",
         "astro": "astro"

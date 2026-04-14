@@ -12,6 +12,11 @@ featureImageAlt: 'Illustration for: How to create a healthy GitHub repository'
 ---
 As a result of [investing in a fair few companies](https://emilia.capital/) and getting a lot more requests to invest, I look at GitHub repositories a lot. I often run into GitHub repositories that don’t look well maintained. So, I thought I’d write a small article on what a healthy GitHub repository should look like.
 
+<div class="not-prose rounded-lg border-2 border-primary/20 bg-tertiary px-6 py-5 dark:border-accent/20 dark:bg-stone-900">
+<p class="mb-2 text-lg font-semibold text-primary dark:text-accent">Want your AI agent to do this for you?</p>
+<p class="text-base leading-relaxed text-stone-700 dark:text-stone-300">Install my <a href="https://github.com/jdevalk/skills?tab=readme-ov-file#-github-repo-optimizer" class="text-primary underline decoration-1 underline-offset-2 hover:no-underline dark:text-accent">GitHub Repo Optimizer skill</a>, or point your AI coding agent at this article. The skill audits your repo against the checklist below and generates drop-in files for anything missing.</p>
+</div>
+
 ## In this post
 
 - [Repository description and URL](#h-repository-description-and-url)

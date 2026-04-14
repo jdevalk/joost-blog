@@ -15,6 +15,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
+import { exec } from 'node:child_process';
 import matter from 'gray-matter';
 import satori from 'satori';
 import sharp from 'sharp';
@@ -23,9 +24,14 @@ const PORT = 3456;
 const BLOG_DIR = path.resolve('src/content/blog');
 
 // Cloudflare Workers AI config (image generation, localhost only)
-const CF_ACCOUNT_ID = process.env.CF_ACCOUNT_ID || 'c53e64d218c83cb220b523a637ffd079';
-const CF_API_TOKEN = process.env.CF_API_TOKEN || 'cfut_6j0n95cS6YyGuKHIBC8k02gwVYhlOBboAe4z7S4g756be1c8';
+const CF_ACCOUNT_ID = process.env.CF_ACCOUNT_ID;
+const CF_API_TOKEN = process.env.CF_API_TOKEN;
 const CF_IMAGE_MODEL = '@cf/black-forest-labs/flux-2-dev';
+
+if (!CF_ACCOUNT_ID || !CF_API_TOKEN) {
+    console.error('Missing CF_ACCOUNT_ID or CF_API_TOKEN. Set them in .env and run with `npm run images`.');
+    process.exit(1);
+}
 
 // ============================================================
 // Shared prompt logic (same as generate-featured-images.mjs)
@@ -71,7 +77,7 @@ const DEFAULT_STYLE = {
     colors: 'warm burgundy-crimson, deep rose, and cream highlights',
 };
 
-function buildPrompt(title, category, hint) {
+function buildPrompt(title, category, hint, description) {
     const style = CATEGORY_STYLES[category] || DEFAULT_STYLE;
     let prompt = `Create a bold graphic illustration in the style of classic 1950s-1960s movie posters and Saul Bass film title designs.
 
@@ -87,7 +93,7 @@ STYLE (CRITICAL — follow exactly):
 - The mood should feel intelligent, sophisticated, and cinematically dramatic
 - Think: Saul Bass, Art Deco, Polish movie poster school, mid-century modern graphic design
 
-SUBJECT: Visually represent the concept behind this blog post title: "${title}"
+SUBJECT: Visually represent the concept behind this blog post titled "${title}".${description ? `\n\nFor context, here is what the post is about: ${description}` : ''}
 
 COMPOSITION: Wide banner format (16:9). Distribute visual interest across the frame with an asymmetric focal point. Leave the lower-third relatively less busy (text will be overlaid there later). The upper portion should have the most dramatic graphic elements.`;
     if (hint) prompt += `\n\nADDITIONAL CREATIVE DIRECTION: ${hint}`;
@@ -143,6 +149,7 @@ function scanBlogPosts() {
             slug,
             filePath,
             title: data.title,
+            description: data.seo?.description || data.excerpt || null,
             publishDate: data.publishDate,
             category,
             pageType: 'post',
@@ -336,7 +343,7 @@ function serveImage(slug) {
 function renderHTML() {
     const posts = scanAll();
     const postCards = posts.map(post => {
-        const prompt = buildPrompt(post.title, post.category, post.imageHint);
+        const prompt = buildPrompt(post.title, post.category, post.imageHint, post.description);
         const promptEscaped = prompt.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         const promptForCopy = JSON.stringify(prompt);
         return `
@@ -660,7 +667,7 @@ const server = http.createServer(async (req, res) => {
                 const item = all.find(p => p.slug === slug);
                 if (!item) throw new Error(`"${slug}" not found`);
 
-                const prompt = body.prompt || buildPrompt(item.title, item.category, item.imageHint);
+                const prompt = body.prompt || buildPrompt(item.title, item.category, item.imageHint, item.description);
 
                 console.log(`Generating image for: ${item.title}`);
                 console.log(`Prompt (first 200 chars): ${prompt.slice(0, 200)}`);
@@ -774,8 +781,13 @@ function parseMultipart(body, boundary) {
 }
 
 server.listen(PORT, '127.0.0.1', () => {
-    console.log(`\n  Featured Image Manager running at http://localhost:${PORT}\n`);
+    const url = `http://localhost:${PORT}`;
+    console.log(`\n  Featured Image Manager running at ${url}\n`);
     console.log(`  - Copy prompts → paste into ChatGPT`);
     console.log(`  - Drop generated images back onto posts`);
     console.log(`  - Frontmatter is updated automatically\n`);
+    const opener = process.platform === 'darwin' ? 'open'
+        : process.platform === 'win32' ? 'start ""'
+        : 'xdg-open';
+    exec(`${opener} ${url}`);
 });

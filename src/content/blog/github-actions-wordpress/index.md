@@ -12,6 +12,11 @@ featureImageAlt: 'Illustration for: GitHub Actions to keep your WordPress plugin
 ---
 I absolutely love GitHub Actions and have been using them more and more for several purposes. As I’ve seen on some of the GitHub repositories I’ve been looking through, not everybody has as many nice use cases as we have in our repositories, so I thought I’d share some of my personal favorites.
 
+<div class="not-prose rounded-lg border-2 border-primary/20 bg-tertiary px-6 py-5 dark:border-accent/20 dark:bg-stone-900">
+<p class="mb-2 text-lg font-semibold text-primary dark:text-accent">Want your AI agent to do this for you?</p>
+<p class="text-base leading-relaxed text-stone-700 dark:text-stone-300">Install my <a href="https://github.com/jdevalk/skills?tab=readme-ov-file#-wordpress-github-actions" class="text-primary underline decoration-1 underline-offset-2 hover:no-underline dark:text-accent">WordPress GitHub Actions skill</a>, or point your AI coding agent at this article. The skill analyzes your plugin's structure and drops in the workflows it needs.</p>
+</div>
+
 ## PHP
 
 ### Composer diff
