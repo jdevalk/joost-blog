@@ -1,26 +1,26 @@
 ---
-title: How I made my skills notice their own version
+title: How I made my skills update themselves
 seo:
   description: >-
-    Skills install as loose folders with no package manager behind them. Here's
-    a small pattern that makes each skill check its own version on invocation.
+    Skills install as loose folders with no package manager. Here's a pattern
+    that makes each skill check for updates — and install them — when you
+    invoke it.
 publishDate: 2026-04-14T00:00:00.000Z
 excerpt: >-
   Agent Skills install as loose folders. There's no npm, no registry, no daemon
-  checking for updates. I shipped a new version of a skill last week and
-  realized I had no way of telling the users still running the old one. So I
-  made the skills check themselves.
+  checking for updates. I shipped a new version of a skill and realized I had no
+  way of telling the users still running the old one. So I taught the skills to
+  notice — and then to update themselves.
 categories:
   - Development
   - AI
 featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: How I made my skills notice their own version'
+featureImageAlt: 'Illustration for: How I made my skills update themselves'
 toc: false
-draft: true
 ---
 I updated one of my [Agent Skills](https://github.com/jdevalk/skills) today and realized I had no way to tell my other machines they were running a stale copy. Skills install as loose folders in `~/.claude/skills/` (or wherever your agent puts them). There's no `npm outdated`, no `brew upgrade`, no update daemon. The skill just runs whatever's on disk.
 
-So I added a small pattern that makes each skill check itself on invocation. I couldn't find anyone doing quite this. The whole thing is fifteen lines of configuration.
+So I added a small pattern that makes each skill check itself on invocation. If it's out of date, the skill offers to install the update before continuing. I couldn't find anyone doing quite this. The whole thing is a few lines of configuration per skill.
 
 ## Why versioning matters when posts and skills ship together
 
@@ -64,19 +64,27 @@ Second, a single `versions.json` at the repo root maps each skill name to its cu
 }
 ```
 
-Third, every SKILL.md includes a short paragraph that tells the skill to self-check when it runs:
+Third, every SKILL.md includes a short paragraph that tells the skill to self-check when it runs — and, if the user approves, to install the update inline:
 
 ```markdown
 Before running, fetch https://raw.githubusercontent.com/jdevalk/skills/main/versions.json
-and compare the `astro-seo` entry to the `version:` in this file's
-frontmatter. If the manifest version is higher, tell the user this skill
-is out of date and point them to the latest release. Continue regardless —
-the check is informational, not a blocker.
+and compare the `astro-seo` entry to the `version:` in this file's frontmatter.
+If the manifest version is higher, tell the user the skill is out of date and
+offer to update it now. If they agree, run:
+
+    curl -fsSL https://github.com/jdevalk/skills/releases/latest/download/astro-seo.skill \
+      -o /tmp/astro-seo.skill \
+      && unzip -oq /tmp/astro-seo.skill -d <parent of this skill's directory> \
+      && rm /tmp/astro-seo.skill
+
+After the unzip, ask the user to re-invoke the skill so the new version loads
+into context. The check is informational and never blocks: if the user
+declines, continue with the rest of the workflow on the current version.
 ```
 
 Fourth, a CI job that fails any PR where a skill's frontmatter version doesn't match its `versions.json` entry. The manifest and the shipped skills can't drift.
 
-That's it. No runtime. No service. The skill itself does the check on each invocation, using the WebFetch tool that Claude Code already has. Users find out they're behind at exactly the moment it matters — when they're about to run the skill.
+That's it. No runtime. No service. The skill checks on each invocation using the agent's own `WebFetch` tool. If the user approves the update, the skill re-uses the `Bash` tool that's already there to pull the latest release and unpack it in place. Users find out they're behind — and can be caught up — at exactly the moment it matters: when they're about to run the skill.
 
 ## Why no cache
 
@@ -92,12 +100,12 @@ The fetch is around a hundred milliseconds against a static GitHub raw URL. In a
 
 Before writing this up I went looking for prior art. The closest patterns in the Agent Skills ecosystem:
 
-- **Anthropic's `marketplace.json` plus `/install`**: version tracked in a marketplace manifest, updates happen via an external CLI command or an `update_marketplace.py` script. The user has to run something to learn they're behind.
-- **[skills-updater](https://github.com/yizhiyanhua-ai/skills-updater)** (community skill): scans your installed skills, checks each against its remote repo, and offers to update them. The closest prior art I found — but it's an external tool the user has to invoke, not a check embedded in the skill itself.
+- **Anthropic's `marketplace.json` plus `/install`**: version tracked in a marketplace manifest, updates happen via an external CLI command or an `update_marketplace.py` script. The user has to step out of whatever they were doing to learn they're behind.
+- **[skills-updater](https://github.com/yizhiyanhua-ai/skills-updater)** (community skill): scans your installed skills, checks each against its remote repo, and offers to update them. The closest prior art I found. But it's a separate skill you remember to run, not a check embedded in the skill you're actually trying to use.
 - **Smithery, OpenCode, and other skill hosts**: track versions for distribution but don't ship a self-check.
 
-None of them check inside the skill, at invocation time, against a repo-local manifest. Which is fair — it's not a big idea. It's just a pattern that package managers have had for decades, applied to a new distribution format that doesn't have one yet.
+None of them put the check — and the install — inside the skill itself, at invocation time, against a repo-local manifest. Which is fair: it's not a big idea. It's just a pattern that package managers have had for decades, applied to a new distribution format that doesn't have one yet.
 
 If you maintain skills and your users install them as loose files, steal this. It works for any agent whose skill format is "a folder with a markdown file and some frontmatter."
 
-Have you seen a better workflow for keeping agent skills in sync with their source? I'd genuinely like to know — this is the best I could come up with, but "best I could come up with" is a pretty low bar when the format is new enough that conventions haven't settled.
+Have you seen a better workflow for keeping agent skills in sync with their source? I'd genuinely like to know. This is the best I could come up with, but that's a low bar when the format is new enough that conventions haven't settled.

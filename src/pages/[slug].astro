@@ -10,6 +10,26 @@ import Subscribe from '../components/Subscribe.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import { sortPostsByDateDesc, slugify, getReadingTime, getRelatedPosts } from '../utils/post-utils';
+import { gitLastmod } from '../utils/sitemap';
+import fs from 'node:fs';
+
+function resolvePostPath(entryId: string): string | null {
+    const md = `src/content/blog/${entryId}/index.md`;
+    const mdx = `src/content/blog/${entryId}/index.mdx`;
+    if (fs.existsSync(md)) return md;
+    if (fs.existsSync(mdx)) return mdx;
+    return null;
+}
+
+function computeUpdatedDate(entryId: string, manual: Date | undefined, publishDate: Date): Date | null {
+    if (manual) return manual;
+    const fp = resolvePostPath(entryId);
+    if (!fp) return null;
+    const last = gitLastmod(fp);
+    if (!last) return null;
+    // Only count as "updated" if meaningfully after publishDate (>1 day).
+    return last.getTime() - publishDate.getTime() > 24 * 60 * 60 * 1000 ? last : null;
+}
 
 export async function getStaticPaths() {
     const posts = (await getCollection('blog')).sort(sortPostsByDateDesc);
@@ -47,6 +67,10 @@ const isBlog = type === 'blog';
 const blogData = isBlog ? (entry as CollectionEntry<'blog'>).data : null;
 const pageData = !isBlog ? (entry as CollectionEntry<'pages'>).data : null;
 
+const effectiveUpdatedDate = isBlog
+    ? computeUpdatedDate(entry.id, blogData!.updatedDate, blogData!.publishDate)
+    : null;
+
 const seoTitle = isBlog
     ? (blogData!.seo?.title ?? blogData!.title)
     : (pageData!.seo?.title ?? pageData!.title);
@@ -62,7 +86,7 @@ const pageContext: SchemaPageContext = isBlog ? {
     title: blogData!.title,
     description: blogData!.excerpt ?? blogData!.seo?.description ?? '',
     publishDate: blogData!.publishDate,
-    updatedDate: blogData!.updatedDate,
+    updatedDate: effectiveUpdatedDate ?? undefined,
     featureImageUrl: canonicalUrl(`/og/${entry.id}.png`),
     categories: blogData!.categories,
     wordCount: (entry.body ?? '').split(/\s+/).length
@@ -75,7 +99,7 @@ const pageContext: SchemaPageContext = isBlog ? {
 ---
 
 {isBlog ? (
-<BaseLayout title={seoTitle} description={seoDescription} pageType="article" publishDate={blogData!.publishDate} updatedDate={blogData!.updatedDate} categories={blogData!.categories} noindex={!!blogData!.draft}>
+<BaseLayout title={seoTitle} description={seoDescription} pageType="article" publishDate={blogData!.publishDate} updatedDate={effectiveUpdatedDate ?? undefined} categories={blogData!.categories} noindex={!!blogData!.draft}>
     <SchemaGraph pageContext={pageContext} />
     <main class="px-4 py-12 grow sm:px-8 sm:py-16" data-pagefind-body>
         <article class="max-w-6xl mx-auto mb-12 sm:mb-16">
@@ -105,10 +129,10 @@ const pageContext: SchemaPageContext = isBlog ? {
                         <h1 class="text-2xl font-extrabold tracking-tight text-white sm:text-3xl md:text-4xl lg:text-5xl drop-shadow-lg">{blogData!.title}</h1>
                         <div class="mt-3 flex items-center gap-3 text-sm text-white/80">
                             <FormattedDate date={blogData!.publishDate} />
-                            {blogData!.updatedDate && (
+                            {effectiveUpdatedDate && (
                                 <Fragment>
                                     <span>&middot;</span>
-                                    <span>Updated <FormattedDate date={blogData!.updatedDate} /></span>
+                                    <span>Updated <FormattedDate date={effectiveUpdatedDate} /></span>
                                 </Fragment>
                             )}
                             {readingTime && (
@@ -125,10 +149,10 @@ const pageContext: SchemaPageContext = isBlog ? {
                     <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl md:text-5xl">{blogData!.title}</h1>
                     <div class="mt-4 flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
                         <FormattedDate date={blogData!.publishDate} />
-                        {blogData!.updatedDate && (
+                        {effectiveUpdatedDate && (
                             <Fragment>
                                 <span>&middot;</span>
-                                <span>Updated <FormattedDate date={blogData!.updatedDate} /></span>
+                                <span>Updated <FormattedDate date={effectiveUpdatedDate} /></span>
                             </Fragment>
                         )}
                         {readingTime && (
