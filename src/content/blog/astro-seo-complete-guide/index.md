@@ -313,6 +313,12 @@ Schema endpoints serve a corpus-wide JSON-LD graph that lets an agent understand
 
 Each endpoint collects every entry in a content collection, builds the full JSON-LD graph for each entry, and serves the combined result as `application/ld+json`. This site has three: `/schema/post.json`, `/schema/page.json`, and `/schema/video.json`. A schema map at `/schemamap.xml` lists them all, like a sitemap but for structured data. The `Schemamap:` directive in `robots.txt` points agents to it. See the [`astro-seo-graph` documentation](https://github.com/jdevalk/seo-graph/tree/main/packages/astro-seo-graph#schema-endpoints) for the full implementation.
 
+### Markdown alternates
+
+AI agents parse markdown more reliably than HTML. Astro sites are unusually well-placed to serve it: content collections already *are* markdown, so there's no lossy HTML-to-markdown conversion — you hand the agent the source. `astro-seo-graph` ships a [`createMarkdownEndpoint`](https://github.com/jdevalk/seo-graph/tree/main/packages/astro-seo-graph#markdown-alternate) factory that exposes a `.md` URL for every page (frontmatter + body + a `X-Markdown-Tokens` header so agents can size requests). The `<Seo>` component auto-emits `<link rel="alternate" type="text/markdown" href="…">` so agents discover it the same way browsers discover an RSS feed.
+
+For content negotiation — agents that send `Accept: text/markdown` on the canonical URL — add a Cloudflare Transform Rule that rewrites the path when the header is present. The [README has the exact rule](https://github.com/jdevalk/seo-graph/tree/main/packages/astro-seo-graph#3-accept-textmarkdown-content-negotiation-cloudflare); it works on the free plan and needs no SSR.
+
 ### llms.txt
 
 The [`llms.txt` standard](https://llmstxt.org) provides a machine-readable summary of your site at `/llms.txt`. Think of it as a `robots.txt` for AI: it tells language models what your site is about, what content is available, and where to find it. The `seoGraph()` integration generates it automatically at build time from your built pages:
