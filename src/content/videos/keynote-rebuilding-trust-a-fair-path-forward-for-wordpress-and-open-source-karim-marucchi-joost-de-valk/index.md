@@ -2,6 +2,8 @@
 title: >-
   Keynote: Rebuilding Trust: A FAIR Path Forward for WordPress and Open Source |
   Karim Marucchi & Joost de Valk
+seo:
+  title: 'Rebuilding trust: a FAIR path for WordPress'
 publishDate: 2025-07-02T00:00:00.000Z
 youtubeId: mIi2Nib1yh4
 duration: PT11M29S

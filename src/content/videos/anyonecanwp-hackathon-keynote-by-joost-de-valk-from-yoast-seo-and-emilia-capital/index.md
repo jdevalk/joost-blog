@@ -2,6 +2,8 @@
 title: >-
   AnyoneCanWP Hackathon Keynote by Joost de Valk from Yoast SEO and Emilia
   Capital
+seo:
+  title: AnyoneCanWP Hackathon keynote
 publishDate: 2024-10-11T00:00:00.000Z
 youtubeId: KCfliZK_5Po
 duration: PT24M18S

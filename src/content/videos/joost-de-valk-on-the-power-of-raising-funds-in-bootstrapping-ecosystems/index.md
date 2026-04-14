@@ -1,5 +1,7 @@
 ---
 title: Joost de Valk on the Power of Raising Funds In Bootstrapping Ecosystems
+seo:
+  title: Raising funds in bootstrapping ecosystems
 publishDate: 2024-04-16T00:00:00.000Z
 youtubeId: keCOWL6QP1k
 videoUrl: 'https://www.youtube.com/watch?v=keCOWL6QP1k'

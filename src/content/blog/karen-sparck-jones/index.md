@@ -1,5 +1,7 @@
 ---
 title: Karen Sparck Jones
+seo:
+  description: A brief tribute to Karen Spärck Jones — computer scientist, IDF inventor, and the woman who said computing was too important to leave to men.
 publishDate: 2019-01-03T00:00:00.000Z
 excerpt: '> “Computing is too important to be left to men.”'
 categories:

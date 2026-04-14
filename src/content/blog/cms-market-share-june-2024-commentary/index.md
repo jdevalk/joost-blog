@@ -22,19 +22,19 @@ This commentary focuses on the data found in my monthly [CMS market share report
 
 ## Squarespace’s advertising works?
 
-Anecdotally, I heard about [Squarespace](/cms/squarespace/) advertising more, so their growth *could* be due to their advertising. But it could also be something else. Their growth chart shows that whatever it is, it’s working. Note that these effects can rarely be immediate; a site needs to have reasonable traffic to start showing up in this dataset, which normally doesn’t happen a month after launch:
+Anecdotally, I heard about Squarespace advertising more, so their growth *could* be due to their advertising. But it could also be something else. Their growth chart shows that whatever it is, it’s working. Note that these effects can rarely be immediate; a site needs to have reasonable traffic to start showing up in this dataset, which normally doesn’t happen a month after launch:
 
   
 
  ## Tistory: a new kid on the block?
 
-I had personally never heard of [Tistory](/cms/tistory/) before, but it [turns out](https://en.wikipedia.org/wiki/Tistory) it’s been around for about 18 years, it just only showed up in our measurements. This is a good example of the gaps in all of the data sources. I hope we’ll be able to make this report more comprehensive over time and not run into gaps like these any more.
+I had personally never heard of Tistory before, but it [turns out](https://en.wikipedia.org/wiki/Tistory) it’s been around for about 18 years, it just only showed up in our measurements. This is a good example of the gaps in all of the data sources. I hope we’ll be able to make this report more comprehensive over time and not run into gaps like these any more.
 
   
 
  ## Woo vs. Shopify vs. more?
 
-For a while, it seemed like the only two real eCommerce contenders were [WooCommerce](/cms/woocommerce/) and [Shopify](/cms/shopify/). But looking at this data, [Wix’s eCommerce offering](/cms/wix-ecommerce/) is actually also growing *very* rapidly and [Squarespace’s Commerce](/cms/squarespace-commerce/) solution is also not to be scoffed at, both only entered the market in 2021:
+For a while, it seemed like the only two real eCommerce contenders were WooCommerce and Shopify. But looking at this data, Wix’s eCommerce offering is actually also growing *very* rapidly and Squarespace’s Commerce solution is also not to be scoffed at, both only entered the market in 2021:
 
   
 
@@ -42,7 +42,7 @@ For a while, it seemed like the only two real eCommerce contenders were [WooComm
 
 WooCommerce5.6%Shopify15.5%Squarespace Commerce11.7%Wix eCommerce26.9%## Elementor keeps on growing
 
-One company in the WordPress space feels like it has no limits to it in terms of their growth: [Elementor](/cms/elementor/). Their growth chart over the last years can be described as “up and to the right”, with their most recent YoY growth rate at 23.3%:
+One company in the WordPress space feels like it has no limits to it in terms of their growth: Elementor. Their growth chart over the last years can be described as “up and to the right”, with their most recent YoY growth rate at 23.3%:
 
   
 
@@ -52,7 +52,7 @@ One company in the WordPress space feels like it has no limits to it in terms of
 
  ## Adobe is not so lucky
 
-Adobe acquired [Magento](/cms/magento/) [about 6 years ago](https://news.adobe.com/news/news-details/2018/Adobe-to-Acquire-Magento-Commerce/default.aspx), and it seems it’s not been able to make it “work”. Similarly, [Adobe Experience Manager](/cms/adobe-experience-manager/), which in my personal opinion is an overpriced solution that lacks some of the most basic functionality to manage a site (particularly on the SEO front), was on a path downwards up until May, although it seems to have recovered a *tiny* bit in June:
+Adobe acquired Magento [about 6 years ago](https://news.adobe.com/news/news-details/2018/Adobe-to-Acquire-Magento-Commerce/default.aspx), and it seems it’s not been able to make it “work”. Similarly, Adobe Experience Manager, which in my personal opinion is an overpriced solution that lacks some of the most basic functionality to manage a site (particularly on the SEO front), was on a path downwards up until May, although it seems to have recovered a *tiny* bit in June:
 
   
 

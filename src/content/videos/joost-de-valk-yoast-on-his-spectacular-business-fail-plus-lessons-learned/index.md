@@ -1,5 +1,7 @@
 ---
 title: Joost de Valk (Yoast) on His Spectacular Business Fail + Lessons Learned
+seo:
+  title: A spectacular business fail and lessons learned
 publishDate: 2023-11-16T00:00:00.000Z
 youtubeId: 5QyFwORsqWs
 videoUrl: 'https://www.youtube.com/watch?v=5QyFwORsqWs'

@@ -1,5 +1,7 @@
 ---
 title: 10 years of Yoast
+seo:
+  description: YoastCon presentation where Joost de Valk reflects on ten years of Yoast, its "SEO for Everyone" mission, and how the company operationalizes that vision.
 publishDate: 2022-08-16T00:00:00.000Z
 youtubeId: 27_iFw_W-HE
 duration: PT33M46S

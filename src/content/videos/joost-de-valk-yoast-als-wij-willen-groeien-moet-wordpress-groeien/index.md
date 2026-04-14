@@ -1,5 +1,7 @@
 ---
 title: 'Joost de Valk (Yoast): "Als wij willen groeien moet Wordpress groeien"'
+seo:
+  title: 'Yoast groeit als WordPress groeit'
 publishDate: 2019-03-26T00:00:00.000Z
 youtubeId: tIh73VwAcYY
 videoUrl: 'https://www.youtube.com/watch?v=tIh73VwAcYY'

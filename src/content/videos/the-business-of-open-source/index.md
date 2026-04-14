@@ -2,6 +2,8 @@
 title: >-
   Joost de Valk and Marieke van de Rakt: Thrive for the future – the business of
   open source
+seo:
+  title: The business of open source
 publishDate: 2019-01-02T00:00:00.000Z
 videoUrl: >-
   https://wordpress.tv/2019/01/02/joost-de-valk-and-marieke-van-de-rakt-thrive-for-the-future-the-business-of-open-source/

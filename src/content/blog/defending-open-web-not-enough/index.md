@@ -1,5 +1,7 @@
 ---
 title: Defending the open web is not enough
+seo:
+  description: Anil Dash calls it the endgame for the open web. The collapse has already started. The question isn't how to protect it, but what to build next.
 publishDate: 2026-04-07T00:00:00.000Z
 excerpt: >-
   Anil Dash calls it the endgame for the open web, and he's right. But the

@@ -1,5 +1,7 @@
 ---
 title: 'WPCoffeeTalk: Joost de Valk'
+seo:
+  description: Michelle Frechette talks with Joost de Valk on WPCoffeeTalk about his WordPress background, Yoast, Emilia Capital, and the wider WordPress ecosystem.
 publishDate: 2024-04-29T00:00:00.000Z
 youtubeId: VnYT8GDceLk
 duration: PT39M36S

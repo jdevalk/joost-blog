@@ -128,6 +128,12 @@ integrations: [mdx(), sitemap({
             },
         },
     }), seoGraph({
+        validateInternalLinks: {
+            skip: (href) => href === '/sitemap-index.xml' || href === '/schemamap.xml',
+        },
+        validateMetadataLength: {
+            title: { min: 15, max: 70 },
+        },
         indexNow: {
             key: '6b7e19e7ee59d4ccf983fd71c479f0f4',
             host: 'joost.blog',

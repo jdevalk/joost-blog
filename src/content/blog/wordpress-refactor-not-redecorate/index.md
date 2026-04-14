@@ -1,5 +1,7 @@
 ---
 title: 'WordPress needs to refactor, not redecorate'
+seo:
+  description: WordPress's deepest problems are architectural, not cosmetic. Responses to EmDash from Mullenweg, Luehrsen, and Coords show what must change.
 publishDate: 2026-04-03T00:00:00.000Z
 excerpt: >-
   WordPress's deepest problems aren't cosmetic, they're architectural. The

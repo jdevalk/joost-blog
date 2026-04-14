@@ -2,6 +2,7 @@
 title: 'The People Behind the Platform: How WordPress’s Community Drives its Success'
 seo:
   title: The people behind the WordPress platform
+  description: By Marieke van de Rakt and Joost de Valk — on the volunteers who keep WordPress alive and what their work means for the platform.
 publishDate: 2024-10-31T00:00:00.000Z
 excerpt: By Marieke van de Rakt and Joost de Valk
 categories:

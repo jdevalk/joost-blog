@@ -43,18 +43,21 @@ function formatDuration(isoDuration: string | undefined): string | null {
 
 const duration = formatDuration(video.data.duration);
 
+const seoTitle = video.data.seo?.title ?? video.data.title;
+const seoDescription = video.data.seo?.description ?? video.data.title;
+
 const pageContext: SchemaPageContext = {
     pageType: 'video',
     canonicalUrl: canonicalUrl(Astro.url.pathname),
-    title: video.data.title,
-    description: video.data.title,
+    title: seoTitle,
+    description: seoDescription,
     publishDate: video.data.publishDate,
     youtubeId: video.data.youtubeId,
     duration: video.data.duration
 };
 ---
 
-<BaseLayout title={video.data.title} description={video.data.title}>
+<BaseLayout title={seoTitle} description={seoDescription}>
     <SchemaGraph pageContext={pageContext} />
     <main class="grow px-4 py-12 sm:px-8" data-pagefind-body>
         <div class="max-w-4xl mx-auto">

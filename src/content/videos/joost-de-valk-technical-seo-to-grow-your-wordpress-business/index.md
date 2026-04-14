@@ -1,5 +1,8 @@
 ---
 title: 'Joost de Valk: Technical SEO to grow your WordPress business'
+seo:
+  title: Technical SEO for your WordPress business
+  description: 'A talk for developers building websites: how technical SEO helps your clients rank better on Google and grows your WordPress business.'
 publishDate: 2018-07-11T00:00:00.000Z
 videoUrl: >-
   https://wordpress.tv/2018/07/11/joost-de-valk-technical-seo-to-grow-your-wordpress-business/

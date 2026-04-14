@@ -1,5 +1,7 @@
 ---
 title: Mastering WordPress Product Branding with Joost de Valk | WP Product Talk
+seo:
+  title: Mastering WordPress product branding
 publishDate: 2023-05-23T00:00:00.000Z
 youtubeId: TNQmGqrokX4
 duration: PT49M23S

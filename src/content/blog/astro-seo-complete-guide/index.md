@@ -1,5 +1,7 @@
 ---
 title: 'Astro SEO: the definitive guide'
+seo:
+  description: "Eighteen years after 'WordPress SEO: the definitive guide,' here's the Astro version — the full SEO stack for 2026, from JSON-LD to agent discovery."
 publishDate: 2026-04-12T00:00:00.000Z
 excerpt: >-
   In 2008 I wrote "WordPress SEO: the definitive guide." Eighteen years later,
@@ -87,13 +89,18 @@ No manual image creation, no missing OG images, no forgetting to update them whe
 
 ### Build-time validation
 
-The `seoGraph()` integration that handles IndexNow also validates your built HTML on every build:
+The `seoGraph()` integration that handles IndexNow also validates your built HTML on every build. All six checks are on by default:
 
 - **H1 validation:** Warns about pages with zero or more than one `<h1>` element, a common SEO and accessibility issue that's easy to miss in templates.
 - **Duplicate title/description detection:** Checks across all built pages for duplicate `<title>` or meta description values. Here, it caught paginated blog pages all sharing the same title, a corpus-level SEO problem that per-page checks can't find.
 - **Schema validation:** Validates the JSON-LD structured data on every page, which brings us to the next layer.
+- **Image alt validation:** Warns about `<img>` tags without an `alt` attribute. Ran this once on my own site and got a list of 24 images across 14 posts with missing alt text that I'd missed over the years. Fixed in an afternoon.
+- **Metadata length validation:** Flags titles or meta descriptions outside SERP-safe bounds. Defaults are title 30–65 and description 70–200. Configurable per site — a personal blog with listing pages like `/ask/` can loosen the title min, which is what I did here.
+- **Internal link validation:** Scans every page's `<a href>` values and checks them against the set of paths the build actually produced. Catches the common "I linked to `/about-me` but the page is `/about-me/`" bug, where the site "works" via a 301 redirect but wastes a round-trip on every visit. Catches typo-broken links too. Supports a `skip` callback for paths handled at the CDN layer (like generated sitemaps).
 
-Beyond build-time checks, add a **broken link checker** to your CI pipeline. A [lychee](https://github.com/lycheeverse/lychee-action) GitHub Action that runs on every push to your content files catches dead links before they go live, and a weekly scheduled run catches link rot as external sites move or disappear. Broken outbound links are a bad user experience and a negative trust signal.
+What the link validator found on this site the first time I ran it: a broken `/about-me` (no trailing slash) in one post, every pagination link in my blog archive missing its trailing slash, and five internal links to `/plugins/*` that were being served via a redirect because the pages had moved to a different domain. The first two took five minutes to fix, the third was a real content issue I replaced with direct links.
+
+Beyond build-time checks, add a **broken link checker** to your CI pipeline. A [lychee](https://github.com/lycheeverse/lychee-action) GitHub Action that runs on every push to your content files catches dead links to external URLs — which `validateInternalLinks` doesn't cover. A weekly scheduled run catches link rot as external sites move or disappear. Broken outbound links are a bad user experience and a negative trust signal.
 
 ## 2. Structured data
 

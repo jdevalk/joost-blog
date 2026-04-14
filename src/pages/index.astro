@@ -25,7 +25,7 @@ const featuredPosts = posts.filter(({ data }) => data.isFeatured).slice(0, 2);
 const latestPosts = posts.filter(({ data }) => !data.isFeatured).slice(0, 6);
 ---
 
-<BaseLayout description={siteConfig.description}>
+<BaseLayout title="Joost de Valk - Internet entrepreneur" description={siteConfig.description}>
     <SchemaGraph pageContext={pageContext} />
     <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
         <Header variant="dark" />

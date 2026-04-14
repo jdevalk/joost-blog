@@ -2,6 +2,8 @@
 title: >-
   Panel Discussion “The Future of WordPress” with Francesca Marano, Joost de
   Valk and Sé Reed.
+seo:
+  title: 'Panel: the future of WordPress'
 publishDate: 2025-06-10T00:00:00.000Z
 youtubeId: eeSpgEKcHlQ
 duration: PT26M55S

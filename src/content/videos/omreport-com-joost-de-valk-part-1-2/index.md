@@ -1,5 +1,7 @@
 ---
 title: OMReport.com - Joost de Valk Part 1/2
+seo:
+  description: Part one of Andre Alpar's OMReport.com interview with Joost de Valk on SEO, WordPress, and the early growth of Yoast.
 publishDate: 2011-10-09T00:00:00.000Z
 youtubeId: nLJIo2zy2zw
 videoUrl: 'https://www.youtube.com/watch?v=nLJIo2zy2zw'

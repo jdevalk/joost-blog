@@ -2,6 +2,8 @@
 title: >-
   SEO Secrets with Joost de Valk - WP Elevation WordPress Business Podcast -
   Episode 126
+seo:
+  title: SEO secrets on WP Elevation
 publishDate: 2018-01-03T00:00:00.000Z
 youtubeId: 3ReChUxTPow
 videoUrl: 'https://www.youtube.com/watch?v=3ReChUxTPow'

@@ -2,6 +2,8 @@
 title: >-
   Joost de Valk,Marieke van de Rakt: Growing a Multi-Million Dollar Business
   with a WordPress plugin
+seo:
+  title: Growing a multi-million dollar plugin business
 publishDate: 2020-11-17T00:00:00.000Z
 videoUrl: >-
   https://wordpress.tv/2020/11/17/joost-de-valkmarieke-van-de-rakt-growing-a-multi-million-dollar-business-with-a-wordpress-plugin/

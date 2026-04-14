@@ -2,6 +2,8 @@
 title: >-
   AI, SEO, and Automation: How to start marketing a new product category?
   Interview with Joost de Valk
+seo:
+  title: 'AI, SEO, and marketing a new category'
 publishDate: 2025-04-02T00:00:00.000Z
 youtubeId: 5dRmfaRweOs
 videoUrl: 'https://www.youtube.com/watch?v=5dRmfaRweOs'

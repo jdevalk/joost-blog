@@ -10,7 +10,7 @@ categories:
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Multi-currency awesomeness with EDD & Cloudflare'
 ---
-We’re getting ready at Emilia Projects (which is the “run our own projects part” of [Emilia Capital](https://emilia.capital/)) to sell our first plugin, the Pro version of [Fewer Tags](/plugins/fewer-tags/). We will sell that using [Easy Digital Downloads](https://easydigitaldownloads.com/) (EDD), which I have not used for *years,* so I’ve been re-learning how to work with it. One of the things I’d found they had added since I started using it is a very nice [multi-currency plugin](https://easydigitaldownloads.com/downloads/multi-currency/).
+We’re getting ready at Emilia Projects (which is the “run our own projects part” of [Emilia Capital](https://emilia.capital/)) to sell our first plugin, the Pro version of [Fewer Tags](https://progressplanner.com/plugins/fewer-tags/). We will sell that using [Easy Digital Downloads](https://easydigitaldownloads.com/) (EDD), which I have not used for *years,* so I’ve been re-learning how to work with it. One of the things I’d found they had added since I started using it is a very nice [multi-currency plugin](https://easydigitaldownloads.com/downloads/multi-currency/).
 
 The plugin works mostly by adding `?currency=<currency>` to the URL and allowing people to switch using that, but… I don’t necessarily want people to switch. We have two currencies, Euros (`EUR`) and US dollars (`USD`) and I want to give everyone in Europe `EUR` and everyone else `USD`. So, the default currency of the site is `USD`, and we needed to find a way to make people in the EU default to `EUR`. That’s where Cloudflare comes in!
 

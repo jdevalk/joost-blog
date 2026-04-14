@@ -1,5 +1,8 @@
 ---
 title: 'Joost de Valk on improving the web, schema, and the CMS market'
+seo:
+  title: 'Improving the web, schema, and CMS market'
+  description: A Tech Bound podcast conversation with Joost de Valk on the importance of schema for the web, the CMS landscape, and SEO fitness.
 publishDate: 2021-07-14T00:00:00.000Z
 youtubeId: mfcGeN7NGgQ
 videoUrl: 'https://www.youtube.com/watch?v=mfcGeN7NGgQ'

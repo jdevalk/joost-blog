@@ -1,5 +1,7 @@
 ---
 title: 'Joost de Valk: Holistic SEO'
+seo:
+  description: 'Joost explains holistic SEO: why great rankings require not just technical fixes but content people actually want to share and read.'
 publishDate: 2015-10-19T00:00:00.000Z
 videoUrl: 'https://wordpress.tv/2015/10/19/joost-de-valk-holistic-seo/'
 duration: PT30M27S

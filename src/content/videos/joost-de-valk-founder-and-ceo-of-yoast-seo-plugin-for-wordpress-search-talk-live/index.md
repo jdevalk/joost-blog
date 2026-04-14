@@ -2,6 +2,8 @@
 title: >-
   Joost de Valk founder and CEO of Yoast SEO Plugin for WordPress - Search Talk
   Live
+seo:
+  title: Yoast SEO founder on Search Talk Live
 publishDate: 2016-02-02T00:00:00.000Z
 youtubeId: 1EKqSaQnCAo
 duration: PT53M41S

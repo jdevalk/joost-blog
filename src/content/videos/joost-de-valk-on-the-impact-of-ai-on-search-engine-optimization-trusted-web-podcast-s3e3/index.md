@@ -2,6 +2,8 @@
 title: >-
   Joost de Valk on the impact of AI on Search Engine Optimization | Trusted Web
   Podcast S3E3
+seo:
+  title: The impact of AI on SEO
 publishDate: 2023-05-12T00:00:00.000Z
 youtubeId: vzG7xI4FVrg
 videoUrl: 'https://www.youtube.com/watch?v=vzG7xI4FVrg'

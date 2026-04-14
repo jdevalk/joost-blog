@@ -38,12 +38,13 @@ const pageContext: SchemaPageContext = {
     pageType: 'category',
     canonicalUrl: canonicalUrl(Astro.url.pathname),
     title: categoryName,
-    description: `Posts in the ${categoryName} category`,
+    description: `Articles by Joost de Valk in the ${categoryName} category — SEO, WordPress, open source, AI, and the open web.`,
     categoryName
 };
+const categoryDescription = `Articles by Joost de Valk in the ${categoryName} category — SEO, WordPress, open source, AI, and the open web.`;
 ---
 
-<BaseLayout title={`${categoryName} - Joost.blog`} description={`Posts in the ${categoryName} category`}>
+<BaseLayout title={categoryName} description={categoryDescription}>
     <SchemaGraph pageContext={pageContext} />
     <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
         <Header variant="dark" />

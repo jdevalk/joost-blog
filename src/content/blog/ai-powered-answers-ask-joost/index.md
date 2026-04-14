@@ -64,7 +64,7 @@ If the model fails, times out, or returns something unusable, the endpoint falls
 
 ## Better sources, better answers
 
-One thing I cared about a lot was source quality. Not all content is equally good source material. Pages like “[About](/about-me)” are often more authoritative than an old blog post. Video transcripts are useful for retrieval, but they’re rougher as quoted sources because they’re derived from captions. So the system uses them for discovery, while still preferring cleaner written sources in the final answer when possible.
+One thing I cared about a lot was source quality. Not all content is equally good source material. Pages like “[About](/about-me/)” are often more authoritative than an old blog post. Video transcripts are useful for retrieval, but they’re rougher as quoted sources because they’re derived from captions. So the system uses them for discovery, while still preferring cleaner written sources in the final answer when possible.
 
 The source list shown below each answer is also filtered down to the posts the model actually referenced. The function parses the markdown links in the answer and only shows those sources, instead of dumping every item that happened to be in the retrieval context.
 

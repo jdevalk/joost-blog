@@ -1,5 +1,7 @@
 ---
 title: AWP Gutenberg Interview Series with Joost de Valk
+seo:
+  description: First in a four-part February 2018 series on the upcoming block-based Gutenberg editor for WordPress 5.0, in conversation with Joost de Valk.
 publishDate: 2018-02-06T00:00:00.000Z
 videoUrl: >-
   https://wordpress.tv/2018/02/06/awp-gutenberg-interview-series-with-joost-de-valk/

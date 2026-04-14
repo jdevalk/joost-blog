@@ -2,6 +2,8 @@
 title: >-
   Joost de Valk: How I Founded Yoast; The Ultimate Guide to SEO; The Threat of
   AI | E1000
+seo:
+  title: 'Founding Yoast, SEO guide, and the AI threat'
 publishDate: 2023-04-12T00:00:00.000Z
 youtubeId: u3MyMdc2P0s
 videoUrl: 'https://www.youtube.com/watch?v=u3MyMdc2P0s'

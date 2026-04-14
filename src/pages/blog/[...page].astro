@@ -29,11 +29,11 @@ const pageContext: SchemaPageContext = {
     pageType: 'blogListing',
     canonicalUrl: canonicalUrl(Astro.url.pathname),
     title: isFirstPage ? 'Blog' : `Blog — Page ${page.currentPage}`,
-    description: isFirstPage ? 'Articles about WordPress, SEO, open source, and more by Joost de Valk' : `Page ${page.currentPage} of articles about WordPress, SEO, open source, and more by Joost de Valk`
+    description: isFirstPage ? 'Articles, essays, and opinions by Joost de Valk on WordPress, SEO, open source, AI, and the future of the open web.' : `Page ${page.currentPage} of articles about WordPress, SEO, open source, and more by Joost de Valk`
 };
 ---
 
-<BaseLayout title={isFirstPage ? 'Blog' : `Blog — Page ${page.currentPage}`} description={isFirstPage ? 'Articles about WordPress, SEO, open source, and more by Joost de Valk' : `Page ${page.currentPage} of articles about WordPress, SEO, open source, and more by Joost de Valk`}>
+<BaseLayout title={isFirstPage ? 'Blog' : `Blog — Page ${page.currentPage}`} description={isFirstPage ? 'Articles, essays, and opinions by Joost de Valk on WordPress, SEO, open source, AI, and the future of the open web.' : `Page ${page.currentPage} of articles about WordPress, SEO, open source, and more by Joost de Valk`}>
     <SchemaGraph pageContext={pageContext} />
     <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
         <Header variant="dark" />
@@ -92,7 +92,7 @@ const pageContext: SchemaPageContext = {
                     {page.url.prev && (
                         <a
                             class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 text-slate-600 transition duration-300 hover:bg-primary hover:text-white dark:bg-[#1e1b19] dark:text-slate-300"
-                            href={page.url.prev}
+                            href={page.url.prev.endsWith('/') ? page.url.prev : `${page.url.prev}/`}
                             rel="prev"
                             aria-label={`Go to page ${page.currentPage - 1}`}
                         >
@@ -120,7 +120,7 @@ const pageContext: SchemaPageContext = {
                     {page.url.next && (
                         <a
                             class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 text-slate-600 transition duration-300 hover:bg-primary hover:text-white dark:bg-[#1e1b19] dark:text-slate-300"
-                            href={page.url.next}
+                            href={page.url.next.endsWith('/') ? page.url.next : `${page.url.next}/`}
                             rel="next"
                             aria-label={`Go to page ${page.currentPage + 1}`}
                         >

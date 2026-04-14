@@ -1,5 +1,7 @@
 ---
 title: 'Keynote: Sustainable open source is the future'
+seo:
+  description: WCEU 2024 keynote on why big open source projects are struggling and how to build sustainable business models around them for the long run.
 publishDate: 2024-07-03T00:00:00.000Z
 videoUrl: 'https://wordpress.tv/2024/07/03/keynote-sustainable-open-source-is-the-future/'
 duration: PT48M44S

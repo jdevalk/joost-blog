@@ -11,7 +11,7 @@ categories:
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Elementor: WordPress’ secret growth driver?'
 ---
-Is [Elementor](/cms/elementor/) the secret behind WordPress’ growth in the last years? We know from my CMS market share analysis that WordPress has been growing fast. Could it be that a lot of that growth is actually caused by Elementor’s popularity?
+Is Elementor the secret behind WordPress’ growth in the last years? We know from my CMS market share analysis that WordPress has been growing fast. Could it be that a lot of that growth is actually caused by Elementor’s popularity?
 
 After I published the sixth iteration of my [CMS market share analysis](/cms-market-share/) last week, some interesting questions popped up in a couple of places. One of them was a comparison to Elementor’s growth. Now I honestly wasn’t aware that W3Techs tracked Elementor, but [it does right here](https://w3techs.com/technologies/details/cm-elementor), apparently since last February. This helped me do a bit of analysis.
 

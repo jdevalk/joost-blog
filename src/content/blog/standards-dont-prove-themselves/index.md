@@ -1,5 +1,7 @@
 ---
 title: Standards don't prove themselves
+seo:
+  description: "The SEO Framework analyzed 180,000 AI bot requests and found zero llms.txt lookups. Their conclusion: not worth implementing. Here's what they missed."
 publishDate: 2026-04-13T00:00:00.000Z
 excerpt: >-
   The SEO Framework analyzed 180,000 AI bot requests and found zero llms.txt
