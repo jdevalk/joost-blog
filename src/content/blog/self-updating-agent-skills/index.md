@@ -6,6 +6,7 @@ seo:
     I landed on after publishing a first attempt and getting corrected on
     LinkedIn.
 publishDate: 2026-04-14T00:00:00.000Z
+updatedDate: 2026-04-18T00:00:00.000Z
 excerpt: >-
   Agent Skills install as loose folders. There's no npm, no registry, no daemon
   checking for updates. I shipped a version-check pattern, published it, and got
