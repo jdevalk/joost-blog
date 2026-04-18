@@ -2,15 +2,14 @@
 title: How I made my skills update themselves
 seo:
   description: >-
-    Skills install as loose folders with no package manager. Here's a pattern
-    that makes each skill check for updates — and install them — when you
-    invoke it.
+    Skills install as loose folders with no package manager. Here's the pattern
+    I landed on after publishing a first attempt and getting corrected on
+    LinkedIn.
 publishDate: 2026-04-14T00:00:00.000Z
 excerpt: >-
   Agent Skills install as loose folders. There's no npm, no registry, no daemon
-  checking for updates. I shipped a new version of a skill and realized I had no
-  way of telling the users still running the old one. So I taught the skills to
-  notice — and then to update themselves.
+  checking for updates. I shipped a version-check pattern, published it, and got
+  corrected on LinkedIn. Here's what I learned and what replaced it.
 categories:
   - Development
   - AI
@@ -18,11 +17,11 @@ featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: How I made my skills update themselves'
 toc: false
 ---
-I updated one of my [Agent Skills](https://github.com/jdevalk/skills) today and realized I had no way to tell my other machines they were running a stale copy. Skills install as loose folders in `~/.claude/skills/` (or wherever your agent puts them). There's no `npm outdated`, no `brew upgrade`, no update daemon. The skill just runs whatever's on disk.
+I updated one of my [Agent Skills](https://github.com/jdevalk/skills) and realized I had no way to tell my other machines they were running a stale copy. Skills install as loose folders in `~/.claude/skills/`. The skill runs whatever's on disk — and has no way of knowing there's a newer version.
 
-So I added a small pattern that makes each skill check itself on invocation. If it's out of date, the skill offers to install the update before continuing. I couldn't find anyone doing quite this. The whole thing is a few lines of configuration per skill.
+This post describes what I tried first, why it wasn't quite right, and what replaced it after [a useful LinkedIn thread](https://www.linkedin.com/posts/jdevalk_agent-skills-ship-as-loose-folders-no-npm-share-7449864833010655232-xAj9).
 
-## Why versioning matters when posts and skills ship together
+## Why versioning matters
 
 Most of [my skills](https://github.com/jdevalk/skills) are the executable companion to a post:
 
@@ -31,81 +30,71 @@ Most of [my skills](https://github.com/jdevalk/skills) are the executable compan
 - The [github-profile skill](https://github.com/jdevalk/skills?tab=readme-ov-file#-github-profile-optimizer) implements [Good-looking GitHub profile pages](/good-looking-github-profile-pages/).
 - The [wp-github-actions skill](https://github.com/jdevalk/skills?tab=readme-ov-file#-wordpress-github-actions) implements [GitHub Actions to keep your WordPress plugin healthy](/github-actions-wordpress/).
 
-Each pairing turns an opinionated blog post into a drop-in workflow.
+Each pairing turns an opinionated blog post into a drop-in workflow. The post argues for a set of choices; the skill makes those choices the default. Want to understand why? Read the post. Want to apply it? Run the skill.
 
-This is a shipping pattern I like a lot: the post argues for a set of choices, the skill makes those choices the default. Want to understand why? Read the post. Want to apply it? Run the skill.
+But opinions evolve. When I update the Astro SEO guide to cover a new [build-time validator](/astro-seo-complete-guide/#build-time-validation), I update the skill in the same pass. If users don't know their installed skill is behind the post, they'll follow instructions that no longer match what I'd write today. An agent skill without a version check is cached documentation. Useful until it's wrong.
 
-But opinions evolve. When I update the Astro SEO guide to cover a new [build-time validator](/astro-seo-complete-guide/#build-time-validation), I update the skill in the same pass. If users don't know their installed skill is behind the post, they'll follow instructions that no longer match what I'd write today. An Agent Skill without a version check is cached documentation. Useful until it's wrong. And you don't find out until it is.
+## The original pattern
 
-That's the specific problem I'm solving. The pattern below is general, but this is why it matters to me.
+The original version of this post embedded a self-check in each SKILL.md. Four pieces: a `version:` field in each skill's frontmatter, a `versions.json` at the repo root, a paragraph telling the agent to check the manifest on invocation and offer to install an update, and a CI check to keep them in sync.
 
-## The pattern
+It worked. But it had real costs — tokens on every invocation even when nothing had changed, and a mid-task re-invoke nobody wanted — and I'd claimed that centralizing the check "needs harness support Claude Code doesn't expose to skill authors today." People in the thread corrected both.
 
-Four pieces.
+## Lessons from the thread
 
-First, every SKILL.md carries a `version:` field in its frontmatter:
+The post ended with a genuine question: had anyone found a better workflow for keeping skills in sync? It worked.
 
-```yaml
----
-name: astro-seo
-version: "0.4"
-description: >
-  Audits and improves SEO for Astro sites...
----
+After I published, three comments pointed at things I'd missed.
+
+Felix Arntz mentioned [skills.sh](https://skills.sh). I knew the site and had assumed it was install-only, no update mechanism. Looking more carefully, I found that `npx skills` supports a `--skill` flag for targeting individual skills inside a monorepo. That meant `npx skills update astro-seo` already worked for my setup. I just hadn't known the flag existed.
+
+Dovid Levine suggested adding the check to Claude's startup hook or a postinstall script. The right place is a `SessionStart` hook in `settings.json` — a shell command that runs before any context loads, outside the context window entirely. Zero token cost. That's the harness support I claimed didn't exist. The hook updates skill files on disk before the session reads them, so each new session starts with current content.
+
+## The current pattern
+
+The skills repo no longer contains any self-update logic. Two commands cover install and update:
+
+```sh
+# Install one skill
+npx skills add jdevalk/skills --skill astro-seo
+
+# Install all skills
+npx skills add jdevalk/skills
 ```
 
-Second, a single `versions.json` at the repo root maps each skill name to its current version:
+```sh
+# Update all installed skills
+npx skills update
+
+# Update one skill
+npx skills update astro-seo
+```
+
+For users who want updates to happen automatically, add a `SessionStart` hook to `~/.claude/settings.json`:
 
 ```json
 {
-    "astro-seo": "0.4",
-    "readability-check": "0.4",
-    "github-repo": "0.3"
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "npx skills update -g -y 2>/dev/null"
+      }
+    ]
+  }
 }
 ```
 
-Third, every SKILL.md includes a short paragraph that tells the skill to self-check when it runs — and, if the user approves, to install the update inline:
+This runs outside the context window on every session start, `/clear`, and compaction. Skills stay current without the user doing anything. If the latency bothers you on `/clear`, scope it to startup only by checking `source` in the hook input.
 
-```markdown
-Before running, fetch https://raw.githubusercontent.com/jdevalk/skills/main/versions.json
-and compare the `astro-seo` entry to the `version:` in this file's frontmatter.
-If the manifest version is higher, tell the user the skill is out of date and
-offer to update it now. If they agree, run:
+## If you maintain skills
 
-    curl -fsSL https://github.com/jdevalk/skills/releases/latest/download/astro-seo.skill \
-      -o /tmp/astro-seo.skill \
-      && unzip -oq /tmp/astro-seo.skill -d <parent of this skill's directory> \
-      && rm /tmp/astro-seo.skill
+No releases needed — `npx skills update` pulls directly from `main`. A per-skill `README.md` is worth adding: skills.sh shows it on each skill's individual page.
 
-After the unzip, ask the user to re-invoke the skill so the new version loads
-into context. The check is informational and never blocks: if the user
-declines, continue with the rest of the workflow on the current version.
-```
+Include the `SessionStart` hook snippet in your `README` for users who want zero-friction updates.
 
-Fourth, a CI job that fails any PR where a skill's frontmatter version doesn't match its `versions.json` entry. The manifest and the shipped skills can't drift.
+No runtime. No service. No tokens.
 
-That's it. No runtime. No service. The skill checks on each invocation using the agent's own `WebFetch` tool. If the user approves the update, the skill re-uses the `Bash` tool that's already there to pull the latest release and unpack it in place. Users find out they're behind — and can be caught up — at exactly the moment it matters: when they're about to run the skill.
+---
 
-## Why no cache
-
-The obvious concern is that every skill invocation now costs a network round-trip. Three reasons I left it alone:
-
-The WebFetch tool already has a built-in 15-minute cache. Multiple skill invocations in one work session share the response, which covers the realistic hot path. I'm not going to beat that with hand-rolled caching.
-
-A longer cache fights the purpose. The whole point of the check is to alert me about updates. A 24-hour cache means I could miss a release for a day. The check is already non-blocking. A cache miss costs less than running a stale skill for another day.
-
-The fetch is around a hundred milliseconds against a static GitHub raw URL. In a human-paced workflow where I invoke a skill once or twice per session, it's noise. If I ever ship fifty skills and it matters, the better fix is to centralize. One shared manifest fetch per session, not one per skill. But that needs harness support Claude Code doesn't expose to skill authors today. So the skill is the smallest unit with an execution context, and that's where the check lives.
-
-## What I couldn't find
-
-Before writing this up I went looking for prior art. The closest patterns in the Agent Skills ecosystem:
-
-- **Anthropic's `marketplace.json` plus `/install`**: version tracked in a marketplace manifest, updates happen via an external CLI command or an `update_marketplace.py` script. The user has to step out of whatever they were doing to learn they're behind.
-- **[skills-updater](https://github.com/yizhiyanhua-ai/skills-updater)** (community skill): scans your installed skills, checks each against its remote repo, and offers to update them. The closest prior art I found. But it's a separate skill you remember to run, not a check embedded in the skill you're actually trying to use.
-- **Smithery, OpenCode, and other skill hosts**: track versions for distribution but don't ship a self-check.
-
-None of them put the check — and the install — inside the skill itself, at invocation time, against a repo-local manifest. Which is fair: it's not a big idea. It's just a pattern that package managers have had for decades, applied to a new distribution format that doesn't have one yet.
-
-If you maintain skills and your users install them as loose files, steal this. It works for any agent whose skill format is "a folder with a markdown file and some frontmatter."
-
-Have you seen a better workflow for keeping agent skills in sync with their source? I'd genuinely like to know. This is the best I could come up with, but that's a low bar when the format is new enough that conventions haven't settled.
+*This post was updated after [a LinkedIn discussion](https://www.linkedin.com/posts/jdevalk_agent-skills-ship-as-loose-folders-no-npm-share-7449864833010655232-xAj9). Felix Arntz and Dovid Levine pointed at things I'd missed in the original version.*
