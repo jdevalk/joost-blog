@@ -26,7 +26,7 @@ const siteConfig: SiteConfig = {
     ],
     hero: {
         title: "Joost de Valk",
-        text: 'Internet entrepreneur from the Netherlands. I\'m the founder of Yoast, the company behind the most popular WordPress SEO plugin. Now I invest in and build digital companies through <a href="https://emilia.capital/" target="_blank" rel="noopener noreferrer">Emilia Capital</a>, and I\'m working on <a href="https://progressplanner.com/" target="_blank" rel="noopener noreferrer">Progress Planner</a>. <a href="/about-me/">Read more &rarr;</a>',
+        text: 'Internet entrepreneur from the Netherlands. I\'m the founder of Yoast, the company behind the most popular WordPress SEO plugin. Now I invest in and build digital companies through <a href="https://emilia.capital/" target="_blank" rel="noopener noreferrer">Emilia Capital</a>, and I\'m working on <a href="https://progressplanner.com/" target="_blank" rel="noopener noreferrer">Progress Planner</a> &amp; <a href="https://rondo.club/" target="_blank" rel="noopener noreferrer">Rondo</a>.<span class="block mt-3"><a href="/about-me/">Read more about me &rarr;</a></span>',
         avatar: {
             src: avatarImage,
             alt: 'Joost de Valk'

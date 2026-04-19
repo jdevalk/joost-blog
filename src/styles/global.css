@@ -82,7 +82,7 @@
     :is(h1, h2, h3, h4, h5, h6) {
         scroll-margin-top: 5rem;
     }
-    .prose :not(.not-prose) > :is(h2, h3),
+    .prose :not(.not-prose, .not-prose *) > :is(h2, h3),
     .prose > :is(h2, h3) {
         @apply border-l-3 border-primary dark:border-accent -ml-5 pl-[17px];
     }
