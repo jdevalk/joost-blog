@@ -64,7 +64,7 @@ import Header from '../components/Header.astro';
 </BaseLayout>
 
 <script>
-    document.addEventListener('astro:page-load', () => {
+    document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('ask-form');
         const input = document.getElementById('ask-input');
         const btn = document.getElementById('ask-btn');
