@@ -81,52 +81,5 @@ const isLoggedIn = !!Astro.locals.user;
             </slot>
         </div>
         <EmDashBodyEnd page={pageCtx} />
-        {isLoggedIn && (
-            <script is:inline>
-            // Fix: EmDash toolbar's fetchManifest caches the raw API response
-            // ({ data: { collections: ... } }) but getFieldKind looks for
-            // manifest.collections. Patch the fetch to unwrap the data envelope.
-            (function() {
-                var origFetch = window.fetch;
-                window.fetch = function() {
-                    var url = arguments[0];
-                    if (typeof url === 'string' && url.includes('/_emdash/api/manifest')) {
-                        return origFetch.apply(this, arguments).then(function(res) {
-                            return new Response(res.body, res);
-                        }).then(function(res) {
-                            var origJson = res.json.bind(res);
-                            res.json = function() {
-                                return origJson().then(function(d) {
-                                    return d && d.data ? d.data : d;
-                                });
-                            };
-                            return res;
-                        });
-                    }
-                    return origFetch.apply(this, arguments);
-                };
-
-                // Also prevent toolbar from intercepting portableText field clicks.
-                // The InlinePortableTextEditor (TipTap) handles those natively.
-                document.addEventListener('click', function(e) {
-                    var target = e.target;
-                    while (target && target !== document.body) {
-                        if (target.hasAttribute && target.hasAttribute('data-emdash-editing')) return;
-                        var ref = target.getAttribute && target.getAttribute('data-emdash-ref');
-                        if (ref) {
-                            try {
-                                var ann = JSON.parse(ref);
-                                if (ann.field === 'content') {
-                                    e.stopImmediatePropagation();
-                                }
-                            } catch(err) {}
-                            return;
-                        }
-                        target = target.parentElement;
-                    }
-                }, true);
-            })();
-            </script>
-        )}
     </body>
 </html>
