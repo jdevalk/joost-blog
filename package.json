@@ -9,7 +9,7 @@
         "generate-images": "node --env-file-if-exists=.env scripts/generate-featured-images.mjs",
         "fetch-transcripts": "node scripts/fetch-transcripts.mjs",
         "images": "node --env-file-if-exists=.env scripts/image-manager.mjs",
-        "build": "node scripts/generate-draft-slugs.mjs && astro build",
+        "build": "node scripts/generate-draft-slugs.mjs && node scripts/check-src.mjs && astro build",
         "preview": "astro preview",
         "astro": "astro"
     },

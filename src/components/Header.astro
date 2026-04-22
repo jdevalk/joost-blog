@@ -173,7 +173,6 @@ const isDark = variant === 'dark';
         });
     }
     menuToggle();
-    document.addEventListener('astro:after-swap', menuToggle);
 
     function headerScroll() {
         const header = document.querySelector('header');
@@ -189,5 +188,4 @@ const isDark = variant === 'dark';
         handler();
     }
     headerScroll();
-    document.addEventListener('astro:after-swap', headerScroll);
 </script>
