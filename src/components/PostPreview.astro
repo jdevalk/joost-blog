@@ -32,13 +32,13 @@ const readingTime = getReadingTime(post.body ?? '');
                 </a>
             ))}
         </div>
-        <h2 class="text-xl font-extrabold leading-snug text-slate-900 dark:text-slate-100">
+        <h2 class="text-xl font-extrabold leading-snug text-slate-900 dark:text-slate-100" style={`view-transition-name: post-title-${post.id}`}>
             <a href={`/${post.id}/`} class="hover:text-primary dark:hover:text-accent transition-colors duration-300">{title}</a>
         </h2>
         {excerpt && (
             <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-2">{excerpt}</p>
         )}
-        <div class="mt-auto pt-4 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+        <div class="mt-auto pt-4 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400" style={`view-transition-name: post-meta-${post.id}`}>
             <FormattedDate date={publishDate} />
             <span>&middot;</span>
             <span>{readingTime} min read</span>

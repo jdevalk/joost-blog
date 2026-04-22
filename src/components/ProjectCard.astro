@@ -4,16 +4,19 @@ type Props = {
     description: string;
     href: string;
     label?: string;
+    external?: boolean;
+    transitionName?: string;
 };
 
-const { title, description, href, label } = Astro.props;
+const { title, description, href, label, external = true, transitionName } = Astro.props;
 ---
 
 <a
     href={href}
-    target="_blank"
-    rel="noopener noreferrer"
+    target={external ? '_blank' : undefined}
+    rel={external ? 'noopener noreferrer' : undefined}
     class="group flex flex-col rounded-lg border border-slate-200 bg-white p-5 transition duration-300 hover:shadow-card-hover hover:-translate-y-0.5 dark:border-[#2a2623] dark:bg-[#1e1b19]/50"
+    style={transitionName ? `view-transition-name: ${transitionName}` : undefined}
 >
     {label && (
         <span class="mb-2 text-xs font-bold uppercase tracking-wider text-primary dark:text-accent">{label}</span>
