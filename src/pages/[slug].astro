@@ -3,10 +3,10 @@ import { type CollectionEntry, getCollection, render } from 'astro:content';
 import CustomImage from '../components/CustomImage.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
-import TableOfContents from '../components/TableOfContents.astro';
+import SpChrome from '../components/SpChrome.astro';
+import SpFooter from '../components/SpFooter.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
-import Subscribe from '../components/Subscribe.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import { sortPostsByDateDesc, slugify, getReadingTime, getRelatedPosts } from '../utils/post-utils';
@@ -27,7 +27,6 @@ function computeUpdatedDate(entryId: string, manual: Date | undefined, publishDa
     if (!fp) return null;
     const last = gitLastmod(fp);
     if (!last) return null;
-    // Only count as "updated" if meaningfully after publishDate (>1 day).
     return last.getTime() - publishDate.getTime() > 24 * 60 * 60 * 1000 ? last : null;
 }
 
@@ -62,7 +61,6 @@ const { entry, type, relatedPosts, readingTime } = Astro.props;
 const { Content, headings } = await render(entry);
 const { href } = Astro.url;
 
-// Extract typed data for blog posts
 const isBlog = type === 'blog';
 const blogData = isBlog ? (entry as CollectionEntry<'blog'>).data : null;
 const pageData = !isBlog ? (entry as CollectionEntry<'pages'>).data : null;
@@ -96,175 +94,187 @@ const pageContext: SchemaPageContext = isBlog ? {
     title: pageData!.title,
     description: pageData!.seo?.description ?? ''
 };
+
+// Blog post — TOC and computed values
+const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
+const hasToc = isBlog && !!blogData!.toc && tocHeadings.length > 0;
+
+// Pre-compute h2 indices for TOC numbering
+interface TocItem { depth: number; slug: string; text: string; idx: number | null }
+const tocItems: TocItem[] = [];
+if (hasToc) {
+    let h2Idx = 0;
+    for (const h of tocHeadings) {
+        if (h.depth === 2) h2Idx++;
+        tocItems.push({ ...h, idx: h.depth === 2 ? h2Idx : null });
+    }
+}
+
+// Issue label for chrome header
+const postMonth = isBlog
+    ? new Date(blogData!.publishDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase()
+    : '';
+const postIssue = isBlog ? `POST · ${postMonth}` : '';
+
+// Category label
+const primaryCategory = blogData?.categories?.[0] ?? null;
 ---
 
 {isBlog ? (
 <BaseLayout title={seoTitle} description={seoDescription} pageType="article" publishDate={blogData!.publishDate} updatedDate={effectiveUpdatedDate ?? undefined} categories={blogData!.categories} noindex={!!blogData!.draft}>
     <SchemaGraph pageContext={pageContext} />
-    <main class="px-4 py-12 grow sm:px-8 sm:py-16" data-pagefind-body>
-        <article class="max-w-6xl mx-auto mb-12 sm:mb-16">
-            <nav class="max-w-3xl mx-auto mb-6 text-sm" aria-label="Breadcrumb">
-                <ol class="flex items-center gap-1.5">
-                    <li><a href="/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Home</a></li>
-                    <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href="/blog/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Blog</a></li>
-                    {blogData!.categories && blogData!.categories.length > 0 && (
-                        <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href={`/category/${slugify(blogData!.categories[0])}/`} class="text-primary dark:text-accent hover:text-secondary dark:hover:text-white transition-colors">{blogData!.categories[0]}</a></li>
-                    )}
-                    <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600 text-slate-900 dark:text-slate-100 font-medium truncate" aria-current="page">{blogData!.title}</li>
-                </ol>
+    <div slot="header" />
+    <div slot="footer" />
+
+    <div class="sp-root sp-blocks sp-post">
+        <SpChrome issue={postIssue} />
+
+        <section class="sp-post-hero" data-pagefind-body>
+            <nav class="sp-post-crumbs" aria-label="Breadcrumb">
+                <a href="/">Home</a>
+                <span class="sep">/</span>
+                <a href="/blog/">Blog</a>
+                {primaryCategory && (
+                    <>
+                        <span class="sep">/</span>
+                        <a href={`/category/${slugify(primaryCategory)}/`}>{primaryCategory}</a>
+                    </>
+                )}
             </nav>
-            {blogData!.featureImage ? (
-                <header class="relative mb-8 sm:mb-10 rounded-lg">
-                    <div class="relative overflow-hidden rounded-lg" style={`view-transition-name: post-image-${entry.id}`}>
-                    <CustomImage
-                        src={blogData!.featureImage}
-                        alt={blogData!.featureImageAlt}
-                        class="w-full aspect-[16/9] object-cover"
-                        widths={[480, 640, 768, 960, 1200]}
-                        sizes="(min-width: 1216px) 1152px, calc(100vw - 32px)"
-                        fetchpriority="high"
-                        loading="eager"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-                    </div>
-                    <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 lg:p-10">
-                        <h1 class="text-2xl font-extrabold tracking-tight text-white text-balance sm:text-3xl md:text-4xl lg:text-5xl drop-shadow-lg" style={`view-transition-name: post-title-${entry.id}`}>{blogData!.title}</h1>
-                        <div class="mt-3 flex items-center gap-3 text-sm text-white/80" style={`view-transition-name: post-meta-${entry.id}`}>
-                            <FormattedDate date={blogData!.publishDate} />
-                            {effectiveUpdatedDate && (
-                                <Fragment>
-                                    <span>&middot;</span>
-                                    <span>Updated <FormattedDate date={effectiveUpdatedDate} /></span>
-                                </Fragment>
-                            )}
-                            {readingTime && (
-                                <Fragment>
-                                    <span>&middot;</span>
-                                    <span>{readingTime} min read</span>
-                                </Fragment>
-                            )}
-                        </div>
-                    </div>
-                </header>
-            ) : (
-                <header class="max-w-3xl mx-auto mb-8 sm:mb-10">
-                    <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 text-balance sm:text-4xl md:text-5xl" style={`view-transition-name: post-title-${entry.id}`}>{blogData!.title}</h1>
-                    <div class="mt-4 flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400" style={`view-transition-name: post-meta-${entry.id}`}>
-                        <FormattedDate date={blogData!.publishDate} />
-                        {effectiveUpdatedDate && (
-                            <Fragment>
-                                <span>&middot;</span>
-                                <span>Updated <FormattedDate date={effectiveUpdatedDate} /></span>
-                            </Fragment>
-                        )}
-                        {readingTime && (
-                            <Fragment>
-                                <span>&middot;</span>
-                                <span>{readingTime} min read</span>
-                            </Fragment>
-                        )}
-                    </div>
-                </header>
-            )}
-            <div class:list={[blogData!.toc ? 'max-w-5xl mx-auto lg:grid lg:grid-cols-[14rem_1fr] lg:gap-10' : 'max-w-3xl mx-auto']}>
-                {blogData!.toc && <TableOfContents headings={headings} />}
-                <div class="max-w-3xl">
-                <div class="prose prose-slate sm:prose-lg max-w-none">
+
+            <h1 class="sp-post-title" set:html={blogData!.title.replace(/\*([^*]+)\*/g, '<em>$1</em>')} />
+
+            <div class="sp-post-meta-row">
+                <span>Published · <strong><FormattedDate date={blogData!.publishDate} /></strong></span>
+                {effectiveUpdatedDate && (
+                    <span>Updated · <strong><FormattedDate date={effectiveUpdatedDate} /></strong></span>
+                )}
+                {readingTime && (
+                    <span><strong>{readingTime} min</strong> read</span>
+                )}
+                <span>By <strong>Joost de Valk</strong></span>
+            </div>
+        </section>
+
+        <section class="sp-post-body" data-pagefind-body>
+            <div class:list={['sp-post-grid', { 'sp-no-toc': !hasToc }]}>
+
+                {hasToc && (
+                    <nav class="sp-post-toc" aria-label="Table of contents">
+                        <div class="lbl">On this page</div>
+                        <ol>
+                            {tocItems.map(item => (
+                                <li class:list={[{ sub: item.depth === 3 }]}>
+                                    <a href={`#${item.slug}`} data-toc-link>
+                                        {item.idx !== null && (
+                                            <span class="sp-post-toc-num">{String(item.idx).padStart(2, '0')}</span>
+                                        )}
+                                        {item.text}
+                                    </a>
+                                </li>
+                            ))}
+                        </ol>
+                    </nav>
+                )}
+
+                <article class="sp-prose">
                     <Content />
-                </div>
 
-                {/* Discuss */}
-                <div class="mt-10 border-t border-slate-200 pt-6 dark:border-[#2a2623] sm:mt-14" data-pagefind-ignore="all">
-                    <p class="mb-3 text-sm text-slate-600 dark:text-slate-400">
-                        Thoughts, corrections, or something to add? Reply on
-                        <a class="font-semibold text-primary hover:text-secondary dark:text-accent dark:hover:text-white" href={`https://bsky.app/intent/compose?text=${encodeURIComponent(blogData!.title + ' ' + href)}`} target="_blank" rel="noopener noreferrer">Bluesky</a>
-                        or
-                        <a class="font-semibold text-primary hover:text-secondary dark:text-accent dark:hover:text-white" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(href)}&summary=${encodeURIComponent(blogData!.title)}`} target="_blank" rel="noopener noreferrer">LinkedIn</a>.
-                    </p>
-                    <div class="flex items-center gap-3">
-                        <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Share</span>
-                        <div class="flex gap-2">
-                        <a
-                            class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors duration-300 hover:bg-[#0085ff] hover:text-white dark:bg-[#2a2623] dark:text-slate-300"
-                            href={`https://bsky.app/intent/compose?text=${encodeURIComponent(blogData!.title + ' ' + href)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Share on Bluesky"
-                            title="Share on Bluesky"
-                        >
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.596 6.449.77 2.819 3.513 3.502 5.942 3.134-3.476.558-6.594 1.654-3.378 5.757C5.505 22.329 11.116 21.63 12 17.558c.884 4.074 5.356 4.827 8.84 1.55 3.216-4.103.098-5.199-3.378-5.757 2.429.368 5.172-.315 5.942-3.134.218-.8.596-5.759.596-6.449 0-.688-.139-1.86-.902-2.203-.659-.3-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8Z"/></svg>
-                        </a>
-                        <a
-                            class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors duration-300 hover:bg-black hover:text-white dark:bg-[#2a2623] dark:text-slate-300"
-                            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(href)}&text=${encodeURIComponent(blogData!.title)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Share on X"
-                            title="Share on X"
-                        >
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        </a>
-                        <a
-                            class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors duration-300 hover:bg-[#0077b5] hover:text-white dark:bg-[#2a2623] dark:text-slate-300"
-                            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(href)}&summary=${encodeURIComponent(blogData!.title)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Share on LinkedIn"
-                            title="Share on LinkedIn"
-                        >
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                        </a>
-                        <a
-                            class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors duration-300 hover:bg-[#1877f2] hover:text-white dark:bg-[#2a2623] dark:text-slate-300"
-                            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(href)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Share on Facebook"
-                            title="Share on Facebook"
-                        >
-                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                        </a>
+                    <div class="sp-share" data-pagefind-ignore="all">
+                        <span>Reply on</span>
+                        <a href={`https://bsky.app/intent/compose?text=${encodeURIComponent(blogData!.title + ' ' + href)}`} target="_blank" rel="noopener noreferrer">Bluesky</a>
+                        <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(href)}&summary=${encodeURIComponent(blogData!.title)}`} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        <span class="sp-share-spacer">Share →</span>
                     </div>
-                    </div>
-                </div>
-            </div>
-            </div>
-        </article>
+                </article>
 
-        {/* Related posts */}
+                <aside class="sp-post-margin" data-pagefind-ignore="all">
+                    {blogData!.categories && blogData!.categories.length > 0 && (
+                        <div class="m-block">
+                            <div class="m-lbl">Filed under</div>
+                            <ul>
+                                {blogData!.categories.map(cat => (
+                                    <li><a href={`/category/${slugify(cat)}/`} class="m-body">{cat}</a></li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                    <div class="m-block">
+                        <div class="m-lbl">Reading time</div>
+                        <div class="m-body">{readingTime} min</div>
+                    </div>
+                    <div class="m-block">
+                        <div class="m-lbl">Published</div>
+                        <div class="m-body"><FormattedDate date={blogData!.publishDate} /></div>
+                    </div>
+                    {effectiveUpdatedDate && (
+                        <div class="m-block">
+                            <div class="m-lbl">Updated</div>
+                            <div class="m-body"><FormattedDate date={effectiveUpdatedDate} /></div>
+                        </div>
+                    )}
+                </aside>
+
+            </div>
+        </section>
+
         {relatedPosts && relatedPosts.length > 0 && (
-            <div class="max-w-3xl mx-auto mb-12 sm:mb-16" data-pagefind-ignore="all">
-                <h2 class="mb-6 text-xs font-bold uppercase tracking-widest text-primary dark:text-accent sm:mb-8">Related Posts</h2>
-                <div class="grid gap-4 sm:grid-cols-3">
-                    {relatedPosts.map((relPost) => (
-                        <a href={`/${relPost.id}/`} class="group flex flex-col overflow-hidden rounded-lg border border-slate-200 transition duration-300 hover:shadow-card-hover hover:-translate-y-0.5 dark:border-[#2a2623]">
-                            {relPost.data.featureImage && (
-                                <div class="overflow-hidden">
-                                    <CustomImage
-                                        src={relPost.data.featureImage}
-                                        alt={relPost.data.featureImageAlt}
-                                        class="w-full aspect-[16/9] object-cover transition-transform duration-500 group-hover:scale-105"
-                                        widths={[160, 320, 480]}
-                                        sizes="(min-width: 640px) 33vw, calc(100vw - 32px)"
-                                    />
-                                </div>
-                            )}
-                            <div class="flex flex-1 flex-col p-4">
-                                <h3 class="text-sm font-bold leading-snug text-slate-900 dark:text-slate-100 group-hover:text-primary dark:group-hover:text-accent transition-colors duration-300">
-                                    {relPost.data.title}
-                                </h3>
-                                <div class="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                                    <FormattedDate date={relPost.data.publishDate} />
-                                </div>
+            <section class="sp-related" data-pagefind-ignore="all">
+                <div class="rel-head">
+                    <h3>Related writing</h3>
+                    <div class="meta">From the archive</div>
+                </div>
+                <div class="sp-related-grid">
+                    {relatedPosts.slice(0, 3).map(relPost => (
+                        <a href={`/${relPost.id}/`} class="sp-related-card">
+                            <div class="date">
+                                <FormattedDate date={relPost.data.publishDate} />
+                                {getReadingTime(relPost.body ?? '') && ` · ${getReadingTime(relPost.body ?? '')} min`}
                             </div>
+                            <h4>{relPost.data.title}</h4>
+                            {relPost.data.excerpt && <p>{relPost.data.excerpt}</p>}
                         </a>
                     ))}
                 </div>
-            </div>
+            </section>
         )}
-        <div data-pagefind-ignore="all"><Subscribe class="mt-16 mb-12 sm:mt-24 sm:mb-16" /></div>
-    </main>
+
+<SpFooter />
+    </div>
 </BaseLayout>
+
+<script>
+    function initToc() {
+        const links = document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]');
+        if (links.length === 0) return;
+
+        const headingIds = Array.from(links).map(l => l.hash.slice(1));
+        const headings = headingIds
+            .map(id => document.getElementById(id))
+            .filter((el): el is HTMLElement => el !== null);
+
+        if (headings.length === 0) return;
+
+        const observer = new IntersectionObserver(
+            () => {
+                let active = headings[0]!.id;
+                for (const heading of headings) {
+                    if (heading.getBoundingClientRect().top <= 120) {
+                        active = heading.id;
+                    }
+                }
+                links.forEach(link => {
+                    link.classList.toggle('active', link.hash === `#${active}`);
+                });
+            },
+            { rootMargin: '-80px 0px -70% 0px', threshold: 0 },
+        );
+
+        headings.forEach(h => observer.observe(h));
+    }
+
+    initToc();
+</script>
 ) : (
 <BaseLayout title={seoTitle} description={seoDescription}>
     <SchemaGraph pageContext={pageContext} />

@@ -1,48 +1,37 @@
 import type { APIContext, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { generateOgImage } from '../../utils/og-image';
-
-function findFeatureImage(dir: string): string | undefined {
-    const imagesDir = join(dir, 'images');
-    if (!existsSync(imagesDir)) return undefined;
-    const files = readdirSync(imagesDir);
-    // Look for featured.* or any image file
-    const featured = files.find(f => f.startsWith('featured.'));
-    if (featured) return join(imagesDir, featured);
-    const image = files.find(f => /\.(png|jpg|jpeg|webp)$/i.test(f));
-    return image ? join(imagesDir, image) : undefined;
-}
+import { getReadingTime } from '../../utils/post-utils';
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const posts = await getCollection('blog');
     const pages = await getCollection('pages');
-    const blogDir = join(process.cwd(), 'src/content/blog');
-    const pagesDir = join(process.cwd(), 'src/content/pages');
 
-    const blogPaths = posts.map((post) => {
-        const imagePath = post.data.featureImage ? findFeatureImage(join(blogDir, post.id)) : undefined;
+    // Sort posts by date ascending to assign sequential article numbers
+    const sortedPosts = [...posts].sort(
+        (a, b) => new Date(a.data.publishDate).getTime() - new Date(b.data.publishDate).getTime()
+    );
+    const articleNumberMap = new Map(sortedPosts.map((p, i) => [p.id, i + 1]));
 
-        return {
-            params: { slug: post.id },
-            props: { title: post.data.title, imagePath }
-        };
-    });
+    const blogPaths = posts.map((post) => ({
+        params: { slug: post.id },
+        props: {
+            title: post.data.title,
+            category: post.data.categories?.[0],
+            publishDate: post.data.publishDate,
+            readingTime: getReadingTime(post.body ?? ''),
+            articleNumber: articleNumberMap.get(post.id),
+            isFeatured: post.data.isFeatured,
+        },
+    }));
 
-    const pagePaths = pages.map((page) => {
-        let imagePath = page.data.featureImage ? findFeatureImage(join(pagesDir, page.id)) : undefined;
-        if (page.id === 'about-me' && !imagePath) {
-            imagePath = join(pagesDir, 'images/cropped-joost-de-valk-profile-picture-web.jpg');
-        }
+    const pagePaths = pages.map((page) => ({
+        params: { slug: page.id },
+        props: { title: page.data.title },
+    }));
 
-        return {
-            params: { slug: page.id },
-            props: { title: page.data.title, imagePath }
-        };
-    });
-
-    // Standalone Astro pages (not in content collections)
     const standalonePaths = [
         { slug: 'ask-joost', title: 'Ask Joost' },
         { slug: 'cms-market-share', title: 'CMS Market Share' },
@@ -54,7 +43,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
         const pageImagePath = join(process.cwd(), 'public/images/pages', `${slug}.webp`);
         return {
             params: { slug },
-            props: { title, imagePath: existsSync(pageImagePath) ? pageImagePath : undefined }
+            props: {
+                title,
+                backgroundImagePath: existsSync(pageImagePath) ? pageImagePath : undefined,
+            },
         };
     });
 
@@ -62,13 +54,36 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export async function GET({ props }: APIContext) {
-    const { title, imagePath } = props as { title: string; imagePath?: string };
-    const jpg = await generateOgImage(title, imagePath);
+    const {
+        title,
+        category,
+        publishDate,
+        readingTime,
+        articleNumber,
+        isFeatured,
+    } = props as {
+        title: string;
+        category?: string;
+        publishDate?: Date;
+        readingTime?: number;
+        articleNumber?: number;
+        isFeatured?: boolean;
+        backgroundImagePath?: string;
+    };
+
+    const jpg = await generateOgImage({
+        title,
+        category,
+        publishDate,
+        readingTime,
+        articleNumber,
+        isFeatured,
+    });
 
     return new Response(jpg, {
         headers: {
             'Content-Type': 'image/jpeg',
-            'Cache-Control': 'public, max-age=31536000, immutable'
-        }
+            'Cache-Control': 'public, max-age=31536000, immutable',
+        },
     });
 }

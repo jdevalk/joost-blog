@@ -1,0 +1,31 @@
+---
+import siteConfig from '../data/site-config';
+
+interface Props {
+    issue?: string;
+}
+
+const { issue = '' } = Astro.props;
+---
+
+<header class="sp-header">
+    <div class="sp-header-left">
+        <a href="/" class="sp-logo-link">
+            <div class="sp-mark">J</div>
+            <div class="sp-wordmark">
+                <div class="sp-title">Joost.blog</div>
+                {issue && <div class="sp-sub">{issue}</div>}
+            </div>
+        </a>
+    </div>
+    <nav class="sp-nav" aria-label="Primary navigation">
+        {siteConfig.primaryNavLinks.map(link => (
+            <a href={link.href}>{link.text}</a>
+        ))}
+    </nav>
+    <div class="sp-header-right">
+        <button class="sp-search" data-open-search aria-label="Search (⌘K)">
+            ⌕&nbsp;&nbsp;search the archive
+        </button>
+    </div>
+</header>

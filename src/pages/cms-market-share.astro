@@ -1,12 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
+import SpChrome from '../components/SpChrome.astro';
+import SpFooter from '../components/SpFooter.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
 
 const title = 'CMS Market Share';
 const description = 'Monthly CMS market share data based on the HTTP Archive — WordPress, Shopify, Wix, Squarespace, and more, tracked over time.';
+const currentYear = new Date().getFullYear();
 
 const pageContext: SchemaPageContext = {
     pageType: 'page',
@@ -18,27 +20,32 @@ const pageContext: SchemaPageContext = {
 
 <BaseLayout title={title} description={description}>
     <SchemaGraph pageContext={pageContext} />
-    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
-        <Header variant="dark" />
-        <div class="h-[52px] sm:h-[56px]"></div>
-        <section class="px-4 py-10 sm:px-8 sm:py-14">
-            <div class="max-w-5xl mx-auto">
-                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">{title}</h1>
+    <div slot="header" />
+    <div slot="footer" />
+
+    <div class="sp-root sp-blocks sp-post" data-pagefind-body>
+        <SpChrome issue={`DATA REPORT · ${currentYear}`} />
+
+        <section class="sp-post-hero">
+            <nav class="sp-post-crumbs" aria-label="Breadcrumb">
+                <a href="/">Home</a>
+                <span class="sep">/</span>
+                <span aria-current="page">CMS Market Share</span>
+            </nav>
+            <div class="sp-post-category">Data Report</div>
+            <h1 class="sp-post-title">CMS Market Share</h1>
+            <div class="sp-post-meta-row">
+                <span>Source · <strong>HTTP Archive</strong></span>
+                <span>Updated · <strong>monthly</strong></span>
             </div>
         </section>
-    </div>
 
-    <main class="grow" data-pagefind-body>
-        <section class="px-4 py-10 sm:px-8 sm:py-14 bg-surface dark:bg-[#1e1b19]/50 border-b border-slate-200 dark:border-[#2a2623]">
-            <div class="max-w-5xl mx-auto">
-                <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Data Report</span>
-                <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100">HTTP Archive CMS Data</h2>
-                <p class="mt-3 text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">Based on data from the <a href="https://httparchive.org/" class="text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition duration-300 underline underline-offset-2 decoration-1">HTTP Archive</a>, this report focuses on the CMS market share of the most popular CMSes and related important web (and WordPress) technologies.</p>
-                <p class="mt-3 text-base leading-relaxed text-slate-600 dark:text-slate-400">This report does not contain commentary on these numbers. The commentary can be found in posts on my blog in the <a href="/category/market-share-analysis/" class="text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition duration-300 underline underline-offset-2 decoration-1">market share analysis</a> category.</p>
+        <section class="sp-post-body sp-cms-body">
+            <div class="sp-cms-intro">
+                <p>Based on data from the <a href="https://httparchive.org/">HTTP Archive</a>, this report focuses on the CMS market share of the most popular CMSes and related important web (and WordPress) technologies.</p>
+                <p>This report does not contain commentary on these numbers. The commentary can be found in posts on my blog in the <a href="/category/market-share-analysis/">market share analysis</a> category.</p>
             </div>
-        </section>
-
-        <article class="max-w-5xl mx-auto px-4 py-10 sm:px-8 sm:py-14">
+            <article class="sp-cms-content">
             <!-- Section: Most popular CMSes -->
             <section class="mb-16">
                 <div class="not-prose mb-6">
@@ -369,7 +376,10 @@ const pageContext: SchemaPageContext = {
                 </div>
             </section>
         </article>
-    </main>
+        </section>
+
+        <SpFooter />
+    </div>
 </BaseLayout>
 
 <script is:inline>

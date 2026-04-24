@@ -1,45 +1,60 @@
 ---
 import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Header from '../../components/Header.astro';
 import SchemaGraph from '../../components/SchemaGraph.astro';
+import SpChrome from '../../components/SpChrome.astro';
+import SpFooter from '../../components/SpFooter.astro';
 import type { SchemaPageContext } from '../../utils/schema';
 import { canonicalUrl } from '../../utils/schema/constants';
-import CustomImage from '../../components/CustomImage.astro';
 
 const allVideos = await getCollection('videos');
 const sorted = allVideos.sort(
     (a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
 );
 const featuredVideo = sorted.find((v) => v.data.featured) ?? sorted[0];
-const videos = sorted.filter((v) => v.id !== featuredVideo.id);
+const listVideos = sorted.filter((v) => v.id !== featuredVideo.id);
 
 function formatDuration(isoDuration: string | undefined): string | null {
     if (!isoDuration) return null;
     const match = isoDuration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
     if (!match) return null;
-    const hours = parseInt(match[1] || '0');
-    const minutes = parseInt(match[2] || '0');
-    const seconds = parseInt(match[3] || '0');
-    if (hours > 0) {
-        return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    }
-    return `${minutes}:${String(seconds).padStart(2, '0')}`;
+    const h = parseInt(match[1] || '0');
+    const m = parseInt(match[2] || '0');
+    const s = parseInt(match[3] || '0');
+    return h > 0
+        ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+        : `${m}:${String(s).padStart(2, '0')}`;
 }
 
-function formatDate(date: Date): string {
-    return new Intl.DateTimeFormat('en', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    }).format(date);
+function dotDate(date: Date): string {
+    return `${date.getFullYear()}·${String(date.getMonth()+1).padStart(2,'0')}·${String(date.getDate()).padStart(2,'0')}`;
 }
 
-function getExcerpt(body: string): string {
+function getExcerpt(body: string | undefined): string {
+    if (!body) return '';
     const stripped = body.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
     if (stripped.length <= 150) return stripped;
     return `${stripped.slice(0, 147).trim()}...`;
 }
+
+const featuredDuration = formatDuration(featuredVideo.data.duration);
+const featuredExcerpt = getExcerpt(featuredVideo.body);
+const featuredDate = dotDate(new Date(featuredVideo.data.publishDate));
+
+async function resolveThumb(video: typeof sorted[0]): Promise<string | null> {
+    if (video.data.thumbnailUrl) return video.data.thumbnailUrl;
+    const yt = video.data.youtubeId;
+    if (yt) return `https://img.youtube.com/vi/${yt}/maxresdefault.jpg`;
+    if (video.data.featureImage) {
+        const img = await getImage({ src: video.data.featureImage, width: 800 });
+        return img.src;
+    }
+    return null;
+}
+
+const featuredThumb = await resolveThumb(featuredVideo);
+const listThumbs = await Promise.all(listVideos.map(resolveThumb));
 
 const pageContext: SchemaPageContext = {
     pageType: 'videoListing',
@@ -51,90 +66,113 @@ const pageContext: SchemaPageContext = {
 
 <BaseLayout title="Videos" description="Video presentations, podcasts, keynotes, and interviews by Joost de Valk on WordPress, SEO, open source, and the web.">
     <SchemaGraph pageContext={pageContext} />
-    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
-        <Header variant="dark" />
-        <div class="h-[52px] sm:h-[56px]"></div>
-        <section class="px-4 py-10 sm:px-8 sm:py-14">
-            <div class="max-w-5xl mx-auto">
-                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Videos</h1>
-            </div>
-        </section>
-    </div>
+    <div slot="header" />
+    <div slot="footer" />
 
-    <main class="grow" data-pagefind-ignore="all">
-        {/* Featured — most recent video */}
-        <section class="px-4 py-10 sm:px-8 sm:py-14 bg-surface dark:bg-[#1e1b19]/50 border-b border-slate-200 dark:border-[#2a2623]">
-            <div class="max-w-5xl mx-auto">
-                <p class="mb-8 text-lg text-slate-600 dark:text-slate-400 max-w-2xl">A curated archive of talks, interviews, podcasts, and conference sessions — ordered from newest to oldest.</p>
+    <div class="sp-root sp-blocks sp-videos">
+        <SpChrome issue="VIDEOS · TALKS · INTERVIEWS" />
+
+        <section class="sp-videos-hero">
+            <div class="sp-about-kicker">
+                <span>§ Videos</span><span class="rule"></span><span>Talks, interviews &amp; podcasts</span>
             </div>
-            <div class="max-w-5xl mx-auto grid md:grid-cols-[1fr_440px] gap-8 items-center">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Featured video</span>
-                    <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100">{featuredVideo.data.title}</h2>
-                    {featuredVideo.body && (
-                        <p class="mt-3 text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">{getExcerpt(featuredVideo.body)}</p>
-                    )}
-                    <a href={`/videos/${featuredVideo.id}/`} class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300">
-                        Watch video
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                    </a>
+            <h1 class="sp-videos-title">
+                <em>Videos</em>.
+            </h1>
+            <p class="sp-videos-lede">
+                A curated archive of conference talks, podcast interviews, and keynotes on WordPress,
+                SEO, open source, and building products on the web.
+            </p>
+            <div class="sp-videos-stats">
+                <div class="s">
+                    <div class="n">{allVideos.length}</div>
+                    <div class="l">Recordings</div>
                 </div>
-                {featuredVideo.data.featureImage && (
-                    <a href={`/videos/${featuredVideo.id}/`} class="hidden md:block">
-                        <CustomImage
-                            src={featuredVideo.data.featureImage}
-                            alt={featuredVideo.data.featureImageAlt}
-                            class="rounded-lg shadow-card-hover w-full aspect-video object-cover"
-                            widths={[440, 880]}
-                        />
-                    </a>
-                )}
+                <div class="s">
+                    <div class="n">18+</div>
+                    <div class="l">Years</div>
+                </div>
+                <div class="s">
+                    <div class="n">30+</div>
+                    <div class="l">Countries</div>
+                </div>
+                <div class="s">
+                    <div class="n">100+</div>
+                    <div class="l">Hours</div>
+                </div>
             </div>
         </section>
 
-        {/* All videos */}
-        <section class="px-4 py-10 sm:px-8 sm:py-14">
-        <div class="max-w-5xl mx-auto">
-            <span class="text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Archive</span>
-            <h2 class="mt-2 text-2xl font-extrabold text-slate-950 dark:text-slate-100 mb-8">All videos</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {videos.map((video) => {
-                    const duration = formatDuration(video.data.duration);
-                    const excerpt = getExcerpt(video.body);
-                    return (
-                        <a href={`/videos/${video.id}/`} class="group block h-full">
-                            <article class="h-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-slate-700 dark:bg-slate-900">
-                                <div class="relative overflow-hidden">
-                                    {video.data.featureImage && (
-                                        <CustomImage
-                                            src={video.data.featureImage}
-                                            alt={video.data.featureImageAlt}
-                                            class="w-full aspect-video object-cover transition-transform duration-300 group-hover:scale-105"
-                                            loading="lazy"
-                                            widths={[400, 600]}
-                                        />
-                                    )}
-                                    {duration && (
-                                        <span class="absolute bottom-3 right-3 rounded bg-black/80 px-2 py-1 text-xs font-medium text-white">
-                                            {duration}
-                                        </span>
-                                    )}
-                                </div>
-                                <div class="p-5">
-                                    <p class="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                                        {formatDate(video.data.publishDate)}
-                                    </p>
-                                    <h2 class="text-xl font-semibold text-slate-900 transition-colors group-hover:text-primary dark:text-slate-100">
-                                        {video.data.title}
-                                    </h2>
-                                    <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{excerpt}</p>
-                                </div>
-                            </article>
-                        </a>
-                    );
-                })}
+        <section class="sp-videos-featured">
+            <div class="sp-videos-featured-grid">
+                <a
+                    href={`/videos/${featuredVideo.id}/`}
+                    class="sp-videos-featured-poster"
+                    style={featuredThumb ? `--pst-thumb: url('${featuredThumb}')` : ''}
+                    data-has-thumb={featuredThumb ? 'true' : undefined}
+                >
+                    <div class="pst-kicker">§ FEATURED VIDEO</div>
+                    <div class="pst-title">{featuredVideo.data.title}</div>
+                    <div class="pst-foot">
+                        <span>{featuredDate}</span>
+                        {featuredDuration && <span>{featuredDuration}</span>}
+                    </div>
+                </a>
+                <div>
+                    <div class="meta">
+                        <span class="badge">FEATURED</span>
+                        <span>{featuredDate}</span>
+                        {featuredDuration && <span>{featuredDuration}</span>}
+                    </div>
+                    <h2>{featuredVideo.data.title}</h2>
+                    {featuredExcerpt && <p class="desc">{featuredExcerpt}</p>}
+                    <div class="cta">
+                        <a href={`/videos/${featuredVideo.id}/`} class="primary">Watch now &rarr;</a>
+                    </div>
+                </div>
             </div>
-        </div>
         </section>
-    </main>
+
+        <div class="sp-videos-filter-bar">
+            <span class="lbl">Filter</span>
+            <div class="chips">
+                <button class="chip on" type="button">All <span class="ct">{allVideos.length}</span></button>
+            </div>
+            <span class="rsvd">&mdash;</span>
+        </div>
+
+        <div class="sp-videos-list" data-pagefind-ignore="all">
+            {listVideos.map((video, i) => {
+                const dur = formatDuration(video.data.duration);
+                const date = dotDate(new Date(video.data.publishDate));
+                const excerpt = getExcerpt(video.body);
+                const thumb = listThumbs[i];
+                return (
+                    <div class="sp-videos-row">
+                        <div class="sp-videos-num">{String(i + 2).padStart(2, '0')}</div>
+                        <a
+                            href={`/videos/${video.id}/`}
+                            class="sp-videos-thumb"
+                            style={thumb ? `--thm-bg: url('${thumb}')` : ''}
+                            data-has-thumb={thumb ? 'true' : undefined}
+                        >
+                            <div class="thm-title">{video.data.title}</div>
+                            <div class="thm-play">&#9654;</div>
+                            {dur && <div class="thm-dur">{dur}</div>}
+                        </a>
+                        <div class="sp-videos-meta">
+                            <div class="d">{date}</div>
+                        </div>
+                        <div class="sp-videos-body">
+                            <h4><a href={`/videos/${video.id}/`}>{video.data.title}</a></h4>
+                            {excerpt && <p>{excerpt}</p>}
+                            <a href={`/videos/${video.id}/`} class="lnk">Watch &rarr;</a>
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+
+        <SpFooter />
+    </div>
 </BaseLayout>
