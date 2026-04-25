@@ -18,7 +18,10 @@ toc: true
 ---
 Open source spent thirty years winning an argument about cost. AI is about to make that argument irrelevant. Whether open source can win the argument that replaces it (about *agency*) is an open question. The point of this post is to be honest about why.
 
-*A note on "agency": I use the word throughout this post to mean the capacity to act on your own terms: to run, inspect, modify, and migrate your software without needing permission from a vendor, government, or infrastructure provider. It's the opposite of dependency. For native English speakers it may feel obvious; it's worth pinning down before we go further.*
+<div class="not-prose rounded-lg border-2 border-primary/20 bg-tertiary px-6 py-5 dark:border-accent/20 dark:bg-stone-900">
+<p class="mb-2 text-lg font-semibold text-primary dark:text-accent">A note on "agency"</p>
+<p class="text-base leading-relaxed text-stone-700 dark:text-stone-300">I use the word throughout this post to mean the capacity to act on your own terms: to run, inspect, modify, and migrate your software without needing permission from a vendor, government, or infrastructure provider. It's the opposite of dependency. For native English speakers it may feel obvious; it's worth pinning down before we go further.</p>
+</div>
 
 To see what's happening, you have to start with classical economics and take a detour through twenty-five years of SaaS. You end up at why the xz backdoor, the European Cyber Resilience Act, and the question of whether you can fork a language model are all the same story. Bear with me. The journey is the point.
 
@@ -172,7 +175,7 @@ The second is **forkability as a governance check**. The right to fork is the ul
 
 HashiCorp moved Terraform from MPL to BSL in 2023; the community forked it as [OpenTofu](https://opentofu.org/) under the Linux Foundation within weeks. Redis moved from BSD to dual-licensed RSAL/SSPL in March 2024; AWS and the Linux Foundation forked Valkey. MongoDB went SSPL in 2018. Elastic followed in 2021 and [retreated back to AGPL in August 2024](https://en.wikipedia.org/wiki/Server_Side_Public_License), the first major reversal. Red Hat tried to wall off CentOS in 2020 and again in 2023; Rocky Linux and AlmaLinux were standing within hours.
 
-The pattern is consistent. The value of forkability isn't that forks happen often. It's that the *possibility* of forking disciplines the behaviour of current stewards. Closed software has no equivalent mechanism. There's no fork of Microsoft Word.
+The pattern is consistent. The value of forkability isn't that forks happen often, or that you'll personally build one. It's twofold. First, the *possibility* of forking disciplines the behaviour of current stewards. Second, when stewards do go bad, a viable fork is a landing pad — somewhere your existing investment can keep running. When HashiCorp relicensed, the thousands of teams with Terraform configs, modules, and CI pipelines didn't build OpenTofu themselves; they didn't have to. The fork existed, their work was portable, they kept going. That's what the property actually buys you, even if you never exercise the right yourself. Closed software offers neither half: no discipline, no landing pad. There's no fork of Microsoft Word.
 
 And here is where the AI story loops back round. Historically, most forks failed not because the licence forbade them but because nobody could afford to carry the maintenance burden against an upstream that kept moving. LibreOffice took a decade to reach parity with what OpenOffice already had. The vast majority of smaller forks died quietly within a year or two.
 
@@ -219,16 +222,6 @@ So "do people care about agency?" is the wrong question to argue about. Most peo
 
 That reframes the argument. It isn't "you should value agency"; that's tautological and persuades nobody who isn't already convinced. It's structural: more institutions are going to find out, the hard way, that they needed it. The only question that matters is whether the substrate to provide it (open source code, neutral foundations, sovereign infrastructure, verifiable models) will exist when they go looking for it.
 
-### The cost of staying closed
-
-Everything above is about what open source preserves: agency, verifiability, the right to fork. There's an offensive case too, and Marieke pointed it out when we were arguing through this post. There has always been an opportunity cost to *not* doing open source, and AI has made it bigger.
-
-The classical version was straightforward. Closed software didn't get free contributions, didn't get third-party plugins, didn't get scrutinised by external eyes, didn't attract developers who wanted to learn from the code. Companies paid for those forgone benefits in slower iteration, smaller ecosystems, and harder hiring. They paid willingly because IP felt like the moat.
-
-AI changes the math from several angles. Coding agents are markedly better at working with code they've already trained on, which means open projects accrue tooling support that closed ones don't. The cost of forking and adapting an open project has collapsed, so the ecosystem multiplier of going open is bigger than it was. Talent increasingly expects to work in the open. And every closed product now competes against open AI-generated alternatives that didn't exist two years ago.
-
-The upside argument used to read as nice-to-have. It's becoming a structural disadvantage to ignore.
-
 ### The honest problem with this argument
 
 These four properties (verifiability, forkability, jurisdiction independence, permanent availability) have something important in common. They are not about cost. They are about *agency*.
@@ -240,6 +233,16 @@ The real question, harder and less comfortable, is whether those definitional pr
 So whether open source *actually* wins the agency argument in the AI era is not a foregone conclusion. It is an open question. The honest answer today: it depends on whether we build the institutions, the verification infrastructure, the procurement frameworks, and the funding mechanisms that turn agency-in-principle into agency-in-practice.
 
 If we do, open source is the only substrate that makes those outcomes possible. If we don't, it will end up meaning roughly what "democracy" means in a country with suppressed voter turnout: a formal property without operational force. Saying "open source gives you agency" is a claim about a substrate, not a guarantee about an outcome. The outcome has to be built, and most of the building is ahead of us.
+
+### The cost of staying closed
+
+Everything above is about what open source preserves: agency, verifiability, the right to fork. There's an offensive case too, and Marieke pointed it out when we were arguing through this post. There has always been an opportunity cost to *not* doing open source, and AI has made it bigger.
+
+The classical version was straightforward. Closed software didn't get free contributions, didn't get third-party plugins, didn't get scrutinised by external eyes, didn't attract developers who wanted to learn from the code. Companies paid for those forgone benefits in slower iteration, smaller ecosystems, and harder hiring. They paid willingly because IP felt like the moat.
+
+AI changes the math from several angles. Coding agents are markedly better at working with code they've already trained on, which means open projects accrue tooling support that closed ones don't. The cost of forking and adapting an open project has collapsed, so the ecosystem multiplier of going open is bigger than it was. Talent increasingly expects to work in the open. And every closed product now competes against open AI-generated alternatives that didn't exist two years ago.
+
+The upside argument used to read as nice-to-have. It's becoming a structural disadvantage to ignore.
 
 ## What this means in practice
 
