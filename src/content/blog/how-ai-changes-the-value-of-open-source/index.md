@@ -282,19 +282,13 @@ A Brazilian, Indonesian, or Nigerian reader could fairly read this post as one i
 
 With that caveat on the table, here is the structural argument. Compute has to run somewhere, and somewhere is always governed by someone. Even as inference gets cheaper, the providers running it sit overwhelmingly under US or Chinese jurisdiction, and jurisdictional law follows the provider rather than the data location. The only path to genuine sovereignty for everyone else runs through open source software running on infrastructure under domestic legal control. This is not a cultural project. It is a structural one. And the EU is, finally, beginning to take it seriously.
 
-### Expect more WordPress-style crises
-
-This is the one I keep returning to: the WordPress crisis was a preview, not an aberration. Every open source ecosystem with significant central infrastructure, significant commercial dependency, and significant single-point governance is going to face some version of it over the next decade.
-
-The mechanism is structural, not specific to WordPress. The first generation of major OSS founders are aging into their 50s and 60s, having built their projects when "BDFL plus a permissive trademark policy" felt like sufficient governance. The commercial layers that have grown on top are now worth tens of billions of dollars, and the friction between trademark holders, infrastructure operators, and commercial users has scaled correspondingly. Add ideological drift, acquisition pressure, founder fatigue with no clear succession, and the economic regime shift this post is about, and you get the same conditions in a dozen other places.
-
-The ones with credible exit options and institutional backing will absorb the shock. The ones without will fragment painfully. We need the institutional answers (federation, neutral foundations, multi-stakeholder governance) built *before* the next crisis, not during it.
-
 ## Closing
 
 The classical economists understood that price reflects scarcity, and that scarcity is mostly about physical and institutional facts. SaaS made us forget that for a generation, by inhabiting an unusual economic regime where software was scarce to produce but abundant to copy. AI is ending that regime from both ends. The artifact is becoming abundant. The running is becoming expensive again. Compute, trust, attention, and institutional capacity are becoming the scarce resources.
 
 In that new regime, open source's *potential* value proposition is that the agency is yours. Whether that potential becomes operational reality depends on the institutions, funding mechanisms, and procurement frameworks we build around it. The artifacts alone won't do it. The licences alone won't do it. What will do it is the unglamorous work of converting theoretical agency into practiced agency: paying maintainers, funding verification infrastructure, writing procurement rules that reward contribution, building neutral foundations that can catch forks when they happen.
+
+There's also an offensive side to the same ledger. The cost of staying closed has gone up. AI gives open projects compounding advantages — contributions, tooling support, ecosystem effects, talent — that closed projects increasingly forfeit. The defensive argument and the offensive one have started to converge: open source is what you choose both to preserve agency and to capture upside.
 
 Open source is the only substrate that makes this possible. It is not, by itself, sufficient. That is a more modest claim than "open source wins," and it's the honest one. The argument is older than free software, older than computing. It is, in some real sense, the argument the printing press eventually settled in favour of authors over publishers, the argument the enclosures lost on behalf of commoners, the argument the guilds eventually lost to impersonal markets. We are running it again.
 
