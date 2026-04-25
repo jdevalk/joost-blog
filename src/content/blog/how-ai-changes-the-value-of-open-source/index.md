@@ -219,16 +219,6 @@ So "do people care about agency?" is the wrong question to argue about. Most peo
 
 That reframes the argument. It isn't "you should value agency"; that's tautological and persuades nobody who isn't already convinced. It's structural: more institutions are going to find out, the hard way, that they needed it. The only question that matters is whether the substrate to provide it (open source code, neutral foundations, sovereign infrastructure, verifiable models) will exist when they go looking for it.
 
-### The cost of staying closed
-
-Everything above is about what open source preserves: agency, verifiability, the right to fork. There's an offensive case too, and Marieke pointed it out when we were arguing through this post. There has always been an opportunity cost to *not* doing open source, and AI has made it bigger.
-
-The classical version was straightforward. Closed software didn't get free contributions, didn't get third-party plugins, didn't get scrutinised by external eyes, didn't attract developers who wanted to learn from the code. Companies paid for those forgone benefits in slower iteration, smaller ecosystems, and harder hiring. They paid willingly because IP felt like the moat.
-
-AI changes the math from several angles. Coding agents are markedly better at working with code they've already trained on, which means open projects accrue tooling support that closed ones don't. The cost of forking and adapting an open project has collapsed, so the ecosystem multiplier of going open is bigger than it was. Talent increasingly expects to work in the open. And every closed product now competes against open AI-generated alternatives that didn't exist two years ago.
-
-The upside argument used to read as nice-to-have. It's becoming a structural disadvantage to ignore.
-
 ### The honest problem with this argument
 
 These four properties (verifiability, forkability, jurisdiction independence, permanent availability) have something important in common. They are not about cost. They are about *agency*.
@@ -240,6 +230,16 @@ The real question, harder and less comfortable, is whether those definitional pr
 So whether open source *actually* wins the agency argument in the AI era is not a foregone conclusion. It is an open question. The honest answer today: it depends on whether we build the institutions, the verification infrastructure, the procurement frameworks, and the funding mechanisms that turn agency-in-principle into agency-in-practice.
 
 If we do, open source is the only substrate that makes those outcomes possible. If we don't, it will end up meaning roughly what "democracy" means in a country with suppressed voter turnout: a formal property without operational force. Saying "open source gives you agency" is a claim about a substrate, not a guarantee about an outcome. The outcome has to be built, and most of the building is ahead of us.
+
+### The cost of staying closed
+
+Everything above is about what open source preserves: agency, verifiability, the right to fork. There's an offensive case too, and Marieke pointed it out when we were arguing through this post. There has always been an opportunity cost to *not* doing open source, and AI has made it bigger.
+
+The classical version was straightforward. Closed software didn't get free contributions, didn't get third-party plugins, didn't get scrutinised by external eyes, didn't attract developers who wanted to learn from the code. Companies paid for those forgone benefits in slower iteration, smaller ecosystems, and harder hiring. They paid willingly because IP felt like the moat.
+
+AI changes the math from several angles. Coding agents are markedly better at working with code they've already trained on, which means open projects accrue tooling support that closed ones don't. The cost of forking and adapting an open project has collapsed, so the ecosystem multiplier of going open is bigger than it was. Talent increasingly expects to work in the open. And every closed product now competes against open AI-generated alternatives that didn't exist two years ago.
+
+The upside argument used to read as nice-to-have. It's becoming a structural disadvantage to ignore.
 
 ## What this means in practice
 
