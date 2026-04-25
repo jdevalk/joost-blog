@@ -18,7 +18,10 @@ toc: true
 ---
 Open source spent thirty years winning an argument about cost. AI is about to make that argument irrelevant. Whether open source can win the argument that replaces it (about *agency*) is an open question. The point of this post is to be honest about why.
 
-*A note on "agency": I use the word throughout this post to mean the capacity to act on your own terms: to run, inspect, modify, and migrate your software without needing permission from a vendor, government, or infrastructure provider. It's the opposite of dependency. For native English speakers it may feel obvious; it's worth pinning down before we go further.*
+<div class="not-prose rounded-lg border-2 border-primary/20 bg-tertiary px-6 py-5 dark:border-accent/20 dark:bg-stone-900">
+<p class="mb-2 text-lg font-semibold text-primary dark:text-accent">A note on "agency"</p>
+<p class="text-base leading-relaxed text-stone-700 dark:text-stone-300">I use the word throughout this post to mean the capacity to act on your own terms: to run, inspect, modify, and migrate your software without needing permission from a vendor, government, or infrastructure provider. It's the opposite of dependency. For native English speakers it may feel obvious; it's worth pinning down before we go further.</p>
+</div>
 
 To see what's happening, you have to start with classical economics and take a detour through twenty-five years of SaaS. You end up at why the xz backdoor, the European Cyber Resilience Act, and the question of whether you can fork a language model are all the same story. Bear with me. The journey is the point.
 
@@ -172,7 +175,7 @@ The second is **forkability as a governance check**. The right to fork is the ul
 
 HashiCorp moved Terraform from MPL to BSL in 2023; the community forked it as [OpenTofu](https://opentofu.org/) under the Linux Foundation within weeks. Redis moved from BSD to dual-licensed RSAL/SSPL in March 2024; AWS and the Linux Foundation forked Valkey. MongoDB went SSPL in 2018. Elastic followed in 2021 and [retreated back to AGPL in August 2024](https://en.wikipedia.org/wiki/Server_Side_Public_License), the first major reversal. Red Hat tried to wall off CentOS in 2020 and again in 2023; Rocky Linux and AlmaLinux were standing within hours.
 
-The pattern is consistent. The value of forkability isn't that forks happen often. It's that the *possibility* of forking disciplines the behaviour of current stewards. Closed software has no equivalent mechanism. There's no fork of Microsoft Word.
+The pattern is consistent. The value of forkability isn't that forks happen often, or that you'll personally build one. It's twofold. First, the *possibility* of forking disciplines the behaviour of current stewards. Second, when stewards do go bad, a viable fork is a landing pad — somewhere your existing investment can keep running. When HashiCorp relicensed, the thousands of teams with Terraform configs, modules, and CI pipelines didn't build OpenTofu themselves; they didn't have to. The fork existed, their work was portable, they kept going. That's what the property actually buys you, even if you never exercise the right yourself. Closed software offers neither half: no discipline, no landing pad. There's no fork of Microsoft Word.
 
 And here is where the AI story loops back round. Historically, most forks failed not because the licence forbade them but because nobody could afford to carry the maintenance burden against an upstream that kept moving. LibreOffice took a decade to reach parity with what OpenOffice already had. The vast majority of smaller forks died quietly within a year or two.
 
