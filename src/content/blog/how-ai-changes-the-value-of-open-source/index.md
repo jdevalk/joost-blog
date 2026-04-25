@@ -263,7 +263,7 @@ A Brazilian, Indonesian, or Nigerian reader could fairly read this post as one i
 
 With that caveat on the table, here is the structural argument. Compute has to run somewhere, and somewhere is always governed by someone. Even as inference gets cheaper, the providers running it sit overwhelmingly under US or Chinese jurisdiction, and jurisdictional law follows the provider rather than the data location. The only path to genuine sovereignty for everyone else runs through open source software running on infrastructure under domestic legal control. This is not a cultural project. It is a structural one. And the EU is, finally, beginning to take it seriously.
 
-### Expect more WordPress crises
+### Expect more crises like WordPress'
 
 This is the one I keep returning to: the WordPress crisis was a preview, not an aberration. Every open source ecosystem with significant central infrastructure, significant commercial dependency, and significant single-point governance is going to face some version of it over the next decade. The ones with credible exit options and institutional backing will absorb the shock. The ones without will fragment painfully. We need the institutional answers (federation, neutral foundations, multi-stakeholder governance) built *before* the next crisis, not during it.
 
