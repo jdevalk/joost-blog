@@ -245,7 +245,9 @@ Funding needs to move toward institutions that produce *trust*, not only code. F
 
 ### Pay maintainers structurally
 
-Maintainer compensation has to be structural, not charitable. Tidelift's data shows paid maintainers are [55% more likely](https://www.sonarsource.com/the-2024-tidelift-maintainer-impact-report.pdf) to implement critical security and maintenance practices than unpaid ones. The EU Cyber Resilience Act, taking full effect in December 2027, will create the first real legal incentive for vendors to fund their upstream dependencies. That's a feature, not a bug. We should welcome the regulation and pressure it to do more.
+Maintainer compensation has to be structural, not charitable. Tidelift's 2024 data showed paid maintainers were [55% more likely](https://www.sonarsource.com/the-2024-tidelift-maintainer-impact-report.pdf) to implement critical security and maintenance practices than unpaid ones. That's a useful baseline, but it was collected before AI tooling changed the leverage of every individual maintainer. Speaking from experience: at Yoast I had five full-time employees contributing to WordPress core at one point. The same five people with today's tooling could move mountains. The marginal return on funding a maintainer has gone up sharply since that data was collected, not down. The case for structural funding is stronger now, not weaker.
+
+The EU Cyber Resilience Act, taking full effect in December 2027, will create the first real legal incentive for vendors to fund their upstream dependencies. That's a feature, not a bug. We should welcome the regulation and pressure it to do more.
 
 ### Fix procurement
 
