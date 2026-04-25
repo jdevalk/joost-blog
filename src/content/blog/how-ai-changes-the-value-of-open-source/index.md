@@ -255,13 +255,13 @@ His suggested fix is to make upstream contribution count in procurement scoring,
 
 The European Commission provided the template on the cloud side. In April 2026 it [awarded a €180 million sovereign cloud tender](https://ec.europa.eu/commission/presscorner/detail/en/ip_26_833) to four European providers under a new Cloud Sovereignty Framework. The framework grades bidders on eight concrete objectives, from legal control to supply-chain transparency to technological openness, and scores them from SEAL-0 to SEAL-4. SEAL-4 requires a full EU supply chain from chips to software. What was abstract is now measurable. The same template, translating sovereignty into specific auditable criteria and making bidders earn a score, maps directly onto upstream open source contribution and onto AI model transparency. The machinery now exists. It needs to extend further.
 
-### Be explicit about Europe
+### Treat sovereignty as structural
 
 European digital sovereignty stops being a niche policy concern and becomes a first-class economic question. Let me state my bias openly: I am European, and I think European digital sovereignty is the right frame for Europe right now. That's a partisan position.
 
 A Brazilian, Indonesian, or Nigerian reader could fairly read this post as one imperial stack arguing against another. The "digital sovereignty" I'm arguing for would still leave their governments dependent on European cloud providers, European regulation, and European legal frameworks. They'd be partly right. What's universal in this argument is agency: the right to run software under rules you choose. What's particular is which bloc's rules I'd prefer Europe to be under, which is its own question. If you're not European, the same argument structure still applies; you need to substitute your own jurisdiction for mine.
 
-With that caveat on the table, here is the structural argument. Compute is concentrated in three or four US companies and one or two Chinese ones. Jurisdictional law follows the compute provider rather than data location. Given those two facts, the only path to genuine sovereignty for everyone else runs through open source software running on infrastructure under domestic legal control. This is not a cultural project. It is a structural one. And the EU is, finally, beginning to take it seriously.
+With that caveat on the table, here is the structural argument. Compute has to run somewhere, and somewhere is always governed by someone. Even as inference gets cheaper, the providers running it sit overwhelmingly under US or Chinese jurisdiction, and jurisdictional law follows the provider rather than the data location. The only path to genuine sovereignty for everyone else runs through open source software running on infrastructure under domestic legal control. This is not a cultural project. It is a structural one. And the EU is, finally, beginning to take it seriously.
 
 ### Expect more WordPress crises
 
