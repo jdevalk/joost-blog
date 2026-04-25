@@ -209,6 +209,16 @@ The companies most eager to call themselves open are publishing less about their
 
 The fourth enduring value is **permanent availability**. Open source code does not get deprecated when a company pivots. It does not disappear when a startup fails. It does not change terms when a CEO changes. The thirty-year-old Unix utilities still work. The SaaS product you built your business on three years ago might not exist anymore. As commercial software gets more turbulent (venture funding cycles, AI-driven consolidation, the relentless deprecation cadence of cloud APIs) this property becomes more, not less, valuable.
 
+### Why people start caring
+
+There's an asymmetry worth naming. Agency is invisible until it's removed. Almost nobody runs a procurement evaluation thinking "what happens when our vendor's home government compels access to our data?" until the day a peer organisation finds out. The International Criminal Court didn't run a sovereignty audit on Microsoft 365 in advance. They ran one after the chief prosecutor's email got cut off. The 200,000 WordPress sites that lost plugin updates in 2024 were not run by people who'd been worrying about update-server governance the week before.
+
+This is the pattern across every example in this post. Schleswig-Holstein, Denmark's Ministry of Digitalisation, the ICC, the WordPress community, the teams scrambling after Terraform and Redis relicensed: none of them were thinking about agency in advance. They got mugged. Each case in isolation looks like a vendor dispute or a political ruling. The pattern, viewed from above, is institutions discovering one by one that they had less control than they thought, and discovering it at the worst possible moment.
+
+So "do people care about agency?" is the wrong question to argue about. Most people don't, until they do, and then they care urgently and retrospectively. The better question is whether the AI era will produce more of these moments, faster, across more institutions, than the SaaS era did. I think it obviously will. Every closed-model API is a new jurisdictional exposure. Every AI-assisted workflow is a new vendor relationship. Every agentic system is new infrastructure that can be turned off. The compute concentration story doesn't just make agency loss possible. It makes it more frequent, more consequential, and harder to recover from once it happens.
+
+That reframes the argument. It isn't "you should value agency"; that's tautological and persuades nobody who isn't already convinced. It's structural: more institutions are going to find out, the hard way, that they needed it. The only question that matters is whether the substrate to provide it (open source code, neutral foundations, sovereign infrastructure, verifiable models) will exist when they go looking for it.
+
 ### The honest problem with this argument
 
 These four properties (verifiability, forkability, jurisdiction independence, permanent availability) have something important in common. They are not about cost. They are about *agency*.
