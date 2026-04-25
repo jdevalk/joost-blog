@@ -284,7 +284,11 @@ With that caveat on the table, here is the structural argument. Compute has to r
 
 ### Expect more WordPress-style crises
 
-This is the one I keep returning to: the WordPress crisis was a preview, not an aberration. Every open source ecosystem with significant central infrastructure, significant commercial dependency, and significant single-point governance is going to face some version of it over the next decade. The ones with credible exit options and institutional backing will absorb the shock. The ones without will fragment painfully. We need the institutional answers (federation, neutral foundations, multi-stakeholder governance) built *before* the next crisis, not during it.
+This is the one I keep returning to: the WordPress crisis was a preview, not an aberration. Every open source ecosystem with significant central infrastructure, significant commercial dependency, and significant single-point governance is going to face some version of it over the next decade.
+
+The mechanism is structural, not specific to WordPress. The first generation of major OSS founders are aging into their 50s and 60s, having built their projects when "BDFL plus a permissive trademark policy" felt like sufficient governance. The commercial layers that have grown on top are now worth tens of billions of dollars, and the friction between trademark holders, infrastructure operators, and commercial users has scaled correspondingly. Add ideological drift, acquisition pressure, founder fatigue with no clear succession, and the economic regime shift this post is about, and you get the same conditions in a dozen other places.
+
+The ones with credible exit options and institutional backing will absorb the shock. The ones without will fragment painfully. We need the institutional answers (federation, neutral foundations, multi-stakeholder governance) built *before* the next crisis, not during it.
 
 ## Closing
 
