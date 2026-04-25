@@ -18,7 +18,7 @@ toc: true
 ---
 Open source spent thirty years winning an argument about cost. AI is about to make that argument irrelevant. Whether open source can win the argument that replaces it (about *agency*) is an open question. The point of this post is to be honest about why.
 
-> **A note on "agency":** I use the word throughout this post to mean the capacity to act on your own terms: to run, inspect, modify, and migrate your software without needing permission from a vendor, government, or infrastructure provider. It's the opposite of dependency. For native English speakers it may feel obvious; it's worth pinning down before we go further.
+*A note on "agency": I use the word throughout this post to mean the capacity to act on your own terms: to run, inspect, modify, and migrate your software without needing permission from a vendor, government, or infrastructure provider. It's the opposite of dependency. For native English speakers it may feel obvious; it's worth pinning down before we go further.*
 
 To see what's happening, you have to start with classical economics and take a detour through twenty-five years of SaaS. You end up at why the xz backdoor, the European Cyber Resilience Act, and the question of whether you can fork a language model are all the same story. Bear with me. The journey is the point.
 
