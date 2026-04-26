@@ -18,7 +18,10 @@ toc: true
 ---
 Open source spent thirty years winning an argument about cost. AI is about to make that argument irrelevant. Whether open source can win the argument that replaces it (about *agency*) is an open question. The point of this post is to be honest about why.
 
-> **A note on "agency":** I use the word throughout this post to mean the capacity to act on your own terms: to run, inspect, modify, and migrate your software without needing permission from a vendor, government, or infrastructure provider. It's the opposite of dependency. For native English speakers it may feel obvious; it's worth pinning down before we go further.
+<div class="not-prose rounded-lg border-2 border-primary/20 bg-tertiary px-6 py-5 dark:border-accent/20 dark:bg-stone-900">
+<p class="mb-2 text-lg font-semibold text-primary dark:text-accent">A note on "agency"</p>
+<p class="text-base leading-relaxed text-stone-700 dark:text-stone-300">I use the word throughout this post to mean the capacity to act on your own terms: to run, inspect, modify, and migrate your software without needing permission from a vendor, government, or infrastructure provider. It's the opposite of dependency. For native English speakers it may feel obvious; it's worth pinning down before we go further.</p>
+</div>
 
 To see what's happening, you have to start with classical economics and take a detour through twenty-five years of SaaS. You end up at why the xz backdoor, the European Cyber Resilience Act, and the question of whether you can fork a language model are all the same story. Bear with me. The journey is the point.
 
@@ -172,7 +175,7 @@ The second is **forkability as a governance check**. The right to fork is the ul
 
 HashiCorp moved Terraform from MPL to BSL in 2023; the community forked it as [OpenTofu](https://opentofu.org/) under the Linux Foundation within weeks. Redis moved from BSD to dual-licensed RSAL/SSPL in March 2024; AWS and the Linux Foundation forked Valkey. MongoDB went SSPL in 2018. Elastic followed in 2021 and [retreated back to AGPL in August 2024](https://en.wikipedia.org/wiki/Server_Side_Public_License), the first major reversal. Red Hat tried to wall off CentOS in 2020 and again in 2023; Rocky Linux and AlmaLinux were standing within hours.
 
-The pattern is consistent. The value of forkability isn't that forks happen often. It's that the *possibility* of forking disciplines the behaviour of current stewards. Closed software has no equivalent mechanism. There's no fork of Microsoft Word.
+The pattern is consistent. The value of forkability isn't that forks happen often, or that you'll personally build one. It's twofold. First, the *possibility* of forking disciplines the behaviour of current stewards. Second, when stewards do go bad, a viable fork is a landing pad — somewhere your existing investment can keep running. When HashiCorp relicensed, the thousands of teams with Terraform configs, modules, and CI pipelines didn't build OpenTofu themselves; they didn't have to. The fork existed, their work was portable, they kept going. That's what the property actually buys you, even if you never exercise the right yourself. Closed software offers neither half: no discipline, no landing pad. There's no fork of Microsoft Word.
 
 And here is where the AI story loops back round. Historically, most forks failed not because the licence forbade them but because nobody could afford to carry the maintenance burden against an upstream that kept moving. LibreOffice took a decade to reach parity with what OpenOffice already had. The vast majority of smaller forks died quietly within a year or two.
 
@@ -209,6 +212,16 @@ The companies most eager to call themselves open are publishing less about their
 
 The fourth enduring value is **permanent availability**. Open source code does not get deprecated when a company pivots. It does not disappear when a startup fails. It does not change terms when a CEO changes. The thirty-year-old Unix utilities still work. The SaaS product you built your business on three years ago might not exist anymore. As commercial software gets more turbulent (venture funding cycles, AI-driven consolidation, the relentless deprecation cadence of cloud APIs) this property becomes more, not less, valuable.
 
+### Why people start caring
+
+There's an asymmetry worth naming. Agency is invisible until it's removed. Almost nobody runs a procurement evaluation thinking "what happens when our vendor's home government compels access to our data?" until the day a peer organisation finds out. The International Criminal Court didn't run a sovereignty audit on Microsoft 365 in advance. They ran one after the chief prosecutor's email got cut off. The 200,000 WordPress sites that lost plugin updates in 2024 were not run by people who'd been worrying about update-server governance the week before.
+
+This is the pattern across every example in this post. Schleswig-Holstein, Denmark's Ministry of Digitalisation, the ICC, the WordPress community, the teams scrambling after Terraform and Redis relicensed: none of them were thinking about agency in advance. They got mugged. Each case in isolation looks like a vendor dispute or a political ruling. The pattern, viewed from above, is institutions discovering one by one that they had less control than they thought, and discovering it at the worst possible moment.
+
+So "do people care about agency?" is the wrong question to argue about. Most people don't, until they do, and then they care urgently and retrospectively. The better question is whether the AI era will produce more of these moments, faster, across more institutions, than the SaaS era did. I think it obviously will. Every closed-model API is a new jurisdictional exposure. Every AI-assisted workflow is a new vendor relationship. Every agentic system is new infrastructure that can be turned off. It isn't that the underlying compute will stay scarce; inference is getting cheaper and will keep getting cheaper. It's that the dependency layer is expanding and turning over faster than any institution can audit it, and each layer is a new place where agency can be removed without warning.
+
+That reframes the argument. It isn't "you should value agency"; that's tautological and persuades nobody who isn't already convinced. It's structural: more institutions are going to find out, the hard way, that they needed it. The only question that matters is whether the substrate to provide it (open source code, neutral foundations, sovereign infrastructure, verifiable models) will exist when they go looking for it.
+
 ### The honest problem with this argument
 
 These four properties (verifiability, forkability, jurisdiction independence, permanent availability) have something important in common. They are not about cost. They are about *agency*.
@@ -220,6 +233,16 @@ The real question, harder and less comfortable, is whether those definitional pr
 So whether open source *actually* wins the agency argument in the AI era is not a foregone conclusion. It is an open question. The honest answer today: it depends on whether we build the institutions, the verification infrastructure, the procurement frameworks, and the funding mechanisms that turn agency-in-principle into agency-in-practice.
 
 If we do, open source is the only substrate that makes those outcomes possible. If we don't, it will end up meaning roughly what "democracy" means in a country with suppressed voter turnout: a formal property without operational force. Saying "open source gives you agency" is a claim about a substrate, not a guarantee about an outcome. The outcome has to be built, and most of the building is ahead of us.
+
+### The cost of staying closed
+
+Everything above is about what open source preserves: agency, verifiability, the right to fork. There's an offensive case too, and Marieke pointed it out when we were arguing through this post. There has always been an opportunity cost to *not* doing open source, and AI has made it bigger.
+
+The classical version was straightforward. Closed software didn't get free contributions, didn't get third-party plugins, didn't get scrutinised by external eyes, didn't attract developers who wanted to learn from the code. Companies paid for those forgone benefits in slower iteration, smaller ecosystems, and harder hiring. They paid willingly because IP felt like the moat.
+
+AI changes the math from several angles. Coding agents are markedly better at working with code they've already trained on, which means open projects accrue tooling support that closed ones don't. The cost of forking and adapting an open project has collapsed, so the ecosystem multiplier of going open is bigger than it was. Talent increasingly expects to work in the open. And every closed product now competes against open AI-generated alternatives that didn't exist two years ago.
+
+The upside argument used to read as nice-to-have. It's becoming a structural disadvantage to ignore.
 
 ## What this means in practice
 
@@ -235,7 +258,13 @@ Funding needs to move toward institutions that produce *trust*, not only code. F
 
 ### Pay maintainers structurally
 
-Maintainer compensation has to be structural, not charitable. Tidelift's data shows paid maintainers are [55% more likely](https://www.sonarsource.com/the-2024-tidelift-maintainer-impact-report.pdf) to implement critical security and maintenance practices than unpaid ones. The EU Cyber Resilience Act, taking full effect in December 2027, will create the first real legal incentive for vendors to fund their upstream dependencies. That's a feature, not a bug. We should welcome the regulation and pressure it to do more.
+Maintainer compensation has to be structural, not charitable. Tidelift's 2024 data showed paid maintainers were [55% more likely](https://www.sonarsource.com/the-2024-tidelift-maintainer-impact-report.pdf) to implement critical security and maintenance practices than unpaid ones. That's a useful baseline, but it was collected before AI tooling changed the leverage of every individual maintainer. Speaking from experience: at Yoast we had five full-time employees contributing to WordPress core at one point. The same five people with today's tooling could move mountains.
+
+That cuts both ways. The marginal return on funding any one maintainer has gone up sharply, but the total number of maintainers a given project actually needs has gone down. WordPress core probably needs less human engineering capacity than it did a decade ago, not more, and the same is true across most large OSS projects. People — including project leadership — should get used to shipping faster with smaller teams. Jamie Marsland's [write-up of a current Automattic shipping experiment](https://x.com/pootlepress/status/2047593263817773467) captures the dynamic in action: small pairs, modern AI tools, permission to build fast, and what used to sit in the backlog as "too complex" starts turning into afternoon prototypes. The experiment is getting at exactly the same thing this section is. For WordPress specifically, unlocking that speed at the project level depends on structural refactoring rather than cosmetic change; [I've written about that elsewhere](https://joost.blog/wordpress-refactor-not-redecorate/). The case for structural funding is stronger now, not weaker; the headline number it adds up to may well be smaller.
+
+That's the Luddite parallel from earlier, applied honestly to open source. In OSS too, maintainers using AI should largely replace maintainers who don't, and structural funding should follow the leverage. Uncomfortable to say out loud, but it's the direct corollary of the leverage argument. Pretending otherwise spreads too little money across too many maintainers too thinly to sustain any of them — which is roughly where we are now.
+
+The EU Cyber Resilience Act, taking full effect in December 2027, will create the first real legal incentive for vendors to fund their upstream dependencies. That's a feature, not a bug. We should welcome the regulation and pressure it to do more.
 
 ### Fix procurement
 
@@ -245,17 +274,13 @@ His suggested fix is to make upstream contribution count in procurement scoring,
 
 The European Commission provided the template on the cloud side. In April 2026 it [awarded a €180 million sovereign cloud tender](https://ec.europa.eu/commission/presscorner/detail/en/ip_26_833) to four European providers under a new Cloud Sovereignty Framework. The framework grades bidders on eight concrete objectives, from legal control to supply-chain transparency to technological openness, and scores them from SEAL-0 to SEAL-4. SEAL-4 requires a full EU supply chain from chips to software. What was abstract is now measurable. The same template, translating sovereignty into specific auditable criteria and making bidders earn a score, maps directly onto upstream open source contribution and onto AI model transparency. The machinery now exists. It needs to extend further.
 
-### Be explicit about Europe
+### Treat sovereignty as structural
 
 European digital sovereignty stops being a niche policy concern and becomes a first-class economic question. Let me state my bias openly: I am European, and I think European digital sovereignty is the right frame for Europe right now. That's a partisan position.
 
 A Brazilian, Indonesian, or Nigerian reader could fairly read this post as one imperial stack arguing against another. The "digital sovereignty" I'm arguing for would still leave their governments dependent on European cloud providers, European regulation, and European legal frameworks. They'd be partly right. What's universal in this argument is agency: the right to run software under rules you choose. What's particular is which bloc's rules I'd prefer Europe to be under, which is its own question. If you're not European, the same argument structure still applies; you need to substitute your own jurisdiction for mine.
 
-With that caveat on the table, here is the structural argument. Compute is concentrated in three or four US companies and one or two Chinese ones. Jurisdictional law follows the compute provider rather than data location. Given those two facts, the only path to genuine sovereignty for everyone else runs through open source software running on infrastructure under domestic legal control. This is not a cultural project. It is a structural one. And the EU is, finally, beginning to take it seriously.
-
-### Expect more WordPress crises
-
-This is the one I keep returning to: the WordPress crisis was a preview, not an aberration. Every open source ecosystem with significant central infrastructure, significant commercial dependency, and significant single-point governance is going to face some version of it over the next decade. The ones with credible exit options and institutional backing will absorb the shock. The ones without will fragment painfully. We need the institutional answers (federation, neutral foundations, multi-stakeholder governance) built *before* the next crisis, not during it.
+With that caveat on the table, here is the structural argument. Compute has to run somewhere, and somewhere is always governed by someone. Even as inference gets cheaper, the providers running it sit overwhelmingly under US or Chinese jurisdiction, and jurisdictional law follows the provider rather than the data location. The only path to genuine sovereignty for everyone else runs through open source software running on infrastructure under domestic legal control. This is not a cultural project. It is a structural one. And the EU is, finally, beginning to take it seriously.
 
 ## Closing
 
@@ -263,6 +288,12 @@ The classical economists understood that price reflects scarcity, and that scarc
 
 In that new regime, open source's *potential* value proposition is that the agency is yours. Whether that potential becomes operational reality depends on the institutions, funding mechanisms, and procurement frameworks we build around it. The artifacts alone won't do it. The licences alone won't do it. What will do it is the unglamorous work of converting theoretical agency into practiced agency: paying maintainers, funding verification infrastructure, writing procurement rules that reward contribution, building neutral foundations that can catch forks when they happen.
 
+There's also an offensive side to the same ledger. The cost of staying closed has gone up. AI gives open projects compounding advantages that closed projects increasingly forfeit: contributions, tooling support, ecosystem effects, talent. The defensive argument and the offensive one have started to converge: open source is what you choose both to preserve agency and to capture upside.
+
 Open source is the only substrate that makes this possible. It is not, by itself, sufficient. That is a more modest claim than "open source wins," and it's the honest one. The argument is older than free software, older than computing. It is, in some real sense, the argument the printing press eventually settled in favour of authors over publishers, the argument the enclosures lost on behalf of commoners, the argument the guilds eventually lost to impersonal markets. We are running it again.
 
 This time, with luck and a great deal of work, we get to learn from the parallels.
+
+---
+
+*This post emerged from a long conversation with my wife [Marieke](https://marieke.com) about the economics of software development. The framing here is mine; the sharpest observations are hers.*
