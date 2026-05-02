@@ -1,14 +1,15 @@
 ---
-title: Can I safely use AVIF or WebP share images?
+title: Can I safely use <em>AVIF</em> or <em>WebP</em> share images?
 publishDate: 2024-12-04T00:00:00.000Z
 excerpt: >-
   AVIF and WebP are efficient image storage formats. They are smaller than their
   predecessors, PNG, JPG, and GIF. This leads to smaller images, which means
   faster
 categories:
-  - Development
+  - Research
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Can I safely use AVIF or WebP share images?'
+toc: true
 ---
 AVIF and WebP are efficient image storage formats. They are smaller than their predecessors, PNG, JPG, and GIF. This leads to smaller images, which means faster page loads, which is what we all want. So, you should use them everywhere. Ideally, we’d also be able to use these image formats for our OpenGraph image tags (`og:image`) and Twitter image tags (`twitter:image`).
 
@@ -51,8 +52,8 @@ I’ve run a quick test across the platforms below, and as you can see, we still
 
 I’ve used these two test URLs:
 
-- </research/images/avif-test.html>
-- </research/images/webp-test.html>
+- [AVIF test page](/research/images/avif-test.html)
+- [WebP test page](/research/images/webp-test.html)
 
 With these URLs, I checked whether the platform would load the AVIF / WebP `og:image`, or show the fallback.
 

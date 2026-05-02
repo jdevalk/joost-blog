@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>AVIF testcase</title>
+	
+	<meta name="description" content="This is a test case to see which platforms support AVIF. If you see a green image, you've succeeded.">
+	<link rel="canonical" href="https://joost.blog/research/images/avif-test.html">
+
+	<meta property="og:url" content="https://joost.blog/research/images/avif-test.html">
+	<meta property="og:type" content="article">
+	<meta property="article:author" content="Joost de Valk">
+	<meta property="article:published_time" content="2022-07-05">
+	<meta property="og:title" content="AVIF testcase" />
+	<meta property="og:description" content="This is a test case to see which platforms support AVIF. If you see a green image, you've succeeded.">
+	<meta property="og:image" content="avif-test-succeeded.avif" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="675" />
+	<meta property="og:image:type" content="image/avif" />
+
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@jdevalk" />
+</head>
+<body>
+	<h1><em>AVIF</em> testcase</h1>
+	<picture>
+	  <source srcset="avif-test-succeeded.avif" type="image/avif">
+	  <source srcset="avif-test-failed.png" type="image/png"> 
+	  <img src="avif-test-failed.png" alt="AVIF test failed">
+	</picture>
+</body>
+</html>

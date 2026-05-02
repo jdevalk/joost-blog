@@ -10,36 +10,21 @@ const { ...head } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="antialiased wrap-break-word">
+<html lang="en">
     <head>
-        <script is:inline>
-            const theme = (() => {
-                if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-                    return localStorage.getItem('theme');
-                }
-                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    return 'dark';
-                }
-                return 'light';
-            })();
-            document.documentElement.classList.toggle('dark', theme === 'dark');
-        </script>
         <BaseHead {...head} />
     </head>
-    <body class="bg-white text-slate-700 dark:bg-[#141211] dark:text-slate-300 transition-colors duration-300">
+    <body>
         <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-white focus:shadow-lg">Skip to content</a>
-        <div class="flex flex-col min-h-screen">
-            <slot name="header">
-                <Header />
-                <div class="h-[52px] sm:h-[56px]"></div>
-            </slot>
-            <div id="main-content" class="grow flex flex-col">
-                <slot />
-            </div>
-            <slot name="footer">
-                <Footer />
-            </slot>
+        <slot name="header">
+            <Header />
+        </slot>
+        <div id="main-content">
+            <slot />
         </div>
+        <slot name="footer">
+            <Footer />
+        </slot>
         <SearchModal />
     </body>
 </html>

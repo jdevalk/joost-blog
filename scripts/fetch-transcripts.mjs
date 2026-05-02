@@ -19,34 +19,70 @@ const videosDir = path.join(rootDir, 'src', 'content', 'videos');
 const cacheDir = path.join(rootDir, 'src', 'generated', 'transcripts');
 
 function cleanVtt(vttText) {
-  return vttText
-    // Remove VTT header
-    .replace(/^WEBVTT[\s\S]*?\n\n/, '')
-    // Remove timestamps and positioning
-    .replace(/\d{2}:\d{2}:\d{2}\.\d{3}\s*-->\s*\d{2}:\d{2}:\d{2}\.\d{3}[^\n]*/g, '')
-    // Remove VTT tags like <c> </c> <00:00:01.199>
-    .replace(/<[^>]+>/g, '')
-    // Remove >> markers and other VTT artifacts
-    .replace(/>{2,}/g, '')
-    .replace(/&gt;/g, '')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '')
-    .replace(/&nbsp;/g, ' ')
-    // Split into lines, deduplicate
-    .split('\n')
-    .map(line => line.trim())
-    .filter(Boolean)
-    // VTT repeats each line across multiple cues — remove exact consecutive dupes
-    .reduce((acc, line) => {
-      if (acc.length === 0 || acc[acc.length - 1] !== line) acc.push(line);
-      return acc;
-    }, [])
-    .join(' ')
-    // Remove repeated phrases (VTT often has "A B\nA B C" patterns)
-    .replace(/(.{20,}?)\s+\1/g, '$1')
-    // Clean up whitespace
-    .replace(/\s+/g, ' ')
-    .trim();
+  const cueBlocks = vttText.split(/\n\n+/).slice(1);
+  const entries = [];
+
+  for (const block of cueBlocks) {
+    const lines = block.trim().split('\n');
+    if (!lines[0] || !lines[0].includes('-->')) continue;
+
+    const tsMatch = lines[0].match(/^(\d{2}):(\d{2}):(\d{2})\.\d{3}/);
+    if (!tsMatch) continue;
+
+    const totalSecs = parseInt(tsMatch[1]) * 3600 + parseInt(tsMatch[2]) * 60 + parseInt(tsMatch[3]);
+
+    // Take the clean line (no inline word-timing tags)
+    const cleanLines = lines.slice(1).filter(l => l.trim() && !l.includes('<c>'));
+    if (cleanLines.length === 0) continue;
+
+    const text = cleanLines[cleanLines.length - 1]
+      .replace(/<[^>]+>/g, '')
+      .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ')
+      .replace(/>{2,}/g, '')
+      .trim();
+    if (!text) continue;
+
+    entries.push({ secs: totalSecs, text });
+  }
+
+  // Remove rolling-caption duplicates (each line appears as prefix of the next)
+  const deduped = [];
+  for (let i = 0; i < entries.length; i++) {
+    const next = entries[i + 1];
+    if (next && (next.text.startsWith(entries[i].text) || entries[i].text === next.text)) continue;
+    deduped.push(entries[i]);
+  }
+
+  // Group into ~30-second paragraphs prefixed with [M:SS] or [H:MM:SS]
+  const grouped = [];
+  let groupStart = null;
+  let groupText = [];
+  for (const e of deduped) {
+    if (groupStart === null) groupStart = e.secs;
+    if (e.secs - groupStart > 30 && groupText.length > 0) {
+      const h = Math.floor(groupStart / 3600);
+      const m = Math.floor((groupStart % 3600) / 60);
+      const s = groupStart % 60;
+      const ts = h > 0
+        ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+        : `${m}:${String(s).padStart(2, '0')}`;
+      grouped.push(`[${ts}] ${groupText.join(' ')}`);
+      groupStart = e.secs;
+      groupText = [];
+    }
+    groupText.push(e.text);
+  }
+  if (groupText.length) {
+    const h = Math.floor(groupStart / 3600);
+    const m = Math.floor((groupStart % 3600) / 60);
+    const s = groupStart % 60;
+    const ts = h > 0
+      ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+      : `${m}:${String(s).padStart(2, '0')}`;
+    grouped.push(`[${ts}] ${groupText.join(' ')}`);
+  }
+
+  return grouped.join('\n\n');
 }
 
 async function walk(dir) {

@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchemaGraph from '../../components/SchemaGraph.astro';
+import type { SchemaPageContext } from '../../utils/schema';
+import { canonicalUrl } from '../../utils/schema/constants';
+
+const title = 'Research';
+const description = 'Data reports and research by Joost de Valk — CMS market share and web technology studies.';
+
+const pageContext: SchemaPageContext = {
+    pageType: 'page',
+    canonicalUrl: canonicalUrl('/research/'),
+    title,
+    description
+};
+
+const items = [
+    {
+        href: '/cms-market-share/',
+        title: 'CMS Market Share',
+        description: 'Monthly CMS market share data based on the HTTP Archive — WordPress, Shopify, Wix, Squarespace, and more, tracked over time.',
+        label: 'Data Report',
+        links: [] as { text: string; href: string }[],
+    },
+    {
+        href: '/use-avif-webp-share-images/',
+        title: 'Can I safely use AVIF or WebP share images?',
+        description: 'AVIF and WebP are more efficient than PNG/JPG — but do social platforms actually support them for og:image and twitter:image? Platform-by-platform test results.',
+        label: 'Study',
+        links: [] as { text: string; href: string }[],
+    },
+];
+---
+
+<BaseLayout title={title} description={description}>
+    <SchemaGraph pageContext={pageContext} />
+
+    <div class="sp-root sp-blocks sp-post" data-pagefind-body>
+
+        <section class="sp-hero">
+            <div class="sp-section-inner">
+                <div class="sp-code-kicker">
+                    <span>SECTION V</span><span class="rule"></span><span>DATA · RESEARCH · STUDIES</span>
+                </div>
+                <h1 class="sp-display">
+                    <em>Research</em>.
+                </h1>
+                <p class="sp-section-lede">Data reports and studies on CMS market share and web technology adoption.</p>
+            </div>
+        </section>
+
+        <section class="sp-post-body">
+            <div class="sp-section-inner">
+                <ul class="sp-research-list">
+                    {items.map(item => (
+                        <li class="sp-research-item">
+                            <a href={item.href} class="sp-research-link">
+                                <div class="sp-research-label">{item.label}</div>
+                                <h2 class="sp-research-title">{item.title}</h2>
+                                <p class="sp-research-desc">{item.description}</p>
+                            </a>
+                            {item.links.length > 0 && (
+                                <div class="sp-research-sublinks">
+                                    {item.links.map(link => (
+                                        <a href={link.href} class="sp-research-sublink">{link.text}</a>
+                                    ))}
+                                </div>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </section>
+
+    </div>
+</BaseLayout>
+
+<style>
+.sp-research-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.sp-research-item {
+    border: 1px solid var(--color-border, #e2e8f0);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.sp-research-link {
+    display: block;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s;
+}
+
+.sp-research-link:hover {
+    background: var(--color-surface-hover, #f8fafc);
+}
+
+.sp-research-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-primary, #6366f1);
+    margin-bottom: 0.5rem;
+}
+
+.sp-research-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    color: var(--color-heading, #0f172a);
+}
+
+.sp-research-desc {
+    font-size: 0.9375rem;
+    color: var(--color-muted, #64748b);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.sp-research-sublinks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-top: 1px solid var(--color-border, #e2e8f0);
+}
+
+.sp-research-sublink {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-primary, #6366f1);
+    text-decoration: none;
+    padding: 0.25rem 0.625rem;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+}
+
+.sp-research-sublink:hover {
+    background: var(--color-primary, #6366f1);
+    color: #fff;
+}
+</style>

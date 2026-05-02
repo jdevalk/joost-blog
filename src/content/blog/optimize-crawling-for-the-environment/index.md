@@ -1,5 +1,5 @@
 ---
-title: 'Optimize crawling, for the environment'
+title: 'Optimize crawling, for the <em>environment</em>'
 publishDate: 2022-05-24T00:00:00.000Z
 excerpt: >-
   Search engines rely on spiders / bots to crawl the web and find (new) content.

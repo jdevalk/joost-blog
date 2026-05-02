@@ -1,19 +1,45 @@
 ---
 import { getCollection } from 'astro:content';
-import FeaturedPostPreview from '../components/FeaturedPostPreview.astro';
-import Header from '../components/Header.astro';
-import Hero from '../components/Hero.astro';
-import PostPreview from '../components/PostPreview.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import Subscribe from '../components/Subscribe.astro';
-import siteConfig from '../data/site-config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
-import type { SchemaPageContext } from '../utils/schema';
+import siteConfig from '../data/site-config';
+import { getPublishedPosts, getReadingTime } from '../utils/post-utils';
 import { canonicalUrl } from '../utils/schema/constants';
-import { sortPostsByDateDesc, getPublishedPosts } from '../utils/post-utils';
+import type { SchemaPageContext } from '../utils/schema';
 
 const posts = getPublishedPosts(await getCollection('blog'));
+const totalPosts = posts.length;
+const featuredPost = posts.find(p => p.data.isFeatured) ?? posts[0];
+const archivePosts = posts.slice(0, 6);
+const latestPost = posts[0];
+
+// Article number = sequential position sorted oldest-first
+const allPostsSorted = [...posts].sort(
+    (a, b) => new Date(a.data.publishDate).getTime() - new Date(b.data.publishDate).getTime()
+);
+const featuredArticleNumber = allPostsSorted.findIndex(p => p.id === featuredPost.id) + 1;
+
+// Editorial metadata
+const currentYear = new Date().getFullYear();
+const volumeNum = 15;
+const ROMAN: Record<number, string> = {
+    1:'I',2:'II',3:'III',4:'IV',5:'V',6:'VI',7:'VII',
+    8:'VIII',9:'IX',10:'X',11:'XI',12:'XII',13:'XIII',14:'XIV',15:'XV'
+};
+const volumeRoman = ROMAN[volumeNum] ?? String(volumeNum);
+const month = new Date().getMonth() + 1;
+const season = month <= 2 || month === 12 ? 'Winter'
+    : month <= 5 ? 'Spring'
+    : month <= 8 ? 'Summer'
+    : 'Autumn';
+
+function dotDate(date: Date): string {
+    return `${date.getFullYear()}·${String(date.getMonth()+1).padStart(2,'0')}·${String(date.getDate()).padStart(2,'0')}`;
+}
+
+function catLabel(post: typeof posts[0]): string {
+    return post.data.categories?.[0] ?? 'Article';
+}
 
 const pageContext: SchemaPageContext = {
     pageType: 'homepage',
@@ -21,84 +47,116 @@ const pageContext: SchemaPageContext = {
     title: siteConfig.title,
     description: siteConfig.description
 };
-const featuredPosts = posts.filter(({ data }) => data.isFeatured).slice(0, 2);
-const latestPosts = posts.filter(({ data }) => !data.isFeatured).slice(0, 6);
+
+const featuredReadTime = getReadingTime(featuredPost.body ?? '');
+const featuredDate = dotDate(new Date(featuredPost.data.publishDate));
 ---
 
 <BaseLayout title="Joost de Valk - Internet entrepreneur" description={siteConfig.description}>
     <SchemaGraph pageContext={pageContext} />
-    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
-        <Header variant="dark" />
-        <div class="h-[52px] sm:h-[56px]"></div>
-        <Hero {...siteConfig.hero} socialLinks={siteConfig.socialLinks} variant="dark" />
-    </div>
-    <main class="grow" data-pagefind-ignore="all">
-        {/* Currently working on */}
-        <section class="px-4 py-10 sm:px-8 sm:py-14 bg-surface dark:bg-[#1e1b19]/50 border-b border-slate-200 dark:border-[#2a2623]">
-            <div class="max-w-5xl mx-auto">
-                <h2 class="mb-6 text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Currently working on</h2>
-                <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    <ProjectCard
-                        title="Progress Planner"
-                        description="A WordPress plugin that helps site owners build consistent content habits and track their website progress."
-                        href="https://progressplanner.com/"
-                        label="Product"
-                    />
-                    <ProjectCard
-                        title="Emilia Capital"
-                        description="Investing in and building digital companies, with a focus on open source, sustainability, and female entrepreneurship."
-                        href="https://emilia.capital/"
-                        label="Investment"
-                    />
-                    <ProjectCard
-                        title="Open Source"
-                        description="Building SEO tools for Astro and EmDash, contributing to EmDash core, and sharing code on GitHub."
-                        href="/code/"
-                        label="Code"
-                        external={false}
-                        transitionName="code-hero"
-                    />
+
+    <div class="sp-root sp-blocks">
+
+        <section class="sp-hero sp-hero-home">
+            <div class="sp-hero-kicker">
+                <span>VOL.&nbsp;{volumeRoman}</span>
+                <span class="sp-rule" />
+                <span>Builder. Investor. Web obsessive.</span>
+                <span class="sp-rule" />
+                <span>WIJCHEN, NL</span>
+            </div>
+            <h1 class="sp-display">Joost<span class="sp-amp"> de </span>Valk</h1>
+            <div class="sp-hero-grid">
+                <div class="sp-hero-lede">
+                    <p class="sp-drop">
+                        <span class="sp-dropcap">I</span>nternet entrepreneur from the
+                        Netherlands. Founder of Yoast — the WordPress SEO plugin. These days I
+                        invest in and build digital companies through <a href="https://emilia.capital/" target="_blank" rel="noopener noreferrer"><em>Emilia Capital</em></a>,
+                        and I'm working on <a href="https://progressplanner.com/" target="_blank" rel="noopener noreferrer"><em>Progress Planner</em></a> and <a href="https://rondo.club/" target="_blank" rel="noopener noreferrer"><em>Rondo</em></a>.
+                    </p>
+                    <p class="sp-drop-body">
+                        This blog is where I think out loud about the open web, content
+                        management, AI's effect on publishing, and the craft of shipping
+                        software that people actually use.
+                    </p>
+                    <div class="sp-cta">
+                        <a class="sp-cta-primary" href={`/${latestPost.id}/`}>Read the latest article →</a>
+                        <a class="sp-cta-ghost" href="/feed.xml">RSS / Atom feed</a>
+                    </div>
                 </div>
+                <aside class="sp-margin">
+                    <div class="sp-margin-block">
+                        <div class="sp-margin-label">On my desk</div>
+                        <ul>
+                            <li><a href="https://progressplanner.com/" target="_blank" rel="noopener noreferrer"><strong>Progress Planner</strong></a> — improve your WordPress site, one step at a time.</li>
+                            <li><a href="https://emilia.capital/" target="_blank" rel="noopener noreferrer"><strong>Emilia Capital</strong></a> — investing in open-source.</li>
+                            <li><a href="https://rondo.club/" target="_blank" rel="noopener noreferrer"><strong>Rondo</strong></a> — building quietly.</li>
+                        </ul>
+                    </div>
+                    <div class="sp-margin-block">
+                        <div class="sp-margin-label">Elsewhere</div>
+                        <ul class="sp-margin-links">
+                            <li>→ <a href="https://bsky.app/profile/joost.blog">bsky · joost.blog</a></li>
+                            <li>→ <a href="https://github.com/jdevalk">github.com/jdevalk</a></li>
+                            <li>→ <a href="https://www.linkedin.com/in/jdevalk/">linkedin · jdevalk</a></li>
+                            <li>→ <a href="https://x.com/jdevalk">x.com/jdevalk</a></li>
+                        </ul>
+                    </div>
+                </aside>
+                <figure class="sp-portrait">
+                    <div class="sp-portrait-frame">
+                        <img
+                            src="/images/joost-de-valk-profile-picture.jpg"
+                            alt="Joost de Valk"
+                            loading="lazy"
+                            decoding="async"
+                        />
+                    </div>
+                    <figcaption>fig. 1 — the author, Aquilea, 2026</figcaption>
+                </figure>
             </div>
         </section>
 
-        {/* Featured posts */}
-        {featuredPosts?.length > 0 && (
-            <section class="px-4 py-12 sm:px-8 sm:py-16">
-                <div class="max-w-5xl mx-auto">
-                    <h2 class="mb-8 text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Featured</h2>
-                    {featuredPosts.map((post) => (
-                        <FeaturedPostPreview post={post} />
-                    ))}
-                </div>
-            </section>
-        )}
-
-        {/* Latest articles grid */}
-        {latestPosts?.length > 0 && (
-            <section class="px-4 pb-12 sm:px-8 sm:pb-16">
-                <div class="max-w-5xl mx-auto">
-                    <h2 class="mb-8 text-xs font-bold uppercase tracking-widest text-primary dark:text-accent">Latest Articles</h2>
-                    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                        {latestPosts.map((post) => (
-                            <PostPreview post={post} />
-                        ))}
-                    </div>
-                    <div class="mt-8 text-right">
-                        <a
-                            class="text-sm font-bold text-primary hover:text-secondary dark:text-accent dark:hover:text-white transition-colors duration-300"
-                            href="/blog/"
-                        >
-                            View all articles &rarr;
-                        </a>
+        <section class="sp-feature">
+            <div class="sp-feature-inner">
+            <div class="sp-feature-meta">
+                <span class="sp-feature-num">№ {String(featuredArticleNumber).padStart(2, '0')}</span>
+                <span class="sp-feature-cat">FEATURED ARTICLE</span>
+                <span class="sp-feature-date">{featuredDate} · {featuredReadTime} min</span>
+            </div>
+            <h2 class="sp-feature-title" set:html={featuredPost.data.title} />
+            <div class="sp-feature-cols">
+                <p class="sp-feature-lede">{featuredPost.data.excerpt}</p>
+                <div>
+                    <p class="sp-feature-body">{featuredPost.data.categories?.join(' · ')}</p>
+                    <div class="sp-feature-cta">
+                        <a href={`/${featuredPost.id}/`}>Continue reading →</a>
                     </div>
                 </div>
-            </section>
-        )}
-
-        {/* Newsletter */}
-        <section class="px-4 pb-16 sm:px-8 sm:pb-20">
-            <Subscribe />
+            </div>
+            </div>
         </section>
-    </main>
+
+        <section class="sp-archive">
+            <div class="sp-section-head">
+                <h3>Recent articles</h3>
+                <div class="sp-section-meta">{totalPosts} articles · indexed by date</div>
+            </div>
+            <div class="sp-archive-list">
+                {archivePosts.map((post, i) => (
+                    <a href={`/${post.id}/`} class="sp-archive-row">
+                        <span class="sp-col-n">{String(totalPosts - i).padStart(2, '0')}</span>
+                        <span class="sp-col-date">{dotDate(new Date(post.data.publishDate))}</span>
+                        <span class="sp-col-cat">{catLabel(post)}</span>
+                        <span class="sp-col-title" set:html={post.data.title} />
+                        <span class="sp-col-read">{getReadingTime(post.body ?? '')} min</span>
+                    </a>
+                ))}
+            </div>
+            <a class="sp-archive-more" href="/blog/">See all {totalPosts} articles in the Archive →</a>
+        </section>
+
+
+    </div>
 </BaseLayout>
+

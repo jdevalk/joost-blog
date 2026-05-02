@@ -1,5 +1,5 @@
 ---
-title: 'Astro SEO: the definitive guide'
+title: 'Astro SEO: the <em>definitive</em> guide.'
 seo:
   description: "Eighteen years after 'WordPress SEO: the definitive guide,' here's the Astro version — the full SEO stack for 2026, from JSON-LD to agent discovery."
 publishDate: 2026-04-12T00:00:00.000Z
@@ -30,7 +30,7 @@ No server to compromise, no database to inject into, no login to brute force. Fr
 
 Here's the full stack.
 
-## 1. Technical foundation
+## Technical foundation
 
 ### One component for all head metadata
 
@@ -102,7 +102,7 @@ What the link validator found on this site the first time I ran it: a broken `/a
 
 Beyond build-time checks, add a **broken link checker** to your CI pipeline. A [lychee](https://github.com/lycheeverse/lychee-action) GitHub Action that runs on every push to your content files catches dead links to external URLs — which `validateInternalLinks` doesn't cover. A weekly scheduled run catches link rot as external sites move or disappear. Broken outbound links are a bad user experience and a negative trust signal.
 
-## 2. Structured data
+## Structured data
 
 Most sites that have structured data at all output a flat snippet: a single `Article` or `WebPage` object. That's better than nothing, but it doesn't tell search engines or AI agents how things connect. Who wrote this article? What site is it on? What organization does the author work for?
 
@@ -121,7 +121,7 @@ The `<Seo>` component takes the assembled graph as a prop and renders it as `<sc
 
 The seo-graph repo includes a [3,000-line AGENTS.md](https://github.com/jdevalk/seo-graph/blob/main/AGENTS.md) with recipes for fourteen site types (blog, e-commerce, vacation rental, podcast, documentation, and more), so your AI coding agent knows which entities to pick for your specific case.
 
-## 3. Content optimization
+## Content optimization
 
 This is where my thinking has changed the most since 2008.
 
@@ -167,7 +167,7 @@ If someone adds a 200-character SEO title, the build fails. That's more reliable
 
 The schema endpoints also include `articleBody` with the full text of each post (markdown-stripped, up to 10K characters), giving AI agents access to your content through structured data, not just by scraping rendered HTML.
 
-## 4. Site structure
+## Site structure
 
 ### Content collections as typed architecture
 
@@ -187,7 +187,7 @@ Breadcrumbs aren't just a visual navigation aid. In the JSON-LD graph, each brea
 
 Internal linking doesn't need to be a manual process. Tools like [Graphify](https://github.com/safishamsi/graphify) can analyze your content as a knowledge graph and surface linking opportunities you'd never find by scanning posts manually. The structure of your internal links is one of the strongest signals you control. Automate the discovery; be intentional about the execution.
 
-## 5. Performance
+## Performance
 
 Performance is where Astro's architecture does most of the work for you.
 
@@ -211,7 +211,7 @@ No-Vary-Search: key-order, params=("utm_source" "utm_medium" "utm_campaign" "utm
 
 Same page, different UTM tags, one cached response. Supported in Chrome, degrades gracefully elsewhere.
 
-## 6. Sitemaps and indexing
+## Sitemaps and indexing
 
 ### Per-collection sitemaps
 
@@ -303,7 +303,7 @@ Sitemap: https://joost.blog/sitemap-index.xml
 Schemamap: https://joost.blog/schemamap.xml
 ```
 
-## 7. Agent discovery
+## Agent discovery
 
 Sitemaps and IndexNow help search engines find your content. Agent discovery helps AI systems understand it.
 
@@ -339,7 +339,7 @@ No AI bot widely requests `llms.txt` today. [That's not the point](/standards-do
 
 A `<link rel="nlweb">` tag in the head points to the site's conversational endpoint, for AI agents that support Microsoft's [NLWeb protocol](https://github.com/nlweb-ai/NLWeb). Early days, but the tag is one line.
 
-## 8. Redirects and error handling
+## Redirects and error handling
 
 ### Redirects
 
@@ -351,7 +351,7 @@ Keep this maintained. Every URL that ever existed and moved should have a redire
 
 For the URLs that slip through, the [`FuzzyRedirect`](https://github.com/jdevalk/seo-graph/tree/main/packages/astro-seo-graph#fuzzy-404-redirect) component from `@jdevalk/astro-seo-graph` acts as a safety net. It fetches your sitemap, computes Levenshtein distance against the current URL, and either auto-redirects (above 85% similarity) or shows a "Did you mean..." suggestion. Catches typos and old URL patterns without maintaining a redirect table.
 
-## 9. Analytics and measurement
+## Analytics and measurement
 
 **[Plausible](https://plausible.io/)** for traffic analytics. Privacy-friendly, no cookie banner needed, lightweight script that doesn't slow down the page.
 

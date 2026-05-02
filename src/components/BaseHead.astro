@@ -67,6 +67,10 @@ const ogImageAlt = Astro.props.title ?? siteConfig.title;
 
 <!-- Font preloads -->
 <link rel="preload" as="font" type="font/woff2" href={monaSansWoff2} crossorigin="anonymous" />
+<link rel="preload" href="/fonts/DomaineDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/DomaineText-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/DomaineText-LightItalic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Pitch-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
 <!-- NLWeb discovery -->
 <link rel="nlweb" href="https://joost.blog/ask" />
@@ -90,7 +94,9 @@ const ogImageAlt = Astro.props.title ?? siteConfig.title;
     article={articleMeta}
     noindex={noindex}
     extraLinks={[
-        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'icon', href: '/favicon.ico', sizes: '48x48 32x32 16x16' },
+        { rel: 'icon', type: 'image/png', href: '/favicon-512.png', sizes: '512x512' },
+        { rel: 'apple-touch-icon', href: '/favicon-512.png' },
         { rel: 'sitemap', href: '/sitemap-index.xml' },
         { rel: 'alternate', type: 'application/rss+xml', href: '/feed.xml', title: 'RSS' },
     ]}

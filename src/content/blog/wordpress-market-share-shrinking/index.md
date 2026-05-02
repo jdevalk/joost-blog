@@ -6,7 +6,7 @@ excerpt: >-
   WordPress’ market share is shrinking, losing 0.4% market share since February.
   I do
 categories:
-  - Market Share Analysis
+  - Research
   - WordPress
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: WordPress’ market share is shrinking'

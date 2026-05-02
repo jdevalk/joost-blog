@@ -39,7 +39,7 @@ For most of human history, this is roughly how prices worked. Then software arri
 
 ## How SaaS broke the picture
 
-The defining property of software, once written, is that it costs essentially nothing to copy. The marginal cost of serving the ten-thousandth user is rounding-error close to zero. There is no fertile-versus-marginal land, no raw material that gets scarcer with each unit produced, no labour required per unit sold. Nature drops out of the equation entirely.
+The defining property of software, once written, is that it costs essentially nothing to copy. The marginal cost of serving the ten-thousandth user is rounding-error close to zero. The hardware is real, but it's fixed infrastructure amortised across millions of users — not a raw material consumed per unit. There is no fertile-versus-marginal land, no input that gets scarcer with each unit produced, no labour required per unit sold. Nature drops out of the equation entirely.
 
 If classical economics says price gravitates toward cost of production, SaaS pricing should race to zero. It didn't. Instead, pricing detached from cost and re-anchored to *value delivered to the customer*. A tool that saves a company $100,000 a year might cost $50 a month or $5,000 a month. The cost of production tells you almost nothing about which it will be. SaaS pricing became a function of willingness to pay, segmented through tiers, seats, usage, and outcomes. The whole vocabulary of land-and-expand, value-based pricing, and price discrimination through packaging only makes sense in a world where price has been unmoored from cost.
 
@@ -55,17 +55,17 @@ Every AI inference has a real, measurable, non-zero marginal cost. GPU-seconds. 
 
 ### The margins
 
-Look at the unit economics of frontier model providers. According to reporting in The Information [summarised by industry analysts](https://medium.com/@adeayoadewale/the-anthropic-irony-the-company-killing-weak-saas-is-on-the-same-pricing-trajectory-9c3f5613e07d), Anthropic is targeting around a 40% gross margin for 2025. That's revised down from a 50% internal estimate, because inference costs on Google and Amazon cloud came in roughly 23% above plan. OpenAI, despite vastly higher revenue, is reportedly running at around 46% gross margin, weighed down by inference for the 95% of weekly ChatGPT users who don't pay. These are not 80%-margin businesses. They are 40%-margin businesses pretending, for now, to be tech companies, when their cost structure looks more like a utility.
+Look at the unit economics of frontier model providers. According to reporting in The Information [summarised by industry analysts](https://medium.com/@adeayoadewale/the-anthropic-irony-the-company-killing-weak-saas-is-on-the-same-pricing-trajectory-9c3f5613e07d), Anthropic is targeting around a 40% gross margin for 2025. That's revised down from a 50% internal estimate, because inference costs on Google and Amazon cloud came in roughly 23% above plan. OpenAI, despite vastly higher revenue, is reportedly running at around 46% gross margin, weighed down by inference for the 95% of weekly ChatGPT users who don't pay. These are not 80%-margin businesses. These are, for now, sub-50% margin utilities masquerading as SaaS.
 
 Honest caveat: these are early-2026 numbers, and inference costs are falling fast. DeepSeek R1 is already pricing roughly 90% below frontier rates; model efficiency gains of 3-10x per year are common. The specific 40%-gross-margin world may be a transitional phase, with inference commoditising toward something closer to classical SaaS margins within a few years. If so, the "AI brings classical economics back" version of this argument weakens. What doesn't weaken is the physical substrate: compute has a location, electricity has a price, water has a supply. Those facts persist even if the software layer on top recovers its margins. Treat the margin argument as the weaker leg and the geography argument as the stronger one.
 
 ### Nature is back
 
-The [International Energy Agency's 2025 *Energy and AI* report](https://www.iea.org/reports/energy-and-ai/executive-summary) projects that data centre electricity consumption will roughly double by 2030. That's from 415 TWh in 2024 to about 945 TWh, comparable to Japan's entire current electricity use. Nearly half of US data centre capacity is concentrated in five regional clusters. Shaolei Ren's group at UC Riverside [has shown](https://news.ucr.edu/articles/2026/03/09/data-center-water-spikes-could-cost-billions) that US data centres may need 700 million to 1.45 billion gallons per day of new water capacity through 2030. That's comparable to New York City's daily supply.
+The [International Energy Agency's 2025 *Energy and AI* report](https://www.iea.org/reports/energy-and-ai/executive-summary) projects that data centre electricity consumption will roughly double by 2030. That's from 415 terawatt-hours (TWh) in 2024 to about 945 TWh, comparable to Japan's entire current electricity use. Nearly half of US data centre capacity is concentrated in five regional clusters, several of which sit in tornado corridors or hurricane paths. Shaolei Ren's group at UC Riverside [has shown](https://news.ucr.edu/articles/2026/03/09/data-center-water-spikes-could-cost-billions) that US data centres may need 700 million to 1.45 billion gallons per day of new water capacity through 2030. That's comparable to New York City's daily supply.
 
 You can see Ricardo's rent theory replaying in real time. The "fertile land" of our era is cheap, abundant, low-carbon electricity. Iceland sits on top of geothermal and hydro and is being [aggressively built out by Verne, atNorth, Crusoe, and Nscale](https://www.datacenterdynamics.com/en/analysis/icelands-ai-moment/). Norway above the Arctic Circle. Quebec and the Pacific Northwest. The Texas Permian Basin, where [stranded natural gas that would otherwise be flared](https://crusoe.ai/newsroom/bitcoin-mining-with-oil-drilled-flared-gas/) is being routed straight into AI training.
 
-As demand grows, marginal capacity gets built on worse "land": more expensive grids, scarcer water, more constrained permitting. The cost curve rises and the price of inference at the margin climbs with it. The owners of the best sites earn rent. This is Ricardo, in 2026, in datacentres.
+As demand grows, marginal capacity gets built on worse "land": more expensive or unreliable grids, scarcer water, more constrained permitting. The cost curve rises and the price of inference at the margin climbs with it. The owners of the best sites earn rent. This is Ricardo, in 2026, in datacentres.
 
 The customer-facing tells are everywhere. Token-based billing. Rate limits. Tiered access. Pro versus Max versus Team versus Enterprise plans. Anthropic introduced weekly rate caps in mid-2025; OpenAI rations its best models behind subscription walls. None of this is arbitrary product strategy. It's the cost of production bleeding through into price because the margins cannot absorb it the way pure SaaS could.
 
@@ -77,9 +77,9 @@ GitHub's [randomised controlled trial](https://github.blog/news-insights/researc
 
 My own experience, and that of most experienced developers I talk to, is that the speedup is real and extends well beyond greenfield work. Things that used to take weeks ship in hours. The ceiling of what a single person can build has moved up by an order of magnitude, and it's still moving. This is not hype; it is the most productive period in software I've ever worked through.
 
-What doesn't get cheaper is verifying, maintaining, and trusting the output. A late-2025 [analysis from CodeRabbit](https://en.wikipedia.org/wiki/Vibe_coding) of nearly 500 OSS pull requests found AI-co-authored code contained roughly 1.7x more major issues and 2.74x higher security vulnerabilities than human-written code. Cheap to produce, expensive to trust. That gap is where the rest of this post lives.
+What doesn't get cheaper is verifying, maintaining, and trusting the output. A late-2025 [analysis from CodeRabbit](https://www.coderabbit.ai/blog/state-of-ai-vs-human-code-generation-report) of nearly 500 OSS pull requests found AI-co-authored code contained roughly 1.7x more major issues and 2.74x higher security vulnerabilities than human-written code. Cheap to produce, expensive to trust. That gap is where the rest of this post lives.
 
-For twenty-five years software was expensive to make and cheap to distribute. AI inverts both. The labour cost of making software is collapsing toward zero. The cost to *run* software, when AI is part of how it runs, is rising. We are not in a small adjustment to the SaaS playbook. We are in a different economy.
+For twenty-five years software was expensive to make and cheap to distribute. AI inverts both. The labour cost of making software is collapsing toward zero. The cost to *run* software, when AI is part of how it runs, is rising. That's a simplification: SaaS margins were also shaped by network effects, competitive moats, and real sales costs that don't disappear with AI. But the structural shift in the underlying cost curve is real. We are not in a small adjustment to the SaaS playbook. We are in a different economy.
 
 ## Open source was always an anomaly
 
@@ -194,11 +194,11 @@ Code licensed as open source does not belong to any country, any company, or any
 - The [US CLOUD Act](https://www.eurojust.europa.eu/publication/cloud-act) compels US providers to produce data regardless of where it's stored.
 - The [Schrems II ruling](https://iapp.org/news/a/the-schrems-ii-decision-eu-us-data-transfers-in-question) invalidated the EU-US Privacy Shield.
 - The EU Data Act's Chapter VII forbids non-EU government access to data held in the EU.
-- The Cyber Resilience Act comes into force in December 2027.
+- The EU's Cyber Resilience Act comes into force in December 2027.
 
-This property becomes existential.
+In that environment, jurisdiction independence becomes existential.
 
-The evidence is already in. The [International Criminal Court dropped Microsoft 365](https://www.theregister.com/2025/10/31/international_criminal_court_ditches_office/) in 2025 after a dispute over access to the chief prosecutor's email. Denmark's Ministry of Digitalisation is [migrating to LibreOffice](https://www.computing.co.uk/news/2025/denmark-digital-ministry-drops-microsoft). The German state of Schleswig-Holstein is [moving 30,000 workstations off Microsoft](https://www.heise.de/en/news/Goodbye-Microsoft-Schleswig-Holstein-relies-on-Open-Source-and-saves-millions-11105459.html). These are not ideological decisions. They are institutions waking up to the fact that a decision taken in Washington can disable services in Brussels overnight.
+The evidence is already in. The [International Criminal Court dropped Microsoft 365](https://www.theregister.com/2025/10/31/international_criminal_court_ditches_office/) in 2025 after a dispute over access to the chief prosecutor's email. Denmark's Ministry of Digitalisation is [migrating to LibreOffice](https://www.computing.co.uk/news/2025/denmark-digital-ministry-drops-microsoft). The German state of Schleswig-Holstein is [moving 30,000 workstations off Microsoft](https://www.heise.de/en/news/Goodbye-Microsoft-Schleswig-Holstein-relies-on-Open-Source-and-saves-millions-11105459.html). These are not ideological decisions. They are institutions waking up to the fact that a decision taken in Washington can disable services in Brussels overnight. The current US political environment makes that sentence considerably less hypothetical than it was two years ago.
 
 You cannot achieve digital sovereignty on closed foundations, because the foundations themselves carry the jurisdiction of their owners. A German hospital running Microsoft Azure in Frankfurt is, [for legal purposes, running infrastructure subject to US jurisdiction](https://www.kiteworks.com/gdpr-compliance/cloud-act-european-data-protection/), regardless of where the bits physically sit. A French ministry using a US AI API is exposing its prompts to potential US lawful access. Open source is the only substrate that lets a non-US organisation choose its jurisdiction independently of its stack. This is not an ideological point. It is a structural one.
 
@@ -214,7 +214,7 @@ The fourth enduring value is **permanent availability**. Open source code does n
 
 ### Why people start caring
 
-There's an asymmetry worth naming. Agency is invisible until it's removed. Almost nobody runs a procurement evaluation thinking "what happens when our vendor's home government compels access to our data?" until the day a peer organisation finds out. The International Criminal Court didn't run a sovereignty audit on Microsoft 365 in advance. They ran one after the chief prosecutor's email got cut off. The 200,000 WordPress sites that lost plugin updates in 2024 were not run by people who'd been worrying about update-server governance the week before.
+There's an asymmetry worth naming. Agency is invisible until it's removed. It works like public health infrastructure: the value is invisible precisely when it's functioning. A well-funded system catches the crisis before it escalates — you never see the disaster it prevented, which makes it easy to resent paying for it. Almost nobody runs a procurement evaluation thinking "what happens when our vendor's home government compels access to our data?" until the day a peer organisation finds out. The International Criminal Court didn't run a sovereignty audit on Microsoft 365 in advance. They ran one after the chief prosecutor's email got cut off. The 200,000 WordPress sites that lost plugin updates in 2024 were not run by people who'd been worrying about update-server governance the week before.
 
 This is the pattern across every example in this post. Schleswig-Holstein, Denmark's Ministry of Digitalisation, the ICC, the WordPress community, the teams scrambling after Terraform and Redis relicensed: none of them were thinking about agency in advance. They got mugged. Each case in isolation looks like a vendor dispute or a political ruling. The pattern, viewed from above, is institutions discovering one by one that they had less control than they thought, and discovering it at the worst possible moment.
 
@@ -248,7 +248,7 @@ The upside argument used to read as nice-to-have. It's becoming a structural dis
 
 If I'm right, several things follow.
 
-### Stop arguing about price
+### Argue agency, not price
 
 Advocacy needs to stop arguing about price and start arguing about agency. The question isn't "why would you pay for something you can get for free?" It's a different one. Why would you build your business, your government, or your critical infrastructure on software you cannot inspect, cannot fork, cannot run where you choose, and cannot guarantee will exist next year? That argument gets stronger as AI makes the production side cheaper, not weaker.
 
@@ -268,7 +268,7 @@ The EU Cyber Resilience Act, taking full effect in December 2027, will create th
 
 ### Fix procurement
 
-Dries makes a related point worth amplifying. Public procurement is where a lot of this money lives, and right now it flows *around* open source rather than *into* it. Governments buying open-source-based services overwhelmingly contract with large system integrators who package and resell someone else's work. The maintainers who built the software get nothing.
+Dries makes a related point worth amplifying. Public procurement is where a lot of this money lives, and right now it flows *around* open source rather than *into* it. Governments buying open-source-based services [overwhelmingly contract with large system integrators](https://euro-stack.com/blog/2025/3/eu-procurement-for-open-source-digital-sovereignty-final) who package and resell someone else's work. The maintainers who built the software get nothing.
 
 His suggested fix is to make upstream contribution count in procurement scoring, using projects' own transparent credit systems to verify it. That's one of the most actionable policy ideas I've seen on open source funding in years. APELL and EuroStack are pushing versions of this for the EU. If you work in public-sector procurement and read this blog, it's probably the single highest-leverage thing you can change.
 
@@ -276,9 +276,9 @@ The European Commission provided the template on the cloud side. In April 2026 i
 
 ### Treat sovereignty as structural
 
-European digital sovereignty stops being a niche policy concern and becomes a first-class economic question. Let me state my bias openly: I am European, and I think European digital sovereignty is the right frame for Europe right now. That's a partisan position.
+The principle here is universal: any organisation's infrastructure should be subject only to its own government's legal authority, not a foreign one's. That's as true for a Brazilian hospital as a German ministry. What follows is the European version of that argument — I am European, and European digital sovereignty is my frame. If you're not, substitute your own jurisdiction; the structure is the same.
 
-A Brazilian, Indonesian, or Nigerian reader could fairly read this post as one imperial stack arguing against another. The "digital sovereignty" I'm arguing for would still leave their governments dependent on European cloud providers, European regulation, and European legal frameworks. They'd be partly right. What's universal in this argument is agency: the right to run software under rules you choose. What's particular is which bloc's rules I'd prefer Europe to be under, which is its own question. If you're not European, the same argument structure still applies; you need to substitute your own jurisdiction for mine.
+A Brazilian, Indonesian, or Nigerian reader could fairly read this post as one imperial stack arguing against another. The "digital sovereignty" I'm arguing for would still leave their governments dependent on European cloud providers, European regulation, and European legal frameworks. They'd be partly right. What's structural in this argument is agency: the right to run software under rules you choose. What's particular is which bloc's rules I'd prefer Europe to be under, which is its own question.
 
 With that caveat on the table, here is the structural argument. Compute has to run somewhere, and somewhere is always governed by someone. Even as inference gets cheaper, the providers running it sit overwhelmingly under US or Chinese jurisdiction, and jurisdictional law follows the provider rather than the data location. The only path to genuine sovereignty for everyone else runs through open source software running on infrastructure under domestic legal control. This is not a cultural project. It is a structural one. And the EU is, finally, beginning to take it seriously.
 

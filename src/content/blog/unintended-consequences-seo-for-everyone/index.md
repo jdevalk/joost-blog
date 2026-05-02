@@ -1,5 +1,5 @@
 ---
-title: The unintended consequences of making SEO “for everyone”
+title: The unintended consequences of making SEO “<em>for everyone</em>”
 publishDate: 2025-04-22T00:00:00.000Z
 excerpt: >-
   At Yoast, we had one mission: make SEO easier. For a long time, SEO for

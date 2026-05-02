@@ -12,5 +12,6 @@ featureImage: ./images/thumbnail.jpg
 featureImageAlt: >-
   AI, SEO, and Automation: How to start marketing a new product category?
   Interview with Joost de Valk
+type: interview
 ---
-🎙 Welcome back to Osom to Know! In this episode we discuss about AI’s role in speeding development of products and servicese. Our guest is Joost de Valk. Joost and his team have r...
+I cover the cold start problem in marketing: how do you launch a new product into a category that doesn’t yet have a name, let alone an audience? Drawing on my experience building Yoast from zero, I discuss how SEO has changed over 15 years and why the game is much harder now than when you could still buy links and check PageRank. I also talk about the tension between AI-generated content and the kind of authentic expertise that actually earns trust, and what that means for how I think about building and marketing new products today.

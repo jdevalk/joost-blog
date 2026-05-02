@@ -6,7 +6,7 @@ excerpt: >-
   report, which is generated automatically every month. This is the first time
   I’m writin
 categories:
-  - Market Share Analysis
+  - Research
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: CMS market share June 2024 commentary'
 ---

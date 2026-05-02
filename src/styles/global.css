@@ -1,8 +1,14 @@
 @import '@fontsource-variable/mona-sans' layer(base);
 @import '@fontsource-variable/mona-sans/wght-italic.css' layer(base);
+@import '@fontsource-variable/fraunces/wght.css' layer(base);
+@import '@fontsource-variable/fraunces/wght-italic.css' layer(base);
+
+@import '@fontsource-variable/inter/wght.css' layer(base);
+@import '@fontsource/jetbrains-mono/400.css' layer(base);
 
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+@import './specimen.css';
 
 /* Dark mode via class toggle (not media query) */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -10,22 +16,21 @@
 @theme {
     --font-sans: 'Mona Sans Variable', sans-serif;
 
-    /* Luxe burgundy palette */
-    --color-primary: #7a1830;
-    --color-secondary: #5e1224;
-    --color-accent: #c9506a;
-    --color-warm: #b8962e;
-    --color-warm-hover: #9a7d24;
-    --color-base: #fffcf9;
-    --color-surface: #faf7f3;
-    --color-tertiary: #f3efe9;
+    /* Slate palette */
+    --color-primary: #4a6480;
+    --color-secondary: #1f2530;
+    --color-accent: #e08a5a;
+    --color-warm: #e08a5a;
+    --color-base: #e4e2dc;
+    --color-surface: #dcdad3;
+    --color-tertiary: #d2d0c8;
 
     /* Shadows */
-    --shadow-avatar: 0 0 0 6px rgba(122, 24, 48, 0.2), 0 0 0 14px rgba(122, 24, 48, 0.08);
-    --shadow-avatar-dark: 0 0 0 6px rgba(201, 80, 106, 0.25), 0 0 0 14px rgba(201, 80, 106, 0.1);
+    --shadow-avatar: 0 0 0 6px rgba(74, 100, 128, 0.2), 0 0 0 14px rgba(74, 100, 128, 0.08);
+    --shadow-avatar-dark: 0 0 0 6px rgba(224, 138, 90, 0.25), 0 0 0 14px rgba(224, 138, 90, 0.1);
     --shadow-button: 0 0 0 4px --alpha(var(--color-primary) / 20%);
-    --shadow-card: 0 1px 3px rgba(80, 30, 20, 0.05), 0 1px 2px rgba(80, 30, 20, 0.06);
-    --shadow-card-hover: 0 14px 32px -6px rgba(80, 30, 20, 0.14), 0 8px 12px -6px rgba(80, 30, 20, 0.06);
+    --shadow-card: 0 1px 3px rgba(31, 37, 48, 0.05), 0 1px 2px rgba(31, 37, 48, 0.06);
+    --shadow-card-hover: 0 14px 32px -6px rgba(31, 37, 48, 0.14), 0 8px 12px -6px rgba(31, 37, 48, 0.06);
 }
 
 @view-transition {
@@ -80,7 +85,13 @@
         content: none;
     }
     :is(h1, h2, h3, h4, h5, h6) {
-        scroll-margin-top: 5rem;
+        scroll-margin-top: 7rem;
+    }
+    @media (max-width: 900px) {
+        :is(h1, h2, h3, h4, h5, h6) { scroll-margin-top: 80px; }
+    }
+    @media (max-width: 600px) {
+        :is(h1, h2, h3, h4, h5, h6) { scroll-margin-top: 72px; }
     }
     .prose :not(.not-prose, .not-prose *) > :is(h2, h3),
     .prose > :is(h2, h3) {

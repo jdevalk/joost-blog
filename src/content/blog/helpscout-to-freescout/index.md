@@ -16,7 +16,9 @@ Everyone uses a lot of SaaS applications to manage their day-to-day business. So
 
 The first step I took was moving from [HelpScout](https://www.helpscout.com/) to [Freescout](https://freescout.net/). Email is still a very important process for us, as both the legal processes around investing and the invoicing processes of all our businesses are still tied to email. So, we were using HelpScout to manage that. When I started looking for an open-source alternative, Freescout immediately turned out to be a very solid system that was also incredibly easy to install. Since it looks incredibly similar, the switch was easy on our team.
 
-![Freescout screenshot](./images/freescout-image.webp)## The software
+![Freescout screenshot](./images/freescout-image.webp)
+
+## The software
 
 Freescout is based on a traditional PHP + MySQL stack, with either NGINX or Apache in front of it. The [install instructions](https://github.com/freescout-helpdesk/freescout/wiki/Installation-Guide) are simple, because installing it really isn’t hard if you’ve ever done some work on a server. There are also packages for installers like Softaculous and Fantastico. You’ll need to ensure you have all their required PHP modules, but the installer makes it easy to see which modules you still need.
 

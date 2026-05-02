@@ -7,6 +7,7 @@ excerpt: >-
   AI.
 categories:
   - Development
+  - AI
 draft: false
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Ask Joost: AI-powered answers from my blog'

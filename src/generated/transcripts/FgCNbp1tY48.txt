@@ -1,0 +1,187 @@
+[0:03] I think I almost happy and Gilman's recording all this so we better make sure that he's happy as well good morning um first of all because so many of you were here for the first time you probably um which is good because then I'm actually talking to people who haven't heard me talk for like a hundred times before my name is yoast I'm married to Marika she's here as well I'm the founder of a company called yoast and a father of four
+
+[0:34] um I'm currently back at yosa's interim CTO after having left only just like five months ago um that was an entirely planned but I'm there um and together with Marika we the the two of us invest in quite a few companies that you might have heard of in the WordPress space as well um honestly if you want to hear anything about this simulator because that's not what we're here for
+
+[1:06] I'm hoping this works it doesn't really so we're going to do it like this um I want to talk about websites and the environment and all of you might be thinking what's the link between that how does my website have a negative impact on the environment because honestly it does and most of you probably don't realize how much of a negative impact it websites
+
+[1:37] are hosted by large or small hosting companies one of the largest hosting companies in the world was actually kind enough to buy yoast last year but there are these are huge corporations that have lots and lots and lots of servers if you're Dutch you might have followed along in the recent discussions about data centers that we have in several places in the
+
+[2:08] Netherlands all of these data centers use tons and tons of electricity and the question is why are they using all that electricity is is your site using that much electricity as well well it is electricity usage for your website is cost by people visiting your website in your website generating those pages so you have a WordPress site I assume I think that's that's why all of you are here um
+
+[2:41] and that WordPress site generates a page when someone visits it and then that data has to be sent across the internet to your computer and it needs to be rendered there Etc all of that takes electricity the question is how much of this can you actually control what can you do about making your site I'm going to use an example
+
+[3:14] this is actually my father-in-law who has a very nice very simple website I built this forum it's based on WordPress it's very tiny all the way all the pages it has you can see in the menu right there and this front page consists of four files it's two images the HTML of the page itself the CSS for the page itself is actually in the in the HTML so it's all one file
+
+[3:47] and it has a faficon this page doesn't get a whole lot of visitors my father-in-law is retired there's really no reason for him to have a whole lot of visitors to his website other than the great articles he wrote which he had 160 paid shoes in the last 30 days
+
+[4:19] I took this two days ago so it might not be exactly true but you get to the gist 160 page views let's consider and that we had four files per page view that should be 640 hits to his web server in the last 40 to 30 days now I'll let you take a guess how many hits that website really got in the last
+
+[4:54] do you think it's more or less more how much more five times more let's see in the last 30 days this website had 608 608 000 hits that is approximately 950 times more than was needed for the
+
+[5:26] actual visitor to those pages I can tell you from having looked at many many many websites that this is not uncommon and why is this a problem I'll show you the maths later on in my presentation this means the impact of this website is hugely made bigger
+
+[5:57] by things that are not visitors not normal users so what is happening here foreign search engine Bots search engine optimization tool Bots lots and lots of hackers crawling the
+
+[6:29] entire data centers are wasted on stuff like this should be a very very small website with very negligible impact and instead it is serving tons and tons it's important to note that this website it didn't send any notification to any other system out there that it needed to be crawled
+
+[7:02] it didn't send any change message to Google it has all the things it needs to tell people to actually properly say hey we this page hasn't changed it's run on cloudflare it fully supports what we call HTTP 304 if you're not technically inclined you can fully forget that but if you are it means that we can send not modified headers it does everything
+
+[7:37] so this is me seeing that happen and because think about it this is a very small site on larger sites the impact of this happening is much bigger and of course search engines need to crawl the web they need to build up their indexes I as the founder of yoast I have done my fair bit of SEO I understand that search
+
+[8:08] engines are actually very useful tools and that we use them to drive a lot of traffic to a lot of websites in the world so that's not necessarily a problem but we only use Google and we might use Bing and someone somewhere else might use Yandex or Baidu but does this Dutch website need to be spidered by Baidu by Yandex search engines targeted at other
+
+[8:40] languages and people that will probably not read it in Dutch I don't know one of the biggest users of this website ahrefs is a SEO tool turned search engine and they spider a lot so much and I'm thinking who's paying for all that because it's costing them money too but all of these tools are spidering and
+
+[9:12] spidering and spidering and that just causes a lot of traffic but even if we say hey there's 10 major search engines and maybe 20 major SEO tools and some other things we get to 60 tools how is it possible that we get to 950 times the amount of hits where does that problem get created and it turns out that it's actually a compound problem
+
+[9:44] those search engines and tools crawl too often and we should talk to them about that but the other problem is that hackers are consistently going around the web trying to figure out what is broken on your site so that they and the reason that that is still something that they do is because it's meaningful
+
+[10:15] it's because they actually do find lots of sites that are broken that they can hack into so if we get better at security that becomes less meaningful and they'll do but the one I want to focus on now is that sites have way more urls because you'd think for an average site five pages 30 blog posts
+
+[10:49] maybe a home page added no in total 35 in reality in WordPress this is much more likely you've created 30 blog posts you've added some tags to it not realizing that every tag that you create creates a new archive page in WordPress and and therefore creates a new URL to crawl for all those tools
+
+[11:20] you've created some category pages you automatically if you don't disable them with a tool and WordPress core doesn't allow you to so you need a plugin to do that you automatically have date Pages you automatically have author archives so instead of 35 URLs to crawl you have way more URLs to crawl already and this is only the stuff that you could actually click to in your browser
+
+[11:51] because hidden in each of these posts WordPress adds way more stuff we WordPress generates a comment RSS feed for every post so the comments to that post live in a single RSS feed that can be curled and you're like but search engines aren't interested in that right well if you'll ever look at your own prologues you'll see that they crawl your comment RSS feeds every day
+
+[12:24] if not multiple times per day the most visitedpages on yos.com it crawls the comment RSS feeds for those pages every 30 minutes those things never change because no new comments come into all posts but they we also have two oh embed URLs om bed is a very nice protocol that you might remember from having a Vimeo or YouTube link
+
+[12:56] you drop it into your editor and it turns into a video or or whatever it is you can do that with WordPress posts as well there's two ways of doing that with Json and XML and WordPress conveniently adds both of those to the source of every blog post out there and search engines crawl every one of those links within those 201 budget URLs is one
+
+[13:28] embed URL actually on most WordPress sites you can just add embed to the end of a permalink and you'll get the embed version of that page search engines find that in those om we also create a short link for every page it's just a redirect but you have to boot all of Wordpress to get to that redirect so WordPress is is launched every time
+
+[13:59] some some search engine or other bot decides to look at that short link and and then there's a rest API link this is one of the newest additions to this whole feast where you can get the rest API version of that post I don't know why WordPress exposes all of this on every page without ever I think we shouldn't but every time I start having that
+
+[14:31] commit that discussion a certain guy called Matt tells me that um then on top of all this every hit to your website or every page view usually has a few more side effects than the website of my father-in-law because most of y'all probably have a lot more CSS files and JavaScript files and images
+
+[15:04] than just four files for a page view so normally the impact of a page view is much much higher I've taken the liberty and I want to make absolutely sure that the team the world Camp Canal team is not getting mad at me so I've taken the liberty of using their site as an example I want to say that they can't change most of the stuff that I'm going to show you because they host it on wordcamp.org and if they were at Liberty to change a lot of these things they would
+
+[15:37] [Laughter] so it's not on them this is on wordcamp.org itself but if you view the source of those pages you'll see these links no normal user is ever going to see or any of this but it's there and every bot on the planet will find it and crawl it this doesn't end
+
+[16:10] I started looking at bot logs when I was working for the guardian this is about a decade ago now I was working on the migration from Guardian co uk to the guardian.com and we we started generating logs for how often does Google actually visit their site and where is it looking and what do we which Pages do we need to do something with when we migrate from the one domain oh for a while
+
+[16:43] but I was still shocked because in large sites like that what Google does is it determines a list of Hub pages where all the new sites posted so the tag pages and a couple of others and it would crawl those pages about 85 of them literally 24 hours a day every two seconds Bing did the same
+
+[17:16] at that time being sent about 2 000 visitors a month to the guardian I don't know how if any of you ever look at your analytics and have looked at how much traffic you get from Bing but getting traffic from Bing at all is but it would crawl at that rate it would crawl ridiculously fast and we were having the discussion like we are literally using entire servers
+
+[17:47] that we're paying for just to give Bing the contents of our website shouldn't we do something with it well I think we do so what can we do well to have less crawling we need to create less URLs or at least stop linking to them because the only reason that they're called is that we're that rest API endpoint that we're
+
+[18:20] linking to is very useful if you're using it but funnily enough most of us never need that link in that page to actually use that rest API so why not just remove that link and and just remove a whole lot of crawling if people actually want the comments are just feed to your pages and then who here still uses RSS on a daily basis and this is in a room full of gigs I see
+
+[18:54] I mean outside of this room there's not a whole people anymore that know what RSS is but of those people who use this RSS regularly who a view uses common RSS feeds I mean I was a very very big user of RSS but I never used to comment RSS feed it's absolute nonsense that we expose
+
+[19:26] so we're going to disable those extra urls now I had build a nice plug-in for that and then I decided maybe we should just roll this into yosa Co so we did um and we're going to I'm going to show you how that works I also want to talk a bit more to you about tags and how we clean up more of those urls so if you use yoast SEO and otherwise there are other means to do this but it is
+
+[19:57] actually fairly hard to do most of these changes you can disable a lot of these URLs and I would suggest that you do because you're actually reducing the amount of it also means that Google is spending the time that they're scrolling your websites and crawling stuff that you are because a lot of the time when it is crawling your common feeds and your RSS
+
+[20:29] feeds it's not crawling your new pages and the new pages are the things that I've been reviewing sites as an SEO every well one in free at least of every
+
+[21:07] if you realize that the sole purpose of tags is to connect posts to each other by topic then having more tags than posts and the problem is that everybody uses tags as they use tags on Instagram which because on Instagram you're connecting your posts to a much wider array of
+
+[21:38] posts on that tag here you're just so please clean up your tags and while you're at it clean up your categories too because WordPress gives you two taxonomies I don't know why it does that I don't think it's necessarily a good idea that we give people two taxonomies for a small website the fact that you can add more is great but why you need
+
+[22:13] but if you do clean them up and also don't feel bad about yourself yoast.com uses tags exclusively why well because we had categories too and then we had an SEO tag and an SEO category yes even us at yoast make stupid mistakes like that it happens it's not a bad thing but make sure you have only one there's really no reason to have both clean that stuff up it would
+
+[22:44] actually do wonders for your SEO as well to clean that stuff up and make sure you redirect them all properly to Pages where they fit if attack only has one Post in it delete it redirect it to the post that was in it problem solved and don't create all those tags anew and WordPress has more bad habits and attachment URLs are my favorite because I've never made mistakes with those foreign
+
+[23:19] um yocco has a feature to disable attachment URLs which you should use and if you don't use yocco then your SEO plugin has this feature too because all um why well because attachment URLs are a stupid idea when you upload an attachment to Wordpress a file or something else WordPress generates a URL for it the thing itself already has a URL and the attachment page is fairly often not used
+
+[23:52] but it is very very often linked to anyway because WordPress does this automatically in some cases get rid of them please it's it really is and then we have date and author archives if you run a website with only one author your author archive and your homepage
+
+[24:28] only if you have a lot of authors and a lot of posts do on author archives start my favorite example of an offer archive is on a website called ma.tt from Matt himself I mean the author archive is useless but it's there he's the only author and this is all stuff that WordPress does wrong but unfortunately there are other Bad actors in this space as well
+
+[25:01] so on all three of these Pages WordPress and the fbcl ID parameter that you see in the second URL there you might recognize when you click on in Facebook to a page it's as this why does it add this well if you have a Facebook remarketing tag on that page then Facebook can connect the
+
+[25:34] remarketing tag to the to that visitor and knows who was there Etc and where first of all I think it's not a very um that's an entirely different topic but this this FB click ID and Google does
+
+[26:05] and then Google crawls it itself so it sees links with a Google click ID from Google AdWords and starts crawling those URLs to check whether they're the same as the URL that it's actually we redirect most of these things away on yoast.com but it's actually fairly hard to do that reliably so you have to look at your own website and see like hey which of these are coming in the sad story is that that means that most of you would have to look at your logs
+
+[26:36] which is fairly Technical and then create redirects for parameters that you don't use not something that anybody is going to do I think luckily there are some ways to optimize that um and we are talking a lot to search engines about how to improve this first of all I want you to and I'll share these slides online later so you don't have to write this down but if you
+
+[27:08] have a Dutch website then Baidu Chinese search engines you probably don't need yandax we talked about that one Russian search engine you probably don't need it either cesnam it's actually a check search engine it has still survived it is as old as ilza which some of you and I now see the youngsters from yoast
+
+[27:40] um because people don't know that anymore but some of those search engines and we need to help search engines because search engines need to figure out what to crawl and what not to crawl now we are talking to Bing about this a lot because Bing was the worst offender and has actually improved a lot over the last few years I was emailing with Fabrice who's the
+
+[28:11] head of Bing before this presentation a very nice french guy who leads up Bing and has actually made it into an okra performance indicator for his team how you know why because it makes sense economically to them as well less crawling means a lot less money spent so they're working on something called
+
+[28:42] index now I had very Stark criticism of that when it first came out they've changed the standards luckily based on the feedback that we and others gave them and it's now actually fairly good and what they're trying to do more and more is move to a protocol where you are telling the search engine I've just created this page I want you to index that funnily enough as an SEO that means we've come full circle
+
+[29:13] we went from URL submission where you had to send the URLs to on a form of the search engine to to get them to be indexed to them crawling all the way up the web by themselves and we're going back to your url submission again because it doesn't make sense for them to figure out which Pages actually should be having visitors now another thing that's very important for that especially for the search engines that actually supported everyone but Google
+
+[29:47] is last modified in XML sitemaps we've been doing that in yocco for forever but WordPress core is now once again working on getting lost modified into the XML sitemap for WordPress core which is very important because then what a search engine can do is you can grab the XML sitemap from your site see which Pages changed it's simple you think
+
+[30:19] but Google keeps on saying that last modified is not stable enough and too often goes wrong for them to actually trust the signal so they just rather keep on crawling everything now I'm going to make a slightly big jump but maybe not as well I'll show you later why I've been mentioning before that the
+
+[30:51] word campanelle website has a lot of CSS and JavaScript Etc and that doesn't make and I want you all to build faster websites why not and why well not just because the user likes it and because Google likes it but because faster websites use it won't save you crawls in fact for a lot of search engines if your
+
+[31:23] website starts responding faster and being faster they will maybe even crawl your website a bit more because they just assign a number of crawls to your site to have a a a bucket of Pebbles like and they take one out every time that they cross they crawl your site so they might not necessarily crawl that much less
+
+[31:55] remember those 600 and 8 000 hits that my father-in-law's website had in the this is a purely hypothetical number I'm afraid it would actually be higher for the word campanelle side but if the word Capital site had those 608 000 hits over a year it would produce 3 000 kilograms we can talk about our gas bills and we
+
+[32:27] can talk about everybody needing to if you're building websites this is also that's a lot of Cups of Tea and I don't and if you're thinking that's weird well look at how many data centers we have
+
+[32:59] and where they Place those data centers we have a couple of very big ones in the Netherlands next to my father-in-law's website is really fast I had some fun making it really fast but it only produces 56 kilograms of CO2 with the same amount of hits in a yearly basis that is
+
+[33:34] a ridiculously big difference that is why you need to make websites faster even more so than because we're all too lazy to wait for another second it's just better for the environment it's 50 times less CO2 just by being now what if we optimize scrolling I've shown you some things that you can do yourself and we are continuously talking to the search engines about that
+
+[34:05] but if we would optimize crawling for real and we would still give them a give all those Bots a fairly big allowance of crawling our site so instead of the 640 hits per month we'd get based on the paid shoes we'd allow double of that I think that's generous I think it's ridiculous that we'd need it would use
+
+[34:41] we can actually change this together we can make the whole web use a lot less energy and we should it's over 25 000 times less CO2 than what what would happen if we kept on going like we did and we used designs like the word campanell site with all of everything it has which is much more common by the way than what the site of my father-in-law is so
+
+[35:12] I'm coming to the end of my presentation and I'm going to ask you I want you to talk about this think about this start blocking Bots that you don't need create less urls and complain to people crawling you excessively preferably on Twitter and other places where everybody can see it and they care
+
+[35:43] because if I on my own can shame Bing into actually crawling better then you can help me do that and we can do a whole lot more I really think that we can make this more well better for the environment better for ourselves and the funny thing is this should actually bring down the cost of Hosting because right now you are paying hosting
+
+[36:14] for those six hundred and eight thousand hits because that's what those hosts are serving and if you have larger websites and you look at these these stats you'll find that a lot of your servers are running only for Bots so you can save your own bill as well
+
+[36:49] and now Wendy was still a bit surprised sorry we do have time for questions I think I what hashtag can we use to use that's a good question I should have thought about the marketing of this better that's a good that's a good question we
+
+[37:21] should we should come up with on our number like right now actually probably um but optimized crawling would probably be a good idea to start with and and just tag me and I'll I'll float it along I'm at Jay default on Twitter the fog yeah you can do a ghost too but they're done a whole lot of people start working on I took notes
+
+[37:52] um a list of things I need to do like today um and so it with the crawling and the and the URLs what would be your suggestion to stop to do first online just my normal so the first thing if you're already using yo so go into the settings go into the settings and and enable all those scroll optimization settings we don't dare to enable them by default for everyone because if your site depends on some of these being there we might break
+
+[38:25] it and we don't like to break sites um so that's the first thing I do done secondly depending on your audience I would start blocking Bots there's really if you're if your site's in Dutch as I said why would cessnaam or and they are crawling your site you can be almost 100 certain of that um and then start improving your website speed in the end the the combination of those is what's what makes a really big difference
+
+[38:57] and uh start thinking about what you're putting on online there and whether it's it's really needed and I think that's also a discussion that we we need to have more I think a lot of the things that you you need to do manually now we should actually do in WordPress core so is there anything we can do to help get that going um well keep talking about it keep asking about it and ask ask the WordPress core
+
+[39:31] team which most of them will want to do this thank you for sharing your message I um I sense some minimalism in here and that's sometimes strange for me for hearing from a SEO or a marketing person
+
+[40:02] I don't know um less is more something I'm hearing did you have a change in heart sometimes I mean this is me assuming no no no no not really so I honestly funnily enough the things that you're doing to optimize for the environment here are entirely good for your SEO and most of the time your SEO benefits thinking about hey what needs to be online
+
+[40:34] and and what doesn't need to be online and which message do I want to sell very well so I know I didn't have a change of heart at all in fact I've been talking about this topic I think for a decade now um it's just that the time seems right for all of us to actually start doing a bit more about this um it's it's been a problem for quite a while and
+
+[41:05] it's also the search engines have invested a whole lot into making better algorithms to search and in understanding what's on the page Etc but they're basically crawling in the same way as they were 20 years ago so it's time for well some more Improvement in that area from their side and it's also time that we as well as the world start thinking about what do we want to allow do we think it's okay that well you could go home now and
+
+[41:37] start a crawler and just crawl the entire web and do we think that that is a good idea that everybody can just do that or should we have some rules around that should it be a bit more opt-in instead of opt out and there's a whole oh there's a whole lot of discussions that should be had around this and I'm not going to answer all those questions today because I can't um but I think it is something that we well the the society is ready to talk about now
+
+[42:08] and we have all these discussions about data centers but nobody ever talks about this and the reason that those data centers are there is mostly because of this Google's data centers are for the last vast majority of things doing this and sending out YouTube movies
+
+[42:39] hi thank you very much for this talk I hope you I have an Easter difficulties I well I I'd hope so at some point but PR has never been my strong point [Laughter] s yeah asking themselves what they can do feel free to join the sustainability Channel because
+
+[43:12] you hope to get something going there I think that would actually be a very good route to get some of those URLs and core removed yeah cool a couple of years ago I used to sing created five pages 20 blog posts and all of a sudden the backup was more than a gigabyte and it turned out that this theme I'm
+
+[43:44] not going to shame the name it Cuts every image that you use into 18 different formats in case you may be need them does it mean does WordPress create a link to each and every of that image yeah so I think that maybe we should object our team creators that we buy themes from to see if that's what they're doing so what to
+
+[44:15] change this settings yeah well so what WordPress does you can register it in image size and if you register it then every image you upload will be changed into that image size as well there's no there's on or off there's no in between like saying hey I only need these for these types of images or I only there are very good solutions for fixing this so far Matt is blocking all of them um he has literally did just this week canceled webp
+
+[44:46] which was which would have been a great Improvement uh to come into 6.1 or by default for everyone so but there are good solutions for this and so far they're being blocked because that would hamper some people in what they're doing I don't agree um that might be clear um but yeah no you're right if you go into your FEMA you see a lot of image sizes that's not a good idea because your
+
+[45:17] server will let well every upload you do takes longer because what it does on your upload is it changes to it it literally makes a version of that image in all of the different sizes that you need and you don't need them and you know that but your theme doesn't because
+
+[45:51] the links stay behind I don't know whether that's necessarily a problem I mean if it's a stock image that you no longer have in your website that someone can't reach anymore that probably doesn't really make that much of a difference I'm my opinion is that we should change more of these things for users and not have because because it's just too hard so we should just make this better in core or whatever editor it issue you want to use [Laughter]
+
+[46:38] um uh no I actually think that you'd be shocked to see how much traffic this is um it's hard to calculate that right but that's true for all of these things but if you consider the 608 000 hits that we talk about for my father-in-law's website that is one of the tiniest
+
+[47:11] my my wife is now mad at me but no but and we have a ton of sites if you consider it at the Netherlands has more than two million registered domains it's probably way more I don't know if there's anyone here that actually has it but there there are tons and tons of sites it's doing this everywhere and on most sites it crawls a whole lot more yoast.com gets this amount of crawls on
+
+[47:42] and that's a huge site but it is like at the same time there are a lot of sites like yoast.com there's a lot of in between this is a huge amount of traffic that being said that doesn't mean that all those video servers should not optimize their video streams of course they should also do that but the thing is that we talk about data centers as something very far away from us and it's actually they are there because we do stuff
+
+[48:14] and we can't just complain about not wanting data centers and then just keep on doing whatever it is what it is we're doing which role would hosting companies play in spreading this message well I work for one I'm an advisor to newfold and I intend
+
+[48:48] to spread this message far and wide we host millions of Wordpress sites uh and just sites in general if a hosting companies together can fix this that would be ideal but it means us talking to search engines and luckily we're now getting to the point where I can talk to some of them and they're getting they are being open to the idea of of improving this
+
+[49:20] but it's also very hard for them to build something that they can actually spread across the web Google is involved with WordPress because in WordPress they can optimize these things and then they can change it for 30 or so of what they're crawling on a daily basis there's more sites that run on WordPress but they don't update so if you don't and if they don't update then Google doesn't get the benefit either so yes we should talk about this hosts should come together and talk about this
+
+[49:51] with those search engines more and everybody should talk about this more and also to their customers hosts should be helping their customers baking faster websites because that helps as well and maybe hosts should start help help their customers build robust.txt files and just block stuff and I'm myself I'm getting very very close to going from opt-in to up from opt out to opt-in just blocking all bots
+
+[50:24] in robots.txt by default and allowing the search engines that we want to crawl but that is to do that at EOS SEO would be political to say the least all right thank you so much um I think that's it for the questions thank you so much for your talk I'm coming up [Applause]

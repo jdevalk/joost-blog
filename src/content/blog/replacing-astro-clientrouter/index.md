@@ -1,5 +1,5 @@
 ---
-title: Dropping Astro's ClientRouter for web standards
+title: Dropping Astro's ClientRouter for <em>web standards</em>
 publishDate: 2026-04-22T00:00:00.000Z
 excerpt: >-
   Astro's ClientRouter is a solid abstraction for complex apps. For a simple

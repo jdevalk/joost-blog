@@ -10,6 +10,7 @@ excerpt: >-
 categories:
   - Development
   - WordPress
+  - AI
 featureImage: ./images/featured.webp
 featureImageAlt: >-
   Illustration for: From installation to integration: Making plugins

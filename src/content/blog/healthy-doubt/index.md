@@ -1,13 +1,14 @@
 ---
-title: Why healthy doubt beats AI confidence theater
+title: Why <em>healthy doubt</em> beats AI confidence theater
 publishDate: 2026-02-21T00:00:00.000Z
 excerpt: >-
   AI will confidently sign off on anything. The question is whether you will
   too.
 categories:
-  - Post from Joost
+  - AI
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Why healthy doubt beats AI confidence theater'
+toc: true
 ---
 > *AI will confidently sign off on anything. The question is whether you will too.* 
 

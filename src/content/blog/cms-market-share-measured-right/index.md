@@ -6,7 +6,7 @@ excerpt: >-
   HTTP Archive’s dataset. This report will be updated – automatically – every
   month
 categories:
-  - Market Share Analysis
+  - Research
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: CMS Market share measured “right”'
 ---

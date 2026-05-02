@@ -1,13 +1,13 @@
 ---
-title: 'WordPress, and what should be on its roadmap'
+title: 'WordPress, and what should be on <em>its roadmap</em>'
 publishDate: 2024-12-12T00:00:00.000Z
 excerpt: >-
   I was reading Hendrik Luehrsen’s excellent post “WordPress isn’t WordPress
   anymore“, and I decided I had to write more about this. I recently spoke at
   WordCamp
 categories:
-  - Market Share Analysis
   - WordPress
+  - Development
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: WordPress, and what should be on its roadmap'
 ---

@@ -8,5 +8,6 @@ videoUrl: 'https://www.youtube.com/watch?v=5QyFwORsqWs'
 duration: PT1M12S
 featureImage: ./images/thumbnail.jpg
 featureImageAlt: Joost de Valk (Yoast) on His Spectacular Business Fail + Lessons Learned
+type: interview
 ---
-We don’t talk about failure nearly enough in the software world ☠️ The mistakes and hard lessons learned from %^\u0026*@!ing up spectacularly are stepping stones to successful pro...
+A short clip where I describe one of the worst bugs we shipped at Yoast. We had disabled WordPress attachment URLs to protect SEO, and in a release we accidentally re-enabled them. Suddenly all those URLs were being indexed by search engines, creating a mass of thin pages and wrecking SEO for sites with lots of images. We had to build an emergency plugin to purge those URLs from both the site and Google's index. My main lesson: build automated tests for everything.

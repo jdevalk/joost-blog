@@ -1,0 +1,87 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import SchemaGraph from '../../components/SchemaGraph.astro';
+import type { SchemaPageContext } from '../../utils/schema';
+import { canonicalUrl } from '../../utils/schema/constants';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+    const pages = await getCollection('pages');
+    return pages
+        .filter((page) => page.data.section === 'code')
+        .map((page) => ({
+            params: { slug: page.id },
+            props: { entry: page }
+        }));
+}
+
+const { entry } = Astro.props as { entry: CollectionEntry<'pages'> };
+const { Content, headings } = await render(entry);
+const { data } = entry;
+
+const seoTitle = data.seo?.title ?? data.title;
+const seoDescription = data.seo?.description;
+
+const pageCanonicalUrl = canonicalUrl(Astro.url.pathname);
+
+const pageContext: SchemaPageContext = {
+    pageType: 'page',
+    canonicalUrl: pageCanonicalUrl,
+    title: data.title,
+    description: seoDescription ?? ''
+};
+
+const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
+const hasToc = !!data.toc && tocHeadings.length > 0;
+
+interface TocItem { depth: number; slug: string; text: string; idx: number | null }
+const tocItems: TocItem[] = [];
+if (hasToc) {
+    let h2Idx = 0;
+    for (const h of tocHeadings) {
+        if (h.depth === 2) h2Idx++;
+        tocItems.push({ ...h, idx: h.depth === 2 ? h2Idx : null });
+    }
+}
+---
+
+<BaseLayout title={seoTitle} description={seoDescription}>
+    <SchemaGraph pageContext={pageContext} />
+    <div class="sp-root sp-blocks sp-post" data-pagefind-body>
+        <section class="sp-post-hero">
+            <div class="sp-section-inner">
+                <nav class="sp-post-crumbs" aria-label="Breadcrumb">
+                    <a href="/">Home</a>
+                    <span class="sep">/</span>
+                    <a href="/code/">Code</a>
+                    <span class="sep">/</span>
+                </nav>
+                <h1 class="sp-post-title" set:html={data.title} />
+            </div>
+        </section>
+        <section class="sp-post-body">
+            <div class:list={['sp-post-grid', { 'sp-no-toc': !hasToc }]}>
+                {hasToc && (
+                    <nav class="sp-post-toc" aria-label="Table of contents">
+                        <div class="lbl">On this page</div>
+                        <ol>
+                            {tocItems.map(item => (
+                                <li class:list={[{ sub: item.depth === 3 }]}>
+                                    <a href={`#${item.slug}`} data-toc-link>
+                                        {item.idx !== null && (
+                                            <span class="sp-post-toc-num">{String(item.idx).padStart(2, '0')}</span>
+                                        )}
+                                        {item.text}
+                                    </a>
+                                </li>
+                            ))}
+                        </ol>
+                    </nav>
+                )}
+                <article class="sp-prose">
+                    <Content />
+                </article>
+            </div>
+        </section>
+    </div>
+</BaseLayout>

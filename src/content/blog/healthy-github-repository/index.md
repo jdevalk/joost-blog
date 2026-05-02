@@ -1,6 +1,7 @@
 ---
-title: How to create a healthy GitHub repository
+title: How to create a <em>healthy</em> GitHub repository
 publishDate: 2023-12-19T00:00:00.000Z
+toc: true
 excerpt: >-
   As a result of investing in a fair few companies and getting a lot more
   requests to invest, I look at GitHub repositories a lot. I often run into
@@ -17,20 +18,10 @@ As a result of [investing in a fair few companies](https://emilia.capital/) and 
 <p class="text-base leading-relaxed text-stone-700 dark:text-stone-300">Install my <a href="https://github.com/jdevalk/skills?tab=readme-ov-file#-github-repo-optimizer" class="text-primary underline decoration-1 underline-offset-2 hover:no-underline dark:text-accent">GitHub Repo Optimizer skill</a>, or point your AI coding agent at this article. The skill audits your repo against the checklist below and generates drop-in files for anything missing.</p>
 </div>
 
-## In this post
+**See my other posts about GitHub usage**
 
-- [Repository description and URL](#h-repository-description-and-url)
-- [README file](#h-readme-file)
-    - [Action badges](#h-action-badges)
-    - [What does this thing do?](#h-what-does-this-thing-do)
-    - [Installation instructions](#h-installation-instructions)
-    - [How do I contribute?](#how-do-i-contribute)
-    - [Your readme.txt is not your README.md](#h-your-readme-txt-is-not-your-readme-md)
-- [Community health files](#community-health-files)
-    - [Hack: a .github repository](#h-hack-a-github-repository)
-- [Tags and releases](#tags-and-releases)
-- [Branches](#h-branches)
-- [Conclusion](#conclusion)
+* [GitHub Actions to keep your WordPress plugin healthy](/github-actions-wordpress/)
+* [Good-looking GitHub profile pages](/good-looking-github-profile-pages/)
 
 ## Repository description and URL
 

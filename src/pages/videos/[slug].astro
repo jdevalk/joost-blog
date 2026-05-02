@@ -2,15 +2,15 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { getCollection, render } from 'astro:content';
+import { getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SchemaGraph from '../../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../../utils/schema';
 import { canonicalUrl } from '../../utils/schema/constants';
-import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
 
 export async function getStaticPaths() {
     const videos = await getCollection('videos');
-    return videos.map((video) => {
+    return Promise.all(videos.map(async (video) => {
         let transcript = '';
         if (video.data.youtubeId) {
             const transcriptPath = join(process.cwd(), 'src/generated/transcripts', `${video.data.youtubeId}.txt`);
@@ -18,31 +18,56 @@ export async function getStaticPaths() {
                 transcript = readFileSync(transcriptPath, 'utf8').trim();
             }
         }
+        let thumbnailUrl: string | undefined;
+        if (video.data.featureImage) {
+            const img = await getImage({ src: video.data.featureImage, width: 1200 });
+            thumbnailUrl = new URL(img.src, 'https://joost.blog').href;
+        } else if (video.data.thumbnailUrl) {
+            thumbnailUrl = video.data.thumbnailUrl;
+        }
         return {
             params: { slug: video.id },
-            props: { video, transcript }
+            props: { video, transcript, thumbnailUrl }
         };
-    });
+    }));
 }
 
-const { video, transcript } = Astro.props;
+const { video, transcript, thumbnailUrl } = Astro.props;
 const { Content } = await render(video);
 
 function formatDuration(isoDuration: string | undefined): string | null {
     if (!isoDuration) return null;
     const match = isoDuration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
     if (!match) return null;
-    const hours = parseInt(match[1] || '0');
-    const minutes = parseInt(match[2] || '0');
-    const seconds = parseInt(match[3] || '0');
-    if (hours > 0) {
-        return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    }
-    return `${minutes}:${String(seconds).padStart(2, '0')}`;
+    const h = parseInt(match[1] || '0');
+    const m = parseInt(match[2] || '0');
+    const s = parseInt(match[3] || '0');
+    return h > 0
+        ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+        : `${m}:${String(s).padStart(2, '0')}`;
+}
+
+function dotDate(date: Date): string {
+    return `${date.getFullYear()}·${String(date.getMonth()+1).padStart(2,'0')}·${String(date.getDate()).padStart(2,'0')}`;
+}
+
+function parseTimestampedTranscript(text: string, youtubeId: string | undefined): { secs: number; label: string; url: string | null; body: string }[] | null {
+    if (!text.match(/^\[\d+:\d{2}/)) return null;
+    return text.split(/\n\n+/).map(para => {
+        const m = para.match(/^\[(\d+):(\d{2})(?::(\d{2}))?\]\s*([\s\S]*)/);
+        if (!m) return null;
+        const [, a, b, c, body] = m;
+        const secs = c !== undefined
+            ? parseInt(a) * 3600 + parseInt(b) * 60 + parseInt(c)
+            : parseInt(a) * 60 + parseInt(b);
+        const label = c !== undefined ? `${a}:${b}:${c}` : `${a}:${b}`;
+        const url = youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}&t=${secs}` : null;
+        return { secs, label, url, body: body.trim() };
+    }).filter(Boolean) as { secs: number; label: string; url: string | null; body: string }[];
 }
 
 const duration = formatDuration(video.data.duration);
-
+const pubDate = dotDate(new Date(video.data.publishDate));
 const seoTitle = video.data.seo?.title ?? video.data.title;
 const seoDescription = video.data.seo?.description ?? video.data.title;
 
@@ -53,67 +78,152 @@ const pageContext: SchemaPageContext = {
     description: seoDescription,
     publishDate: video.data.publishDate,
     youtubeId: video.data.youtubeId,
-    duration: video.data.duration
+    duration: video.data.duration,
+    thumbnailUrl,
 };
 ---
 
 <BaseLayout title={seoTitle} description={seoDescription}>
     <SchemaGraph pageContext={pageContext} />
-    <main class="grow px-4 py-12 sm:px-8" data-pagefind-body>
-        <div class="max-w-4xl mx-auto">
-            <nav class="mb-6 text-sm" aria-label="Breadcrumb">
-                <ol class="flex items-center gap-1.5">
-                    <li><a href="/" class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent transition-colors">Home</a></li>
-                    <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600"><a href="/videos/" class="text-primary dark:text-accent hover:text-secondary dark:hover:text-white transition-colors">Videos</a></li>
-                    <li class="before:content-['/'] before:mx-1.5 before:text-slate-300 dark:before:text-slate-600 text-slate-900 dark:text-slate-100 font-medium truncate" aria-current="page">{video.data.title}</li>
-                </ol>
+
+    <div class="sp-root sp-blocks sp-video">
+
+        <section class="sp-video-hero">
+            <div class="sp-section-inner">
+            <nav class="sp-video-crumbs" aria-label="Breadcrumb">
+                <a href="/videos/">Videos</a>
+                <span class="sep">/</span>
+                <span>{new Date(video.data.publishDate).getFullYear()}</span>
+                <span class="sep">/</span>
+                <span style="color:var(--hero-accent)">{video.data.title}</span>
             </nav>
-            <h1 class="text-4xl font-bold mb-6 text-slate-900 dark:text-slate-100">{video.data.title}</h1>
-            {duration && (
-                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Duration: {duration}</p>
-            )}
-            {video.data.youtubeId && (
-                <div class="mb-8">
-                    <YouTubeEmbed youtubeId={video.data.youtubeId} title={video.data.title} />
+            <div class="sp-video-meta-top">
+                <span>{pubDate}</span>
+                {duration && <span>&middot; {duration}</span>}
+            </div>
+            <h1 class="sp-video-title">{video.data.title}</h1>
+            </div>
+        </section>
+
+        <div class="sp-video-player-wrap">
+            {video.data.youtubeId ? (
+                <div class="sp-video-player" style="padding:0">
+                    <iframe
+                        id="yt-player"
+                        src={`https://www.youtube.com/embed/${video.data.youtubeId}?enablejsapi=1`}
+                        title={video.data.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        loading="lazy"
+                        style="position:absolute;inset:0;width:100%;height:100%;border:0"
+                    ></iframe>
                 </div>
-            )}
-            {!video.data.youtubeId && video.data.videoPressId && (
-                <div class="mb-8">
-                    <div class="aspect-video w-full">
-                        <iframe
-                            src={`https://video.wordpress.com/embed/${video.data.videoPressId}`}
-                            title={video.data.title}
-                            class="w-full h-full"
-                            allowfullscreen
-                        ></iframe>
-                    </div>
+            ) : video.data.videoPressId ? (
+                <div class="sp-video-player" style="padding:0">
+                    <iframe
+                        src={`https://video.wordpress.com/embed/${video.data.videoPressId}`}
+                        title={video.data.title}
+                        style="width:100%;height:100%;border:0"
+                        allowfullscreen
+                    ></iframe>
                 </div>
-            )}
-            {!video.data.youtubeId && !video.data.videoPressId && video.data.videoUrl && (
-                <div class="mb-8">
-                    <a
-                        href={video.data.videoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-white hover:opacity-90 transition"
-                    >
-                        Watch video
+            ) : video.data.videoUrl ? (
+                <div style="padding:32px 64px">
+                    <a href={video.data.videoUrl} target="_blank" rel="noopener noreferrer" class="sp-about-build-cta" style="display:inline-block">
+                        <span class="primary" style="font-family:var(--font-display);font-weight:var(--weight-display);font-style:italic;font-size:20px;padding:14px 22px;background:var(--accent-warm);color:var(--ink);display:inline-block">Watch video &rarr;</span>
                     </a>
                 </div>
-            )}
-            <div class="prose prose-slate dark:prose-invert max-w-none">
-                <Content />
-            </div>
-            {transcript && (
-                <details class="mt-8 rounded-lg border border-slate-200 dark:border-[#2a2623]">
-                    <summary class="cursor-pointer px-5 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-accent transition-colors">
-                        Show transcript
-                    </summary>
-                    <div class="px-5 pb-5 text-sm leading-relaxed text-slate-600 dark:text-slate-400 whitespace-pre-line">
-                        {transcript}
-                    </div>
-                </details>
-            )}
+            ) : null}
         </div>
-    </main>
+
+        <div class="sp-video-body" data-pagefind-body>
+            <div class="sp-video-grid">
+                <div></div>
+                <div class="sp-video-prose">
+                    <Content />
+                </div>
+                <div></div>
+            </div>
+        </div>
+
+        {transcript && (() => {
+            const parsed = parseTimestampedTranscript(transcript, video.data.youtubeId);
+            const wordCount = transcript.replace(/\[\d+:\d{2}(?::\d{2})?\]\s*/g, '').split(/\s+/).filter(Boolean).length;
+            return (
+            <div class="sp-video-transcript-wrap">
+                <button class="sp-video-transcript-toggle" id="transcript-toggle" type="button" aria-expanded="false">
+                    <span>Full transcript &rarr;</span>
+                    <span class="meta">{duration && `${duration} · `}{wordCount.toLocaleString()} WORDS</span>
+                    <span class="caret">&#9660;</span>
+                </button>
+                <div class="sp-video-transcript" id="transcript-body" style="display:none">
+                    {parsed ? (
+                        <div class="sp-transcript-timestamped">
+                            {parsed.map(({ secs, label, url, body }) => (
+                                <div class="sp-transcript-para">
+                                    {url
+                                        ? <a href={`#t=${secs}`} data-t={String(secs)} class="sp-transcript-ts">{label}</a>
+                                        : <span class="sp-transcript-ts">{label}</span>
+                                    }
+                                    <span class="sp-transcript-text">{body}</span>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div style="padding:24px;white-space:pre-line;font-family:var(--font-text);font-weight:var(--weight-text);font-size:17px;line-height:1.6;color:var(--ink)">
+                            {transcript}
+                        </div>
+                    )}
+                </div>
+            </div>
+            );
+        })()}
+
+    </div>
 </BaseLayout>
+
+<script>
+    const transcriptToggle = document.getElementById('transcript-toggle');
+    const transcriptBody = document.getElementById('transcript-body');
+
+    if (transcriptToggle && transcriptBody) {
+        transcriptToggle.addEventListener('click', () => {
+            const isOpen = transcriptBody.style.display !== 'none';
+            transcriptBody.style.display = isOpen ? 'none' : 'block';
+            transcriptToggle.setAttribute('aria-expanded', String(!isOpen));
+        });
+    }
+
+    // YouTube IFrame API — seek to timestamp on transcript link click
+    const playerIframe = document.getElementById('yt-player') as HTMLIFrameElement | null;
+    if (playerIframe) {
+        let ytPlayer: YT.Player | null = null;
+
+        function seekTo(secs: number) {
+            if (!ytPlayer) return;
+            ytPlayer.seekTo(secs, true);
+            ytPlayer.playVideo();
+            playerIframe.closest('.sp-video-player-wrap')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        (window as any).onYouTubeIframeAPIReady = () => {
+            ytPlayer = new YT.Player('yt-player');
+            const hash = window.location.hash.match(/^#t=(\d+)$/);
+            if (hash) seekTo(parseInt(hash[1]));
+        };
+
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+
+        document.addEventListener('click', (e) => {
+            const link = (e.target as Element).closest('a.sp-transcript-ts') as HTMLAnchorElement | null;
+            if (!link) return;
+            const tParam = link.dataset.t;
+            if (!tParam || !ytPlayer) return;
+            e.preventDefault();
+            history.replaceState(null, '', `#t=${tParam}`);
+            seekTo(parseInt(tParam));
+        });
+    }
+</script>

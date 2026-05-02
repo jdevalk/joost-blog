@@ -1,5 +1,5 @@
 ---
-title: 'The generalization tax: why WordPress is still the smart architectural base'
+title: 'The generalization tax: why WordPress is still the <em>smart</em> architectural base'
 seo:
   title: 'WordPress: the smart architectural base for AI'
 publishDate: 2025-12-22T00:00:00.000Z
@@ -10,6 +10,7 @@ excerpt: >-
 categories:
   - Development
   - WordPress
+  - AI
 featureImage: ./images/featured.webp
 featureImageAlt: >-
   Illustration for: The generalization tax: why WordPress is still the smart
