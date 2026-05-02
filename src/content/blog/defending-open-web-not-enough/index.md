@@ -11,8 +11,6 @@ excerpt: >-
 categories:
   - Open Source
   - AI
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Defending the open web is not enough'
 isFeatured: false
 toc: true
 ---

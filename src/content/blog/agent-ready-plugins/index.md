@@ -11,10 +11,6 @@ categories:
   - Development
   - WordPress
   - AI
-featureImage: ./images/featured.webp
-featureImageAlt: >-
-  Illustration for: From installation to integration: Making plugins
-  “agent-ready”
 ---
 In my [last post](/vibe-coding-trap-design-system/), I discussed why a design system is the “visual rail” AI needs. But the “Architect” I’ve [been describing](/rise-architect/) doesn’t just care about how a site looks; they care about how it functions.
 

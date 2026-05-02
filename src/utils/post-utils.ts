@@ -24,7 +24,7 @@ export function slugify(text: string): string {
 
 export function getReadingTime(content: string): number {
     const words = content.split(/\s+/).filter((word) => word.length > 0);
-    const minutes = Math.ceil(words.length / 225);
+    const minutes = Math.ceil(words.length / 265);
     return Math.max(1, minutes);
 }
 

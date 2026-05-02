@@ -7,8 +7,6 @@ excerpt: >-
   faster
 categories:
   - Research
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Can I safely use AVIF or WebP share images?'
 toc: true
 ---
 AVIF and WebP are efficient image storage formats. They are smaller than their predecessors, PNG, JPG, and GIF. This leads to smaller images, which means faster page loads, which is what we all want. So, you should use them everywhere. Ideally, we’d also be able to use these image formats for our OpenGraph image tags (`og:image`) and Twitter image tags (`twitter:image`).

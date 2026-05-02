@@ -3,13 +3,9 @@ title: Cleaning up WordPress option clutter
 publishDate: 2024-02-29T00:00:00.000Z
 excerpt: >-
   Note: this plugin has received a ton of updates since its inception. It’s now
-  been moved to Progress Planner, where the team there (including myself) are
-  develo
 categories:
   - Development
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Cleaning up WordPress option clutter'
 ---
 Note: this plugin has received a ton of updates since its inception. It’s now been moved to Progress Planner, where the team there (including myself) are developing it further. So please check out [AAA Option Optimizer on Progress Planner’s website](https://progressplanner.com/plugins/aaa-option-optimizer/).
 

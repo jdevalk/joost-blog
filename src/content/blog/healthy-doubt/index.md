@@ -6,8 +6,6 @@ excerpt: >-
   too.
 categories:
   - AI
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Why healthy doubt beats AI confidence theater'
 toc: true
 ---
 > *AI will confidently sign off on anything. The question is whether you will too.* 

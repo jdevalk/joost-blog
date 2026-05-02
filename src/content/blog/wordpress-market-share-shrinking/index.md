@@ -8,8 +8,6 @@ excerpt: >-
 categories:
   - Research
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: WordPress’ market share is shrinking'
 ---
 There’s no more denying it: if you look at [W3Techs](https://w3techs.com/technologies/history_overview/content_management/all) CMS market share numbers, WordPress’ market share is *shrinking*, losing 0.4% market share since February. I don’t like to be or sound alarmist, so when I first noticed these numbers, I waited a bit to write about it. Shopify, the #2 CMS in my last [CMS market share](/cms-market-share/) report, is also shrinking a bit, though they’ve only lost a single percentage point so far.
 

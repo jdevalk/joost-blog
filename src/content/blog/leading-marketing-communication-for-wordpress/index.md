@@ -8,8 +8,6 @@ excerpt: >-
 categories:
   - Personal stuff
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Leading marketing & communication for WordPress'
 ---
 **Update:** Marieke and I later wrote about the [people behind the platform](/people-behind-the-platform/) and the role community marketing played in WordPress's growth.
 

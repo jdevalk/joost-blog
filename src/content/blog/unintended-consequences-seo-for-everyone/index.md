@@ -7,8 +7,6 @@ excerpt: >-
   optimize the
 categories:
   - SEO
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: The unintended consequences of making SEO “for everyone”'
 ---
 At Yoast, we had one mission: make SEO easier. For a long time, **SEO for everyone** was Yoast’s tagline, and we meant it. We helped millions of people optimize their content. We made technical SEO more accessible. We gave small businesses, bloggers, and creators a real chance to be found online.
 

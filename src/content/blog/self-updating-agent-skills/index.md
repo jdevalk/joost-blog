@@ -14,8 +14,6 @@ excerpt: >-
 categories:
   - Development
   - AI
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: How I made my skills update themselves'
 toc: false
 ---
 I updated one of my [Agent Skills](https://github.com/jdevalk/skills) and realized I had no way to tell my other machines they were running a stale copy. Skills install as loose folders in `~/.claude/skills/`. The skill runs whatever's on disk — and has no way of knowing there's a newer version.

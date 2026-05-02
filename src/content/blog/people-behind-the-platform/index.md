@@ -8,10 +8,6 @@ excerpt: By Marieke van de Rakt and Joost de Valk
 categories:
   - Open Source
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: >-
-  Illustration for: The People Behind the Platform: How WordPress’s Community
-  Drives its Success
 ---
 ***By [Marieke van de Rakt](https://marieke.com/) and Joost de Valk***
 

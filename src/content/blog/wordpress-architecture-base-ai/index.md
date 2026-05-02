@@ -11,10 +11,6 @@ categories:
   - Development
   - WordPress
   - AI
-featureImage: ./images/featured.webp
-featureImageAlt: >-
-  Illustration for: The generalization tax: why WordPress is still the smart
-  architectural base
 ---
 In my previous post, I discussed [the demise of code copyright](/rise-architect/) and mentioned what Dries referred to as the generalization tax. This had me thinking more about what that means for WordPress and investing in its ecosystem.
 

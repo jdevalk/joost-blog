@@ -11,8 +11,6 @@ categories:
   - Development
   - Open Source
   - AI
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: The death of Code Copyright (and the rise of the Architect)'
 ---
 We are witnessing a strange paradox in software development. Thanks to AI code generation, more open source code is being created today than ever before. Yet, simultaneously, the value of a single line of code has never been lower.
 

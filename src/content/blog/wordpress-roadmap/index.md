@@ -8,8 +8,6 @@ excerpt: >-
 categories:
   - WordPress
   - Development
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: WordPress, and what should be on its roadmap'
 ---
 **Update:** Since writing this, I [proposed FAIR](/path-forward-for-wordpress/) as a path forward for WordPress governance, and later wrote about [why we stopped pursuing it](/fair-wordpress-and-knowing-when-to-stop/).
 

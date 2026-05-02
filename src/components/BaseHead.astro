@@ -29,7 +29,7 @@ const title = [Astro.props.title, siteConfig.title].filter(Boolean).join(' · ')
 // OG image: always use auto-generated image from slug
 const slug = Astro.url.pathname.replace(/^\/|\/$/g, '');
 const ogImageBase = Astro.site?.origin ?? SITE_URL;
-const ogImage = new URL(`/og/${slug || 'index'}.jpg`, ogImageBase).toString();
+const ogImage = new URL(`/og/${slug || 'index'}.webp`, ogImageBase).toString();
 
 // Canonical URL always points to production domain
 const canonicalURL = new URL(Astro.url.pathname, SITE_URL);

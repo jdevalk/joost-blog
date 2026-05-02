@@ -11,10 +11,6 @@ categories:
   - Development
   - Open Source
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: >-
-  Illustration for: Great minds think alike? My WordPress take on Markdown for
-  Agents
 ---
 Today, Cloudflare announced [Markdown for Agents](https://blog.cloudflare.com/markdown-for-agents/), a feature that automatically converts HTML to markdown at the edge when AI agents request it. Reading their announcement felt like looking in a mirror. I’ve been building the exact same concept, even up to including frontmatter with metadata, independently, as a WordPress plugin called Markdown Alternate (which has been running on this blog for almost two weeks).
 

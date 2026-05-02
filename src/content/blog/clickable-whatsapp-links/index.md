@@ -4,11 +4,8 @@ publishDate: 2023-12-30T00:00:00.000Z
 excerpt: >-
   The simple things make life easy. One of them is WhatsApp. And more
   specifically: customer service through WhatsApp. I love it when companies
-  offer WhatsApp sup
 categories:
   - Development
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Clickable WhatsApp links'
 ---
 The simple things make life easy. One of them is WhatsApp. And more specifically: customer service through WhatsApp. I love it when companies offer WhatsApp support. What I love a little bit less is when they offer it, but they make me jump through hoops to get to it. I recently ordered some shirts from SuitSupply and ended up needing their support. This is what I ran into:
 

@@ -7,8 +7,6 @@ excerpt: >-
   transparen
 categories:
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: A new path forward for WordPress, and for the open web'
 ---
 In December, I wrote about the [state of leadership in the WordPress ecosystem](/wordpress-leadership/) and [what should be on WordPress's roadmap](/wordpress-roadmap/). I shared how too much power rests with one person, and how the lack of transparent governance puts contributors and businesses alike in difficult positions. That post ended with a call: *we need to lead*. That wasn’t rhetorical. It was a pivot.
 

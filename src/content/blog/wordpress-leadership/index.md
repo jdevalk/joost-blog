@@ -7,8 +7,6 @@ excerpt: >-
   topic alon
 categories:
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Breaking the Status Quo'
 ---
 ## A vision for a new WordPress era
 

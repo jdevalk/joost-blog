@@ -7,8 +7,6 @@ excerpt: >-
   they’l
 categories:
   - SEO
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Optimize crawling, for the environment'
 ---
 Search engines rely on spiders / bots to crawl the web and find (new) content. Every time they find a URL, they crawl it and if it’s interesting to them, they’ll *keep* crawling it basically forever. The bigger your site, the more URLs you have, the more likely every individual URL is to be hit multiple times per day (or even per hour). Cloudflare’s [Radar](https://radar.cloudflare.com/) estimates that currently 32% of the traffic on the web is bots. That means that 32% of the energy used to serve websites is used by bots.
 

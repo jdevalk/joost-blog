@@ -23,7 +23,7 @@ export async function GET(context) {
             '<webMaster>joost@joost.blog (Joost de Valk)</webMaster>',
         ].join(''),
         items: posts.map((post) => ({
-            title: post.data.title,
+            title: post.data.title.replace(/<[^>]+>/g, ''),
             description: post.data.excerpt ?? '',
             link: `/${post.id}/`,
             pubDate: new Date(post.data.publishDate),

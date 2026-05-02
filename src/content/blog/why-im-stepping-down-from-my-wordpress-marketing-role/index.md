@@ -7,8 +7,6 @@ excerpt: >-
   fitt
 categories:
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: (Why) I’m stepping down from my WordPress marketing role'
 ---
 I’m going to step away from my role as Marketing Lead. I consider this mostly a personal failure, both in correctly setting and getting expectations and in fitting into another type of organization. [Matt](https://ma.tt) and I have talked this through and there are no hard feelings on either side whatsoever. At the same time I’m sad about not having been able to leave more of a mark. Let me explain why I’m stepping down.
 

@@ -3,12 +3,9 @@ title: Democratizing publishing
 publishDate: 2018-12-27T00:00:00.000Z
 excerpt: >-
   Matt blogged, in response to a question asked at WordCamp US: what does
-  “democratizing publishing” mean to you? His answer:
 categories:
   - WordPress
   - Yoast
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Democratizing publishing'
 ---
 **Update:** Six years later, the question of what "democratizing publishing" means in practice became central to the [WordPress governance discussion](/transparency-contribution-and-the-future-of-wordpress/).
 

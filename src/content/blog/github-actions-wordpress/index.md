@@ -8,8 +8,6 @@ excerpt: >-
   looking
 categories:
   - Development
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: GitHub Actions to keep your WordPress plugin healthy'
 ---
 I absolutely love GitHub Actions and have been using them more and more for several purposes. As I’ve seen on some of the GitHub repositories I’ve been looking through, not everybody has as many nice use cases as we have in our repositories, so I thought I’d share some of my personal favorites.
 

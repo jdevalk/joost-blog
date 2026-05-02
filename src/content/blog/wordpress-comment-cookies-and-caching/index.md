@@ -6,8 +6,6 @@ excerpt: >-
   detrimental to your site’s caching. It then shows you how to fix this.
 categories:
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: WordPress comments, cookies and caching'
 ---
 This post explains how WordPress uses comment cookies and why that is detrimental to your site’s caching. It then shows you how to fix this.
 

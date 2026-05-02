@@ -83,7 +83,7 @@ const pageContext: SchemaPageContext = isBlog ? {
     description: blogData!.excerpt ?? blogData!.seo?.description ?? '',
     publishDate: blogData!.publishDate,
     updatedDate: effectiveUpdatedDate ?? undefined,
-    featureImageUrl: canonicalUrl(`/og/${entry.id}.png`),
+    featureImageUrl: canonicalUrl(`/og/${entry.id}.webp`),
     categories: blogData!.categories,
     wordCount: (entry.body ?? '').split(/\s+/).length
 } : {

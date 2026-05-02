@@ -7,8 +7,6 @@ excerpt: >-
   imp
 categories:
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Introducing a new plugin: Progress Planner'
 ---
 Ever since Marieke and I [left Yoast](/yoast-joins-newfold/), we’ve considered building a new WordPress product. We love working on something that people can use—something that will improve their website or make working on their website easier. About a year ago, we came up with something, and we’ve been playing with that idea ever since. We’ve been creating and developing in the past few months, and today, the first version is done! Let me tell you everything about Progress Planner!
 

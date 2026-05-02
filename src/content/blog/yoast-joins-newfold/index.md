@@ -7,8 +7,6 @@ excerpt: >-
   remain
 categories:
   - Yoast
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Yoast joins Newfold'
 ---
 **Update:** Since this acquisition, I've written about how the [WordPress admin UI needs to improve](/wordpress-admin-ui-needs-to-be-better/) and eventually [transitioned to a new role](/new-role-at-yoast/) before leaving Yoast entirely.
 

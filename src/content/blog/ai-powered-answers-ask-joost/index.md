@@ -9,8 +9,6 @@ categories:
   - Development
   - AI
 draft: false
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Ask Joost: AI-powered answers from my blog'
 ---
 
 I have written quite a bit. Over the years, this blog has accumulated posts about WordPress, SEO, open source governance, CMS market share, and plenty more. Finding the right post for a specific question means searching, skimming, and hoping the title matches what you're looking for. That's not great.

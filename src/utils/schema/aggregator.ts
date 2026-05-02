@@ -47,7 +47,7 @@ export async function aggregateBlogPosts(): Promise<AggregatedSchema> {
             description: post.data.excerpt ?? '',
             publishDate: post.data.publishDate,
             updatedDate: post.data.updatedDate,
-            featureImageUrl: `${SITE_URL}/og/${post.id}.png`,
+            featureImageUrl: `${SITE_URL}/og/${post.id}.webp`,
             categories: post.data.categories,
             wordCount: (post.body ?? '').split(/\s+/).length
         };

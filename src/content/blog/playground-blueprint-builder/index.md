@@ -7,8 +7,6 @@ excerpt: >-
   an id
 categories:
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Playground Blueprint Builder'
 ---
 I have been playing with the [WordPress Playground](https://wordpress.org/playground/) a lot. As I did, I wanted a way to quickly make a copy of an existing site to a new Playground. It seems an ideal way to test new plugins, themes, and other things you’d want to change.
 

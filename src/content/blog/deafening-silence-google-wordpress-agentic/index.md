@@ -11,10 +11,6 @@ excerpt: >-
 categories:
   - Open Source
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: >-
-  Illustration for: The silence is deafening: Google’s “agentic” future leaves
-  the WordPress economy behind
 ---
 **Google just announced a massive shift in how the internet shops, and the biggest platform on the web wasn’t even in the room.**
 

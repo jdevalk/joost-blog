@@ -8,8 +8,6 @@ excerpt: >-
 categories:
   - Development
 toc: true
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Dropping Astro''s ClientRouter for web standards'
 ---
 
 Astro ships a built-in SPA router called `ClientRouter`. It intercepts navigations, swaps the DOM in JavaScript, and fires its own lifecycle events — giving you smooth transitions, prefetching, and persistent elements across page loads. For a complex app with shared state across routes, that JavaScript layer earns its keep.

@@ -8,8 +8,6 @@ excerpt: >-
   those.
 categories:
   - Development
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Good-looking GitHub profile pages'
 ---
 After my [blog post about healthy GitHub repositories](/healthy-github-repository/), I learned that many people didn’t know how to create `.github` repositories and what you can do with those. That automatically also means that you don’t know about organization profile pages, so I wrote a quick post about those, too, which you’re reading now. I’ll start by explaining how to make a good-looking organization page, and then we’ll talk about your [*personal* GitHub profile](#h-personal-github-profile).
 

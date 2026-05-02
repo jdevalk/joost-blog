@@ -7,8 +7,6 @@ excerpt: >-
   to tr
 categories:
   - Open Source
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: HelpScout to Freescout'
 ---
 ## Migrating from SaaS to open-source
 

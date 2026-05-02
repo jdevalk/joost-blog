@@ -7,8 +7,6 @@ excerpt: >-
   Everyone see
 categories:
   - Open Source
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Docusign to Documenso'
 ---
 ## Migrating from SaaS to open-source
 

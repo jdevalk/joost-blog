@@ -8,8 +8,6 @@ excerpt: >-
 categories:
   - WordPress
   - Yoast
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Building a trusted web, step 1.'
 ---
 One of the biggest long-term trust problems of the web is reliably figuring out who published something *first*. Who was first has deep implications for ownership, and for areas like citation and (Google) news rankings. Today we have submitted [an issue to the Schema.org GitHub](https://github.com/schemaorg/schemaorg/issues/2756) which proposes a solution to *fix* this using timestamps on the blockchain. I view this as a first step in fixing some of the inherent trust issues on the web.
 

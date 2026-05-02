@@ -7,8 +7,6 @@ excerpt: >-
   but very i
 categories:
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Marketing WordPress – first steps'
 ---
 I’ve had the question a few times now of what I’ve been up to since I got appointed lead marketing for WordPress. The first few weeks have been busy, but very interesting. The marketing team is doing a *lot* of things. I won’t go over all of them here, but wanted to show some of the projects we’ve worked on and how the processes around them work. As you’ll see, most of my focus so far has been on WordPress.org itself and team processes.
 

@@ -14,8 +14,6 @@ categories:
   - Development
 isFeatured: false
 toc: true
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Astro SEO: the definitive guide'
 ---
 In 2008, I wrote [WordPress SEO: the definitive guide](https://yoast.com/wordpress-seo/). It became one of the most-linked SEO articles on the internet and laid the groundwork for what eventually became Yoast SEO. The tools have changed, the web has changed, and my thinking on several fundamentals has evolved. This is the Astro version.
 

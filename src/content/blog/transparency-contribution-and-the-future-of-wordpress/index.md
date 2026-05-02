@@ -7,8 +7,6 @@ excerpt: >-
   between big co
 categories:
   - WordPress
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Transparency, Contribution, and the Future of WordPress'
 ---
 **Update:** This post was the start of a longer series. I followed it with posts on [WordPress leadership](/wordpress-leadership/), [what should be on the roadmap](/wordpress-roadmap/), and eventually [a path forward through FAIR](/path-forward-for-wordpress/).
 

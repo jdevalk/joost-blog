@@ -11,8 +11,6 @@ excerpt: >-
 categories:
   - SEO
   - AI
-featureImage: ./images/featured.webp
-featureImageAlt: 'Illustration for: Standards don''t prove themselves'
 toc: true
 ---
 Measuring whether a standard works by checking if anyone uses it before it exists is backward. And yet that's exactly what The SEO Framework just did.
