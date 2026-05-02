@@ -130,6 +130,7 @@ function articleHtml({ title, category, publishDate, readingTime, articleNumber,
         font-family: 'DomaineDisplay', serif; font-weight: 500;
         font-size: ${fontSize}; line-height: 1.0;
         letter-spacing: -0.03em; color: ${ink};
+        text-wrap: balance;
     }
     .byline {
         position: absolute; right: 40px; bottom: 40px;
