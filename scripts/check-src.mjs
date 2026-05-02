@@ -4,8 +4,9 @@
  * Run as part of `npm run build` so CI catches regressions before deploy.
  */
 
-import { readFileSync, readdirSync, statSync } from 'fs';
+import { readFileSync, readdirSync, statSync, existsSync } from 'fs';
 import { join, relative } from 'path';
+import matter from 'gray-matter';
 
 let failures = 0;
 
@@ -60,6 +61,43 @@ if (!hasClientRouter) {
             }
         });
     });
+}
+
+// ---------------------------------------------------------------------------
+// Rule: latest published post must have a pre-generated OG image
+//
+// OG images are generated locally via `pnpm generate:og` and committed.
+// A missing image means the social share card will 404.
+// ---------------------------------------------------------------------------
+const BLOG_DIR = 'src/content/blog';
+const OG_DIR   = 'public/og';
+
+const blogDirs = readdirSync(BLOG_DIR).filter(name =>
+    statSync(join(BLOG_DIR, name)).isDirectory()
+);
+
+const posts = blogDirs.flatMap(slug => {
+    const mdPath  = join(BLOG_DIR, slug, 'index.md');
+    const mdxPath = join(BLOG_DIR, slug, 'index.mdx');
+    const filePath = existsSync(mdPath) ? mdPath : existsSync(mdxPath) ? mdxPath : null;
+    if (!filePath) return [];
+    const { data } = matter(readFileSync(filePath, 'utf8'));
+    if (!data.publishDate || data.draft) return [];
+    return [{ slug, publishDate: new Date(data.publishDate) }];
+});
+
+posts.sort((a, b) => b.publishDate - a.publishDate);
+const latest = posts[0];
+
+if (latest) {
+    const ogPath = join(OG_DIR, `${latest.slug}.webp`);
+    if (!existsSync(ogPath)) {
+        fail(
+            `${OG_DIR}/${latest.slug}.webp`,
+            0,
+            `OG image missing for latest post "${latest.slug}". Run: pnpm generate:og --slug ${latest.slug}`,
+        );
+    }
 }
 
 // ---------------------------------------------------------------------------
