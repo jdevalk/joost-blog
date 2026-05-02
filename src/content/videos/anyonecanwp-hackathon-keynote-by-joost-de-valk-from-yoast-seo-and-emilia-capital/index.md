@@ -12,5 +12,6 @@ featureImage: ./images/thumbnail.jpg
 featureImageAlt: >-
   AnyoneCanWP Hackathon Keynote by Joost de Valk from Yoast SEO and Emilia
   Capital
+type: keynote
 ---
-Hackathon keynote by Joost de Valk for AnyoneCanWP, on WordPress, products, and the open web.
+This is my opening keynote for the AnyoneCanWP hackathon, where I talk about where WordPress stands today and where I think the ecosystem is heading. I discuss what it means that WordPress now powers such a significant portion of the web, and why that scale creates both responsibility and opportunity for developers building on top of it. I also share what I look for when thinking about new projects in the WordPress space.

@@ -1,6 +1,7 @@
 ---
-title: GitHub Actions to keep your WordPress plugin healthy
+title: GitHub Actions to keep your <em>WordPress plugin healthy</em>
 publishDate: 2024-01-23T00:00:00.000Z
+toc: true
 excerpt: >-
   I absolutely love GitHub Actions and have been using them more and more for
   several purposes. As I’ve seen on some of the GitHub repositories I’ve been
@@ -17,13 +18,20 @@ I absolutely love GitHub Actions and have been using them more and more for seve
 <p class="text-base leading-relaxed text-stone-700 dark:text-stone-300">Install my <a href="https://github.com/jdevalk/skills?tab=readme-ov-file#-wordpress-github-actions" class="text-primary underline decoration-1 underline-offset-2 hover:no-underline dark:text-accent">WordPress GitHub Actions skill</a>, or point your AI coding agent at this article. The skill analyzes your plugin's structure and drops in the workflows it needs.</p>
 </div>
 
+**Also see my other posts about GitHub usage**
+
+* [Good-looking GitHub profile pages](/good-looking-github-profile-pages/)
+* [How to create a healthy GitHub repository](/healthy-github-repository/)
+
 ## PHP
 
 ### Composer diff
 
 It can be quite hard to see what has been changed in Composer files, especially the lock file, which makes reviewing changes to them in pull requests hard. When added to your repository, this [composer diff action](https://github.com/marketplace/actions/composer-diff) adds a comment to every pull request that touches the `composer.lock` file and gives a human-readable table of changes to the composer file, as in the screenshot below.
 
-![Example of a comment left by the composer diff package, showing a table with changes to the composer.lock file.](./images/composer-diff-example.webp)### Composer security check
+![Example of a comment left by the composer diff package, showing a table with changes to the composer.lock file.](./images/composer-diff-example.webp)
+
+### Composer security check
 
 Another `composer.lock` scanning action, this (quite popular) Github action aptly called “[The PHP Security checker](https://github.com/marketplace/actions/the-php-security-checker)” scans your `composer.lock` file for security issues and tells you when you should be fixing them. You can see how we’ve implemented it, for instance, [in our Fewer Tags plugin here](https://github.com/Emilia-Capital/fewer-tags/blob/develop/.github/workflows/security.yml).
 
@@ -41,7 +49,9 @@ Another thing you should be running on every commit and pull request is a linter
 
 These actions will make a human-readable version of changes to your `package-lock.json` or `yarn.lock` file, which can otherwise be quite opaque. For Yarn, you can use [this action](https://github.com/marketplace/actions/yarn-lock-changes). I would recommend [a setup like this](https://gist.github.com/jdevalk/da9ac8f2acc6eada6dd10a8b114bc6cf), where it only runs if your `yarn.lock` actually changes. Similarly, you can use [this action](https://github.com/marketplace/actions/npm-lockfile-changes) to create a human-readable comment for your `package-lock.json` file, with a setup [like this example](https://gist.github.com/jdevalk/daa721c3f7af75255f8562820cbaab9a) to only run when the `package-lock.json` file has actually been changed.
 
-![Yarn lockfile diff GitHub Action comment on a pull request](./images/yarn-lock-changes.webp)## Testing
+![Yarn lockfile diff GitHub Action comment on a pull request](./images/yarn-lock-changes.webp)
+
+## Testing
 
 ### PHPUnit
 
@@ -62,3 +72,4 @@ I’m too lazy to do all the manual Subversion work needed to release plugins; w
 ## Share! What are your favorite actions?
 
 I’d love to hear in the comments what your favorite GitHub actions are.
+

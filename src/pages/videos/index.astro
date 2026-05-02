@@ -3,8 +3,6 @@ import { getCollection } from 'astro:content';
 import { getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SchemaGraph from '../../components/SchemaGraph.astro';
-import SpChrome from '../../components/SpChrome.astro';
-import SpFooter from '../../components/SpFooter.astro';
 import type { SchemaPageContext } from '../../utils/schema';
 import { canonicalUrl } from '../../utils/schema/constants';
 
@@ -14,6 +12,30 @@ const sorted = allVideos.sort(
 );
 const featuredVideo = sorted.find((v) => v.data.featured) ?? sorted[0];
 const listVideos = sorted.filter((v) => v.id !== featuredVideo.id);
+
+// Sequential numbering: featured = #1, rest = #2..N (oldest→newest)
+const listAsc = [...listVideos].sort(
+    (a, b) => new Date(a.data.publishDate).getTime() - new Date(b.data.publishDate).getTime()
+);
+const videoNumberMap = new Map(listAsc.map((v, i) => [v.id, i + 2]));
+
+// Year groups, newest first
+import type { CollectionEntry } from 'astro:content';
+type VideoEntry = CollectionEntry<'videos'>;
+const yearGroupMap = new Map<number, VideoEntry[]>();
+for (const video of listVideos) {
+    const year = new Date(video.data.publishDate).getFullYear();
+    if (!yearGroupMap.has(year)) yearGroupMap.set(year, []);
+    yearGroupMap.get(year)!.push(video);
+}
+const yearGroups = [...yearGroupMap.entries()]
+    .sort((a, b) => b[0] - a[0])
+    .map(([year, videos]) => ({ year, videos }));
+const allYears = yearGroups.map(g => g.year);
+
+const typeOrder = ['keynote', 'talk', 'podcast', 'interview', 'panel'] as const;
+const existingTypes = new Set(listVideos.map(v => v.data.type).filter(Boolean));
+const allTypes = typeOrder.filter(t => existingTypes.has(t));
 
 function formatDuration(isoDuration: string | undefined): string | null {
     if (!isoDuration) return null;
@@ -44,12 +66,12 @@ const featuredDate = dotDate(new Date(featuredVideo.data.publishDate));
 
 async function resolveThumb(video: typeof sorted[0]): Promise<string | null> {
     if (video.data.thumbnailUrl) return video.data.thumbnailUrl;
-    const yt = video.data.youtubeId;
-    if (yt) return `https://img.youtube.com/vi/${yt}/maxresdefault.jpg`;
     if (video.data.featureImage) {
         const img = await getImage({ src: video.data.featureImage, width: 800 });
         return img.src;
     }
+    const yt = video.data.youtubeId;
+    if (yt) return `https://img.youtube.com/vi/${yt}/maxresdefault.jpg`;
     return null;
 }
 
@@ -66,20 +88,18 @@ const pageContext: SchemaPageContext = {
 
 <BaseLayout title="Videos" description="Video presentations, podcasts, keynotes, and interviews by Joost de Valk on WordPress, SEO, open source, and the web.">
     <SchemaGraph pageContext={pageContext} />
-    <div slot="header" />
-    <div slot="footer" />
 
     <div class="sp-root sp-blocks sp-videos">
-        <SpChrome issue="VIDEOS · TALKS · INTERVIEWS" />
 
-        <section class="sp-videos-hero">
-            <div class="sp-about-kicker">
-                <span>§ Videos</span><span class="rule"></span><span>Talks, interviews &amp; podcasts</span>
+        <section class="sp-hero">
+            <div class="sp-section-inner">
+            <div class="sp-code-kicker">
+                <span>SECTION IV</span><span class="rule"></span><span>TALKS · INTERVIEWS · PODCASTS</span>
             </div>
-            <h1 class="sp-videos-title">
+            <h1 class="sp-display">
                 <em>Videos</em>.
             </h1>
-            <p class="sp-videos-lede">
+            <p class="sp-section-lede">
                 A curated archive of conference talks, podcast interviews, and keynotes on WordPress,
                 SEO, open source, and building products on the web.
             </p>
@@ -101,6 +121,7 @@ const pageContext: SchemaPageContext = {
                     <div class="l">Hours</div>
                 </div>
             </div>
+            </div>
         </section>
 
         <section class="sp-videos-featured">
@@ -112,7 +133,6 @@ const pageContext: SchemaPageContext = {
                     data-has-thumb={featuredThumb ? 'true' : undefined}
                 >
                     <div class="pst-kicker">§ FEATURED VIDEO</div>
-                    <div class="pst-title">{featuredVideo.data.title}</div>
                     <div class="pst-foot">
                         <span>{featuredDate}</span>
                         {featuredDuration && <span>{featuredDuration}</span>}
@@ -134,45 +154,137 @@ const pageContext: SchemaPageContext = {
         </section>
 
         <div class="sp-videos-filter-bar">
-            <span class="lbl">Filter</span>
-            <div class="chips">
-                <button class="chip on" type="button">All <span class="ct">{allVideos.length}</span></button>
+            <div class="sp-videos-filter-inner">
+                <div class="sp-videos-filter-group">
+                    <span class="lbl">Year</span>
+                    <div class="chips">
+                        <button class="chip on" type="button" data-year="all">All</button>
+                        {allYears.map(year => (
+                            <button class="chip" type="button" data-year={String(year)}>{year}</button>
+                        ))}
+                    </div>
+                </div>
+                <div class="sp-videos-filter-group">
+                    <span class="lbl">Type</span>
+                    <div class="chips">
+                        <button class="chip on" type="button" data-type="all">All</button>
+                        {allTypes.map(type => (
+                            <button class="chip" type="button" data-type={type}>{type}</button>
+                        ))}
+                    </div>
+                </div>
             </div>
-            <span class="rsvd">&mdash;</span>
         </div>
 
         <div class="sp-videos-list" data-pagefind-ignore="all">
-            {listVideos.map((video, i) => {
-                const dur = formatDuration(video.data.duration);
-                const date = dotDate(new Date(video.data.publishDate));
-                const excerpt = getExcerpt(video.body);
-                const thumb = listThumbs[i];
+            {yearGroups.map(({ year, videos }) => {
+                const thumbOffset = listVideos.indexOf(videos[0]);
                 return (
-                    <div class="sp-videos-row">
-                        <div class="sp-videos-num">{String(i + 2).padStart(2, '0')}</div>
-                        <a
-                            href={`/videos/${video.id}/`}
-                            class="sp-videos-thumb"
-                            style={thumb ? `--thm-bg: url('${thumb}')` : ''}
-                            data-has-thumb={thumb ? 'true' : undefined}
-                        >
-                            <div class="thm-title">{video.data.title}</div>
-                            <div class="thm-play">&#9654;</div>
-                            {dur && <div class="thm-dur">{dur}</div>}
-                        </a>
-                        <div class="sp-videos-meta">
-                            <div class="d">{date}</div>
-                        </div>
-                        <div class="sp-videos-body">
-                            <h4><a href={`/videos/${video.id}/`}>{video.data.title}</a></h4>
-                            {excerpt && <p>{excerpt}</p>}
-                            <a href={`/videos/${video.id}/`} class="lnk">Watch &rarr;</a>
-                        </div>
+                <div class="sp-videos-year-section" data-year-group={String(year)}>
+                    <div class="sp-videos-year-header">
+                        <span class="sp-videos-year-num">{year}</span>
+                        <hr class="sp-videos-year-rule" />
+                        <span id={`year-count-${year}`} class="sp-videos-year-count">{videos.length}&nbsp;{videos.length === 1 ? 'Video' : 'Videos'}</span>
                     </div>
+                    {videos.map((video) => {
+                        const num = videoNumberMap.get(video.id) ?? 0;
+                        const dur = formatDuration(video.data.duration);
+                        const date = dotDate(new Date(video.data.publishDate));
+                        const excerpt = getExcerpt(video.body);
+                        const thumbIdx = listVideos.indexOf(video);
+                        const thumb = listThumbs[thumbIdx];
+                        return (
+                            <div class="sp-videos-row" data-video-year={String(year)} data-video-type={video.data.type ?? ''}>
+                                <div class="sp-videos-num">{num}</div>
+                                <a
+                                    href={`/videos/${video.id}/`}
+                                    class="sp-videos-thumb"
+                                    style={thumb ? `--thm-bg: url('${thumb}')` : ''}
+                                    data-has-thumb={thumb ? 'true' : undefined}
+                                >
+                                    <div class="thm-play">&#9654;</div>
+                                    {dur && <div class="thm-dur">{dur}</div>}
+                                </a>
+                                <div class="sp-videos-meta">
+                                    <div class="d">{date}</div>
+                                    {video.data.type && <div class="t">{video.data.type}</div>}
+                                    {video.data.with && (
+                                        <div class="w">
+                                            with {Array.isArray(video.data.with)
+                                                ? video.data.with.join(', ')
+                                                : video.data.with}
+                                        </div>
+                                    )}
+                                </div>
+                                <div class="sp-videos-body">
+                                    <h4><a href={`/videos/${video.id}/`}>{video.data.title}</a></h4>
+                                    {excerpt && <p>{excerpt}</p>}
+                                    <a href={`/videos/${video.id}/`} class="lnk">Watch &rarr;</a>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
                 );
             })}
         </div>
 
-        <SpFooter />
     </div>
 </BaseLayout>
+
+<script>
+    const yearChips = document.querySelectorAll<HTMLButtonElement>('.sp-videos-filter-bar .chip[data-year]');
+    const typeChips = document.querySelectorAll<HTMLButtonElement>('.sp-videos-filter-bar .chip[data-type]');
+    const rows = document.querySelectorAll<HTMLElement>('.sp-videos-row[data-video-year]');
+
+    let activeYear = 'all';
+    let activeType = 'all';
+
+    function applyFilter() {
+        const yearCounts = new Map<string, number>();
+
+        for (const row of rows) {
+            const year = row.dataset.videoYear ?? '';
+            const type = row.dataset.videoType ?? '';
+            const visible =
+                (activeYear === 'all' || year === activeYear) &&
+                (activeType === 'all' || type === activeType);
+            row.style.display = visible ? '' : 'none';
+            if (visible) yearCounts.set(year, (yearCounts.get(year) ?? 0) + 1);
+        }
+
+        document.querySelectorAll<HTMLElement>('[data-year-group]').forEach(section => {
+            const year = section.dataset.yearGroup ?? '';
+            const count = yearCounts.get(year) ?? 0;
+            section.style.display = count > 0 ? '' : 'none';
+            const labelEl = document.getElementById(`year-count-${year}`);
+            if (labelEl) labelEl.textContent = `${count} ${count === 1 ? 'Video' : 'Videos'}`;
+        });
+    }
+
+    yearChips.forEach(btn => {
+        btn.addEventListener('click', () => {
+            activeYear = btn.dataset.year ?? 'all';
+            yearChips.forEach(b => b.classList.toggle('on', b === btn));
+            applyFilter();
+        });
+    });
+
+    typeChips.forEach(btn => {
+        btn.addEventListener('click', () => {
+            activeType = btn.dataset.type ?? 'all';
+            typeChips.forEach(b => b.classList.toggle('on', b === btn));
+            applyFilter();
+        });
+    });
+
+    // Sync sticky top with header height
+    const header = document.querySelector<HTMLElement>('.sp-header');
+    const root = document.querySelector<HTMLElement>('.sp-root');
+    if (header && root) {
+        const ro = new ResizeObserver(() => {
+            root.style.setProperty('--sp-header-h', header.offsetHeight + 'px');
+        });
+        ro.observe(header);
+    }
+</script>

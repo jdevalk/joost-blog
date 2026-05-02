@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SpChrome from '../components/SpChrome.astro';
-import SpFooter from '../components/SpFooter.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
@@ -20,32 +18,43 @@ const pageContext: SchemaPageContext = {
 
 <BaseLayout title={title} description={description}>
     <SchemaGraph pageContext={pageContext} />
-    <div slot="header" />
-    <div slot="footer" />
 
     <div class="sp-root sp-blocks sp-post" data-pagefind-body>
-        <SpChrome issue={`DATA REPORT · ${currentYear}`} />
 
         <section class="sp-post-hero">
-            <nav class="sp-post-crumbs" aria-label="Breadcrumb">
-                <a href="/">Home</a>
-                <span class="sep">/</span>
-                <span aria-current="page">CMS Market Share</span>
-            </nav>
-            <div class="sp-post-category">Data Report</div>
-            <h1 class="sp-post-title">CMS Market Share</h1>
-            <div class="sp-post-meta-row">
-                <span>Source · <strong>HTTP Archive</strong></span>
-                <span>Updated · <strong>monthly</strong></span>
+            <div class="sp-section-inner">
+                <nav class="sp-post-crumbs" aria-label="Breadcrumb">
+                    <a href="/">Home</a>
+                    <span class="sep">/</span>
+                    <span aria-current="page">CMS Market Share</span>
+                </nav>
+                <div class="sp-post-category">Data Report</div>
+                <h1 class="sp-post-title">CMS Market Share</h1>
+                <div class="sp-post-meta-row">
+                    <span>Source · <strong>HTTP Archive</strong></span>
+                </div>
             </div>
         </section>
 
         <section class="sp-post-body sp-cms-body">
-            <div class="sp-cms-intro">
-                <p>Based on data from the <a href="https://httparchive.org/">HTTP Archive</a>, this report focuses on the CMS market share of the most popular CMSes and related important web (and WordPress) technologies.</p>
-                <p>This report does not contain commentary on these numbers. The commentary can be found in posts on my blog in the <a href="/category/market-share-analysis/">market share analysis</a> category.</p>
-            </div>
-            <article class="sp-cms-content">
+            <div class="sp-post-grid">
+                <nav class="sp-post-toc" aria-label="Table of contents">
+                    <div class="lbl">On this page</div>
+                    <ol>
+                        <li><a href="#most-popular-cmses" data-toc-link><span class="sp-post-toc-num">01</span>Most popular CMSes</a></li>
+                        <li><a href="#most-popular-ecommerce-systems" data-toc-link><span class="sp-post-toc-num">02</span>eCommerce systems</a></li>
+                        <li><a href="#most-popular-wordpress-page-builders" data-toc-link><span class="sp-post-toc-num">03</span>Page builders</a></li>
+                        <li><a href="#most-popular-wordpress-block-libraries" data-toc-link><span class="sp-post-toc-num">04</span>Block libraries</a></li>
+                        <li><a href="#most-popular-wordpress-seo-plugins" data-toc-link><span class="sp-post-toc-num">05</span>SEO plugins</a></li>
+                        <li><a href="#methodology-explanation" data-toc-link><span class="sp-post-toc-num">06</span>Methodology</a></li>
+                    </ol>
+                </nav>
+                <div>
+                <div class="sp-cms-intro">
+                    <p>Based on data from the <a href="https://httparchive.org/">HTTP Archive</a>, this report focuses on the CMS market share of the most popular CMSes and related important web (and WordPress) technologies.</p>
+                    <p>This report does not contain commentary on these numbers. The commentary can be found in posts on my blog in the <a href="/category/market-share-analysis/">market share analysis</a> category.</p>
+                </div>
+                <article class="sp-cms-content">
             <!-- Section: Most popular CMSes -->
             <section class="mb-16">
                 <div class="not-prose mb-6">
@@ -376,11 +385,31 @@ const pageContext: SchemaPageContext = {
                 </div>
             </section>
         </article>
+                </div>
+            </div>
         </section>
 
-        <SpFooter />
     </div>
 </BaseLayout>
+
+<script>
+    function initToc() {
+        const links = document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]');
+        if (links.length === 0) return;
+        const headingIds = Array.from(links).map(l => l.hash.slice(1));
+        const headings = headingIds.map(id => document.getElementById(id)).filter((el): el is HTMLElement => el !== null);
+        if (headings.length === 0) return;
+        const observer = new IntersectionObserver(() => {
+            let active = headings[0]!.id;
+            for (const heading of headings) {
+                if (heading.getBoundingClientRect().top <= 120) active = heading.id;
+            }
+            links.forEach(link => link.classList.toggle('active', link.hash === `#${active}`));
+        }, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+        headings.forEach(h => observer.observe(h));
+    }
+    initToc();
+</script>
 
 <script is:inline>
 // htmlLegendPlugin - custom plugin for clickable legends

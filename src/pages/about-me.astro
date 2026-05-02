@@ -1,9 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
-import SpChrome from '../components/SpChrome.astro';
-import SpFooter from '../components/SpFooter.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
 
@@ -11,6 +10,19 @@ const allVideos = await getCollection('videos');
 const recentVideos = allVideos
     .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
     .slice(0, 4);
+
+async function resolveThumb(video: typeof recentVideos[0]): Promise<string | null> {
+    if (video.data.thumbnailUrl) return video.data.thumbnailUrl;
+    const yt = video.data.youtubeId;
+    if (yt) return `https://img.youtube.com/vi/${yt}/maxresdefault.jpg`;
+    if (video.data.featureImage) {
+        const img = await getImage({ src: video.data.featureImage, width: 800 });
+        return img.src;
+    }
+    return null;
+}
+
+const recentThumbs = await Promise.all(recentVideos.map(resolveThumb));
 
 function formatDuration(isoDuration: string | undefined): string | null {
     if (!isoDuration) return null;
@@ -37,36 +49,31 @@ const pageContext: SchemaPageContext = {
 
 <BaseLayout title={title} description={description}>
     <SchemaGraph pageContext={pageContext} />
-    <div slot="header" />
-    <div slot="footer" />
 
     <div class="sp-root sp-blocks sp-about">
-        <SpChrome issue="ABOUT · JOOST DE VALK" />
 
-        <section class="sp-about-hero">
+        <section class="sp-hero">
             <div class="sp-about-hero-grid">
                 <div>
-                    <div class="sp-about-kicker">
-                        <span>§ About me</span><span class="rule"></span><span>Wijchen · NL</span>
+                    <div class="sp-code-kicker">
+                        <span>SECTION II</span><span class="rule"></span><span>ABOUT ME · WIJCHEN, NL</span>
                     </div>
-                    <h1 class="sp-about-title">
-                        Hi, I'm <em>Joost</em> de Valk.
+                    <h1 class="sp-display">
+                        Hi! I'm <em>Joost</em> de Valk
                     </h1>
-                    <p class="sp-about-lede">
-                        Internet entrepreneur from the Netherlands. I'm married to <a href="https://marieke.com/">Marieke</a>;
-                        we have four children and live in Wijchen.
+                    <p class="sp-section-lede">
+                        I'm an internet entrepreneur from the Netherlands. I'm married to <a href="https://marieke.com/">Marieke</a>;
+                        we have four children and live in Wijchen, the Netherlands.
                     </p>
                     <p class="sp-about-sub">
-                        Long history in open source and digital marketing. Founded Yoast and the
-                        Yoast SEO plugin for WordPress. Increasingly contributing to <a href="https://emdash.ai/">EmDash</a>
-                        and playing with Astro.
+                        I have a long history in open source and digital marketing. I founded Yoast and its
+                        Yoast SEO plugin for WordPress.
                     </p>
                 </div>
                 <div class="sp-about-portrait">
                     <img src="/images/joost-de-valk-profile-picture.jpg" alt="Joost de Valk" width="400" height="500" />
                     <div class="sp-about-portrait-cap">
-                        Portrait · Wijchen, 2025<br />
-                        Photo by Marieke
+                        Portrait · Aquilea, 2026
                     </div>
                 </div>
             </div>
@@ -80,32 +87,32 @@ const pageContext: SchemaPageContext = {
             <div class="sp-about-story-grid">
                 <article class="sp-about-prose" data-pagefind-body>
                     <p>
-                        I've worn a couple of different hats in my time at Yoast. First, for
-                        almost <em>nine years</em>, I was the CEO. Then I became Chief Product Officer
+                        I have worn a couple of different hats in my time at Yoast. First, for
+                        almost 9 years, I was the CEO, then I became Chief Product Officer
                         when my wife <a href="https://marieke.com/">Marieke</a> took over as CEO. We sold Yoast to Newfold Digital
                         in August of 2021, after which I became Head of WordPress Strategy at Newfold
-                        for a while. I then came back for a six-month stint as interim CTO (because
-                        they were suddenly without one) in 2022&ndash;2023. I finally left the company
+                        for a while. I then came back for a 6-month stint as interim CTO (because
+                        they were suddenly without one) in 2022-2023. I finally left the company
                         in April 2023.
                     </p>
                     <p>
                         When we left Yoast, Marieke and I started investing through our company,
                         <a href="https://emilia.capital/">Emilia Capital</a>. We invest in companies that play at least partly in
-                        the digital space &mdash; and often in WordPress. Because of that, I'm
+                        the digital space (and often in WordPress). Because of that, I'm
                         on the board of <a href="https://patchstack.com/">PatchStack</a> and <a href="https://atarim.io/">Atarim</a>. We also started our own
                         new company; we're working hard on <a href="https://progressplanner.com/">Progress Planner</a>.
                     </p>
                     <p>
                         I founded Yoast in 2010 after working as a digital marketing consultant in
                         several different companies. I've worked on some of the biggest SEO
-                        projects in the world, including the <a href="https://www.theguardian.com/info/developer-blog/2014/feb/18/how-the-guardian-successfully-moved-domain">Guardian's site migration from
+                        projects in the world, like the <a href="https://www.theguardian.com/info/developer-blog/2014/feb/18/how-the-guardian-successfully-moved-domain">Guardian's site migration from
                         .co.uk to theguardian.com</a>.
                     </p>
                     <p>
                         In my spare time, I can often be found coaching kids' soccer at
                         <a href="https://svawc.nl/">AWC</a>, where I'm also a board member. This is also why I started
                         working on <a href="https://rondo.club/">Rondo</a>. On holidays, Marieke and I love spending time in our
-                        <a href="https://limonaia.house/">holiday home in Tuscany</a> or travelling to other places in the world.
+                        <a href="https://limonaia.house/">holiday home in Tuscany</a> or traveling to other places in the world.
                     </p>
                 </article>
                 <aside class="sp-about-timeline">
@@ -153,12 +160,17 @@ const pageContext: SchemaPageContext = {
                 <h2>Recent speaking engagements.</h2>
             </div>
             <div class="sp-about-speaking-grid">
-                {recentVideos.map(v => {
+                {recentVideos.map((v, i) => {
                     const dur = formatDuration(v.data.duration);
+                    const thumb = recentThumbs[i];
                     const month = new Intl.DateTimeFormat('en', {month: 'short', year: 'numeric'}).format(new Date(v.data.publishDate)).toUpperCase();
                     return (
                         <a href={`/videos/${v.id}/`} class="sp-about-talk">
-                            <div class="sp-about-talk-thumb">
+                            <div
+                                class="sp-about-talk-thumb"
+                                style={thumb ? `--thm-bg: url('${thumb}')` : ''}
+                                data-has-thumb={thumb ? 'true' : undefined}
+                            >
                                 <div class="play">&#9654;</div>
                                 {dur && <div class="dur">{dur}</div>}
                             </div>
@@ -180,8 +192,7 @@ const pageContext: SchemaPageContext = {
                     <h2>What I build.</h2>
                     <p>
                         From WordPress plugins to SaaS products, I'm always working on something.
-                        The workshop page has the current list &mdash; npm packages, plugins, and a
-                        featured project or two.
+                        See all my current projects on my code page.
                     </p>
                 </div>
                 <div class="sp-about-build-cta">
@@ -191,6 +202,5 @@ const pageContext: SchemaPageContext = {
             </div>
         </section>
 
-        <SpFooter />
     </div>
 </BaseLayout>

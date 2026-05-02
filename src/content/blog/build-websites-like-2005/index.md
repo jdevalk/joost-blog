@@ -1,5 +1,5 @@
 ---
-title: Build websites like it’s 2005 (and win in 2025)
+title: Build websites like it’s 2005 (and <em>win in 2025</em>)
 publishDate: 2025-03-26T00:00:00.000Z
 excerpt: >-
   Last week was a whirlwind, first diving deep into AI and WordPress while

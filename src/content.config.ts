@@ -41,6 +41,8 @@ const pages = defineCollection({
     schema: ({ image }) =>
         z.object({
             title: z.string(),
+            section: z.string().optional(),
+            toc: z.boolean().default(false),
             featureImage: image().optional(),
             featureImageAlt: z.string().optional(),
             featureImageCaption: z.string().optional(),
@@ -63,7 +65,9 @@ const videos = defineCollection({
             featureImage: image().optional(),
             featureImageAlt: z.string().optional(),
             featureImageCaption: z.string().optional(),
-            seo: seoSchema(image).optional()
+            seo: seoSchema(image).optional(),
+            type: z.enum(['keynote', 'talk', 'podcast', 'interview', 'panel']).optional(),
+            with: z.union([z.string(), z.array(z.string())]).optional()
         })
 });
 

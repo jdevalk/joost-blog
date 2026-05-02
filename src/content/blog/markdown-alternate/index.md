@@ -53,3 +53,5 @@ These two approaches aren’t in conflict. A WordPress site could use Markdown A
 The bigger picture is that the web is adapting to a new kind of consumer. HTML isn’t going away, but the expectation that every consumer of web content is a browser is. Markdown is emerging as the lingua franca for AI systems, and the sooner publishers start serving it natively, the better their content will perform in an agent-driven world.
 
 [Markdown Alternate is available on GitHub.](https://github.com/progressplanner/markdown-alternate)
+
+**Update:** Since moving this site to Astro, I've ported the same idea as [`@jdevalk/astro-markdown-alternate`](https://www.npmjs.com/package/@jdevalk/astro-markdown-alternate) — same concepts, adapted for Astro's content pipeline.

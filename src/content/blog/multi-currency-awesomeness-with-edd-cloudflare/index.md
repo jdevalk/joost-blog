@@ -46,7 +46,9 @@ Now, the next challenge is displaying the right price and the right currency! Lu
 
 ![Button rendered with price in euros for EU visitors](./images/CleanShot-2024-01-26-at-11.44.01.webp)Or this if you’re from the US:
 
-![Button rendered with price in US dollars for US visitors](./images/CleanShot-2024-01-26-at-11.45.09.webp)## You don’t need a currency switcher!
+![Button rendered with price in US dollars for US visitors](./images/CleanShot-2024-01-26-at-11.45.09.webp)
+
+## You don’t need a currency switcher!
 
 By doing this, I would argue you do not need a currency switcher dropdown or buttons on your EDD site, and you can give people the correct currency, depending on where they come from, without any coding!
 

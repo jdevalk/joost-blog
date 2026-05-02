@@ -6,7 +6,7 @@ excerpt: >-
   from my CMS market share analysis that WordPress has been growing fast. Could
   it be
 categories:
-  - Market Share Analysis
+  - Research
   - WordPress
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Elementor: WordPress’ secret growth driver?'

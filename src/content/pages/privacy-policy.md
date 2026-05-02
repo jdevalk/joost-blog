@@ -1,13 +1,14 @@
 ---
 title: Privacy policy
 searchWeight: 0.3
+toc: true
 ---
 I deeply value your privacy and aim to keep things simple. Here’s what you need to know:
 
 ## Cookies
 
-- This website only uses cookies when you leave a comment or fill out a contact form. These cookies are used to improve your experience, like remembering your details for future comments.
-- No other tracking cookies are used.
+- This website does not use tracking cookies.
+- Cloudflare Turnstile (used on the contact form) may set cookies for spam protection purposes.
 
 ## Analytics
 
@@ -15,7 +16,7 @@ I deeply value your privacy and aim to keep things simple. Here’s what you nee
 
 ## Use of Cloudflare Turnstile
 
-I use Cloudflare Turnstile on this site to protect my forms (both comment- and contact forms) from spam and abuse. When you interact with a form protected by Turnstile, Cloudflare may collect and process the following data:
+I use Cloudflare Turnstile on the contact form to protect it from spam and abuse. When you interact with a form protected by Turnstile, Cloudflare may collect and process the following data:
 
 - **IP address** and other connection-related information.
 - **Browser and device information**, such as operating system, user agent, and cookies.
@@ -27,8 +28,7 @@ The information collected by Turnstile is sent directly to Cloudflare and is not
 
 ## Your data
 
-- If you leave a comment, I collect the information you provide (like your name and email) to display your comment.
-- If you fill out a contact form, I only use your information to respond to your inquiry.
+- If you fill out the contact form, I only use your information to respond to your inquiry.
 
 ## Sharing your data
 

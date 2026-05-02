@@ -1,5 +1,5 @@
 ---
-title: 'Vibe coding is a trap: why WordPress needs a design system NOW'
+title: 'Vibe coding is a trap: why WordPress needs a <em>design system now</em>'
 seo:
   title: Why WordPress needs a design system now
 publishDate: 2025-12-23T00:00:00.000Z
@@ -10,6 +10,7 @@ excerpt: >-
 categories:
   - Development
   - WordPress
+  - AI
 featureImage: ./images/featured.webp
 featureImageAlt: >-
   Illustration for: Vibe coding is a trap: why WordPress needs a design system

@@ -1,5 +1,5 @@
 ---
-title: 'Astro SEO: the definitive guide'
+title: 'Astro SEO: the <em>definitive</em> guide.'
 seo:
   description: "Eighteen years after 'WordPress SEO: the definitive guide,' here's the Astro version — the full SEO stack for 2026, from JSON-LD to agent discovery."
 publishDate: 2026-04-12T00:00:00.000Z

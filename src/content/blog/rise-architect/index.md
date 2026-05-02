@@ -1,5 +1,5 @@
 ---
-title: The death of Code Copyright (and the rise of the Architect)
+title: The death of Code Copyright (and the <em>rise of the Architect</em>)
 seo:
   title: Code copyright is dead, long live the Architect
 publishDate: 2025-12-21T00:00:00.000Z
@@ -10,6 +10,7 @@ excerpt: >-
 categories:
   - Development
   - Open Source
+  - AI
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: The death of Code Copyright (and the rise of the Architect)'
 ---

@@ -8,6 +8,7 @@ excerpt: >-
 categories:
   - Development
   - Productivity hacks
+  - AI
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Share Obsidian links that actually work everywhere'
 ---

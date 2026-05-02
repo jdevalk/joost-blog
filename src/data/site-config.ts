@@ -12,17 +12,16 @@ const siteConfig: SiteConfig = {
         { text: 'Blog', href: '/blog/' },
         { text: 'About', href: '/about-me/' },
         { text: 'Code', href: '/code/' },
-        { text: 'CMS Market Share', href: '/cms-market-share/' },
         { text: 'Videos', href: '/videos/' },
-        { text: 'Contact', href: '/contact-me/' },
-        { text: 'Ask', href: '/ask-joost/' }
+        { text: 'Research', href: '/research/' },
+        { text: 'Contact', href: '/contact-me/' }
     ],
     secondaryNavLinks: [],
     socialLinks: [
-        { text: 'X / Twitter', href: 'https://x.com/jdevalk', icon: 'x' },
+        { text: 'Bluesky', href: 'https://bsky.app/profile/joost.blog', icon: 'bluesky' },
         { text: 'GitHub', href: 'https://github.com/jdevalk', icon: 'github' },
         { text: 'LinkedIn', href: 'https://www.linkedin.com/in/jdevalk/', icon: 'linkedin' },
-        { text: 'Bluesky', href: 'https://bsky.app/profile/joost.blog', icon: 'bluesky' }
+        { text: 'X / Twitter', href: 'https://x.com/jdevalk', icon: 'x' }
     ],
     hero: {
         title: "Joost de Valk",

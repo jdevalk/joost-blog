@@ -78,7 +78,9 @@ For the email sending part, Documenso allows you to put several different types 
 
 Once you’ve done all that, you should have something that looks like this:
 
-![Screenshot of the Documenso interface](./images/documenso-screenshot.webp)## The benefits
+![Screenshot of the Documenso interface](./images/documenso-screenshot.webp)
+
+## The benefits
 
 Next to the cost benefits, more on that below, there are a few other benefits:
 

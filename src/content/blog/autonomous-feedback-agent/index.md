@@ -7,6 +7,7 @@ excerpt: >-
   Club, a
 categories:
   - Development
+  - AI
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Building an Autonomous Feedback Agent'
 ---

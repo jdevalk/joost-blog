@@ -1,5 +1,5 @@
 ---
-title: Shipping pieces of the machine-readable web
+title: SEO-graph - for the <em>machine-readable web</em>
 seo:
   description: I built a piece of the machine-readable web — seo-graph, a schema.org JSON-LD graph engine that now powers four sites and a CMS plugin.
 publishDate: 2026-04-10T00:00:00.000Z

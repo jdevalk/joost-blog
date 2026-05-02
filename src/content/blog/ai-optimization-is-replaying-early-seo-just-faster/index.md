@@ -1,5 +1,5 @@
 ---
-title: 'AI optimization is replaying early SEO, just faster'
+title: 'AI optimization is replaying <em>early SEO</em>, just faster'
 publishDate: 2026-03-11T00:00:00.000Z
 excerpt: >-
   If you were around for early SEO, the current AI-content wave should feel

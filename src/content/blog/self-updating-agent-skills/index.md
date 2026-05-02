@@ -1,5 +1,5 @@
 ---
-title: How I made my skills update themselves
+title: How I made my <em>skills update</em> themselves
 seo:
   description: >-
     Skills install as loose folders with no package manager. Here's the pattern

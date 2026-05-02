@@ -38,6 +38,7 @@
     },
     "devDependencies": {
         "@tailwindcss/typography": "^0.5.19",
+        "playwright": "^1.59.1",
         "prettier": "^3.6.2",
         "prettier-plugin-astro": "^0.14.1",
         "prettier-plugin-tailwindcss": "^0.6.14"

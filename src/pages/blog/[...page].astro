@@ -2,8 +2,6 @@
 import { type CollectionEntry, getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SchemaGraph from '../../components/SchemaGraph.astro';
-import SpChrome from '../../components/SpChrome.astro';
-import SpFooter from '../../components/SpFooter.astro';
 import type { SchemaPageContext } from '../../utils/schema';
 import { canonicalUrl } from '../../utils/schema/constants';
 import { getPublishedPosts, getReadingTime } from '../../utils/post-utils';
@@ -78,17 +76,21 @@ function fmtFullDate(date: Date): string {
     description="Articles, essays, and opinions by Joost de Valk on WordPress, SEO, open source, AI, and the future of the open web."
 >
     <SchemaGraph pageContext={pageContext} />
-    <div slot="header" />
-    <div slot="footer" />
 
     <div class="sp-root sp-blocks sp-archive">
-        <SpChrome issue="THE ARCHIVE" />
 
         <!-- Amber hero -->
         <section class="sp-hero arc-hero" data-pagefind-ignore="all">
             <div class="arc-hero-inner">
-                <h1 class="arc-title">The <em>Archive</em>.</h1>
-                <p class="arc-tagline">On WordPress, SEO, open source, AI, and the future of the web.</p>
+                <div class="sp-code-kicker">
+                    <span>SECTION I</span>
+                    <span class="rule"></span>
+                    <span>WRITING · ARTICLES · OPINIONS</span>
+                    <span class="rule"></span>
+                    <span>EST. {oldestYear}</span>
+                </div>
+                <h1 class="sp-display">The <em>Archive</em>.</h1>
+                <p class="sp-section-lede">On WordPress, SEO, open source, AI, and the future of the web.</p>
                 <div class="arc-stats">
                     <span>{totalPosts} Articles</span>
                     <span>&middot;</span>
@@ -139,7 +141,7 @@ function fmtFullDate(date: Date): string {
                             <span>{featuredReadMins} min read</span>
                         </div>
                         <h2 class="arc-featured-title">
-                            <a href={`/${featuredPost.id}/`}>{featuredPost.data.title}</a>
+                            <a href={`/${featuredPost.id}/`} set:html={featuredPost.data.title} />
                         </h2>
                         {featuredPost.data.excerpt && (
                             <p class="arc-featured-excerpt">{featuredPost.data.excerpt}</p>
@@ -174,7 +176,7 @@ function fmtFullDate(date: Date): string {
                                         <span class="sp-col-n">{num}</span>
                                         <span class="sp-col-date">{fmtDate(date)}</span>
                                         <span class="sp-col-cat">{primaryCat}</span>
-                                        <span class="sp-col-title">{post.data.title}</span>
+                                        <span class="sp-col-title" set:html={post.data.title} />
                                         <span class="sp-col-read">{readMins}&nbsp;min</span>
                                     </a>
                                 );
@@ -185,86 +187,73 @@ function fmtFullDate(date: Date): string {
             </div>
         </main>
 
-        <SpFooter />
     </div>
 </BaseLayout>
 
 <style>
     /* ── Archive page layout ───────────────────────────────── */
 
-    .arc-hero { /* background from .sp-hero; override padding */ }
+    .arc-hero { padding: 64px 64px 56px; }
     .arc-hero-inner {
         max-width: 1280px; margin: 0 auto;
-        padding: 64px 64px 56px;
     }
-    .arc-title {
-        font-family: 'DomaineDisplay', serif;
-        font-weight: 300;
-        font-size: clamp(64px, 8vw, 120px);
-        line-height: 0.9; letter-spacing: -0.03em;
-        color: #1a1410; margin: 0 0 32px;
-    }
-    .arc-title em {
-        font-style: italic; color: #5e1224;
-    }
-    .arc-tagline {
-        font-size: 18px; color: rgba(26, 20, 16, 0.65);
-        margin: 0 0 32px; max-width: 52ch;
-    }
-    .arc-stats {
+
+.arc-stats {
         display: flex; flex-wrap: wrap; gap: 12px 20px;
         font-family: 'JetBrains Mono', monospace;
-        font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
-        color: rgba(26, 20, 16, 0.45);
+        font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+        color: color-mix(in srgb, var(--hero-fg) 60%, transparent);
+        margin-top: 32px;
     }
 
     /* ── Filter bar ────────────────────────────────────────── */
     .arc-filters {
         position: sticky; top: var(--sp-header-h, 107px); z-index: 40;
-        background: #f0eae2;
-        border-bottom: 1px solid #1a1410;
+        background: var(--paper);
+        border-bottom: 1px solid var(--ink);
+        padding: 0 64px;
     }
     .arc-filters-row {
         display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-        padding: 8px 64px;
+        padding: 8px 0;
         max-width: 1280px; margin: 0 auto;
     }
-    .arc-filters-row:first-child { border-bottom: 1px solid rgba(26, 20, 16, 0.12); }
+    .arc-filters-row:first-child { border-bottom: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); }
     .arc-filter-label {
         font-family: 'JetBrains Mono', monospace;
         font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-        color: #5a4e3a; margin-right: 2px; flex-shrink: 0; width: 2.5rem;
+        color: var(--ink-soft); margin-right: 2px; flex-shrink: 0; width: 2.5rem;
     }
     .arc-filter {
         font-family: 'JetBrains Mono', monospace;
         font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
-        padding: 4px 10px; border: 1px solid rgba(26, 20, 16, 0.25);
-        background: transparent; color: #5a4e3a;
+        padding: 4px 10px; border: 1px solid color-mix(in srgb, var(--ink) 25%, transparent);
+        background: transparent; color: var(--ink-soft);
         cursor: pointer; flex-shrink: 0;
         transition: border-color 0.12s, background 0.12s, color 0.12s;
     }
     .arc-filter:hover {
-        border-color: #5e1224; color: #5e1224;
+        border-color: var(--ox); color: var(--ox);
     }
     .arc-filter.active {
-        border-color: #1a1410; background: #1a1410; color: #f0eae2;
+        border-color: var(--ink); background: var(--ink); color: var(--field-fg);
     }
 
     /* ── Main content area ─────────────────────────────────── */
-    .arc-main { overflow-x: hidden; }
+    .arc-main { overflow-x: hidden; padding: 0 64px; }
     .arc-inner {
         max-width: 1280px; margin: 0 auto;
-        padding: 0 64px 80px;
+        padding: 0 0 80px;
     }
     .arc-count {
         font-family: 'JetBrains Mono', monospace;
         font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-        color: #5a4e3a; margin: 24px 0 0;
+        color: var(--ink-soft); margin: 24px 0 0;
     }
 
     /* ── Featured card ─────────────────────────────────────── */
     .arc-featured {
-        border: 1px solid #1a1410;
+        border: 1px solid var(--ink);
         padding: 32px 40px;
         margin: 24px 0 48px;
     }
@@ -272,28 +261,28 @@ function fmtFullDate(date: Date): string {
         display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
         font-family: 'JetBrains Mono', monospace;
         font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-        color: #5a4e3a; margin-bottom: 20px;
+        color: var(--ink-soft); margin-bottom: 20px;
     }
-    .arc-featured-badge { color: #5e1224; }
+    .arc-featured-badge { color: var(--ox); }
     .arc-featured-title {
-        font-family: 'DomaineDisplay', serif;
-        font-weight: 300;
+        font-family: var(--font-display);
+        font-weight: var(--weight-display);
         font-size: clamp(28px, 4vw, 48px);
         line-height: 0.95; letter-spacing: -0.02em;
-        color: #1a1410; margin: 0 0 20px;
+        color: var(--ink); margin: 0 0 20px;
     }
     .arc-featured-title a {
         color: inherit; text-decoration: none;
     }
-    .arc-featured-title a:hover { color: #5e1224; }
+    .arc-featured-title a:hover { color: var(--ox); }
     .arc-featured-excerpt {
-        color: #5a4e3a; line-height: 1.6;
+        color: var(--ink-soft); line-height: 1.6;
         margin: 0 0 24px; max-width: 64ch; font-size: 15px;
     }
     .arc-featured-cta {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
-        color: #5e1224; text-decoration: none;
+        font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+        color: var(--ox); text-decoration: none;
     }
     .arc-featured-cta:hover { text-decoration: underline; }
 
@@ -304,18 +293,18 @@ function fmtFullDate(date: Date): string {
         margin-bottom: 4px; padding-top: 8px;
     }
     .arc-year-num {
-        font-family: 'DomaineDisplay', serif;
-        font-weight: 300;
+        font-family: var(--font-display);
+        font-weight: var(--weight-display);
         font-size: clamp(48px, 6vw, 80px);
-        line-height: 1; color: #5e1224; flex-shrink: 0;
+        line-height: 1; color: var(--ox); flex-shrink: 0;
     }
     .arc-year-rule {
-        flex: 1; border: none; border-top: 1px solid #1a1410;
+        flex: 1; border: none; border-top: 1px solid var(--ink);
     }
     .arc-year-count {
         font-family: 'JetBrains Mono', monospace;
         font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-        color: #5a4e3a; flex-shrink: 0;
+        color: var(--ink-soft); flex-shrink: 0;
     }
 
     /* sp-archive-list needs max-width reset inside arc-inner (already constrained by parent) */
@@ -323,13 +312,19 @@ function fmtFullDate(date: Date): string {
 
     /* ── Responsive ────────────────────────────────────────── */
     @media (max-width: 768px) {
-        .arc-hero-inner { padding: 40px 24px 36px; }
-        .arc-filters-row { padding: 7px 24px; }
-        .arc-inner { padding: 0 24px 60px; }
+        .arc-hero { padding: 40px 24px 36px; }
+        .arc-filters { position: static; padding: 0 24px; }
+        .arc-filters-row { gap: 6px; padding: 10px 0; flex-wrap: wrap; }
+        .arc-filter { padding: 10px 14px; min-height: 44px; font-size: 10px; }
+        .arc-main { padding: 0 24px; }
+        .arc-inner { padding: 0 0 60px; }
         .arc-featured { padding: 24px; }
         .sp-header { padding: 20px 24px; grid-template-columns: 1fr auto; }
         .sp-header .sp-header-right { display: none; }
         .sp-nav { gap: 14px; font-size: 12px; }
+    }
+    @media (max-width: 600px) {
+        .arc-filters { padding: 0 20px; }
     }
 </style>
 

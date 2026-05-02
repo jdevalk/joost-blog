@@ -1,28 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
-import SpChrome from '../components/SpChrome.astro';
-import SpFooter from '../components/SpFooter.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
 
 const pageContext: SchemaPageContext = {
     pageType: 'page',
     canonicalUrl: canonicalUrl('/ask-joost/'),
-    title: 'Ask Joost',
+    title: "Ask Joost's AI",
     description: 'Ask a question about SEO, WordPress, open source, or the web and get an AI-powered answer grounded in Joost de Valk\'s posts and videos.'
 };
 ---
 
-<BaseLayout title="Ask Joost" description="Ask a question about SEO, WordPress, open source, or the web and get an AI-powered answer grounded in Joost de Valk's posts and videos.">
+<BaseLayout title="Ask Joost's AI" description="Ask a question about SEO, WordPress, open source, or the web and get an AI-powered answer grounded in Joost de Valk's posts and videos.">
     <SchemaGraph pageContext={pageContext} />
-    <div slot="header" />
-    <div slot="footer" />
 
     <div class="sp-root sp-blocks sp-ask">
-        <SpChrome issue="ASK · AI-GENERATED FROM THE ARCHIVE" />
 
-        <section class="sp-ask-hero">
+        <section class="sp-hero sp-ask-hero">
+            <div class="sp-section-inner">
             <div class="sp-about-kicker">
                 <span>§ Ask</span><span class="rule"></span><span>Answers from 18 years of writing</span>
             </div>
@@ -39,6 +35,7 @@ const pageContext: SchemaPageContext = {
                 <button type="button" class="sp-ask-chip starter-btn" data-query="How do you think AI will affect SEO?">How do you think AI will affect SEO?</button>
                 <button type="button" class="sp-ask-chip starter-btn" data-query="Why did you leave Yoast?">Why did you leave Yoast?</button>
                 <button type="button" class="sp-ask-chip starter-btn" data-query="Astro vs. WordPress for a new blog?">Astro vs. WordPress for a new blog?</button>
+            </div>
             </div>
         </section>
 
@@ -74,7 +71,6 @@ const pageContext: SchemaPageContext = {
             </div>
         </section>
 
-        <SpFooter />
     </div>
 </BaseLayout>
 
@@ -145,7 +141,7 @@ const pageContext: SchemaPageContext = {
             const index = parseInt(fbBtn.dataset.index ?? '0', 10);
             const exchange = exchanges[index];
             const container = fbBtn.parentElement!;
-            container.innerHTML = `<span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#5a4e3a;letter-spacing:0.15em">${value === 'yes' ? 'GLAD IT HELPED' : 'THANKS FOR THE FEEDBACK'}</span>`;
+            container.innerHTML = `<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#4e5666;letter-spacing:0.15em">${value === 'yes' ? 'GLAD IT HELPED' : 'THANKS FOR THE FEEDBACK'}</span>`;
             console.log('Ask feedback:', { query: exchange?.query, value, index });
         });
 
@@ -159,10 +155,10 @@ const pageContext: SchemaPageContext = {
         }
 
         function renderFeedback(index: number) {
-            return `<div style="margin-top:14px;padding-top:10px;border-top:1px solid rgba(26,20,16,0.15);display:flex;align-items:center;gap:10px">
-                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#5a4e3a">Was this helpful?</span>
-                <button type="button" class="feedback-btn" data-index="${index}" data-value="yes" style="background:none;border:none;cursor:pointer;color:#5a4e3a;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em" title="Yes">&#10003;</button>
-                <button type="button" class="feedback-btn" data-index="${index}" data-value="no" style="background:none;border:none;cursor:pointer;color:#5a4e3a;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em" title="No">&#10007;</button>
+            return `<div style="margin-top:14px;padding-top:10px;border-top:1px solid rgba(31,37,48,0.15);display:flex;align-items:center;gap:10px">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#4e5666">Was this helpful?</span>
+                <button type="button" class="feedback-btn" data-index="${index}" data-value="yes" style="background:none;border:none;cursor:pointer;color:#4e5666;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em" title="Yes">&#10003;</button>
+                <button type="button" class="feedback-btn" data-index="${index}" data-value="no" style="background:none;border:none;cursor:pointer;color:#4e5666;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em" title="No">&#10007;</button>
             </div>`;
         }
 
@@ -272,7 +268,7 @@ const pageContext: SchemaPageContext = {
                                     target.innerHTML = formatAnswer(fullAnswer);
                                 }
                                 if (data.error && !fullAnswer) {
-                                    target.innerHTML = `<p style="color:#5e1224">${escapeHtml(data.error)}</p>`;
+                                    target.innerHTML = `<p style="color:#4a6480">${escapeHtml(data.error)}</p>`;
                                 }
                                 if (data.fallback) {
                                     fullAnswer = data.fallback;

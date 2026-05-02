@@ -1,8 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
-import SpChrome from '../components/SpChrome.astro';
-import SpFooter from '../components/SpFooter.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
 
@@ -19,15 +17,13 @@ const pageContext: SchemaPageContext = {
 
 <BaseLayout title={title} description={description}>
     <SchemaGraph pageContext={pageContext} />
-    <div slot="header" />
-    <div slot="footer" />
 
     <div class="sp-root sp-blocks sp-contact">
-        <SpChrome issue="CONTACT · GET IN TOUCH" />
 
-        <section class="sp-contact-hero">
-            <div class="sp-about-kicker">
-                <span>§ Contact</span><span class="rule"></span><span>Usually reply within a few days</span>
+        <section class="sp-hero sp-contact-hero">
+            <div class="sp-section-inner">
+            <div class="sp-code-kicker">
+                <span>SECTION VI</span><span class="rule"></span><span>GET IN TOUCH</span>
             </div>
             <h1 class="sp-contact-title">
                 I'd <em>love</em> to hear from you.
@@ -36,16 +32,28 @@ const pageContext: SchemaPageContext = {
                 Use the form below, or one of the other ways to reach me. I read everything,
                 even if it takes me a little while to reply.
             </p>
+            </div>
         </section>
 
-        <section class="sp-contact-investment">
-            <div class="sp-callout sp-contact-callout">
-                <div class="lbl">§ If you're looking for investment</div>
-                <h4>Use the Emilia Capital contact form instead.</h4>
-                <p>
-                    Marieke and I invest through <a href="https://emilia.capital/">Emilia Capital</a>. Pitches and intros go
-                    through their form so nothing gets lost in my inbox. <a href="https://emilia.capital/contact/">emilia.capital/contact &rarr;</a>
-                </p>
+        <section class="sp-contact-callouts">
+            <div class="sp-contact-callout-grid">
+                <div class="sp-callout">
+                    <div class="lbl">AI-powered answers</div>
+                    <h4>Got a question? Ask Joost's AI.</h4>
+                    <p>
+                        Questions about SEO, Astro, EmDash, WordPress, open source, or building on the web?
+                        Get answers grounded in 18 years of writing — powered by AI.
+                        <a href="/ask-joost/">Ask Joost's AI &rarr;</a>
+                    </p>
+                </div>
+                <div class="sp-callout">
+                    <div class="lbl">Looking for investment?</div>
+                    <h4>Use the Emilia Capital contact form.</h4>
+                    <p>
+                        Marieke and I invest through <a href="https://emilia.capital/">Emilia Capital</a>. Pitches and intros go
+                        through that contact form so nothing gets lost in my inbox. <a href="https://emilia.capital/contact/">emilia.capital/contact &rarr;</a>
+                    </p>
+                </div>
             </div>
         </section>
 
@@ -125,7 +133,6 @@ const pageContext: SchemaPageContext = {
             </div>
         </section>
 
-        <SpFooter />
     </div>
 </BaseLayout>
 
@@ -184,7 +191,7 @@ const pageContext: SchemaPageContext = {
     function showStatus(message: string, type: 'success' | 'error') {
         statusDiv.textContent = message;
         statusDiv.style.display = 'block';
-        statusDiv.style.color = type === 'success' ? '#1a1410' : '#5e1224';
-        statusDiv.style.borderTop = type === 'success' ? '1px solid #1a1410' : '1px solid #5e1224';
+        statusDiv.style.color = type === 'success' ? '#1f2530' : '#4a6480';
+        statusDiv.style.borderTop = type === 'success' ? '1px solid #1f2530' : '1px solid #4a6480';
     }
 </script>

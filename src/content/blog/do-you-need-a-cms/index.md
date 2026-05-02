@@ -1,12 +1,13 @@
 ---
-title: Do you need a CMS?
+title: Do you <em>need</em> a CMS?
 publishDate: 2026-03-21T00:00:00.000Z
 excerpt: >-
   For twenty years, wanting a website meant needing a CMS. That's no longer
   true. The real question people ask now is simpler: how do I get my content on
   the web?
 categories:
-  - Market Share Analysis
+  - AI
+  - Development
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Do you need a CMS?'
 ---

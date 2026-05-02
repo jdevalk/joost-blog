@@ -20,5 +20,6 @@ export interface SchemaPageContext {
     categoryName?: string;
     youtubeId?: string;
     duration?: string;
+    thumbnailUrl?: string;
     wordCount?: number;
 }

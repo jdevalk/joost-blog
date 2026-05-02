@@ -1,44 +1,13 @@
+import { chromium, type Browser } from 'playwright';
 import { readFileSync } from 'node:fs';
-import satori from 'satori';
-import sharp from 'sharp';
 
-const OG_WIDTH = 1200;
+const OG_WIDTH  = 1200;
 const OG_HEIGHT = 675;
 
-// Design tokens — A2 Blocks/Specimen
-const paper = '#f0eae2';
-const ink = '#1a1410';
-const inkSoft = '#5a4e3a';
-const indigo = '#3a2a6c';
-const ox = '#5e1224';
+const fontsDir = process.cwd() + '/public/fonts/';
 
-let frauncesNormal: Buffer | null = null;
-let frauncesItalic: Buffer | null = null;
-let jetbrainsMono: Buffer | null = null;
 let portraitDataUrl: string | null = null;
-let monaFont: Buffer | null = null;
-
-function loadFonts() {
-    if (!frauncesNormal) {
-        frauncesNormal = readFileSync(process.cwd() + '/public/fonts/Fraunces-Light.ttf');
-    }
-    if (!frauncesItalic) {
-        frauncesItalic = readFileSync(process.cwd() + '/public/fonts/Fraunces-LightItalic.ttf');
-    }
-    if (!jetbrainsMono) {
-        jetbrainsMono = readFileSync(process.cwd() + '/public/fonts/JetBrainsMono-Regular.ttf');
-    }
-    return { frauncesNormal, frauncesItalic, jetbrainsMono };
-}
-
-function loadMonaFont(): Buffer {
-    if (!monaFont) {
-        monaFont = readFileSync(process.cwd() + '/public/fonts/MonaSans-Bold.ttf');
-    }
-    return monaFont;
-}
-
-function loadPortrait(): string {
+function getPortrait(): string {
     if (!portraitDataUrl) {
         const buf = readFileSync(process.cwd() + '/src/assets/images/joost-profile.jpg');
         portraitDataUrl = `data:image/jpeg;base64,${buf.toString('base64')}`;
@@ -46,11 +15,51 @@ function loadPortrait(): string {
     return portraitDataUrl;
 }
 
+// Design tokens — slate palette
+const paper   = '#e4e2dc';
+const ink     = '#1f2530';
+const inkSoft = '#4e5666';
+const indigo  = '#2c3447';
+const ox      = '#4a6480';
+const amber   = '#e08a5a';
+
+// Reuse one browser instance across requests
+let browser: Browser | null = null;
+async function getBrowser(): Promise<Browser> {
+    if (!browser || !browser.isConnected()) {
+        browser = await chromium.launch();
+    }
+    return browser;
+}
+
+function fontFaces(): string {
+    return `
+        @font-face {
+            font-family: 'DomaineDisplay';
+            font-weight: 500;
+            font-style: normal;
+            src: url('file://${fontsDir}DomaineDisplay-Medium.otf');
+        }
+        @font-face {
+            font-family: 'DomaineDisplay';
+            font-weight: 500;
+            font-style: italic;
+            src: url('file://${fontsDir}DomaineDisplay-MediumItalic.otf');
+        }
+        @font-face {
+            font-family: 'Pitch';
+            font-weight: 400;
+            font-style: normal;
+            src: url('file://${fontsDir}Pitch-Regular.otf');
+        }
+    `;
+}
+
 function formatDate(date: Date): string {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, '0');
     const d = String(date.getDate()).padStart(2, '0');
-    return `${y} \u00b7 ${m} \u00b7 ${d}`;
+    return `${y} · ${m} · ${d}`;
 }
 
 export interface OgImageOptions {
@@ -64,410 +73,223 @@ export interface OgImageOptions {
 
 export async function generateOgImage(opts: OgImageOptions): Promise<Buffer> {
     const { title, category, publishDate, readingTime, articleNumber, isFeatured } = opts;
-    const { frauncesNormal, frauncesItalic, jetbrainsMono } = loadFonts();
-    const portrait = loadPortrait();
 
-    const issueLabel = articleNumber ? `No. ${articleNumber}` : String(publishDate?.getFullYear() ?? new Date().getFullYear());
-    const dateStr = publishDate ? formatDate(publishDate) : String(new Date().getFullYear());
-    const kicker = (category ?? 'JOOST.BLOG').toUpperCase();
-    const isArticle = !!(publishDate || readingTime || articleNumber);
+    const issueLabel = articleNumber ? `No. ${String(articleNumber).padStart(3, '0')}` : String(publishDate?.getFullYear() ?? new Date().getFullYear());
+    const dateStr    = publishDate ? formatDate(publishDate) : String(new Date().getFullYear());
+    const kicker     = (category ?? 'JOOST.BLOG').toUpperCase();
+    const isArticle  = !!(publishDate || readingTime || articleNumber);
     const articleType = isFeatured ? 'FEATURED ARTICLE' : 'ARTICLE';
-    const readStr = isArticle
-        ? (readingTime ? `${articleType} \u00b7 ${readingTime} MIN READ` : articleType)
+    const readStr    = isArticle
+        ? (readingTime ? `${articleType} · ${readingTime} MIN READ` : articleType)
         : null;
-    const fontSize = title.length > 60 ? 78 : 96;
-    const titleLetterSpacing = fontSize === 96 ? '-3px' : '-2px';
+    const fontSize = title.length > 60 ? '78px' : '96px';
 
-    // Mono letter-spacing in px (0.2em equivalent)
-    const monoSpacing11 = '2px';
-    const monoSpacing12 = '2px';
-    const monoSpacing10 = '2px';
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    ${fontFaces()}
+    body {
+        width: ${OG_WIDTH}px;
+        height: ${OG_HEIGHT}px;
+        background: ${paper};
+        color: ${ink};
+        font-family: 'DomaineDisplay', serif;
+        position: relative;
+        overflow: hidden;
+    }
+    /* Top rail */
+    .rail {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 54px;
+        border-bottom: 1px solid ${ink};
+        display: flex;
+        align-items: center;
+        padding: 0 40px;
+        font-family: 'Pitch', monospace;
+        font-size: 14px;
+        letter-spacing: 0.18em;
+        color: ${ox};
+    }
+    .rail-center { flex: 1; text-align: center; color: ${ink}; }
+    .rail-right  { flex: 1; text-align: right; }
+    .rail-left   { flex: 1; }
+    /* Kicker */
+    .kicker {
+        position: absolute;
+        top: 92px; left: 48px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-family: 'Pitch', monospace;
+        font-size: 16px;
+        letter-spacing: 0.18em;
+        color: ${indigo};
+    }
+    .kicker-rule { width: 60px; height: 1px; background: ${ink}; flex-shrink: 0; }
+    /* Title */
+    .title {
+        position: absolute;
+        top: 148px; left: 48px;
+        width: 952px;
+        font-family: 'DomaineDisplay', serif;
+        font-weight: 500;
+        font-size: ${fontSize};
+        line-height: 1.0;
+        letter-spacing: -0.03em;
+        color: ${ink};
+    }
+    /* Byline */
+    .byline {
+        position: absolute;
+        right: 40px; bottom: 40px;
+        display: flex;
+        align-items: flex-end;
+        gap: 18px;
+    }
+    .byline-text {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        font-family: 'DomaineDisplay', serif;
+        font-weight: 500;
+        font-style: italic;
+        font-size: 22px;
+        color: ${ink};
+        padding-bottom: 6px;
+    }
+    .byline-name { color: ${indigo}; }
+    .byline-url {
+        font-family: 'Pitch', monospace;
+        font-style: normal;
+        font-size: 14px;
+        letter-spacing: 0.18em;
+        color: ${inkSoft};
+        margin-top: 6px;
+    }
+    .portrait {
+        width: 120px; height: 150px;
+        border: 1px solid ${ink};
+        object-fit: cover;
+        display: block;
+    }
+</style>
+</head>
+<body>
+    <div class="rail">
+        <span class="rail-left">JOOST.BLOG · ${issueLabel.toUpperCase()}</span>
+        <span class="rail-center">— ${kicker} —</span>
+        <span class="rail-right">${dateStr}</span>
+    </div>
 
-    const card = {
-        type: 'div',
-        props: {
-            style: {
-                width: OG_WIDTH,
-                height: OG_HEIGHT,
-                background: paper,
-                color: ink,
-                position: 'relative',
-                display: 'flex',
-                fontFamily: 'Fraunces',
-            },
-            children: [
-                // Top rail
-                {
-                    type: 'div',
-                    props: {
-                        style: {
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            height: 54,
-                            borderBottom: `1px solid ${ink}`,
-                            display: 'flex',
-                            alignItems: 'center',
-                            padding: '0 40px',
-                            fontFamily: 'JetBrains Mono',
-                            fontSize: 11,
-                            letterSpacing: monoSpacing11,
-                            color: ox,
-                        },
-                        children: [
-                            {
-                                type: 'div',
-                                props: {
-                                    style: { flex: 1, display: 'flex' },
-                                    children: `JOOST.BLOG \u00b7 ${issueLabel.toUpperCase()}`,
-                                },
-                            },
-                            {
-                                type: 'div',
-                                props: {
-                                    style: {
-                                        flex: 1,
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        color: ink,
-                                    },
-                                    children: `\u2014 ${kicker} \u2014`,
-                                },
-                            },
-                            {
-                                type: 'div',
-                                props: {
-                                    style: {
-                                        flex: 1,
-                                        display: 'flex',
-                                        justifyContent: 'flex-end',
-                                    },
-                                    children: dateStr,
-                                },
-                            },
-                        ],
-                    },
-                },
-                // Kicker row
-                ...(readStr ? [{
-                    type: 'div',
-                    props: {
-                        style: {
-                            position: 'absolute',
-                            top: 92,
-                            left: 48,
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 14,
-                        },
-                        children: [
-                            {
-                                type: 'div',
-                                props: {
-                                    style: { width: 60, height: 1, background: ink },
-                                },
-                            },
-                            {
-                                type: 'div',
-                                props: {
-                                    style: {
-                                        fontFamily: 'JetBrains Mono',
-                                        fontSize: 12,
-                                        letterSpacing: monoSpacing12,
-                                        color: indigo,
-                                    },
-                                    children: readStr,
-                                },
-                            },
-                        ],
-                    },
-                }] : []),
-                // Title
-                {
-                    type: 'div',
-                    props: {
-                        style: {
-                            position: 'absolute',
-                            left: 48,
-                            width: 952,
-                            top: 148,
-                            fontFamily: 'Fraunces',
-                            fontWeight: 300,
-                            fontSize,
-                            lineHeight: 0.96,
-                            letterSpacing: titleLetterSpacing,
-                            color: ink,
-                        },
-                        children: title,
-                    },
-                },
-                // Byline + portrait
-                {
-                    type: 'div',
-                    props: {
-                        style: {
-                            position: 'absolute',
-                            right: 40,
-                            bottom: 40,
-                            display: 'flex',
-                            alignItems: 'flex-end',
-                            gap: 18,
-                        },
-                        children: [
-                            {
-                                type: 'div',
-                                props: {
-                                    style: {
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'flex-end',
-                                        fontFamily: 'Fraunces',
-                                        fontStyle: 'italic',
-                                        fontSize: 22,
-                                        color: ink,
-                                        paddingBottom: 6,
-                                    },
-                                    children: [
-                                        {
-                                            type: 'div',
-                                            props: {
-                                                style: { display: 'flex' },
-                                                children: [
-                                                    {
-                                                        type: 'span',
-                                                        props: {
-                                                            style: { color: ink },
-                                                            children: 'by\u00a0',
-                                                        },
-                                                    },
-                                                    {
-                                                        type: 'span',
-                                                        props: {
-                                                            style: { color: indigo },
-                                                            children: 'Joost de Valk',
-                                                        },
-                                                    },
-                                                ],
-                                            },
-                                        },
-                                        {
-                                            type: 'div',
-                                            props: {
-                                                style: {
-                                                    fontFamily: 'JetBrains Mono',
-                                                    fontStyle: 'normal',
-                                                    fontSize: 10,
-                                                    letterSpacing: monoSpacing10,
-                                                    color: inkSoft,
-                                                    marginTop: 6,
-                                                },
-                                                children: 'JOOST.BLOG / READ \u2192',
-                                            },
-                                        },
-                                    ],
-                                },
-                            },
-                            // Portrait
-                            {
-                                type: 'div',
-                                props: {
-                                    style: {
-                                        width: 120,
-                                        height: 150,
-                                        border: `1px solid ${ink}`,
-                                        overflow: 'hidden',
-                                        display: 'flex',
-                                    },
-                                    children: [
-                                        {
-                                            type: 'img',
-                                            props: {
-                                                src: portrait,
-                                                style: {
-                                                    width: 120,
-                                                    height: 150,
-                                                    objectFit: 'cover',
-                                                },
-                                            },
-                                        },
-                                    ],
-                                },
-                            },
-                        ],
-                    },
-                },
-            ],
-        },
-    };
+    ${readStr ? `
+    <div class="kicker">
+        <div class="kicker-rule"></div>
+        <span>${readStr}</span>
+    </div>` : ''}
 
-    const svg = await satori(card, {
-        width: OG_WIDTH,
-        height: OG_HEIGHT,
-        fonts: [
-            {
-                name: 'Fraunces',
-                data: frauncesNormal!,
-                style: 'normal',
-                weight: 300,
-            },
-            {
-                name: 'Fraunces',
-                data: frauncesItalic!,
-                style: 'italic',
-                weight: 300,
-            },
-            {
-                name: 'JetBrains Mono',
-                data: jetbrainsMono!,
-                style: 'normal',
-                weight: 400,
-            },
-        ],
-    });
+    <div class="title">${title}</div>
 
-    return sharp(Buffer.from(svg)).jpeg({ quality: 85 }).toBuffer();
+    <div class="byline">
+        <div class="byline-text">
+            <div>by <span class="byline-name">Joost de Valk</span></div>
+            <div class="byline-url">JOOST.BLOG / READ →</div>
+        </div>
+        <img class="portrait" src="${getPortrait()}" />
+    </div>
+</body>
+</html>`;
+
+    const b   = await getBrowser();
+    const page = await b.newPage();
+    await page.setViewportSize({ width: OG_WIDTH, height: OG_HEIGHT });
+    await page.setContent(html, { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => document.fonts.ready);
+    const buf = await page.screenshot({ type: 'jpeg', quality: 90 });
+    await page.close();
+    return buf as Buffer;
 }
 
 export async function generateHomepageOgImage(): Promise<Buffer> {
-    const font = loadMonaFont();
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    ${fontFaces()}
+    body {
+        width: ${OG_WIDTH}px;
+        height: ${OG_HEIGHT}px;
+        background: #2c3447;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        font-family: 'DomaineDisplay', serif;
+        overflow: hidden;
+    }
+    .avatar-wrap {
+        width: 224px; height: 224px;
+        border-radius: 50%;
+        border: 1px solid rgba(232,227,214,0.08);
+        display: flex; align-items: center; justify-content: center;
+    }
+    .avatar-inner {
+        width: 202px; height: 202px;
+        border-radius: 50%;
+        border: 1px solid rgba(232,227,214,0.15);
+        display: flex; align-items: center; justify-content: center;
+    }
+    .avatar {
+        width: 180px; height: 180px;
+        border-radius: 50%;
+        border: 3px solid rgba(232,227,214,0.30);
+        object-fit: cover;
+    }
+    .name {
+        color: #e8e3d6;
+        font-size: 44px;
+        font-weight: 500;
+        margin-top: 28px;
+    }
+    .subtitle {
+        color: rgba(232,227,214,0.60);
+        font-size: 22px;
+        font-weight: 500;
+        margin-top: 12px;
+    }
+    .domain {
+        position: absolute;
+        bottom: 30px; right: 40px;
+        color: rgba(232,227,214,0.50);
+        font-size: 20px;
+        font-weight: 500;
+    }
+</style>
+</head>
+<body>
+    <div class="avatar-wrap">
+        <div class="avatar-inner">
+            <img class="avatar" src="${getPortrait()}" />
+        </div>
+    </div>
+    <div class="name">Joost de Valk</div>
+    <div class="subtitle">Internet entrepreneur · Founder of Yoast · Investor</div>
+    <div class="domain">joost.blog</div>
+</body>
+</html>`;
 
-    const avatarPath = process.cwd() + '/src/assets/images/joost-profile.jpg';
-    const avatarSize = 180;
-    const avatarBuffer = await sharp(avatarPath)
-        .resize(avatarSize, avatarSize, { fit: 'cover' })
-        .composite([
-            {
-                input: Buffer.from(
-                    `<svg width="${avatarSize}" height="${avatarSize}"><circle cx="${avatarSize / 2}" cy="${avatarSize / 2}" r="${avatarSize / 2}" fill="white"/></svg>`
-                ),
-                blend: 'dest-in',
-            },
-        ])
-        .png()
-        .toBuffer();
-    const avatarBase64 = `data:image/png;base64,${avatarBuffer.toString('base64')}`;
-
-    const ringOuter = avatarSize + 44;
-    const ringInner = avatarSize + 22;
-
-    const markup = {
-        type: 'div',
-        props: {
-            style: {
-                width: OG_WIDTH,
-                height: OG_HEIGHT,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'linear-gradient(135deg, #4a1525 0%, #3a1a28 50%, #2e1220 100%)',
-                position: 'relative',
-            },
-            children: [
-                {
-                    type: 'div',
-                    props: {
-                        style: {
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: ringOuter,
-                            height: ringOuter,
-                            borderRadius: ringOuter / 2,
-                            border: '1px solid rgba(255,255,255,0.08)',
-                            position: 'relative',
-                        },
-                        children: [
-                            {
-                                type: 'div',
-                                props: {
-                                    style: {
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        width: ringInner,
-                                        height: ringInner,
-                                        borderRadius: ringInner / 2,
-                                        border: '1px solid rgba(255,255,255,0.15)',
-                                    },
-                                    children: [
-                                        {
-                                            type: 'img',
-                                            props: {
-                                                src: avatarBase64,
-                                                style: {
-                                                    width: avatarSize,
-                                                    height: avatarSize,
-                                                    borderRadius: avatarSize / 2,
-                                                    border: '3px solid rgba(255,255,255,0.3)',
-                                                },
-                                            },
-                                        },
-                                    ],
-                                },
-                            },
-                        ],
-                    },
-                },
-                {
-                    type: 'div',
-                    props: {
-                        style: {
-                            display: 'flex',
-                            color: 'white',
-                            fontSize: 44,
-                            fontWeight: 700,
-                            marginTop: 28,
-                        },
-                        children: 'Joost de Valk',
-                    },
-                },
-                {
-                    type: 'div',
-                    props: {
-                        style: {
-                            display: 'flex',
-                            color: 'rgba(255,255,255,0.6)',
-                            fontSize: 22,
-                            fontWeight: 700,
-                            marginTop: 12,
-                        },
-                        children:
-                            'Internet entrepreneur \u00b7 Founder of Yoast \u00b7 Investor',
-                    },
-                },
-                {
-                    type: 'div',
-                    props: {
-                        style: {
-                            position: 'absolute',
-                            bottom: 30,
-                            right: 40,
-                            color: 'rgba(255,255,255,0.5)',
-                            fontSize: 20,
-                            display: 'flex',
-                            fontWeight: 700,
-                        },
-                        children: 'joost.blog',
-                    },
-                },
-            ],
-        },
-    };
-
-    const svg = await satori(markup, {
-        width: OG_WIDTH,
-        height: OG_HEIGHT,
-        fonts: [
-            {
-                name: 'MonaSans',
-                data: font,
-                style: 'normal',
-                weight: 700,
-            },
-        ],
-    });
-
-    return sharp(Buffer.from(svg)).jpeg({ quality: 85 }).toBuffer();
+    const b   = await getBrowser();
+    const page = await b.newPage();
+    await page.setViewportSize({ width: OG_WIDTH, height: OG_HEIGHT });
+    await page.setContent(html, { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => document.fonts.ready);
+    const buf = await page.screenshot({ type: 'jpeg', quality: 90 });
+    await page.close();
+    return buf as Buffer;
 }

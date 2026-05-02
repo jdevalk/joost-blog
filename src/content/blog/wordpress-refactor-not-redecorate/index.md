@@ -1,5 +1,5 @@
 ---
-title: 'WordPress needs to refactor, not redecorate'
+title: 'WordPress needs to <em>refactor</em>, not <em>redecorate</em>'
 seo:
   description: WordPress's deepest problems are architectural, not cosmetic. Responses to EmDash from Mullenweg, Luehrsen, and Coords show what must change.
 publishDate: 2026-04-03T00:00:00.000Z

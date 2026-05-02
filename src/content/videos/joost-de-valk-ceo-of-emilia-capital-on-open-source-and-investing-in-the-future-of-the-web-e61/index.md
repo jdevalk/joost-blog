@@ -12,5 +12,6 @@ featureImage: ./images/thumbnail.jpg
 featureImageAlt: >-
   Joost de Valk, CEO of Emilia Capital, on Open Source and Investing in the
   Future of the Web | E61
+type: podcast
 ---
-In WP Legends Episode 61, we sit down with Joost de Valk, CEO of Emilia Capital. Discover Joost's journey from creating one of the most recognized plugins (Yoast SEO) in WordPress...
+I talk through how Yoast SEO started, the reasoning behind our free versus premium model, and what led me and Marieke to start investing in the WordPress ecosystem after we sold the company. I cover how Emilia Capital evaluates investment opportunities, what we look for in founders, and why we think the FAIR Package Manager project is important for the long-term health of WordPress. I also talk about Progress Planner and what I am working on now.

@@ -1,14 +1,10 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
-import CustomImage from '../components/CustomImage.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
-import SpChrome from '../components/SpChrome.astro';
-import SpFooter from '../components/SpFooter.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
 import { sortPostsByDateDesc, slugify, getReadingTime, getRelatedPosts } from '../utils/post-utils';
 import { gitLastmod } from '../utils/sitemap';
 import fs from 'node:fs';
@@ -45,7 +41,7 @@ export async function getStaticPaths() {
     }));
 
     const pagePaths = pages
-        .filter((page) => page.id !== 'videos' && page.id !== 'clicky' && page.id !== 'about-me' && page.id !== 'contact-me' && page.id !== 'contact' && page.id !== 'cms-market-share')
+        .filter((page) => page.id !== 'videos' && page.id !== 'clicky' && page.id !== 'about-me' && page.id !== 'contact-me' && page.id !== 'cms-market-share' && page.data.section !== 'code')
         .map((page) => ({
             params: { slug: page.id },
             props: {
@@ -69,9 +65,11 @@ const effectiveUpdatedDate = isBlog
     ? computeUpdatedDate(entry.id, blogData!.updatedDate, blogData!.publishDate)
     : null;
 
+function stripHtml(s: string): string { return s.replace(/<[^>]+>/g, ''); }
+
 const seoTitle = isBlog
-    ? (blogData!.seo?.title ?? blogData!.title)
-    : (pageData!.seo?.title ?? pageData!.title);
+    ? (blogData!.seo?.title ?? stripHtml(blogData!.title))
+    : (pageData!.seo?.title ?? stripHtml(pageData!.title));
 const seoDescription = isBlog
     ? (blogData!.seo?.description ?? blogData!.excerpt)
     : pageData!.seo?.description;
@@ -81,7 +79,7 @@ const pageCanonicalUrl = canonicalUrl(Astro.url.pathname);
 const pageContext: SchemaPageContext = isBlog ? {
     pageType: 'blogPost',
     canonicalUrl: pageCanonicalUrl,
-    title: blogData!.title,
+    title: stripHtml(blogData!.title),
     description: blogData!.excerpt ?? blogData!.seo?.description ?? '',
     publishDate: blogData!.publishDate,
     updatedDate: effectiveUpdatedDate ?? undefined,
@@ -97,7 +95,7 @@ const pageContext: SchemaPageContext = isBlog ? {
 
 // Blog post — TOC and computed values
 const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
-const hasToc = isBlog && !!blogData!.toc && tocHeadings.length > 0;
+const hasToc = (isBlog ? !!blogData!.toc : !!pageData!.toc) && tocHeadings.length > 0;
 
 // Pre-compute h2 indices for TOC numbering
 interface TocItem { depth: number; slug: string; text: string; idx: number | null }
@@ -110,12 +108,6 @@ if (hasToc) {
     }
 }
 
-// Issue label for chrome header
-const postMonth = isBlog
-    ? new Date(blogData!.publishDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase()
-    : '';
-const postIssue = isBlog ? `POST · ${postMonth}` : '';
-
 // Category label
 const primaryCategory = blogData?.categories?.[0] ?? null;
 ---
@@ -123,13 +115,10 @@ const primaryCategory = blogData?.categories?.[0] ?? null;
 {isBlog ? (
 <BaseLayout title={seoTitle} description={seoDescription} pageType="article" publishDate={blogData!.publishDate} updatedDate={effectiveUpdatedDate ?? undefined} categories={blogData!.categories} noindex={!!blogData!.draft}>
     <SchemaGraph pageContext={pageContext} />
-    <div slot="header" />
-    <div slot="footer" />
-
     <div class="sp-root sp-blocks sp-post">
-        <SpChrome issue={postIssue} />
 
         <section class="sp-post-hero" data-pagefind-body>
+            <div class="sp-section-inner">
             <nav class="sp-post-crumbs" aria-label="Breadcrumb">
                 <a href="/">Home</a>
                 <span class="sep">/</span>
@@ -140,6 +129,7 @@ const primaryCategory = blogData?.categories?.[0] ?? null;
                         <a href={`/category/${slugify(primaryCategory)}/`}>{primaryCategory}</a>
                     </>
                 )}
+                <span class="sep">/</span>
             </nav>
 
             <h1 class="sp-post-title" set:html={blogData!.title.replace(/\*([^*]+)\*/g, '<em>$1</em>')} />
@@ -153,6 +143,7 @@ const primaryCategory = blogData?.categories?.[0] ?? null;
                     <span><strong>{readingTime} min</strong> read</span>
                 )}
                 <span>By <strong>Joost de Valk</strong></span>
+            </div>
             </div>
         </section>
 
@@ -182,8 +173,8 @@ const primaryCategory = blogData?.categories?.[0] ?? null;
 
                     <div class="sp-share" data-pagefind-ignore="all">
                         <span>Reply on</span>
-                        <a href={`https://bsky.app/intent/compose?text=${encodeURIComponent(blogData!.title + ' ' + href)}`} target="_blank" rel="noopener noreferrer">Bluesky</a>
-                        <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(href)}&summary=${encodeURIComponent(blogData!.title)}`} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        <a href={`https://bsky.app/intent/compose?text=${encodeURIComponent(stripHtml(blogData!.title) + ' ' + href)}`} target="_blank" rel="noopener noreferrer">Bluesky</a>
+                        <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(href)}&summary=${encodeURIComponent(stripHtml(blogData!.title))}`} target="_blank" rel="noopener noreferrer">LinkedIn</a>
                         <span class="sp-share-spacer">Share →</span>
                     </div>
                 </article>
@@ -199,20 +190,6 @@ const primaryCategory = blogData?.categories?.[0] ?? null;
                             </ul>
                         </div>
                     )}
-                    <div class="m-block">
-                        <div class="m-lbl">Reading time</div>
-                        <div class="m-body">{readingTime} min</div>
-                    </div>
-                    <div class="m-block">
-                        <div class="m-lbl">Published</div>
-                        <div class="m-body"><FormattedDate date={blogData!.publishDate} /></div>
-                    </div>
-                    {effectiveUpdatedDate && (
-                        <div class="m-block">
-                            <div class="m-lbl">Updated</div>
-                            <div class="m-body"><FormattedDate date={effectiveUpdatedDate} /></div>
-                        </div>
-                    )}
                 </aside>
 
             </div>
@@ -220,6 +197,7 @@ const primaryCategory = blogData?.categories?.[0] ?? null;
 
         {relatedPosts && relatedPosts.length > 0 && (
             <section class="sp-related" data-pagefind-ignore="all">
+                <div class="sp-section-inner">
                 <div class="rel-head">
                     <h3>Related writing</h3>
                     <div class="meta">From the archive</div>
@@ -231,15 +209,15 @@ const primaryCategory = blogData?.categories?.[0] ?? null;
                                 <FormattedDate date={relPost.data.publishDate} />
                                 {getReadingTime(relPost.body ?? '') && ` · ${getReadingTime(relPost.body ?? '')} min`}
                             </div>
-                            <h4>{relPost.data.title}</h4>
+                            <h4 set:html={relPost.data.title} />
                             {relPost.data.excerpt && <p>{relPost.data.excerpt}</p>}
                         </a>
                     ))}
                 </div>
+                </div>
             </section>
         )}
 
-<SpFooter />
     </div>
 </BaseLayout>
 
@@ -278,35 +256,36 @@ const primaryCategory = blogData?.categories?.[0] ?? null;
 ) : (
 <BaseLayout title={seoTitle} description={seoDescription}>
     <SchemaGraph pageContext={pageContext} />
-    <div class="relative bg-gradient-to-br from-[#4a1525] via-[#3a1a28] to-[#2e1220] text-white" slot="header">
-        <Header variant="dark" />
-        <div class="h-[52px] sm:h-[56px]"></div>
-        <section class="px-4 py-10 sm:px-8 sm:py-14">
-            <div class="max-w-5xl mx-auto">
-                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">{pageData!.title}</h1>
+    <div class="sp-root sp-blocks sp-post" data-pagefind-body>
+        <section class="sp-post-hero">
+            <div class="sp-section-inner">
+                <h1 class="sp-post-title">{pageData!.title}</h1>
+            </div>
+        </section>
+        <section class="sp-post-body">
+            <div class:list={['sp-post-grid', { 'sp-no-toc': !hasToc }]}>
+                {hasToc && (
+                    <nav class="sp-post-toc" aria-label="Table of contents">
+                        <div class="lbl">On this page</div>
+                        <ol>
+                            {tocItems.map(item => (
+                                <li class:list={[{ sub: item.depth === 3 }]}>
+                                    <a href={`#${item.slug}`} data-toc-link>
+                                        {item.idx !== null && (
+                                            <span class="sp-post-toc-num">{String(item.idx).padStart(2, '0')}</span>
+                                        )}
+                                        {item.text}
+                                    </a>
+                                </li>
+                            ))}
+                        </ol>
+                    </nav>
+                )}
+                <article class="sp-prose">
+                    <Content />
+                </article>
             </div>
         </section>
     </div>
-    <main class="grow" data-pagefind-body>
-        <article class="max-w-6xl mx-auto px-4 py-10 sm:px-8 sm:py-14">
-            {pageData!.featureImage && (
-                <figure class="mb-9">
-                    <CustomImage
-                        src={pageData!.featureImage}
-                        alt={pageData!.featureImageAlt}
-                        class="w-full rounded-lg"
-                        widths={[480, 640, 768, 960, 1200, 1600]}
-                        sizes="(min-width: 1216px) 1152px, calc(100vw - 32px)"
-                    />
-                    {pageData!.featureImageCaption && <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400">{pageData!.featureImageCaption}</figcaption>}
-                </figure>
-            )}
-            <div class="max-w-3xl mx-auto">
-                <div class="prose prose-slate sm:prose-lg max-w-none">
-                    <Content />
-                </div>
-            </div>
-        </article>
-    </main>
 </BaseLayout>
 )}

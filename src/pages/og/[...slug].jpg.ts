@@ -33,7 +33,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }));
 
     const standalonePaths = [
-        { slug: 'ask-joost', title: 'Ask Joost' },
+        { slug: 'ask-joost', title: "Ask Joost's AI" },
         { slug: 'cms-market-share', title: 'CMS Market Share' },
         { slug: 'cms-usage', title: 'CMS Usage Statistics' },
         { slug: 'contact-me', title: 'Contact' },

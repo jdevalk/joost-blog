@@ -250,6 +250,7 @@ function buildJoostVideo(ctx: SchemaPageContext): Record<string, unknown> {
             isPartOf: { '@id': ids.webPage(ctx.canonicalUrl) },
             inLanguage: 'en-US',
             youtubeId: ctx.youtubeId,
+            thumbnailUrl: ctx.thumbnailUrl,
             uploadDate: ctx.publishDate,
             duration: ctx.duration,
         },

@@ -36,6 +36,7 @@ export type Subscribe = {
 export type SiteConfig = {
     logo?: ImageInput;
     title: string;
+    tagline?: string;
     description: string;
     image?: ImageInput;
     primaryNavLinks?: Link[];
