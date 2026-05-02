@@ -12,7 +12,7 @@ excerpt: >-
 categories:
   - SEO
   - Development
-isFeatured: true
+isFeatured: false
 toc: true
 featureImage: ./images/featured.webp
 featureImageAlt: 'Illustration for: Astro SEO: the definitive guide'
