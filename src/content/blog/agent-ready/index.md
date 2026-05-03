@@ -1,5 +1,5 @@
 ---
-title: What agent-ready looks like for a static blog
+title: What <em>agent-ready</em> looks like for a static blog
 publishDate: 2026-05-03T00:00:00.000Z
 excerpt: >-
   I ran joost.blog through Cloudflare's isitagentready.com and got a 25.
@@ -235,4 +235,4 @@ These checks exist for sites with protected APIs where agents need to obtain tok
 
 The right answer is to leave those checks failing. The problem is that the scoring tool doesn't have a way to express "this API is intentionally public." It treats the absence of OAuth metadata as a gap rather than a deliberate choice. For a public read-only corpus, no auth is the correct design. Penalizing it conflates "agent-ready" with "OAuth-enabled," which are different things.
 
-There's a sharper version of this point: OAuth isn't the only agent authentication model. [x402](https://www.x402.org/) — the HTTP 402 micropayment protocol co-created by Coinbase and Cloudflare — lets agents pay for API access with stablecoin micropayments instead of obtaining tokens through an authorization server. [EmDash](/emdash-cms/), Cloudflare's own CMS, ships with native x402 support. A scoring tool that checks for OAuth and nothing else is measuring one authentication pattern, not agent readiness.
+isitagentready does check for [x402](https://www.x402.org/) — the HTTP 402 micropayment protocol that lets agents pay for API access with stablecoin micropayments instead of obtaining OAuth tokens. But it files x402 under "Commerce" and marks it not applicable for most sites. The odd thing: [EmDash](/emdash-cms/), Cloudflare's own CMS, ships with native x402 support. If x402 is built into the CMS you're promoting, filing it as a commerce edge case rather than a first-class agent authentication model seems like a missed opportunity to say what you actually think about how agents should access paid content.
