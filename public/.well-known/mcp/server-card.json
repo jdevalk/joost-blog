@@ -1,0 +1,17 @@
+{
+  "serverInfo": {
+    "name": "joost.blog",
+    "version": "1.0.0",
+    "description": "MCP server for joost.blog — ask questions about Joost de Valk's writing on SEO, WordPress, AI, and the open web, or list his published posts."
+  },
+  "endpoint": "https://joost.blog/mcp",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://joost.blog/mcp"
+    }
+  ],
+  "capabilities": {
+    "tools": {}
+  }
+}
