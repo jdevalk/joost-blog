@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import profilePic from '../assets/images/joost-profile.jpg';
 import siteConfig from '../data/site-config';
 
 const currentYear = new Date().getFullYear();
@@ -10,13 +12,12 @@ const currentYear = new Date().getFullYear();
         <div>
             <div class="sp-footer-author">
                 <div class="sp-footer-author-portrait">
-                    <img
-                        src="/images/joost-de-valk-profile-picture.jpg"
+                    <Image
+                        src={profilePic}
                         alt="Joost de Valk"
+                        width={200}
                         loading="lazy"
                         decoding="async"
-                        width="52"
-                        height="52"
                     />
                 </div>
                 <div class="sp-footer-author-name">Joost de Valk</div>

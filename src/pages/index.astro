@@ -1,5 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import profilePic from '../assets/images/joost-profile.jpg';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
 import siteConfig from '../data/site-config';
@@ -105,9 +107,10 @@ const featuredDate = dotDate(new Date(featuredPost.data.publishDate));
                 </aside>
                 <figure class="sp-portrait">
                     <div class="sp-portrait-frame">
-                        <img
-                            src="/images/joost-de-valk-profile-picture.jpg"
+                        <Image
+                            src={profilePic}
                             alt="Joost de Valk"
+                            width={800}
                             loading="lazy"
                             decoding="async"
                         />

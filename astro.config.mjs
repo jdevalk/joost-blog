@@ -100,9 +100,6 @@ function injectModulePreloads() {
 // https://astro.build/config
 export default defineConfig({
     site: 'https://joost.blog',
-    build: {
-        inlineStylesheets: 'always',
-    },
     vite: {
         plugins: [tailwindcss()]
     },
