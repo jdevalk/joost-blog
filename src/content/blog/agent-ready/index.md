@@ -18,9 +18,21 @@ password: cloudflare
 
 Cloudflare recently launched [isitagentready.com](https://isitagentready.com), a tool that scans your site across five categories and gives you a score out of 100. I ran joost.blog through it and got a 25.
 
-That score is a useful forcing function. It surfaces concrete gaps: which standards you're missing, why they matter, and exactly what to add. I spent a few hours working through them. Some were one-liners. A few required actual packages and infrastructure. Here's what I did.
+That score is a useful forcing function. It surfaces concrete gaps: which standards you're missing, why they matter, and exactly what to add. I spent a few hours working through them. Some were one-liners. A few required actual packages and infrastructure. Here's what I did, organized by the tool's own categories.
 
-## Content: serving markdown to agents
+## Discoverability
+
+robots.txt and a sitemap were already in place — this blog is built on Astro and both come standard. The gap was link headers.
+
+**Link headers.** HTTP responses can include a `Link` header that points agents to useful resources without requiring them to parse HTML. In Cloudflare Pages, `public/_headers` adds headers by path pattern. I added these to `/*`:
+
+```
+Link: </sitemap-index.xml>; rel="sitemap", </llms.txt>; rel="alternate"; type="text/plain", </.well-known/api-catalog>; rel="api-catalog", </.well-known/agent-skills/index.json>; rel="agent-skills"
+```
+
+Every response on the site now advertises the sitemap, the llms.txt index, the API catalog, and the agent skills index in the HTTP headers. An agent reading the response headers knows where to look without loading any HTML.
+
+## Content
 
 The most important gap was content negotiation. When an AI agent visits a post, it gets the same thing a browser gets: an HTML document with navigation, schema markup, comments sections, and everything else that browsers need but agents don't. The article might be 1,500 words surrounded by 30,000 bytes of chrome.
 
@@ -57,11 +69,11 @@ Path (static): /index.md
 
 You need a static `/index.md` endpoint for the second rule — I added `src/pages/index.md.ts` that generates a homepage overview with the ten most recent post titles and links.
 
-## Discovery: telling agents what's here
+## Bot Access Control
 
-Markdown negotiation handles content access. Discovery standards handle a different problem: how agents find out what's on the site before they start fetching things.
+This blog allows all crawlers by default. robots.txt uses `User-agent: * / Allow: /` with no AI-specific blocks — that's the baseline the AI bot rules check looks for.
 
-**Content Signals in robots.txt.** The [Content Signals spec](https://contentsignals.org/) adds a directive to robots.txt that declares your AI usage preferences independently of access rules. One line:
+**Content Signals.** The [Content Signals spec](https://contentsignals.org/) adds a directive to robots.txt that declares your AI usage preferences independently of access rules. One line:
 
 ```
 Content-Signal: ai-train=yes, search=yes, ai-input=yes
@@ -69,13 +81,9 @@ Content-Signal: ai-train=yes, search=yes, ai-input=yes
 
 This is "my content is public and I'm fine with agents using it." If you have different preferences — training no, grounding yes, for instance — the three fields are independent. The spec is in IETF draft, but isitagentready checks for it and it costs nothing to add.
 
-**Link headers.** HTTP responses can include a `Link` header that points agents to useful resources without requiring them to parse HTML. In Cloudflare Pages, `public/_headers` adds headers by path pattern. I added these to `/*`:
+Web Bot Auth request signing is also in this category. It's an emerging standard for cryptographically verified bot identity and the check is currently grayed out on isitagentready — not something worth implementing speculatively.
 
-```
-Link: </sitemap-index.xml>; rel="sitemap", </llms.txt>; rel="alternate"; type="text/plain", </.well-known/api-catalog>; rel="api-catalog", </.well-known/agent-skills/index.json>; rel="agent-skills"
-```
-
-Every response on the site now advertises the sitemap, the llms.txt index, the API catalog, and the agent skills index in the HTTP headers. An agent reading the response headers knows where to look without loading any HTML.
+## API, Auth, MCP & Skill Discovery
 
 **API catalog.** [RFC 9727](https://www.rfc-editor.org/rfc/rfc9727) defines `/.well-known/api-catalog` as a machine-readable list of a site's APIs. For this blog, that's the `/ask` endpoint (the AI Q&A described below), the schema.org graph endpoints at `/schema/post.json`, `/schema/page.json`, and `/schema/video.json`, and the `/schemamap.xml` discovery file. An Astro endpoint at `src/pages/.well-known/api-catalog.ts` returns the `application/linkset+json` format the RFC specifies.
 
@@ -87,9 +95,7 @@ Every response on the site now advertises the sitemap, the llms.txt index, the A
 Link: ..., </.well-known/mcp/server-card.json>; rel="mcp-server-card"
 ```
 
-The server card's `endpoint` field points to `/mcp`, the Streamable HTTP server described in the next section.
-
-## Capability: WebMCP tools
+### WebMCP
 
 Chrome 146 shipped an early preview of [WebMCP](https://developer.chrome.com/blog/webmcp-epp), a browser-native API that lets websites register structured tools that in-browser AI agents can call directly. Edge 147 added support around the same time. The W3C [Web Machine Learning Community Group](https://webmachinelearning.github.io/webmcp/) is incubating the spec.
 
@@ -103,7 +109,7 @@ The rule I ended up with: WebMCP earns its keep when there's a capability behind
 
 Applied to this blog, that leaves two tools.
 
-### `ask_joost`
+#### `ask_joost`
 
 The [Ask Joost](/ask-joost/) endpoint is RAG over my full corpus: keyword and semantic retrieval over a build-time index, generation by Llama 3.3 70B on Cloudflare Workers AI, with markdown citations parsed into a source list. Without a tool, an in-browser agent would have to scrape the page, parse the SSE stream, and reassemble the answer. With a tool, it calls a function and gets structured output.
 
@@ -140,7 +146,7 @@ navigator.modelContext.registerTool({
 });
 ```
 
-### `list_recent_content`
+#### `list_recent_content`
 
 RSS gives you "the latest N items in publication order," and that's it. An agent asking "what has Joost written about WordPress this year" has to pull the full feed and filter client-side — or call `ask_joost`, which is a generation request for a question that doesn't need generation.
 
@@ -188,7 +194,7 @@ if (typeof navigator !== 'undefined' && 'modelContext' in navigator) { ... }
 
 In every browser that doesn't support WebMCP — currently all of them except Chrome 146+ and Edge 147+ behind a flag — this is a no-op.
 
-## MCP server
+### MCP server
 
 WebMCP tools only work when an agent is actively browsing the page. A server-side MCP endpoint removes that constraint: any MCP client (Claude Desktop, Claude Code, Cursor, any tool that speaks the Model Context Protocol) can call the same tools without a browser session.
 
@@ -200,7 +206,17 @@ The MCP 2025-11-25 spec defines a Streamable HTTP transport. Clients POST JSON-R
 
 `functions/mcp.js` is a Cloudflare Pages Function that implements this. The two tools — `ask_joost` and `list_recent_content` — carry the same input schemas and descriptions as the WebMCP versions. `ask_joost` imports the same retrieval and generation modules as `functions/ask.js` and runs the full keyword and semantic search pipeline directly, no HTTP hop. `list_recent_content` fetches `/writing-index.json` from `env.ASSETS` and filters in memory.
 
-The server card at `/.well-known/mcp/server-card.json` (see Discovery above) advertises the endpoint and capabilities. A protocol-correct implementation is roughly 140 lines; most of that is the tool definitions.
+A protocol-correct implementation is roughly 140 lines; most of that is the tool definitions.
+
+**OAuth.** The two remaining failures in this category are OAuth/OIDC discovery and OAuth Protected Resource metadata, checked via `/.well-known/openid-configuration` and `/.well-known/oauth-protected-resource`.
+
+These checks exist for sites with protected APIs where agents need to obtain tokens before making requests. This blog's MCP server and `/ask` endpoint are intentionally public and unauthenticated. Publishing OAuth discovery metadata for an API that has nothing to protect would actively mislead agents: clients that take the metadata seriously would attempt token acquisition, fail or time out, and potentially give up before trying the open endpoint.
+
+The right answer is to leave those checks failing. The scoring tool doesn't have a way to express "this API is intentionally public" — it treats the absence of OAuth metadata as a gap rather than a deliberate choice. For a public read-only corpus, no auth is the correct design.
+
+## Commerce
+
+isitagentready checks for [x402](https://www.x402.org/) — the HTTP 402 micropayment protocol that lets agents pay for API access with stablecoin micropayments instead of obtaining OAuth tokens. But it files x402 under "Commerce" and marks it not applicable for most sites. The odd thing: [EmDash](/emdash-cms/), Cloudflare's own CMS, ships with native x402 support. If x402 is built into the CMS you're promoting, filing it as a commerce edge case rather than a first-class agent authentication model seems like a missed opportunity to say what you actually think about how agents should access paid content.
 
 ## The full stack
 
@@ -226,13 +242,3 @@ After all of this, the complete set of surfaces an agent can use to read this bl
 Each surface answers a different agent question. WebMCP isn't a replacement for any of the others. It's the answer to "what can this site do that I'd otherwise have to fake by clicking buttons." The MCP server answers the same question from outside the browser.
 
 WebMCP is early. The spec is incubating. The tool registration shape will probably shift before it ships unflagged. But the underlying discipline is durable: is there a capability behind this UI that the existing standards don't cover? That's the question worth asking now, regardless of what the wire format ends up looking like.
-
-## Where the scoring gets it wrong
-
-After everything above, isitagentready.com reports two remaining failures: OAuth/OIDC discovery and OAuth Protected Resource metadata. Both check for files at `/.well-known/openid-configuration` and `/.well-known/oauth-protected-resource`.
-
-These checks exist for sites with protected APIs where agents need to obtain tokens before making requests. This blog's MCP server and `/ask` endpoint are intentionally public and unauthenticated. Publishing OAuth discovery metadata for an API that has nothing to protect would actively mislead agents: clients that take the metadata seriously would attempt token acquisition, fail or time out, and potentially give up before trying the open endpoint.
-
-The right answer is to leave those checks failing. The problem is that the scoring tool doesn't have a way to express "this API is intentionally public." It treats the absence of OAuth metadata as a gap rather than a deliberate choice. For a public read-only corpus, no auth is the correct design. Penalizing it conflates "agent-ready" with "OAuth-enabled," which are different things.
-
-isitagentready does check for [x402](https://www.x402.org/) — the HTTP 402 micropayment protocol that lets agents pay for API access with stablecoin micropayments instead of obtaining OAuth tokens. But it files x402 under "Commerce" and marks it not applicable for most sites. The odd thing: [EmDash](/emdash-cms/), Cloudflare's own CMS, ships with native x402 support. If x402 is built into the CMS you're promoting, filing it as a commerce edge case rather than a first-class agent authentication model seems like a missed opportunity to say what you actually think about how agents should access paid content.
