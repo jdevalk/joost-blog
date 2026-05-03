@@ -17,36 +17,23 @@ password: cloudflare
 
 Cloudflare recently launched [isitagentready.com](https://isitagentready.com), a tool that scans your site across five categories and gives you a score out of 100. I ran joost.blog through it, got a 25, and immediately started working through the list.
 
-Worth noting before the list: isitagentready.com itself passes its own test. A GET to `/.well-known/mcp/server-card.json` reveals a stateless MCP server with a single `scan_site` tool at `/mcp`. No browser session required; the scan runs as one POST from any MCP client:
-
-```json
-POST https://isitagentready.com/mcp
-{"jsonrpc":"2.0","method":"tools/call","params":{"name":"scan_site","arguments":{"url":"https://joost.blog"}},"id":1}
-```
-
 That score is a useful forcing function. It surfaces concrete gaps: which standards you're missing, why they matter, and exactly what to add. I spent a few hours working through them. Some were one-liners. A few required actual packages and infrastructure. Here's what I did, organized by the tool's own categories.
 
-One thing worth doing before working through the list: customize the scan. isitagentready lets you enable or disable individual checks, and the default set covers a broad range of standards, more than most sites need. For this blog, the defaults caught the real gaps, but missed one check that was actually relevant: the A2A Agent Card. That only surfaced after I enabled it manually. Customize first, then work through what the scan finds.
+One thing worth doing before working through the list: customize the scan. isitagentready lets you enable or disable individual checks, and the default set covers a broad range of standards, more than most sites need. For this blog, the defaults caught the real gaps but missed one check that was actually relevant: the A2A Agent Card. That only surfaced after I enabled it manually.
 
 ## Discoverability
 
 robots.txt and a sitemap were already in place; this blog is built on Astro and both come standard. The gap was link headers.
 
-**Link headers.** HTTP responses can include a `Link` header that points agents to useful resources without requiring them to parse HTML. In Cloudflare Pages, `public/_headers` adds headers by path pattern. I added these to `/*`:
+### Link headers
 
-```
-Link: </sitemap-index.xml>; rel="sitemap", </llms.txt>; rel="alternate"; type="text/plain", </.well-known/api-catalog>; rel="api-catalog", </.well-known/agent-skills/index.json>; rel="agent-skills"
-```
-
-Every response on the site now advertises the sitemap, the llms.txt index, the API catalog, and the agent skills index in the HTTP headers. An agent reading the response headers knows where to look without loading any HTML.
+HTTP responses can include a `Link` header that points agents to useful resources without requiring them to parse HTML. In Cloudflare Pages, `public/_headers` adds headers by path pattern. A single rule on `/*` wires up the sitemap, llms.txt, the API catalog, the agent skills index, the MCP server card, and the A2A agent card. An agent reading the response headers knows where to look without loading any HTML.
 
 ## Content
 
 Content negotiation for posts was already in place: a client sending `Accept: text/markdown` gets the raw markdown instead of an HTML document full of navigation, schema markup, and everything else that browsers need but agents don't. The check failed on the homepage specifically: there was no `/index.md` equivalent.
 
 For WordPress, this is straightforward: PHP runs at request time and can check the header. I wrote about that approach in the [markdown-alternate WordPress plugin](/markdown-alternate/). For a static Astro site deployed on Cloudflare Pages, there's no server to intercept requests. Everything has to happen at build time or at the CDN edge.
-
-It turns out the static approach is cleaner.
 
 ### Static `.md` files at build time
 
@@ -58,7 +45,7 @@ Agents that parse HTML before fetching anything need a standard signal pointing 
 
 If you're not using astro-seo-graph, [`@jdevalk/astro-markdown-alternate`](https://github.com/jdevalk/astro-markdown-alternate) does the same thing as a standalone package.
 
-### Cloudflare Transform Rules for content negotiation
+### Content negotiation via Cloudflare Transform Rules
 
 Agents that send `Accept: text/markdown` upfront skip HTML entirely, so they never see the `<link rel="alternate">` tag. For those, a Cloudflare Transform Rule rewrites the path at the CDN layer. No Worker, no function invocation.
 
@@ -83,7 +70,7 @@ You need a static `/index.md` endpoint for the second rule; I added `src/pages/i
 
 ## Bot Access Control
 
-This blog allows all crawlers by default. robots.txt uses `User-agent: * / Allow: /` with no AI-specific blocks; that's the baseline the AI bot rules check looks for.
+This blog allows all crawlers by default. robots.txt uses `User-agent: *` with `Allow: /` and no AI-specific blocks; that's the baseline the AI bot rules check looks for.
 
 ### Content Signals
 
@@ -105,7 +92,7 @@ Without a catalog, an agent discovering your site's APIs has to guess standard p
 
 ### Agent Skills index
 
-Coding agents (Claude Code, Cursor, GitHub Copilot) can load skill documents that shape how they write code for a specific stack. The [Agent Skills Discovery RFC](https://github.com/cloudflare/agent-skills-discovery-rfc) is a Cloudflare proposal so adoption is nascent, but the upside is real if the pattern takes hold: point an agent at `/.well-known/agent-skills/index.json` and it loads your project's conventions instead of guessing them. That path is the standard the RFC defines for publishing skill documents coding agents can load on demand.
+Coding agents (Claude Code, Cursor, GitHub Copilot) can load skill documents that shape how they write code for a specific stack. The [Agent Skills Discovery RFC](https://github.com/cloudflare/agent-skills-discovery-rfc) is a Cloudflare proposal so adoption is nascent, but the upside is real if the pattern takes hold: point an agent at `/.well-known/agent-skills/index.json` and it loads your project's conventions instead of guessing them.
 
 I maintain a set of skills at [github.com/jdevalk/skills](https://github.com/jdevalk/skills): eight skills covering things like Astro SEO, GitHub repo setup, WordPress readme optimization, and readability checking. A build script copies them into `public/.well-known/agent-skills/`, computes SHA-256 digests, and writes the index. When you run `npx skills add jdevalk/skills` or ask any MCP-capable coding agent to check `https://joost.blog/.well-known/agent-skills/index.json`, the skills are there.
 
@@ -123,40 +110,7 @@ The [Agent2Agent (A2A) protocol](https://a2a-protocol.org/) is a separate standa
 
 This check isn't enabled in the default isitagentready scan; I only found the gap after customizing the scan configuration. Once I did, the fix was a static JSON file.
 
-The card describes Ask Joost with two skills that map directly onto the MCP and WebMCP tools already in place:
-
-```json
-{
-  "name": "Ask Joost",
-  "version": "1.0.0",
-  "description": "An AI agent grounded in Joost de Valk's published writing...",
-  "url": "https://joost.blog/mcp",
-  "provider": { "organization": "Joost de Valk", "url": "https://joost.blog" },
-  "supportedInterfaces": [
-    { "url": "https://joost.blog/mcp", "transport": "http", "protocol": "MCP/2025-11-25" },
-    { "url": "https://joost.blog/ask", "transport": "http", "protocol": "NLWeb" }
-  ],
-  "capabilities": { "streaming": true, "pushNotifications": false },
-  "skills": [
-    {
-      "id": "ask_joost",
-      "name": "Ask Joost",
-      "description": "Ask a question about anything Joost de Valk has written...",
-      "inputModes": ["text"],
-      "outputModes": ["text"]
-    },
-    {
-      "id": "list_recent_content",
-      "name": "List recent content",
-      "description": "List Joost de Valk's published blog posts, optionally filtered by topic keyword and/or publish date.",
-      "inputModes": ["text"],
-      "outputModes": ["text"]
-    }
-  ]
-}
-```
-
-The card goes in `public/.well-known/agent-card.json`, a static file with no build step. CORS headers and a one-hour cache go in `_headers` so agents can fetch it cross-origin. It's wired into the sitewide Link header alongside the MCP server card:
+The card describes Ask Joost with two skills that map directly onto the MCP and WebMCP tools already in place. It's a static file at [`/.well-known/agent-card.json`](https://joost.blog/.well-known/agent-card.json) with no build step. CORS headers and a one-hour cache go in `_headers` so agents can fetch it cross-origin. It's wired into the sitewide Link header alongside the MCP server card:
 
 ```
 Link: ..., </.well-known/agent-card.json>; rel="agent-card"
@@ -261,6 +215,8 @@ if (typeof navigator !== 'undefined' && 'modelContext' in navigator) { ... }
 
 In every browser that doesn't support WebMCP (currently all of them except Chrome 146+ and Edge 147+ behind a flag), this is a no-op.
 
+WebMCP is early. The spec is incubating. The tool registration shape will probably shift before it ships unflagged. But the underlying discipline is durable: is there a capability behind this UI that the existing standards don't cover? That's the question worth asking now, regardless of what the wire format ends up looking like.
+
 ### MCP server
 
 WebMCP tools only work when an agent is actively browsing the page. A server-side MCP endpoint removes that constraint: any MCP client (Claude Desktop, Claude Code, Cursor, any tool that speaks the Model Context Protocol) can call the same tools without a browser session.
@@ -275,6 +231,8 @@ The MCP 2025-11-25 spec defines a Streamable HTTP transport. Clients POST JSON-R
 
 A protocol-correct implementation is roughly 140 lines; most of that is the tool definitions.
 
+isitagentready.com runs on the same pattern: it exposes a `scan_site` tool over Streamable HTTP, callable from any MCP client.
+
 ### OAuth
 
 The two remaining failures in the default isitagentready scan for this category are OAuth/OIDC discovery and OAuth Protected Resource metadata, checked via `/.well-known/openid-configuration` and `/.well-known/oauth-protected-resource`.
@@ -285,7 +243,7 @@ The right answer is to leave those checks failing. The scoring tool doesn't have
 
 ## Commerce
 
-isitagentready checks for [x402](https://www.x402.org/), the HTTP 402 micropayment protocol that lets agents pay for API access with stablecoin micropayments instead of obtaining OAuth tokens. But it files x402 under "Commerce" and marks it not applicable for most sites. The odd thing: [EmDash](/emdash-cms/), Cloudflare's own CMS, ships with native x402 support. If x402 is built into the CMS you're promoting, filing it as a commerce edge case rather than a first-class agent authentication model seems like a missed opportunity to say what you actually think about how agents should access paid content.
+isitagentready checks for [x402](https://www.x402.org/), the HTTP 402 micropayment protocol that lets agents pay for API access with stablecoin micropayments instead of obtaining OAuth tokens. But it files x402 under "Commerce" and marks it not applicable for most sites. The odd thing: [EmDash](/emdash-cms/), Cloudflare's own CMS, ships with native x402 support. If x402 is built into the CMS you're promoting, categorizing it as a commerce edge case is inconsistent. Either it's a real agent authentication model or it isn't.
 
 ## The full stack
 
@@ -310,7 +268,5 @@ After all of this, the complete set of surfaces an agent can use to read this bl
 | MCP endpoint at `/mcp` | Q&A and listing from any MCP client |
 
 Each surface answers a different agent question. WebMCP isn't a replacement for any of the others. It's the answer to "what can this site do that I'd otherwise have to fake by clicking buttons." The MCP server answers the same question from outside the browser.
-
-WebMCP is early. The spec is incubating. The tool registration shape will probably shift before it ships unflagged. But the underlying discipline is durable: is there a capability behind this UI that the existing standards don't cover? That's the question worth asking now, regardless of what the wire format ends up looking like.
 
 Running the same `scan_site` call after all of this work returns 83/100 (Level 5, Agent-Native). None of it required exotic infrastructure. An Astro site on Cloudflare Pages handles most of this at build time: static files, endpoint routes, `_headers`, and a single Pages Function for the MCP server. The hard parts are deciding what to expose and why, not the mechanics of exposing it.
