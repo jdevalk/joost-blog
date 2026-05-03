@@ -1,0 +1,61 @@
+{
+  "$schema": "https://agentskills.io/schema/index.json",
+  "skills": [
+    {
+      "name": "astro-seo",
+      "type": "skill-md",
+      "description": "Audits and improves SEO for Astro sites. Use when the user asks to audit, set up, or improve SEO on an Astro site, or mentions head metadata, structured data, JSON-LD, sitemaps, IndexNow, Open Graph images, schema endpoints, NLWeb, hreflang, or search engine indexing in an Astro project. Produces drop-in code routed through `@jdevalk/astro-seo-graph` and chains into `metadata-check` for generated SEO strings.",
+      "url": "https://joost.blog/.well-known/agent-skills/astro-seo/SKILL.md",
+      "digest": "sha256:fe9a089933327c5ad4a30492ea3d566ef0a54098a9dc6c59d7428614164521fa"
+    },
+    {
+      "name": "emdash-github-actions",
+      "type": "skill-md",
+      "description": "Sets up GitHub Actions CI/CD workflows for EmDash plugins — TypeScript type-checking, ESLint linting, Vitest testing, npm publishing, and automated releases. ALWAYS use this skill when a user wants to create, add, set up, or configure GitHub Actions, CI/CD, automated checks, or deployment workflows for an EmDash plugin — even if they don't use the exact phrase \"GitHub Actions\". This includes any request to: add automated type-checking or linting to an EmDash plugin repo; set up testing in CI for a plugin; auto-publish a plugin to npm from GitHub; add security scanning or dependency auditing to a plugin pipeline; or generally \"add CI\", \"add automated checks\", \"set up workflows\", or \"automate\" anything related to an EmDash plugin's GitHub repository. Also trigger when someone wants quality gates on PRs or is setting up a new EmDash plugin repo and wants best practices for automation. If the user is inside an EmDash plugin repository and mentions anything about automated testing, code quality, deployment, or Git",
+      "url": "https://joost.blog/.well-known/agent-skills/emdash-github-actions/SKILL.md",
+      "digest": "sha256:ddac91586b47a20d6c9407355270f676e99ae80ecf12264aea2da00ae18527c2"
+    },
+    {
+      "name": "github-profile",
+      "type": "skill-md",
+      "description": "Audits and optimizes GitHub profile pages — profile README, metadata fields, pinned repositories, stats widgets, and contribution visibility. Use this skill whenever the user asks to improve, create, review, or optimize their GitHub profile, or mentions \"profile README\", \"GitHub bio\", \"pinned repos\", \"GitHub stats\", \"contribution graph\", or \"GitHub presence\". Also trigger when someone says things like \"make my GitHub look good\", \"I want a better GitHub profile\", \"help me stand out on GitHub\", \"set up my GitHub page\", or \"optimize my developer profile\". Works for both personal profiles and organization profile pages.",
+      "url": "https://joost.blog/.well-known/agent-skills/github-profile/SKILL.md",
+      "digest": "sha256:2a0ec06eac56cc12d0f2acfd8e1845e740c4eeb79bf66cec9d66c5a636ceb0ca"
+    },
+    {
+      "name": "github-repo",
+      "type": "skill-md",
+      "description": "Audits and improves GitHub repository quality — README structure, community health files, .github directory setup, issue/PR templates, metadata, releases, and branch hygiene. Use this skill whenever the user asks to improve, audit, review, or set up a GitHub repository, or when they mention things like \"make my repo look professional\", \"add contributing guidelines\", \"set up issue templates\", \"improve my README\", \"clean up my repo\", \"prepare my repo for open source\", or \"make my GitHub project look good\". Also trigger when working inside a git repository and the user asks about best practices for documentation, community files, or repository structure. If the user is in a repo directory and mentions README, CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, LICENSE, .github, templates, or release tags, use this skill.",
+      "url": "https://joost.blog/.well-known/agent-skills/github-repo/SKILL.md",
+      "digest": "sha256:b482f48da40378fde7a92e15a2342f364d6d113864dc67682d3f555427c2ad57"
+    },
+    {
+      "name": "metadata-check",
+      "type": "skill-md",
+      "description": "Reviews short high-value strings — page titles, meta descriptions, schema description fields, FAQ answers, GitHub repo taglines, profile bios, social-card copy, and other metadata where Flesch and paragraph-level readability checks don't apply. Checks front-loading, concreteness, filler, active voice, title/description duplication, difficult words, SERP-truncation fit, and one-idea-per-field. Use when the user asks to review metadata, a tagline, a bio, or SEO strings, or proactively after generating any short string with audience-facing impact. Chained into by astro-seo, wp-readme-optimizer, github-repo, and github-profile for their metadata outputs. For multi-paragraph prose, use the `readability-check` skill instead.",
+      "url": "https://joost.blog/.well-known/agent-skills/metadata-check/SKILL.md",
+      "digest": "sha256:5a08319ef7e7396a4e4919a75bc436c7e86144ca4a2b9c1a31a74b3c21ba8b1e"
+    },
+    {
+      "name": "readability-check",
+      "type": "skill-md",
+      "description": "Runs a readability audit on a blog post draft or other multi-paragraph prose, calibrated for readers who read English as a second language. Checks nine categories — paragraph structure, opening paragraph strength, tiered sentence length, passive voice, difficult words, filler and hedging, transitions, variation, and heading hierarchy — and reports a Flesch Reading Ease score with a per-category status. Use when the user asks to check readability, run a readability pass, or asks \"is this readable\", or proactively as a second pass after a substantial draft is complete. Also invoked by the github-repo, github-profile, and wp-readme-optimizer skills on their generated prose. For short strings (titles, meta descriptions, taglines, bios), use the `metadata-check` skill instead — Flesch and paragraph-level checks don't apply to them.",
+      "url": "https://joost.blog/.well-known/agent-skills/readability-check/SKILL.md",
+      "digest": "sha256:2942a2d9b3fd3f5c2a46848374141be9952903afd573477f924a74492dba902d"
+    },
+    {
+      "name": "wp-github-actions",
+      "type": "skill-md",
+      "description": "Sets up GitHub Actions CI/CD workflows for WordPress plugins — coding standards (WPCS/PHPCS), PHP/JS/CSS linting, PHPUnit testing, static analysis (PHPStan), Composer security scanning, WordPress Playground PR previews, and automated deployment to WordPress.org. ALWAYS use this skill when a user wants to create, add, set up, or configure GitHub Actions, CI/CD, automated checks, or deployment workflows for a WordPress plugin — even if they don't use the exact phrase \"GitHub Actions\". This includes any request to: add automated coding standards or PHPCS/WPCS checks to a WP plugin repo; set up linting (PHP, JS, CSS) for a WordPress plugin; configure PHPUnit testing in CI for a plugin; auto-deploy a plugin to WordPress.org from GitHub; add Playground previews to pull requests; add security scanning or static analysis to a plugin pipeline; or generally \"add CI\", \"add automated checks\", \"set up workflows\", or \"automate\" anything related to a WordPress plugin's GitHub repository. Also trigger when someone mentions w",
+      "url": "https://joost.blog/.well-known/agent-skills/wp-github-actions/SKILL.md",
+      "digest": "sha256:f05fa1aaea7be4df346c55d7ee40e8b6bb1aecff183675af71fbaa598f285f22"
+    },
+    {
+      "name": "wp-readme-optimizer",
+      "type": "skill-md",
+      "description": "Reviews and rewrites WordPress.org plugin readme.txt files for maximum quality. Use this skill whenever a user pastes, uploads, or references a WordPress plugin readme.txt, or asks to improve, audit, review, score, or optimize a plugin's WordPress.org listing page. Also trigger when the user says things like \"make my plugin page better\", \"optimize my readme\", \"help me rank higher on WordPress.org\", or \"review my plugin listing\". Always run the full audit + rewrite workflow unless the user explicitly asks for only one part.",
+      "url": "https://joost.blog/.well-known/agent-skills/wp-readme-optimizer/SKILL.md",
+      "digest": "sha256:cac518a8026a69cff7a43eeb1ebbb3149dd3b9ad4737e8243c490ce68e705995"
+    }
+  ]
+}
