@@ -10,6 +10,7 @@ export const GET: APIRoute = ({ url, site }) => {
 Allow: /
 Disallow: /cdn-cgi/l/email-protection
 Disallow: /api/*
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
 
 Sitemap: ${siteUrl}/sitemap-index.xml
 Schemamap: ${siteUrl}/schemamap.xml

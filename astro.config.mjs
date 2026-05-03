@@ -4,7 +4,6 @@ import seoGraph from '@jdevalk/astro-seo-graph/integration';
 import tailwindcss from '@tailwindcss/vite';
 import pagefind from 'astro-pagefind';
 import { defineConfig } from 'astro/config';
-import { markdownAlternate } from './src/integrations/markdown-alternate.ts';
 import fs from 'fs';
 import matter from 'gray-matter';
 import { gitLastmod } from './src/utils/sitemap.ts';
@@ -159,7 +158,8 @@ integrations: [mdx(), sitemap({
                 return !draftSlugs.has(slug);
             },
         },
-    }), pagefind(), injectModulePreloads(), markdownAlternate()],
+        markdownAlternate: true,
+    }), pagefind(), injectModulePreloads()],
     markdown: {
         shikiConfig: {
             themes: {
