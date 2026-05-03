@@ -50,6 +50,10 @@ You only have to download Quix once, after that it should auto-update from [Quix
 
 ## Changelog
 
+### 4.1
+
+- Added an "Is it agent ready?" command that opens [isitagentready.com](https://isitagentready.com) for the current browser URL.
+
 ### 4.0.1
 
 - Switched auto-updater to use GitHub releases.

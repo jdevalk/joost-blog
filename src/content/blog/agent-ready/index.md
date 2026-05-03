@@ -15,7 +15,7 @@ draft: true
 password: cloudflare
 ---
 
-Cloudflare recently launched [isitagentready.com](https://isitagentready.com), a tool that scans your site across five categories and gives you a score out of 100. I ran joost.blog through it, got a 25, and immediately started working through the list.
+Cloudflare recently launched [isitagentready.com](https://isitagentready.com), a tool that scans your site across five categories and gives you a score out of 100. I ran joost.blog through it, got a 25, and immediately started working through the list. If you use Alfred, I added an `agent` command to [Quix](/code/alfred-quix/) that opens the tool for the current browser URL.
 
 That score is a useful forcing function. It surfaces concrete gaps: which standards you're missing, why they matter, and exactly what to add. I spent a few hours working through them. Some were one-liners. A few required actual packages and infrastructure. Here's what I did, organized by the tool's own categories.
 
