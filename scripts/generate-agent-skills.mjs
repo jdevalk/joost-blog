@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { createHash } from 'node:crypto';
-import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
@@ -21,20 +21,26 @@ const SKILL_NAMES = [
     'wp-readme-optimizer',
 ];
 
+const srcAvailable = existsSync(SKILLS_SRC);
+if (!srcAvailable) {
+    console.log('  Skills source not found, rebuilding index from committed files.');
+}
+
 const skills = [];
 
 for (const name of SKILL_NAMES) {
-    const srcPath = join(SKILLS_SRC, name, 'SKILL.md');
     const destDir = join(SKILLS_DEST, name);
     const destPath = join(destDir, 'SKILL.md');
 
-    const content = readFileSync(srcPath, 'utf-8');
+    if (srcAvailable) {
+        mkdirSync(destDir, { recursive: true });
+        copyFileSync(join(SKILLS_SRC, name, 'SKILL.md'), destPath);
+    }
+
+    const content = readFileSync(destPath, 'utf-8');
     const { data } = matter(content);
     const description = String(data.description ?? '').trim().replace(/\s+/g, ' ').slice(0, 1024);
     const digest = 'sha256:' + createHash('sha256').update(content).digest('hex');
-
-    mkdirSync(destDir, { recursive: true });
-    copyFileSync(srcPath, destPath);
 
     skills.push({
         name,
