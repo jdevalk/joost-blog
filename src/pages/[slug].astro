@@ -5,6 +5,7 @@ import SchemaGraph from '../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import TableOfContents from '../components/TableOfContents.astro';
 import { sortPostsByDateDesc, slugify, getReadingTime, getRelatedPosts } from '../utils/post-utils';
 import { gitLastmod } from '../utils/sitemap';
 import fs from 'node:fs';
@@ -94,19 +95,7 @@ const pageContext: SchemaPageContext = isBlog ? {
 };
 
 // Blog post — TOC and computed values
-const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
-const hasToc = (isBlog ? !!blogData!.toc : !!pageData!.toc) && tocHeadings.length > 0;
-
-// Pre-compute h2 indices for TOC numbering
-interface TocItem { depth: number; slug: string; text: string; idx: number | null }
-const tocItems: TocItem[] = [];
-if (hasToc) {
-    let h2Idx = 0;
-    for (const h of tocHeadings) {
-        if (h.depth === 2) h2Idx++;
-        tocItems.push({ ...h, idx: h.depth === 2 ? h2Idx : null });
-    }
-}
+const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some(h => h.depth === 2 || h.depth === 3);
 
 // Category label
 const primaryCategory = blogData?.categories?.[0] ?? null;
@@ -150,23 +139,7 @@ const primaryCategory = blogData?.categories?.[0] ?? null;
         <section class="sp-post-body" data-pagefind-body>
             <div class:list={['sp-post-grid', { 'sp-no-toc': !hasToc }]}>
 
-                {hasToc && (
-                    <nav class="sp-post-toc" aria-label="Table of contents">
-                        <div class="lbl">On this page</div>
-                        <ol>
-                            {tocItems.map(item => (
-                                <li class:list={[{ sub: item.depth === 3 }]}>
-                                    <a href={`#${item.slug}`} data-toc-link>
-                                        {item.idx !== null && (
-                                            <span class="sp-post-toc-num">{String(item.idx).padStart(2, '0')}</span>
-                                        )}
-                                        {item.text}
-                                    </a>
-                                </li>
-                            ))}
-                        </ol>
-                    </nav>
-                )}
+                {hasToc && <TableOfContents headings={headings} />}
 
                 <article class="sp-prose">
                     <Content />
@@ -264,23 +237,7 @@ const primaryCategory = blogData?.categories?.[0] ?? null;
         </section>
         <section class="sp-post-body">
             <div class:list={['sp-post-grid', { 'sp-no-toc': !hasToc }]}>
-                {hasToc && (
-                    <nav class="sp-post-toc" aria-label="Table of contents">
-                        <div class="lbl">On this page</div>
-                        <ol>
-                            {tocItems.map(item => (
-                                <li class:list={[{ sub: item.depth === 3 }]}>
-                                    <a href={`#${item.slug}`} data-toc-link>
-                                        {item.idx !== null && (
-                                            <span class="sp-post-toc-num">{String(item.idx).padStart(2, '0')}</span>
-                                        )}
-                                        {item.text}
-                                    </a>
-                                </li>
-                            ))}
-                        </ol>
-                    </nav>
-                )}
+                {hasToc && <TableOfContents headings={headings} />}
                 <article class="sp-prose">
                     <Content />
                 </article>

@@ -1,0 +1,52 @@
+{
+  "name": "Ask Joost",
+  "version": "1.0.0",
+  "description": "An AI agent grounded in Joost de Valk's published writing and talks — covering SEO, WordPress, the open web, AI, open source, and his investment portfolio at Emilia Capital. Ask questions in natural language and receive cited answers drawn from a semantic index of his blog posts and video transcripts.",
+  "url": "https://joost.blog/mcp",
+  "provider": {
+    "organization": "Joost de Valk",
+    "url": "https://joost.blog"
+  },
+  "supportedInterfaces": [
+    {
+      "url": "https://joost.blog/mcp",
+      "transport": "http",
+      "protocol": "MCP/2025-11-25"
+    },
+    {
+      "url": "https://joost.blog/ask",
+      "transport": "http",
+      "protocol": "NLWeb"
+    }
+  ],
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false
+  },
+  "skills": [
+    {
+      "id": "ask_joost",
+      "name": "Ask Joost",
+      "description": "Ask a question about anything Joost de Valk has written or spoken about — SEO, WordPress, the open web, AI, open source, his career at Yoast, or his investments via Emilia Capital. Returns an AI-generated answer grounded in his blog posts and video transcripts, with source URLs for every claim.",
+      "inputModes": ["text"],
+      "outputModes": ["text"],
+      "examples": [
+        "What's Joost's take on WordPress market share?",
+        "Why did Joost leave Yoast?",
+        "What does Joost think about AI's impact on SEO?"
+      ]
+    },
+    {
+      "id": "list_recent_content",
+      "name": "List recent content",
+      "description": "List Joost de Valk's published blog posts on joost.blog, optionally filtered by topic keyword and/or publish date. Returns chronologically sorted entries with title, URL, publish date, excerpt, and categories.",
+      "inputModes": ["text"],
+      "outputModes": ["text"],
+      "examples": [
+        "What has Joost published this year?",
+        "List posts about WordPress",
+        "What's the most recent post?"
+      ]
+    }
+  ]
+}

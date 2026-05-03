@@ -84,6 +84,12 @@
     .prose :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *, pre *))::after {
         content: none;
     }
+    .prose a:has(code) {
+        @apply no-underline;
+    }
+    .prose a code {
+        @apply text-primary dark:text-accent underline underline-offset-[6px] decoration-1;
+    }
     :is(h1, h2, h3, h4, h5, h6) {
         scroll-margin-top: 7rem;
     }
