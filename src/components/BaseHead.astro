@@ -1,5 +1,4 @@
 ---
-import monaSansWoff2 from '@fontsource-variable/mona-sans/files/mona-sans-latin-wght-normal.woff2?url';
 import Seo from '@jdevalk/astro-seo-graph/Seo.astro';
 import siteConfig from '../data/site-config';
 import { SITE_URL } from '../utils/schema/constants';
@@ -66,7 +65,6 @@ const ogImageAlt = Astro.props.title ?? siteConfig.title;
 <meta name="generator" content={Astro.generator} />
 
 <!-- Font preloads -->
-<link rel="preload" as="font" type="font/woff2" href={monaSansWoff2} crossorigin="anonymous" />
 <link rel="preload" href="/fonts/DomaineDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/DomaineDisplay-MediumItalic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/DomaineText-Light.woff2" as="font" type="font/woff2" crossorigin>

@@ -1,6 +1,6 @@
 ---
 title: What <em>agent-ready</em> looks like for a static blog
-publishDate: 2026-05-03T00:00:00.000Z
+publishDate: 2026-05-04T00:00:00.000Z
 excerpt: >-
   I ran joost.blog through Cloudflare's isitagentready.com and got a 25.
   Here's what I built to close the gaps: markdown content negotiation,
@@ -11,8 +11,6 @@ categories:
   - Development
   - AI
 toc: true
-draft: true
-password: cloudflare
 ---
 import Aside from '../../../components/Aside.astro';
 
@@ -23,6 +21,11 @@ The score surfaces concrete gaps: which standards you're missing, why they matte
 <Aside>If you use [Alfred](https://www.alfredapp.com/), I added an `agent` command to [Quix](/code/alfred-quix/) that opens the tool for the current browser URL.</Aside>
 
 One thing worth doing before working through the list: customize the scan. isitagentready lets you enable or disable individual checks, and the default set covers a broad range of standards, more than most sites need. For this blog, the defaults caught the real gaps but missed one check that was actually relevant: the A2A Agent Card. That only surfaced after I enabled it manually.
+
+<div class="not-prose rounded-lg border-2 border-primary/20 bg-tertiary px-6 py-5 dark:border-accent/20 dark:bg-stone-900">
+<p class="mb-2 text-lg font-semibold text-primary dark:text-accent">Want your AI agent to do this for you?</p>
+<p class="text-base leading-relaxed text-stone-700 dark:text-stone-300">Install my <a href="https://github.com/jdevalk/skills?tab=readme-ov-file#-astro-seo" class="text-primary underline decoration-1 underline-offset-2 hover:no-underline dark:text-accent">Astro SEO skill</a> (it covers the agent-discovery checks below), or point your AI coding agent at this article. Everything below is written so an agent can read it and implement it directly.</p>
+</div>
 
 ## Discoverability
 

@@ -1,11 +1,3 @@
-@import '@fontsource-variable/mona-sans' layer(base);
-@import '@fontsource-variable/mona-sans/wght-italic.css' layer(base);
-@import '@fontsource-variable/fraunces/wght.css' layer(base);
-@import '@fontsource-variable/fraunces/wght-italic.css' layer(base);
-
-@import '@fontsource-variable/inter/wght.css' layer(base);
-@import '@fontsource/jetbrains-mono/400.css' layer(base);
-
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 @import './specimen.css';
@@ -14,8 +6,6 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --font-sans: 'Mona Sans Variable', sans-serif;
-
     /* Slate palette */
     --color-primary: #4a6480;
     --color-secondary: #1f2530;

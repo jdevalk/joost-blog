@@ -141,7 +141,7 @@ const pageContext: SchemaPageContext = {
             const index = parseInt(fbBtn.dataset.index ?? '0', 10);
             const exchange = exchanges[index];
             const container = fbBtn.parentElement!;
-            container.innerHTML = `<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#4e5666;letter-spacing:0.15em">${value === 'yes' ? 'GLAD IT HELPED' : 'THANKS FOR THE FEEDBACK'}</span>`;
+            container.innerHTML = `<span style="font-family:var(--font-mono);font-size:11px;color:#4e5666;letter-spacing:0.15em">${value === 'yes' ? 'GLAD IT HELPED' : 'THANKS FOR THE FEEDBACK'}</span>`;
             console.log('Ask feedback:', { query: exchange?.query, value, index });
         });
 
@@ -156,9 +156,9 @@ const pageContext: SchemaPageContext = {
 
         function renderFeedback(index: number) {
             return `<div style="margin-top:14px;padding-top:10px;border-top:1px solid rgba(31,37,48,0.15);display:flex;align-items:center;gap:10px">
-                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#4e5666">Was this helpful?</span>
-                <button type="button" class="feedback-btn" data-index="${index}" data-value="yes" style="background:none;border:none;cursor:pointer;color:#4e5666;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em" title="Yes">&#10003;</button>
-                <button type="button" class="feedback-btn" data-index="${index}" data-value="no" style="background:none;border:none;cursor:pointer;color:#4e5666;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em" title="No">&#10007;</button>
+                <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#4e5666">Was this helpful?</span>
+                <button type="button" class="feedback-btn" data-index="${index}" data-value="yes" style="background:none;border:none;cursor:pointer;color:#4e5666;font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em" title="Yes">&#10003;</button>
+                <button type="button" class="feedback-btn" data-index="${index}" data-value="no" style="background:none;border:none;cursor:pointer;color:#4e5666;font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em" title="No">&#10007;</button>
             </div>`;
         }
 

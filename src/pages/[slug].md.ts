@@ -24,6 +24,12 @@ export const GET = createMarkdownEndpoint<Entry>({
         if (!entry.body) return null;
         const data = entry.data as { title?: string; excerpt?: string; publishDate?: Date; updatedDate?: Date; categories?: string[]; tags?: string[]; draft?: boolean };
         if (data.draft) return null;
+        const rawBody = entry.body ?? '';
+        const body = rawBody
+            .replace(/^import .+$/gm, '')
+            .replace(/<Aside>([\s\S]*?)<\/Aside>/g, (_, c: string) => `\n> **Aside:** ${c.trim()}\n`)
+            .replace(/\n{3,}/g, '\n\n')
+            .trim();
         return {
             frontmatter: {
                 title: data.title ?? entry.id,
@@ -34,7 +40,7 @@ export const GET = createMarkdownEndpoint<Entry>({
                 categories: data.categories,
                 tags: data.tags
             },
-            body: entry.body
+            body
         };
     }
 });

@@ -33,6 +33,10 @@ Append `?password=XXX` to the URL once. The reader's browser stores the cookie f
 - The cookie is scoped to the slug's path, so sharing one draft doesn't unlock another.
 - `_draft-slugs.json` is regenerated on every build, so the production mapping always matches what's currently in `draft+password` state.
 
+## Package manager
+
+CI installs with `pnpm install --frozen-lockfile`. Use `pnpm install` locally, not `npm install`. Running npm only updates `package-lock.json`, leaving `pnpm-lock.yaml` stale, and the next CI build fails with `ERR_PNPM_OUTDATED_LOCKFILE`. Both lockfiles are currently tracked; `pnpm-lock.yaml` is the authoritative one.
+
 ## Cloudflare credentials
 
 Scripts that hit Cloudflare's API (`image-manager.mjs`, `generate-nlweb-index.mjs`, `generate-featured-images.mjs`) read `CF_ACCOUNT_ID` and `CF_API_TOKEN` from `.env`. The npm scripts pass `--env-file-if-exists=.env` to Node so nothing needs manual loading.

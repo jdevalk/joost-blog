@@ -303,7 +303,7 @@ Schemamap: https://joost.blog/schemamap.xml
 
 ## Agent discovery
 
-Sitemaps and IndexNow help search engines find your content. Agent discovery helps AI systems understand it.
+Sitemaps and IndexNow help search engines find your content. Agent discovery helps AI systems understand it. The sections below cover the basics; for the fuller agent-readiness picture, see my post "[What agent-ready looks like for a static blog](/agent-ready/)".
 
 ### Schema endpoints and schema map
 

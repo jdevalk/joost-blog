@@ -6,7 +6,7 @@
       "type": "skill-md",
       "description": "Audits and improves SEO for Astro sites. Use when the user asks to audit, set up, or improve SEO on an Astro site, or mentions head metadata, structured data, JSON-LD, sitemaps, IndexNow, Open Graph images, schema endpoints, NLWeb, hreflang, or search engine indexing in an Astro project. Produces drop-in code routed through `@jdevalk/astro-seo-graph` and chains into `metadata-check` for generated SEO strings.",
       "url": "https://joost.blog/.well-known/agent-skills/astro-seo/SKILL.md",
-      "digest": "sha256:fe9a089933327c5ad4a30492ea3d566ef0a54098a9dc6c59d7428614164521fa"
+      "digest": "sha256:a18a59abbf9071b80a137f233d940daee0cd62c5445203c568f88e9221c57a8f"
     },
     {
       "name": "emdash-github-actions",

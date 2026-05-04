@@ -620,6 +620,7 @@
     font-family: var(--font-text);
     font-weight: var(--weight-text); color: var(--ink);
     counter-reset: sp-h2;
+    position: relative;
 }
 .sp-prose > p {
     font-size: 20px; line-height: 1.6;
@@ -789,7 +790,6 @@
 /* Marginalia */
 .sp-post-margin {
     display: grid; gap: 32px; align-content: start;
-    position: sticky; top: 32px;
 }
 .sp-post-margin .m-block {
     border-top: 1px solid var(--ink);
@@ -803,6 +803,21 @@
 .sp-post-margin .m-body { font-size: 13px; line-height: 1.55; color: var(--ink); }
 .sp-post-margin .m-body strong { color: var(--ox); }
 .sp-post-margin ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 13px; }
+
+/* Inline asides — absolutely positioned into the margin track */
+.sp-inline-aside {
+    position: absolute;
+    right: -276px; /* -(gap 56px + margin-column 220px) */
+    width: 220px;
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+    font-family: var(--font-text);
+    font-size: 13px; line-height: 1.55; color: var(--ink);
+}
+.sp-inline-aside p { margin: 0; font-size: 13px; line-height: 1.55; max-width: none; }
+.sp-inline-aside a { color: var(--ox); border-bottom: 1px solid color-mix(in srgb, var(--ox) 40%, transparent); text-decoration: none; }
+.sp-inline-aside a:hover { border-bottom-color: var(--ox); }
+.sp-inline-aside code { font-family: var(--font-mono); font-size: 12px; }
 
 /* Share row */
 .sp-share {
@@ -1313,6 +1328,7 @@
     .sp-post-grid { grid-template-columns: minmax(0, 1fr) !important; }
     .sp-post-toc { display: none; }
     .sp-post-margin { display: none; }
+    .sp-inline-aside { display: none; }
     .sp-author-strip { padding: 40px 24px; }
     .sp-related { padding: 48px 24px; }
     .sp-related-grid { grid-template-columns: 1fr; gap: 24px; }
@@ -1395,6 +1411,7 @@
         grid-template-columns: 200px minmax(0, 640px) !important;
     }
     .sp-post-margin { display: none; }
+    .sp-inline-aside { display: none; }
     .sp-post-grid.sp-no-toc {
         grid-template-columns: minmax(0, 640px) !important;
     }
