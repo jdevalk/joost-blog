@@ -37,6 +37,21 @@ Append `?password=XXX` to the URL once. The reader's browser stores the cookie f
 
 CI installs with `pnpm install --frozen-lockfile`. Use `pnpm install` locally, not `npm install`. Running npm only updates `package-lock.json`, leaving `pnpm-lock.yaml` stale, and the next CI build fails with `ERR_PNPM_OUTDATED_LOCKFILE`. Both lockfiles are currently tracked; `pnpm-lock.yaml` is the authoritative one.
 
+## Publishing a new post
+
+When taking a post out of draft, do all of these in the same change:
+
+1. Remove `draft: true` from the frontmatter.
+2. Remove the `password:` field too (it has no effect once `draft` is gone, but leaving it behind is misleading).
+3. Update `publishDate` to today's date so the post lands at the top of the archive instead of wherever it was originally drafted.
+4. Generate the OG image:
+
+   ```sh
+   pnpm generate:og --slug <slug>
+   ```
+
+   `scripts/check-src.mjs` runs in the `build` script and fails the build if `public/og/<slug>.webp` is missing for the latest published post. Commit the generated `.webp` alongside the post.
+
 ## Cloudflare credentials
 
 Scripts that hit Cloudflare's API (`image-manager.mjs`, `generate-nlweb-index.mjs`, `generate-featured-images.mjs`) read `CF_ACCOUNT_ID` and `CF_API_TOKEN` from `.env`. The npm scripts pass `--env-file-if-exists=.env` to Node so nothing needs manual loading.
