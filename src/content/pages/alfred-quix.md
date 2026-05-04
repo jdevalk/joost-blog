@@ -6,7 +6,7 @@ seo:
   title: Quix — Alfred workflow for SEO & web analysis
   description: Quix is an Alfred workflow that lets you quickly run SEO checks, speed tests, and web analysis tools on the current browser URL.
 ---
-Quix is an AlfredApp workflow that makes quick analysis of websites for SEO, page speed, security, and other checks a lot easier. It prevents you from copy-pasting URLs into different tools, instead opening them with a few keystrokes.
+Quix is an [Alfred](https://www.alfredapp.com/) workflow that makes quick analysis of websites for SEO, page speed, security, and other checks a lot easier. It prevents you from copy-pasting URLs into different tools, instead opening them with a few keystrokes.
 
 ## Demo
 
