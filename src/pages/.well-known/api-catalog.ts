@@ -1,36 +1,18 @@
-import type { APIRoute } from 'astro';
+import { createApiCatalog } from '@jdevalk/astro-seo-graph';
 
-export const GET: APIRoute = () => {
-    const catalog = {
-        linkset: [
-            {
-                anchor: 'https://joost.blog/ask',
-                'service-doc': [{ href: 'https://joost.blog/ask-joost/' }],
-                type: [{ href: 'https://schema.org/SearchAction' }],
-            },
-            {
-                anchor: 'https://joost.blog/schema/post.json',
-                'service-doc': [{ href: 'https://joost.blog/seo-graph/' }],
-                type: [{ href: 'https://schema.org/BlogPosting' }],
-            },
-            {
-                anchor: 'https://joost.blog/schema/page.json',
-                'service-doc': [{ href: 'https://joost.blog/seo-graph/' }],
-                type: [{ href: 'https://schema.org/WebPage' }],
-            },
-            {
-                anchor: 'https://joost.blog/schema/video.json',
-                'service-doc': [{ href: 'https://joost.blog/seo-graph/' }],
-                type: [{ href: 'https://schema.org/VideoObject' }],
-            },
-            {
-                anchor: 'https://joost.blog/schemamap.xml',
-                'service-doc': [{ href: 'https://joost.blog/seo-graph/' }],
-            },
-        ],
-    };
-
-    return new Response(JSON.stringify(catalog, null, 2), {
-        headers: { 'Content-Type': 'application/linkset+json' },
-    });
-};
+export const GET = createApiCatalog({
+    siteUrl: 'https://joost.blog',
+    schemaEndpoints: [
+        { path: '/schema/post.json', schemaType: 'BlogPosting', serviceDoc: '/seo-graph/' },
+        { path: '/schema/page.json', schemaType: 'WebPage', serviceDoc: '/seo-graph/' },
+        { path: '/schema/video.json', schemaType: 'VideoObject', serviceDoc: '/seo-graph/' },
+    ],
+    schemaMap: { path: '/schemamap.xml', serviceDoc: '/seo-graph/' },
+    additional: [
+        {
+            anchor: '/ask',
+            serviceDoc: '/ask-joost/',
+            type: 'https://schema.org/SearchAction',
+        },
+    ],
+});

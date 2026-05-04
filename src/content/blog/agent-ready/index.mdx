@@ -14,10 +14,13 @@ toc: true
 draft: true
 password: cloudflare
 ---
+import Aside from '../../../components/Aside.astro';
 
-Cloudflare recently launched [isitagentready.com](https://isitagentready.com), a tool that scans your site across five categories and gives you a score out of 100. I ran joost.blog through it, got a 25, and immediately started working through the list. If you use [Alfred](https://www.alfredapp.com/), I added an `agent` command to [Quix](/code/alfred-quix/) that opens the tool for the current browser URL.
+Cloudflare recently launched [isitagentready.com](https://isitagentready.com), a tool that scans your site across five categories and gives you a score out of 100. I ran joost.blog through it, got a 25, and immediately started working through the list.
 
-That score is a useful forcing function. It surfaces concrete gaps: which standards you're missing, why they matter, and exactly what to add. I spent a few hours working through them. Some were one-liners. A few required actual packages and infrastructure. Here's what I did, organized by the tool's own categories.
+The score surfaces concrete gaps: which standards you're missing, why they matter, and exactly what to add. I spent a few hours working through them. Some were one-liners. A few required actual packages and infrastructure. Here's what I did, organized by the tool's own categories.
+
+<Aside>If you use [Alfred](https://www.alfredapp.com/), I added an `agent` command to [Quix](/code/alfred-quix/) that opens the tool for the current browser URL.</Aside>
 
 One thing worth doing before working through the list: customize the scan. isitagentready lets you enable or disable individual checks, and the default set covers a broad range of standards, more than most sites need. For this blog, the defaults caught the real gaps but missed one check that was actually relevant: the A2A Agent Card. That only surfaced after I enabled it manually.
 
@@ -74,7 +77,7 @@ This blog allows all crawlers by default. robots.txt uses `User-agent: *` with `
 
 ### Content Signals
 
-robots.txt access rules are binary: can a bot access this URL? They say nothing about what a bot is allowed to *do* with the content. The [Content Signals spec](https://contentsignals.org/) fills that gap: a directive in robots.txt that declares your preferences for AI training, search grounding, and AI input use, independently of whether the bot can crawl at all. The spec is an IETF draft and [adoption is early](/standards-dont-prove-themselves/), but it's one line in a file you already have.
+robots.txt access rules are binary: can a bot access this URL? They say nothing about what a bot is allowed to *do* with the content. The [Content Signals spec](https://contentsignals.org/) fills that gap: a directive in robots.txt that declares your preferences for AI training, search grounding, and AI input use, independently of whether the bot can crawl at all. The spec is an [IETF draft](https://datatracker.ietf.org/doc/draft-romm-aipref-contentsignals/) and [adoption is early](/standards-dont-prove-themselves/), but it's one line in a file you already have.
 
 ```
 Content-Signal: ai-train=yes, search=yes, ai-input=yes
@@ -82,13 +85,15 @@ Content-Signal: ai-train=yes, search=yes, ai-input=yes
 
 This is "my content is public and I'm fine with agents using it." If you have different preferences (training no, grounding yes, for instance), the three fields are independent.
 
-Web Bot Auth request signing is also in this category. It's an emerging standard for cryptographically verified bot identity and the check is currently grayed out on isitagentready, not something worth implementing speculatively.
+[Web Bot Auth](https://developers.cloudflare.com/bots/reference/bot-verification/web-bot-auth/) request signing is also in this category. It's an emerging standard for cryptographically verified bot identity and the check is currently grayed out on isitagentready, not something worth implementing speculatively.
 
 ## API, Auth, MCP & Skill Discovery
 
 ### API catalog
 
-Without a catalog, an agent discovering your site's APIs has to guess standard paths or crawl documentation. [RFC 9727](https://www.rfc-editor.org/rfc/rfc9727) (published April 2025) gives every site a standard answer at `/.well-known/api-catalog`: a machine-readable list of what APIs exist and where they are. The RFC is finalized so the format is stable, though real-world adoption is still early. For a static site it's just a JSON file. For this blog, that covers the `/ask` endpoint (the AI Q&A described below), the schema.org graph endpoints at `/schema/post.json`, `/schema/page.json`, and `/schema/video.json`, and the `/schemamap.xml` discovery file. An Astro endpoint at `src/pages/.well-known/api-catalog.ts` returns the `application/linkset+json` format the RFC specifies.
+Without a catalog, an agent discovering your site's APIs has to guess standard paths or crawl documentation. [RFC 9727](https://www.rfc-editor.org/rfc/rfc9727) (published April 2025) gives every site a standard answer at `/.well-known/api-catalog`: a machine-readable list of what APIs exist and where they are. The RFC is finalized so the format is stable, though real-world adoption is still early. For a static site it's just a JSON file. For this blog, that covers the `/ask` endpoint (the AI Q&A described below), the schema.org graph endpoints at `/schema/post.json`, `/schema/page.json`, and `/schema/video.json`, and the `/schemamap.xml` discovery file.
+
+[My Astro SEO plugin](/seo-graph/) ships a `createApiCatalog` route factory that emits the `application/linkset+json` format and absolutizes paths against the site URL; schema endpoints get auto-typed to their `https://schema.org/<Type>` URL so the catalog stays in sync with the schema endpoint config.
 
 ### Agent Skills index
 
