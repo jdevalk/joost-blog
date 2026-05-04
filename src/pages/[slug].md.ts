@@ -19,7 +19,6 @@ export const GET = createMarkdownEndpoint<Entry>({
         const [posts, pages] = await Promise.all([getCollection('blog'), getCollection('pages')]);
         return [...posts, ...pages];
     },
-    extraHeaders: { Vary: 'Accept' },
     mapper: (entry, slug) => {
         if (entry.id !== slug) return null;
         if (!entry.body) return null;
