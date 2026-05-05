@@ -682,6 +682,12 @@
     margin: 40px 0 16px;
     color: var(--ink);
 }
+.sp-prose h4 {
+    font-family: var(--font-display); font-weight: var(--weight-display); font-style: italic;
+    font-size: 22px; line-height: 1.25;
+    margin: 32px 0 12px;
+    color: var(--ink);
+}
 .sp-prose ul, .sp-prose ol {
     margin: 0 0 24px; padding-left: 0;
     font-family: var(--font-text);
@@ -698,6 +704,47 @@
     color: var(--ox); font-style: italic;
     font-size: 1.1em;
 }
+/* Task lists (Markdown checkboxes) */
+.sp-prose ul.contains-task-list {
+    list-style: none;
+    padding-left: 0;
+}
+.sp-prose ul.contains-task-list > li.task-list-item {
+    display: flex;
+    align-items: flex-start;
+    padding-left: 0;
+    margin-bottom: 8px;
+}
+.sp-prose ul.contains-task-list > li.task-list-item::before {
+    content: none;
+}
+.sp-prose ul.contains-task-list input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    margin: 5px 12px 0 0;
+    border: 1.5px solid var(--ox);
+    border-radius: 3px;
+    background: transparent;
+    cursor: default;
+    position: relative;
+    flex-shrink: 0;
+}
+.sp-prose ul.contains-task-list input[type="checkbox"]:checked {
+    background: var(--ox);
+}
+.sp-prose ul.contains-task-list input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: solid var(--paper);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
 .sp-prose ol { list-style: decimal; padding-left: 24px; }
 .sp-prose ol > li {
     font-size: 18px; line-height: 1.55;
@@ -705,13 +752,37 @@
 }
 .sp-prose strong { font-weight: 600; color: var(--ink); }
 .sp-prose blockquote {
-    font-family: var(--font-text); font-style: italic; font-weight: var(--weight-text);
-    font-size: 20px; line-height: 1.4;
-    margin: 40px 0;
-    padding: 24px 28px;
-    border-left: 3px solid var(--ox);
-    color: var(--paper);
-    background: var(--ox);
+    font-family: var(--font-display); font-style: italic; font-weight: var(--weight-text);
+    font-size: 24px; line-height: 1.4;
+    margin: 48px auto;
+    padding: 0 48px;
+    max-width: 36em;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    position: relative;
+}
+.sp-prose blockquote::before {
+    content: '\201C';
+    position: absolute;
+    left: 0;
+    top: -0.15em;
+    font-family: var(--font-display);
+    font-style: normal;
+    font-size: 84px;
+    line-height: 1;
+    color: var(--ox);
+}
+.sp-prose blockquote::after {
+    content: '\201D';
+    position: absolute;
+    right: 0;
+    bottom: -0.55em;
+    font-family: var(--font-display);
+    font-style: normal;
+    font-size: 84px;
+    line-height: 1;
+    color: var(--ox);
 }
 .sp-prose blockquote p {
     font-size: inherit; line-height: inherit;

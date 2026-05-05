@@ -214,9 +214,25 @@ const primaryCategory = blogData?.categories?.[0] ?? null;
                         active = heading.id;
                     }
                 }
+                let activeLink: HTMLAnchorElement | null = null;
                 links.forEach(link => {
-                    link.classList.toggle('active', link.hash === `#${active}`);
+                    const isActive = link.hash === `#${active}`;
+                    link.classList.toggle('active', isActive);
+                    if (isActive) activeLink = link;
                 });
+                if (activeLink) {
+                    const toc = (activeLink as HTMLAnchorElement).closest('.sp-post-toc') as HTMLElement | null;
+                    if (toc) {
+                        const tocRect = toc.getBoundingClientRect();
+                        const linkRect = (activeLink as HTMLAnchorElement).getBoundingClientRect();
+                        const padding = 16;
+                        if (linkRect.top < tocRect.top + padding) {
+                            toc.scrollBy({ top: linkRect.top - tocRect.top - padding, behavior: 'smooth' });
+                        } else if (linkRect.bottom > tocRect.bottom - padding) {
+                            toc.scrollBy({ top: linkRect.bottom - tocRect.bottom + padding, behavior: 'smooth' });
+                        }
+                    }
+                }
             },
             { rootMargin: '-80px 0px -70% 0px', threshold: 0 },
         );
