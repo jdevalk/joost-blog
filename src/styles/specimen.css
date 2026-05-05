@@ -566,7 +566,7 @@
 .sp-post-body { padding: 72px 64px 96px; background: var(--paper); }
 .sp-post-grid {
     display: grid;
-    grid-template-columns: 240px minmax(0, 680px) 220px;
+    grid-template-columns: 260px minmax(0, 680px) 220px;
     gap: 56px;
     max-width: 1280px;
     margin: 0 auto;
@@ -614,15 +614,17 @@
     font-family: var(--font-text);
     display: grid; gap: 8px;
 }
-.sp-post-toc ol li { font-size: 14px; line-height: 1.1; }
-.sp-post-toc ol li a { color: var(--ink); text-decoration: none; }
+.sp-post-toc ol li { font-size: 14px; line-height: 1.15; }
+.sp-post-toc ol li a {
+    color: var(--ink); text-decoration: none;
+    display: grid; grid-template-columns: 22px 1fr; align-items: baseline;
+}
 .sp-post-toc ol li a:hover { color: var(--ox); }
-.sp-post-toc ol li.sub { padding-left: 14px; font-size: 13px; }
-.sp-post-toc ol li.sub a { color: var(--ink-soft); }
+.sp-post-toc ol li.sub { padding-left: 22px; font-size: 13px; }
+.sp-post-toc ol li.sub a { color: var(--ink-soft); display: block; }
 .sp-post-toc-num {
     font-family: var(--font-mono);
-    font-size: 11px; color: var(--ox);
-    margin-right: 8px; font-weight: 600;
+    font-size: 11px; color: var(--ox); font-weight: 600;
 }
 .sp-post-toc [data-toc-link].active { color: var(--ox); font-weight: 600; }
 .sp-post-toc li.sub [data-toc-link].active { color: var(--ox); }
