@@ -582,9 +582,21 @@
     position: sticky; top: 100px;
     max-height: calc(100vh - 120px);
     overflow-y: auto;
+    scrollbar-gutter: stable;
     border-top: 1px solid var(--ink);
     padding-top: 16px;
     font-size: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--ink) 25%, transparent) transparent;
+}
+.sp-post-toc::-webkit-scrollbar { width: 6px; }
+.sp-post-toc::-webkit-scrollbar-track { background: transparent; }
+.sp-post-toc::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--ink) 25%, transparent);
+    border-radius: 3px;
+}
+.sp-post-toc::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--ink) 45%, transparent);
 }
 .sp-post-toc .lbl {
     font-family: var(--font-mono);
@@ -1388,6 +1400,7 @@
     .sp-post .sp-post-hero { padding: 32px 20px 40px; }
     .sp-post-body { padding: 32px 20px 48px; }
     .sp-post-title { font-size: clamp(40px, 11vw, 64px); }
+    .sp-post-meta-row { flex-direction: column; gap: 8px; }
     .sp-related { padding: 40px 20px; }
     .sp-author-strip {
         padding: 32px 20px;
