@@ -582,22 +582,12 @@
     position: sticky; top: 100px;
     max-height: calc(100vh - 120px);
     overflow-y: auto;
-    scrollbar-gutter: stable;
     border-top: 1px solid var(--ink);
     padding-top: 16px;
     font-size: 12px;
-    scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--ink) 25%, transparent) transparent;
+    scrollbar-width: none;
 }
-.sp-post-toc::-webkit-scrollbar { width: 6px; }
-.sp-post-toc::-webkit-scrollbar-track { background: transparent; }
-.sp-post-toc::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb, var(--ink) 25%, transparent);
-    border-radius: 3px;
-}
-.sp-post-toc::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in srgb, var(--ink) 45%, transparent);
-}
+.sp-post-toc::-webkit-scrollbar { display: none; }
 .sp-post-toc .lbl {
     font-family: var(--font-mono);
     font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
