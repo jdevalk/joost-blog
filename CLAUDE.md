@@ -54,6 +54,6 @@ When taking a post out of draft, do all of these in the same change:
 
 ## Cloudflare credentials
 
-Scripts that hit Cloudflare's API (`image-manager.mjs`, `generate-nlweb-index.mjs`, `generate-featured-images.mjs`) read `CF_ACCOUNT_ID` and `CF_API_TOKEN` from `.env`. The npm scripts pass `--env-file-if-exists=.env` to Node so nothing needs manual loading.
+Scripts that hit Cloudflare's API (`generate-nlweb-index.mjs`, `generate-featured-images.mjs`) read `CF_ACCOUNT_ID` and `CF_API_TOKEN` from `.env`. The npm scripts pass `--env-file-if-exists=.env` to Node so nothing needs manual loading.
 
 `.env` is gitignored. `.env.example` shows the expected keys.
