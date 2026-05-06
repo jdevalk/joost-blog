@@ -15,8 +15,6 @@ A domain migration has no upside. The best possible outcome is ending up exactly
 
 I've advised on many of these over the years. Some end up at "intact." Plenty don't. The difference is rarely talent. It's almost always preparation.
 
-This post is the written, expanded form of a talk I gave at SMX Munich in 2025, updated for the AI reality of 2026. I wrote it up today because one of our [portfolio companies](https://emilia.capital/investments/) is considering a domain migration and needed the playbook.
-
 A migration touches three disciplines: project management, technical SEO, and engineering. If one of those is unfamiliar to you, that's the discipline you need to bring in.
 
 ## What going well and going badly look like
@@ -31,7 +29,7 @@ Same operation, opposite outcomes. The Guardian treated the migration as a proje
 
 ### What does "normal" look like?
 
-Plan for 30–40% traffic loss for three to six months, with a return to baseline after that. If your migration takes longer than that to recover, something went wrong and you should have hired someone who has done this before. The Guardian recovered in months. Topshop, by SISTRIX's measurement, didn't. Most projects sit somewhere in between, and where you sit is mostly a function of how much of Phase 2 you actually did.
+From the migrations I've worked on or watched closely, a workable expectation is 30–40% traffic loss for three to six months, with a return to baseline after that. If your migration takes longer than that to recover, something went wrong and you should have hired someone who has done this before. The Guardian recovered in months. Topshop, by SISTRIX's measurement, didn't. Most projects sit somewhere in between, and where you sit is mostly a function of how much of Phase 2 you actually did.
 
 ### How long does an SEO migration take?
 
@@ -80,13 +78,15 @@ This post is written for that DRI: the *directly responsible individual* who own
 
 This is the single most underrated question. If you don't already rank #1 for the new brand name, **make sure you do before you migrate**. Otherwise the migration sets you up for failure. People will search for your new name, find someone else, and you will spend the recovery period explaining to your own customers where you went.
 
-That extends to AI surfaces too. Ask ChatGPT, Claude, Perplexity, and Gemini about your new brand. If they don't recognise it, or confidently describe a different company, your customers asking the same question will get the same wrong answer. You can't update a frozen model's training data, but you can influence what *future* models learn from: a clear Wikipedia presence where you're eligible, `Organization` schema that names the new brand and domain together, consistent self-description across the web, press coverage that pairs the new name with the new domain. Start months before migration. AI memory is slow to update, and you want the ground truth in place before the next training run scrapes the web.
+That extends to AI surfaces too. Ask ChatGPT, Claude, Perplexity, and Gemini about your new brand. If they don't recognise it, or confidently describe a different company, your customers asking the same question will get the same wrong answer. You can't update a frozen model's training data, but you can influence what *future* models learn from: a clear Wikipedia presence where you're eligible, `Organization` schema that names the new brand and domain together, consistent self-description across the web, press coverage that pairs the new name with the new domain. Start months before migration. AI memory is slow and expensive to update, and you want the ground truth in place before the next training run scrapes the web.
 
 This is also the moment to find your *bonus*: anything that makes the new domain look better to search engines than the old one. A short, clean name. A `.com` or a generic ccTLD. Existing inbound links you can repoint. A cleaner URL structure. A bonus might not save the migration on its own, but it can buy you the most precious resource you have, which is **time**.
 
+While you're registering domains, register the obvious defensive variants too: common typos of the new name, the major TLDs you didn't pick (`.net`, `.co`, your home ccTLD), and the obvious critical variants someone might point at you (`[brand]sucks.com`, `[brand]-scam.com`, that kind of thing). None of them need to host anything; they just shouldn't be available for someone else to grab while your brand is mid-move.
+
 ### Should you bundle other changes?
 
-[Google's official guidance](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes) is to change one thing at a time: don't migrate the domain, swap CMSes, and redesign the site all in the same project. I disagree, with one important caveat. The Guardian, in the migration I worked on, moved from multiple legacy CMSes onto a single new one as part of the same domain move. It worked. Google warns against bundling because most teams that try it get something wrong; if you're confident you can get every piece right, bundling is more efficient than sequencing, because you only pay the SEO recovery curve once. If you're not confident, take Google's advice.
+[Google's official guidance](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes) is to change one thing at a time: don't migrate the domain, swap CMSes, and redesign the site all in the same project. I disagree, with one important caveat. The Guardian, in the migration I worked on, moved from multiple legacy CMSes onto a single new one as part of the same domain move. It worked. The reason I'd add to Google's advice: most teams that try to bundle get something wrong, and bundling makes the wrong thing harder to isolate. If you're confident you can get every piece right, bundling is more efficient than sequencing, because you only pay the SEO recovery curve once. If you're not confident, take Google's advice.
 
 ### Decided?
 
@@ -94,7 +94,7 @@ Solid answers to all of the above? OK, decision made: let's do it. Anything stil
 
 ## Phase 2: The preparation
 
-If Phase 1 was about whether to migrate, Phase 2 is about earning the right to. This is where the migration is won or lost. A successful migration is roughly 90% preparation and 10% execution. Cut from execution day if you must. Never cut from preparation.
+If Phase 1 was about whether to migrate, Phase 2 is about earning the right to. This is where the migration is won or lost. A successful migration is roughly 90% preparation and 10% execution. If something has to give, push the cutover date, not the prep work. Most cutover dates are made up anyway: a few weeks of slip is almost always cheaper than a redirect map nobody had time to review.
 
 ### Audit your current state
 
@@ -105,6 +105,8 @@ You can't migrate what you can't see. Before you redirect anything, you need a c
 - **Pull Bing Webmaster Tools.** Bing matters more than people think, especially in B2B and enterprise.
 - **Get crawl logs.** Don't just look at Googlebot. Bingbot, the AI crawlers, your own monitoring bots, and ad-tech crawlers all show up here. Logs tell you which URLs the world actually cares about, as opposed to which ones you think it does.
 - **List every subdomain that resolves.** Marketing, docs, app, blog, status, support, staging, dev, demo. Some won't be in any crawl. Get them from the DNS config.
+- **Snapshot your AI surfaces.** Ask ChatGPT, Claude, Perplexity, and Gemini about your brand right now and screenshot what they say, including which URL each cites. You'll need this baseline to detect whether your post-migration AI presence has carried over or quietly drifted to a competitor's page. The same goes for the AI-mode answers in Google Search itself.
+- **Inventory machine-readable surfaces.** If you serve `.md` versions of pages, an `llms.txt`, `/.well-known/agent-card.json`, MCP endpoints, or any other surface aimed at agents and crawlers beyond Googlebot, those need rows in the URL map too. (I [walked through what that surface looks like for this site](/agent-ready/) recently; the moving parts are the same on yours.) Easy to forget. Expensive to lose.
 
 If you run any kind of platform with an API, the inventory extends well past the website: API endpoints, webhooks, SDKs, OAuth callbacks, CORS allowlists, package registries, status pages, every email address on the old domain. I'll come back to those.
 
@@ -126,7 +128,7 @@ You don't want to drag junk across. The cheapest moment in a website's lifetime 
 
 ### Improve site speed
 
-Speed impacts crawling heavily, and during a migration crawling is the thing search engines have to do *more* of than usual. They have to fetch the old URL, follow the redirect, fetch the new URL, parse it, and decide whether the move is real. If your origin is slow, that whole loop slows down, and your migration takes longer to "come through."
+Speed impacts crawling heavily, and during a migration crawling is the thing search engines have to do *more* of than usual. They have to fetch the old URL, follow the redirect, fetch the new URL, parse it, and decide whether the move is real. If your origin is slow, that whole loop slows down, and your migration takes longer to "come through." (Worth re-reading [my older posts on optimising crawl](/optimize-crawling-for-the-environment/) before you start: every URL you don't need to serve during the move is one fewer thing search engines have to re-learn.)
 
 If you've been putting off a speed-improvement project, do it before the migration, not after.
 
@@ -147,7 +149,7 @@ Don't redirect a bunch of old URLs to your homepage just because there's no obvi
 
 ### Where to bring an LLM in
 
-One thing has changed since I first put a talk about this subject together: LLMs are now good enough to take meaningful work off your plate during a migration, but only in places where a mistake would be visible. The clearest use case is fuzzy URL mapping at scale.
+One thing has changed since I first taught this material: LLMs are now good enough to take meaningful work off your plate during a migration, but only in places where a mistake would be visible. The clearest use case is fuzzy URL mapping at scale.
 
 On a site with thousands of URLs, the mapping spreadsheet is the bottleneck of preparation. Feed an LLM each old URL with its title, H1, and excerpt, along with the full new sitemap, and it will pre-fill the great majority of rows with a confident best-match suggestion and flag the uncertain ones for human review. Two years ago this was a regex job that broke on every edge case. Now it's a few hours of pipeline work for what used to be a multi-week manual exercise.
 
@@ -163,7 +165,7 @@ Three rules and one recommendation:
 - **No chains.** If today `/old → /interim → /new` exists, collapse it to `/old → /new` *before* migrating, then map straight to the new domain.
 - **Make them fast.** Run redirects at the edge: Cloudflare, your CDN, a dedicated redirect server. Edge redirects are faster than origin redirects, and your origin doesn't need to wake up to serve them. During a migration the redirect layer is hit hard, often by every crawler at once.
 
-The recommendation: implement a [`Redirect-By` header](/redirect-by-http-headers/) on every redirect, identifying which system issued it. When something goes wrong post-cutover (and something will), you want to know in one `curl` which layer is responsible. I came up with this header during the Guardian migration for exactly this reason; it's now [used by a large portion of sites](https://webtechsurvey.com/response-header/x-redirect-by) and is hopefully on its way to becoming a proper standard.
+The recommendation: implement a [`Redirect-By` header](/redirect-by-http-headers/) on every redirect, identifying which system issued it. When something goes wrong post-cutover (and something will), you want to know in one `curl` which layer is responsible. I came up with this header during the Guardian migration for exactly this reason; it's now seen on roughly [5.8 million sites](https://webtechsurvey.com/response-header/x-redirect-by) (about 9.8% of the sites WebTechSurvey tracks) and is hopefully on its way to becoming a proper standard.
 
 ### Technical SEO prep
 
@@ -171,7 +173,7 @@ The boring stuff that wins the migration:
 
 - **DNS TTL.** Lower it on the old zone to 300 seconds about 48 hours before cutover, so changes propagate fast.
 - **SSL.** Valid certificates on the new domain and every subdomain you're moving. Test with [SSL Labs](https://www.ssllabs.com/ssltest/).
-- **Sitemaps.** Generate fresh ones for the new domain. Keep the old domain's sitemap available for a few weeks post-cutover so search engines can discover the redirects faster. Get `<lastmod>` right, and only change it when content actually changes. Nothing destroys a sitemap's signal value faster than touching every `<lastmod>` on every deploy.
+- **Sitemaps.** Generate fresh ones for the new domain. Keep the old domain's sitemap available for a few weeks post-cutover so search engines can discover the redirects faster. Get `<lastmod>` right, and only change it when content actually changes. Nothing destroys a sitemap's signal value faster than touching every `<lastmod>` on every deploy. (I've [argued at length about what counts as a "change"](/optimize-crawling-lets-turn-things-around/) — same definition applies during a migration.)
 - **Canonicals.** Every page on the new domain self-canonicalises to its new URL. Never to the old one.
 - **hreflang.** If you have localisation, every `hreflang` tag points to its counterpart on the new domain.
 - **Structured data.** Update `Organization` and `WebSite` schema, and any `sameAs` links, to reflect the new domain.
@@ -196,8 +198,10 @@ If you run anything beyond a marketing site, the migration touches a lot more th
 - **Auth and SSO callbacks.** OAuth, SAML, and magic-link redirect URIs are registered with identity providers, sometimes on every customer's IdP. Update them in advance.
 - **CORS allowlists.** Anywhere your app or any embed accepts cross-origin requests, the new domain has to be added.
 - **Package registries.** Update homepage URLs on PyPI, npm, Docker Hub, Helm charts. New releases should reflect the new homepage.
-- **External listings.** LinkedIn, X, GitHub org, Crunchbase, G2, Capterra, ProductHunt, AI tool aggregators, conference sponsorship pages, partner co-marketing, press releases. None of these update themselves.
+- **External listings.** LinkedIn, X, GitHub org, Crunchbase, G2, Capterra, ProductHunt, AI tool aggregators, conference sponsorship pages, partner co-marketing, press releases, and (if you're a business with a physical presence) Google Business Profile and Apple Maps. None of these update themselves.
 - **Internal systems.** CRM, analytics, marketing automation, ad accounts, retargeting pixels, internal SSO. All of these have references to the old domain that quietly break if you don't audit them.
+- **Cookies and authenticated sessions.** Cookies set on `.olddomain.com` don't transfer to the new domain. Logged-in users get logged out at cutover, sometimes silently. Plan the session migration: either accept the universal logout and warn customers in the comms, or run a brief shared-session bridge if your stack supports it. The same logic applies to anything reading from `localStorage` or `IndexedDB`, which are also origin-scoped.
+- **Paid search ads.** Brand-keyword bids in Google Ads, Bing, and any retargeting still point at the old URLs in the ad copy and the destination URL. Update the ads on cutover day, not next week. This is the one channel where the redirect masks the problem until you look at click-through rates.
 
 None of this is hard. All of it is easy to forget.
 
@@ -216,9 +220,9 @@ Drafting these is templated work that LLMs handle well. Give the model the conte
 
 ### Risk management
 
-The rollback plan is the most important artefact you hope you'll never use. Document the exact steps to revert: DNS records, redirect layer, email routing, the public comms template, and the decision criteria that would trigger a rollback in the first place. Keep the runbook somewhere everyone on-call can find it fast. Make sure someone has DNS access at 11pm on a Friday.
+The rollback plan is the most important artefact you hope you'll never use. Document the exact steps to revert: DNS records, redirect layer, email routing, the public comms template, the decision criteria that would trigger a rollback in the first place, and the chain of command that authorises one. Who has the authority to call rollback at 3am? Who do they wake up next? Whose phone number is in the runbook for the people who actually have hands on DNS, the edge, and email routing? Names, not roles. Keep the runbook somewhere everyone on call can find it fast.
 
-Rollback isn't theoretical. Companies you'd assume got every box ticked have launched, watched the new domain go badly wrong, and reverted to the old one within weeks, or worse, months. The half-life of rollback options is short: in the first hours after cutover the cost is small, but a few days in, search engines have started learning the new URLs, and reverting becomes its own migration in reverse. Decide in advance what numbers you'd have to see to pull the trigger, so the call isn't made under pressure for the first time at 2am.
+Rollback isn't theoretical. Companies you'd assume got every box ticked have launched, watched the new domain go badly wrong, and reverted to the old one within weeks, or worse, months. The half-life of rollback options is short: in the first hours after cutover the cost is small, but a few days in, search engines have started learning the new URLs, and reverting becomes its own migration in reverse. Decide in advance what would trigger the call, in concrete terms: a percentage drop in indexed pages, a sustained traffic decline against a defined baseline, a 5xx error rate above a known threshold. If the criteria are written down, the 2am call is just executing a plan, not making one.
 
 The other piece is on-call. Have someone owning the migration for the first 72 hours, with the authority to escalate to whoever can flip DNS or revert at the edge.
 
@@ -243,7 +247,7 @@ Before you flip anything:
 3. **Empty the `robots.txt`** on the old domain (more on this below).
 4. **Submit new sitemaps** for the new domain in Google Search Console and Bing Webmaster Tools.
 5. **File the Change of Address** in Google Search Console, from old to new. You need both verified for this to work.
-6. **Update internal links across the org.** Find-and-replace pass across the new website and codebase to remove any lingering absolute URLs pointing at the old domain. Internal links should never go through your own redirect layer.
+6. **Update internal links everywhere.** Find-and-replace pass across the new website and codebase to remove any lingering absolute URLs pointing at the old domain. For larger organisations the same sweep extends to the intranet, internal wikis, runbooks, support macros, and any embedded link in internal tooling. Internal links should never go through your own redirect layer.
 7. **Validate.** Crawl the old domain from outside and confirm every URL returns a 301 to the right target. Crawl the new domain and confirm every internal link, every canonical, every sitemap entry is on the new domain.
 
 ### The empty robots.txt rule
@@ -265,7 +269,7 @@ Renew the old domain for the longest term your registrar supports, and put a cal
 
 ### Reading the logs in real time
 
-In the first hours after cutover, you're watching server and edge logs for 4xx and 5xx spikes. Thousands of log lines per minute, sometimes more. This is one of the better uses of AI assistance during a migration: paste a log slice into the LLM of your choice and ask "what URL patterns are 404'ing most often?", "are there any user agents I don't recognise?", "are crawlers being blocked anywhere unexpected?". Conversational log analysis turns the first four hours of cutover from a grep exercise into a much faster review.
+In the first hours after cutover, you're watching server and edge logs for 4xx and 5xx spikes. Thousands of log lines per minute, sometimes more. This is one of the better uses of AI assistance during a migration: paste a log slice into the LLM of your choice and ask "what URL patterns are 404'ing most often?", "are there any user agents I don't recognise?", "are crawlers being blocked anywhere unexpected?". Conversational log analysis turns what used to be a four-hour grep exercise into a triage you can finish in the time the kettle boils.
 
 The same trick keeps paying off in the days and weeks afterwards. Ask "what URLs are in our logs but not in our sitemap?" and you'll surface the forgotten test pages, orphan PDFs, and legacy subdomain endpoints that should have been part of the redirect plan. Almost every migration I've worked on has turned up at least a dozen URLs nobody remembered until logs proved they were getting traffic.
 
@@ -293,7 +297,7 @@ Reach out to the top 50 referring domains and ask for the link to be updated to 
 
 ### The training-data tail
 
-Another change since I first put a talk about this subject together: search engines aren't the only systems with a memory of your old domain anymore. Your old domain lives in LLM training data. ChatGPT, Claude, Gemini, Perplexity, and every model that crawled or licensed the web before your cutover all carry it. When those models surface your company in an answer, they may surface the *old* hostname for years after you've migrated. And unlike with search engines, there's no tool you can file with a model to tell it you've moved:
+Another change since I first taught this material: search engines aren't the only systems with a memory of your old domain anymore. Your old domain lives in LLM training data. ChatGPT, Claude, Gemini, Perplexity, and every model that crawled or licensed the web before your cutover all carry it. When those models surface your company in an answer, they may surface the *old* hostname for years after you've migrated. And unlike with search engines, there's no tool you can file with a model to tell it you've moved:
 
 > There is no Change of Address form for a model that finished training a year before your move.
 
@@ -333,7 +337,9 @@ If your team only reads one page of this post, this is the one. Print it, work t
 - [ ] SDK/CLI release shipped with the new default (if applicable).
 - [ ] OAuth/SSO/CORS allowlists updated.
 - [ ] GitHub/npm/PyPI/Docker references updated.
-- [ ] External listings (LinkedIn, G2, etc.) queued.
+- [ ] External listings (LinkedIn, G2, Google Business Profile, etc.) drafted, with a publish date set.
+- [ ] Paid-search ads updated for the new domain, ready to swap on cutover.
+- [ ] Cookie / session migration plan agreed (accept logout, or bridge).
 - [ ] Analytics on the new domain live, baselined.
 - [ ] Customer comms sent (T-3w, T-1w).
 - [ ] Rollback runbook written and shared.
@@ -359,8 +365,12 @@ If your team only reads one page of this post, this is the one. Print it, work t
 
 The instinct, when a migration goes well, is to congratulate the team for "pulling it off." The instinct, when it goes badly, is to blame Google.
 
-Neither is right. Migrations that work are the ones where someone insisted, three months out, that the URL mapping spreadsheet have an owner for every row. Where someone asked, two weeks out, "what does the `robots.txt` on the old domain look like the morning after?" Where someone, six months in, was still pulling redirect-layer logs to make sure nothing had quietly drifted.
+Neither is right. Migrations that work are the ones where someone insisted, six months out, that the URL mapping spreadsheet have an owner for every row. Where someone asked, two weeks out, "what does the `robots.txt` on the old domain look like the morning after?" Where someone, six months in, was still pulling redirect-layer logs to make sure nothing had quietly drifted.
 
 It's not that domain migrations are hard. It's that they're tedious in a way that punishes you for skipping steps. The good news is that the steps are knowable and the work is finite. Do them, and you end up where you started. Which, in this game, is the win.
 
 If you need help thinking through one, [I'm reachable](/contact-me/).
+
+---
+
+This post is the written form of a talk I gave at SMX Munich in 2025, updated for the AI surfaces of 2026. I pulled it together this week because one of our [portfolio companies](https://emilia.capital/investments/) is scoping a migration of their own.
