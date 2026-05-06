@@ -21,12 +21,12 @@ export const GET: APIRoute = async () => {
         '',
         '## Recent articles',
         '',
-        ...recent.map(p => `- [${stripHtml(p.data.title)}](/${p.id}/)`),
+        ...recent.map((p) => `- [${stripHtml(p.data.title)}](/${p.id}/)`),
         '',
-        `[Full archive](/blog/) — ${posts.length} articles total`,
+        `[Full archive](/blog/) — ${posts.length} articles total`
     ].join('\n');
 
     return new Response(body, {
-        headers: { 'Content-Type': 'text/markdown; charset=utf-8' },
+        headers: { 'Content-Type': 'text/markdown; charset=utf-8' }
     });
 };

@@ -15,14 +15,7 @@ export type Props = {
     noindex?: boolean;
 };
 
-const {
-    description = '',
-    pageType = 'website',
-    publishDate,
-    updatedDate,
-    categories,
-    noindex,
-} = Astro.props;
+const { description = '', pageType = 'website', publishDate, updatedDate, categories, noindex } = Astro.props;
 const title = [Astro.props.title, siteConfig.title].filter(Boolean).join(' · ');
 
 // OG image: always use auto-generated image from slug
@@ -52,7 +45,7 @@ const articleMeta =
               publishedTime: publishDate,
               ...(updatedDate ? { modifiedTime: updatedDate } : {}),
               authors: ['https://joost.blog/about-me/'],
-              ...(categories?.length ? { tags: [...categories] } : {}),
+              ...(categories?.length ? { tags: [...categories] } : {})
           }
         : undefined;
 
@@ -65,13 +58,13 @@ const ogImageAlt = Astro.props.title ?? siteConfig.title;
 <meta name="generator" content={Astro.generator} />
 
 <!-- Font preloads -->
-<link rel="preload" href="/fonts/DomaineDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/DomaineDisplay-MediumItalic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/DomaineText-Light.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/DomaineText-LightItalic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/DomaineText-Bold.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/Pitch-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/Pitch-RegularItalic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/DomaineDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/DomaineDisplay-MediumItalic.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/DomaineText-Light.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/DomaineText-LightItalic.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/DomaineText-Bold.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/Pitch-Regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/Pitch-RegularItalic.woff2" as="font" type="font/woff2" crossorigin />
 
 <!-- NLWeb discovery -->
 <link rel="nlweb" href="https://joost.blog/ask" />
@@ -99,26 +92,24 @@ const ogImageAlt = Astro.props.title ?? siteConfig.title;
         { rel: 'icon', type: 'image/png', href: '/favicon-512.png', sizes: '512x512' },
         { rel: 'apple-touch-icon', href: '/favicon-512.png' },
         { rel: 'sitemap', href: '/sitemap-index.xml' },
-        { rel: 'alternate', type: 'application/rss+xml', href: '/feed.xml', title: 'RSS' },
+        { rel: 'alternate', type: 'application/rss+xml', href: '/feed.xml', title: 'RSS' }
     ]}
     extraMeta={[{ name: 'author', content: 'Joost de Valk' }]}
 />
 
 <!-- Analytics (Cloudflare Pages Functions — only works in production) -->
-{
-    !import.meta.env.DEV && (
-        <script defer data-domain="joost.blog" data-api="/api/event" src="/api/s" />
-    )
-}
+{!import.meta.env.DEV && <script defer data-domain="joost.blog" data-api="/api/event" src="/api/s" />}
 <!-- Speculation Rules: prefetch same-origin links on hover/touchstart -->
-<script type="speculationrules" is:inline set:html={JSON.stringify({
-    prefetch: [{
-        source: 'document',
-        where: { and: [
-            { href_matches: '/*' },
-            { not: { href_matches: '/*\\?*' } },
-            { not: { selector_matches: '[rel~="nofollow"]' } },
-        ] },
-        eagerness: 'moderate',
-    }],
-})} />
+<script
+    type="speculationrules"
+    is:inline
+    set:html={JSON.stringify({
+        prefetch: [
+            {
+                source: 'document',
+                where: { and: [{ href_matches: '/*' }, { not: { href_matches: '/*\\?*' } }, { not: { selector_matches: '[rel~="nofollow"]' } }] },
+                eagerness: 'moderate'
+            }
+        ]
+    })}
+/>

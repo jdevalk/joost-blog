@@ -10,7 +10,7 @@ import {
     buildWebSite,
     makeIds,
     type BreadcrumbItem,
-    type WebPageType,
+    type WebPageType
 } from '@jdevalk/seo-graph-core';
 import type { Blog } from 'schema-dts';
 
@@ -32,7 +32,7 @@ const BLOG_ID = `${SITE_URL}/blog/#blog`;
  */
 export const ids = makeIds({
     siteUrl: SITE_URL,
-    personUrl: `${SITE_URL}/about-me/`,
+    personUrl: `${SITE_URL}/about-me/`
 });
 
 function buildJoostWebSite(): Record<string, unknown> {
@@ -40,8 +40,7 @@ function buildJoostWebSite(): Record<string, unknown> {
         {
             url: `${SITE_URL}/`,
             name: 'Joost.blog',
-            description:
-                'Joost de Valk - internet entrepreneur, founder of Yoast, investor at Emilia Capital',
+            description: 'Joost de Valk - internet entrepreneur, founder of Yoast, investor at Emilia Capital',
             publisher: { '@id': ids.person },
             hasPart: [{ '@id': ids.navigation }, { '@id': BLOG_ID }],
             inLanguage: 'en-US',
@@ -50,16 +49,16 @@ function buildJoostWebSite(): Record<string, unknown> {
                 '@type': 'SearchAction',
                 target: {
                     '@type': 'EntryPoint',
-                    urlTemplate: `${SITE_URL}/search/?q={search_term_string}`,
+                    urlTemplate: `${SITE_URL}/search/?q={search_term_string}`
                 },
                 'query-input': {
                     '@type': 'PropertyValueSpecification',
                     valueRequired: true,
-                    valueName: 'search_term_string',
-                },
-            },
+                    valueName: 'search_term_string'
+                }
+            }
         },
-        ids,
+        ids
     );
 }
 
@@ -73,7 +72,7 @@ function buildJoostBlog(): Record<string, unknown> {
         isPartOf: { '@id': ids.website },
         publisher: { '@id': ids.person },
         inLanguage: 'en-US',
-        publishingPrinciples: `${SITE_URL}/about-me/`,
+        publishingPrinciples: `${SITE_URL}/about-me/`
     });
 }
 
@@ -88,9 +87,9 @@ function buildJoostPersonImage(): Record<string, unknown> {
             url: `${SITE_URL}/images/joost-profile.jpg`,
             width: 400,
             height: 400,
-            caption: 'Joost de Valk',
+            caption: 'Joost de Valk'
         },
-        ids,
+        ids
     );
 }
 
@@ -101,10 +100,10 @@ function buildJoostNavigation(): Record<string, unknown> {
             isPartOf: { '@id': ids.website },
             items: (siteConfig.primaryNavLinks ?? []).map((link) => ({
                 name: link.text,
-                url: `${SITE_URL}${link.href}/`,
-            })),
+                url: `${SITE_URL}${link.href}/`
+            }))
         },
-        ids,
+        ids
     );
 }
 
@@ -128,11 +127,7 @@ function buildBreadcrumbItems(ctx: SchemaPageContext): BreadcrumbItem[] {
 
         case 'category': {
             const catName = ctx.categoryName ?? ctx.categories?.[0] ?? 'Category';
-            return [
-                home,
-                { name: 'Blog', url: `${SITE_URL}/blog/`, id: BLOG_ID },
-                { name: catName, url: ctx.canonicalUrl },
-            ];
+            return [home, { name: 'Blog', url: `${SITE_URL}/blog/`, id: BLOG_ID }, { name: catName, url: ctx.canonicalUrl }];
         }
 
         case 'blogPost': {
@@ -141,7 +136,7 @@ function buildBreadcrumbItems(ctx: SchemaPageContext): BreadcrumbItem[] {
                 const cat = ctx.categories[0];
                 items.push({
                     name: cat,
-                    url: `${SITE_URL}/blog/category/${slugify(cat)}/`,
+                    url: `${SITE_URL}/blog/category/${slugify(cat)}/`
                 });
             }
             items.push({ name: ctx.title, url: ctx.canonicalUrl });
@@ -149,11 +144,7 @@ function buildBreadcrumbItems(ctx: SchemaPageContext): BreadcrumbItem[] {
         }
 
         case 'video':
-            return [
-                home,
-                { name: 'Videos', url: `${SITE_URL}/videos/` },
-                { name: ctx.title, url: ctx.canonicalUrl },
-            ];
+            return [home, { name: 'Videos', url: `${SITE_URL}/videos/` }, { name: ctx.title, url: ctx.canonicalUrl }];
 
         case 'about':
         case 'page':
@@ -197,15 +188,13 @@ function buildJoostWebPage(ctx: SchemaPageContext): Record<string, unknown> {
             inLanguage: 'en-US',
             datePublished: ctx.publishDate,
             dateModified: ctx.updatedDate,
-            primaryImage: isBlogPostWithImage
-                ? { '@id': ids.primaryImage(ctx.canonicalUrl) }
-                : undefined,
+            primaryImage: isBlogPostWithImage ? { '@id': ids.primaryImage(ctx.canonicalUrl) } : undefined,
             about: isAboutOrHomepage ? { '@id': ids.person } : undefined,
             copyrightHolder: { '@id': ids.person },
-            copyrightYear: ctx.publishDate?.getFullYear(),
+            copyrightYear: ctx.publishDate?.getFullYear()
         },
         ids,
-        getWebPageType(ctx.pageType),
+        getWebPageType(ctx.pageType)
     );
 }
 
@@ -216,10 +205,7 @@ function buildJoostArticle(ctx: SchemaPageContext): Record<string, unknown> {
     return buildArticle(
         {
             url: ctx.canonicalUrl,
-            isPartOf: [
-                { '@id': ids.webPage(ctx.canonicalUrl) },
-                { '@id': BLOG_ID },
-            ] as unknown as { '@id': string },
+            isPartOf: [{ '@id': ids.webPage(ctx.canonicalUrl) }, { '@id': BLOG_ID }] as unknown as { '@id': string },
             author: { name: 'Joost de Valk', '@id': ids.person },
             publisher: { '@id': ids.person },
             headline: ctx.title,
@@ -227,17 +213,14 @@ function buildJoostArticle(ctx: SchemaPageContext): Record<string, unknown> {
             inLanguage: 'en-US',
             datePublished: ctx.publishDate,
             dateModified: ctx.updatedDate,
-            image:
-                ctx.featureImageUrl !== undefined
-                    ? { '@id': ids.primaryImage(ctx.canonicalUrl) }
-                    : undefined,
+            image: ctx.featureImageUrl !== undefined ? { '@id': ids.primaryImage(ctx.canonicalUrl) } : undefined,
             articleSection: ctx.categories?.[0],
             wordCount: ctx.wordCount,
             copyrightHolder: { '@id': ids.person },
-            copyrightYear: ctx.publishDate.getFullYear(),
+            copyrightYear: ctx.publishDate.getFullYear()
         },
         ids,
-        'BlogPosting',
+        'BlogPosting'
     );
 }
 
@@ -252,9 +235,9 @@ function buildJoostVideo(ctx: SchemaPageContext): Record<string, unknown> {
             youtubeId: ctx.youtubeId,
             thumbnailUrl: ctx.thumbnailUrl,
             uploadDate: ctx.publishDate,
-            duration: ctx.duration,
+            duration: ctx.duration
         },
-        ids,
+        ids
     );
 }
 
@@ -267,9 +250,9 @@ function buildJoostPrimaryImage(ctx: SchemaPageContext): Record<string, unknown>
             pageUrl: ctx.canonicalUrl,
             url: ctx.featureImageUrl,
             width: 1200,
-            height: 630,
+            height: 630
         },
-        ids,
+        ids
     );
 }
 
@@ -293,12 +276,14 @@ function buildSchemaGraph(ctx: SchemaPageContext): Record<string, unknown> {
     // Always include referenced entities
     pieces.push(getCountryNl(ids));
     for (const org of organizationInputs) {
-        pieces.push(buildPiece({
-            '@type': 'Organization' as const,
-            '@id': ids.organization(org.slug),
-            name: org.name,
-            url: org.url,
-        }));
+        pieces.push(
+            buildPiece({
+                '@type': 'Organization' as const,
+                '@id': ids.organization(org.slug),
+                name: org.name,
+                url: org.url
+            })
+        );
     }
     for (const member of familyMembers) {
         pieces.push(member);

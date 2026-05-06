@@ -3,15 +3,9 @@ import { SITE_URL } from '../utils/schema/constants';
 import { aggregateBlogPosts, aggregateVideos, aggregatePages } from '../utils/schema/aggregator';
 
 export const GET: APIRoute = async ({ url }) => {
-    const baseUrl = import.meta.env.DEV
-        ? `${url.protocol}//${url.host}`
-        : SITE_URL;
+    const baseUrl = import.meta.env.DEV ? `${url.protocol}//${url.host}` : SITE_URL;
 
-    const [posts, videos, pages] = await Promise.all([
-        aggregateBlogPosts(),
-        aggregateVideos(),
-        aggregatePages()
-    ]);
+    const [posts, videos, pages] = await Promise.all([aggregateBlogPosts(), aggregateVideos(), aggregatePages()]);
 
     const entries = [
         { loc: `${baseUrl}/schema/post.json`, lastmod: posts.lastModified, count: posts.count },

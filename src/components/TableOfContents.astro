@@ -11,29 +11,52 @@ interface Props {
 
 const { headings } = Astro.props;
 
-interface TocItem { depth: number; slug: string; text: string; idx: number | null }
+interface TocItem {
+    depth: number;
+    slug: string;
+    text: string;
+    idx: number | null;
+}
 const tocItems: TocItem[] = [];
 let h2Idx = 0;
-for (const h of headings.filter(h => h.depth === 2 || h.depth === 3)) {
+for (const h of headings.filter((h) => h.depth === 2 || h.depth === 3)) {
     if (h.depth === 2) h2Idx++;
     tocItems.push({ ...h, idx: h.depth === 2 ? h2Idx : null });
 }
 ---
 
-{tocItems.length > 0 && (
-    <nav class="sp-post-toc" aria-label="Table of contents">
-        <div class="lbl">On this page <a href="#" aria-label="Back to top"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg></a></div>
-        <ol>
-            {tocItems.map(item => (
-                <li class:list={[{ sub: item.depth === 3 }]}>
-                    <a href={`#${item.slug}`} data-toc-link>
-                        {item.idx !== null && (
-                            <span class="sp-post-toc-num">{String(item.idx).padStart(2, '0')}</span>
-                        )}
-                        {item.text}
-                    </a>
-                </li>
-            ))}
-        </ol>
-    </nav>
-)}
+{
+    tocItems.length > 0 && (
+        <nav class="sp-post-toc" aria-label="Table of contents">
+            <div class="lbl">
+                On this page{' '}
+                <a href="#" aria-label="Back to top">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="13"
+                        height="13"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <polyline points="18 15 12 9 6 15" />
+                    </svg>
+                </a>
+            </div>
+            <ol>
+                {tocItems.map((item) => (
+                    <li class:list={[{ sub: item.depth === 3 }]}>
+                        <a href={`#${item.slug}`} data-toc-link>
+                            {item.idx !== null && <span class="sp-post-toc-num">{String(item.idx).padStart(2, '0')}</span>}
+                            {item.text}
+                        </a>
+                    </li>
+                ))}
+            </ol>
+        </nav>
+    )
+}

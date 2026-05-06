@@ -8,6 +8,7 @@ interface Props {
 
 const { youtubeId, title } = Astro.props;
 ---
+
 <div class="aspect-video w-full">
     <YouTube id={youtubeId} title={title} posterQuality="max" />
 </div>

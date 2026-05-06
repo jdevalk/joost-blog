@@ -4,10 +4,20 @@
     <div class="search-modal-content">
         <div class="search-modal-header">
             <div class="search-modal-input-wrapper">
-                <svg class="search-modal-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="m21 21-4.3-4.3" />
+                <svg
+                    class="search-modal-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
                 </svg>
                 <input
                     id="search-modal-input"
@@ -73,7 +83,7 @@
     }
 
     :global(.dark) .search-modal-header {
-        border-bottom-color: rgba(232, 227, 214, 0.20);
+        border-bottom-color: rgba(232, 227, 214, 0.2);
     }
 
     .search-modal-input-wrapper {
@@ -116,9 +126,9 @@
     }
 
     :global(.dark) .search-modal-kbd {
-        border-color: rgba(232, 227, 214, 0.20);
+        border-color: rgba(232, 227, 214, 0.2);
         background: rgba(232, 227, 214, 0.08);
-        color: rgba(232, 227, 214, 0.60);
+        color: rgba(232, 227, 214, 0.6);
     }
 
     .search-modal-results {
@@ -138,7 +148,7 @@
     }
 
     :global(.dark) .search-modal-results :global(.search-result) {
-        border-bottom-color: rgba(232, 227, 214, 0.20);
+        border-bottom-color: rgba(232, 227, 214, 0.2);
     }
 
     .search-modal-results :global(.search-result:last-child) {
@@ -168,7 +178,7 @@
     }
 
     :global(.dark) .search-modal-results :global(.search-result-excerpt) {
-        color: rgba(232, 227, 214, 0.70);
+        color: rgba(232, 227, 214, 0.7);
     }
 
     .search-modal-results :global(mark) {
@@ -179,7 +189,7 @@
     }
 
     :global(.dark) .search-modal-results :global(mark) {
-        background: rgba(224, 138, 90, 0.30);
+        background: rgba(224, 138, 90, 0.3);
         color: #e8e3d6;
     }
 
@@ -190,7 +200,7 @@
     }
 
     :global(.dark) .search-modal-results :global(.search-sub-results) {
-        border-left-color: rgba(232, 227, 214, 0.20);
+        border-left-color: rgba(232, 227, 214, 0.2);
     }
 
     .search-modal-results :global(.search-sub-result) {
@@ -216,7 +226,7 @@
     }
 
     :global(.dark) .search-modal-results :global(.search-sub-result-title) {
-        color: rgba(232, 227, 214, 0.70);
+        color: rgba(232, 227, 214, 0.7);
     }
 
     .search-modal-results :global(.search-sub-result-excerpt) {
@@ -299,9 +309,7 @@
 
                 if (window.plausible) window.plausible('Search', { props: { query } });
                 const search = await pf.search(query);
-                const results = await Promise.all(
-                    search.results.slice(0, 8).map((r: any) => r.data())
-                );
+                const results = await Promise.all(search.results.slice(0, 8).map((r: any) => r.data()));
 
                 if (results.length === 0) {
                     resultsContainer.innerHTML = `<div style="padding: 24px 0; text-align: center; color: #4e5666;">No results for "${query}"</div>`;
@@ -313,12 +321,14 @@
                         const subResults = (r.sub_results || [])
                             .filter((s: any) => s.url !== r.url)
                             .slice(0, 3)
-                            .map((s: any) => `
+                            .map(
+                                (s: any) => `
                                 <a href="${s.url}" class="search-sub-result">
                                     <span class="search-sub-result-title">${s.title}</span>
                                     <span class="search-sub-result-excerpt">${s.excerpt}</span>
                                 </a>
-                            `)
+                            `
+                            )
                             .join('');
                         return `
                             <div class="search-result">

@@ -1,0 +1,8 @@
+dist
+.astro
+public/pagefind
+src/generated
+
+# prettier-plugin-astro 0.14.1 parser bug — see https://github.com/withastro/prettier-plugin-astro
+src/pages/videos/\[slug\].astro
+src/pages/\[slug\].astro

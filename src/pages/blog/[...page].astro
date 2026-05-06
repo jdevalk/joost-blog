@@ -14,9 +14,7 @@ const allPosts = getPublishedPosts(await getCollection('blog'));
 const totalPosts = allPosts.length;
 
 // Article numbers: oldest post = #1, newest = #N
-const postsAsc = [...allPosts].sort(
-    (a, b) => new Date(a.data.publishDate).getTime() - new Date(b.data.publishDate).getTime()
-);
+const postsAsc = [...allPosts].sort((a, b) => new Date(a.data.publishDate).getTime() - new Date(b.data.publishDate).getTime());
 const articleNumberMap = new Map(postsAsc.map((p, i) => [p.id, i + 1]));
 
 // Year groups, newest first
@@ -27,14 +25,12 @@ for (const post of allPosts) {
     yearGroupMap.get(year)!.push(post);
 }
 type YearGroup = { year: number; posts: CollectionEntry<'blog'>[] };
-const yearGroups: YearGroup[] = [...yearGroupMap.entries()]
-    .sort((a, b) => b[0] - a[0])
-    .map(([year, posts]) => ({ year, posts }));
+const yearGroups: YearGroup[] = [...yearGroupMap.entries()].sort((a, b) => b[0] - a[0]).map(([year, posts]) => ({ year, posts }));
 
 // Categories sorted by frequency, top 6 for filter bar
 const catCounts = new Map<string, number>();
 for (const post of allPosts) {
-    for (const cat of (post.data.categories ?? [])) {
+    for (const cat of post.data.categories ?? []) {
         catCounts.set(cat, (catCounts.get(cat) ?? 0) + 1);
     }
 }
@@ -42,7 +38,7 @@ const allCategories = [...catCounts.entries()].sort((a, b) => b[1] - a[1]).map((
 const filterCategories = allCategories.slice(0, 6);
 
 const totalReadingMins = allPosts.reduce((sum, p) => sum + getReadingTime(p.body ?? ''), 0);
-const allYears = yearGroups.map(g => g.year);
+const allYears = yearGroups.map((g) => g.year);
 const oldestYear = allYears[allYears.length - 1] ?? new Date().getFullYear();
 const newestYear = allYears[0] ?? new Date().getFullYear();
 
@@ -57,7 +53,7 @@ const pageContext: SchemaPageContext = {
     pageType: 'blogListing',
     canonicalUrl: canonicalUrl('/blog/'),
     title: 'Blog',
-    description: 'Articles, essays, and opinions by Joost de Valk on WordPress, SEO, open source, AI, and the future of the open web.',
+    description: 'Articles, essays, and opinions by Joost de Valk on WordPress, SEO, open source, AI, and the future of the open web.'
 };
 
 function fmtDate(date: Date): string {
@@ -71,14 +67,10 @@ function fmtFullDate(date: Date): string {
 }
 ---
 
-<BaseLayout
-    title="Blog"
-    description="Articles, essays, and opinions by Joost de Valk on WordPress, SEO, open source, AI, and the future of the open web."
->
+<BaseLayout title="Blog" description="Articles, essays, and opinions by Joost de Valk on WordPress, SEO, open source, AI, and the future of the open web.">
     <SchemaGraph pageContext={pageContext} />
 
     <div class="sp-root sp-blocks sp-archive">
-
         <!-- Amber hero -->
         <section class="sp-hero arc-hero" data-pagefind-ignore="all">
             <div class="arc-hero-inner">
@@ -106,16 +98,24 @@ function fmtFullDate(date: Date): string {
             <div class="arc-filters-row">
                 <span class="arc-filter-label">Kind</span>
                 <button class="arc-filter arc-kind active" data-kind="all">All</button>
-                {filterCategories.map(cat => (
-                    <button class="arc-filter arc-kind" data-kind={cat}>{cat}</button>
-                ))}
+                {
+                    filterCategories.map((cat) => (
+                        <button class="arc-filter arc-kind" data-kind={cat}>
+                            {cat}
+                        </button>
+                    ))
+                }
             </div>
             <div class="arc-filters-row">
                 <span class="arc-filter-label">Year</span>
                 <button class="arc-filter arc-year active" data-year="all">All</button>
-                {allYears.map(year => (
-                    <button class="arc-filter arc-year" data-year={String(year)}>{year}</button>
-                ))}
+                {
+                    allYears.map((year) => (
+                        <button class="arc-filter arc-year" data-year={String(year)}>
+                            {year}
+                        </button>
+                    ))
+                }
             </div>
         </div>
 
@@ -125,130 +125,167 @@ function fmtFullDate(date: Date): string {
                 <p id="archive-count" class="arc-count">{totalPosts}&nbsp;Articles</p>
 
                 <!-- Featured article card -->
-                {featuredPost && (
-                    <article
-                        class="arc-featured"
-                        data-post-categories={featuredCats}
-                        data-post-year={featuredYear}
-                    >
-                        <div class="arc-featured-meta">
-                            <span>No.&nbsp;{String(featuredNum).padStart(3, '0')}</span>
-                            <span>&middot;</span>
-                            <span class="arc-featured-badge">Featured Article</span>
-                            <span>&middot;</span>
-                            <span>{featuredDate && fmtFullDate(featuredDate)}</span>
-                            <span>&middot;</span>
-                            <span>{featuredReadMins} min read</span>
-                        </div>
-                        <h2 class="arc-featured-title">
-                            <a href={`/${featuredPost.id}/`} set:html={featuredPost.data.title} />
-                        </h2>
-                        {featuredPost.data.excerpt && (
-                            <p class="arc-featured-excerpt">{featuredPost.data.excerpt}</p>
-                        )}
-                        <a href={`/${featuredPost.id}/`} class="arc-featured-cta">Read the article &rarr;</a>
-                    </article>
-                )}
+                {
+                    featuredPost && (
+                        <article class="arc-featured" data-post-categories={featuredCats} data-post-year={featuredYear}>
+                            <div class="arc-featured-meta">
+                                <span>No.&nbsp;{String(featuredNum).padStart(3, '0')}</span>
+                                <span>&middot;</span>
+                                <span class="arc-featured-badge">Featured Article</span>
+                                <span>&middot;</span>
+                                <span>{featuredDate && fmtFullDate(featuredDate)}</span>
+                                <span>&middot;</span>
+                                <span>{featuredReadMins} min read</span>
+                            </div>
+                            <h2 class="arc-featured-title">
+                                <a href={`/${featuredPost.id}/`} set:html={featuredPost.data.title} />
+                            </h2>
+                            {featuredPost.data.excerpt && <p class="arc-featured-excerpt">{featuredPost.data.excerpt}</p>}
+                            <a href={`/${featuredPost.id}/`} class="arc-featured-cta">
+                                Read the article &rarr;
+                            </a>
+                        </article>
+                    )
+                }
 
                 <!-- Year groups -->
-                {yearGroups.map(({ year, posts }) => (
-                    <section data-year-group={String(year)} class="arc-year-section">
-                        <div class="arc-year-header">
-                            <span class="arc-year-num">{year}</span>
-                            <hr class="arc-year-rule" />
-                            <span id={`year-count-${year}`} class="arc-year-count">
-                                {posts.length}&nbsp;{posts.length === 1 ? 'Article' : 'Articles'}
-                            </span>
-                        </div>
-                        <div class="sp-archive-list">
-                            {posts.map((post) => {
-                                const num = articleNumberMap.get(post.id) ?? 0;
-                                const date = new Date(post.data.publishDate);
-                                const primaryCat = post.data.categories?.[0] ?? '';
-                                const readMins = getReadingTime(post.body ?? '');
-                                return (
-                                    <a
-                                        href={`/${post.id}/`}
-                                        class="sp-archive-row"
-                                        data-post-categories={post.data.categories?.join(',') ?? ''}
-                                        data-post-year={String(year)}
-                                    >
-                                        <span class="sp-col-n">{num}</span>
-                                        <span class="sp-col-date">{fmtDate(date)}</span>
-                                        <span class="sp-col-cat">{primaryCat}</span>
-                                        <span class="sp-col-title" set:html={post.data.title} />
-                                        <span class="sp-col-read">{readMins}&nbsp;min</span>
-                                    </a>
-                                );
-                            })}
-                        </div>
-                    </section>
-                ))}
+                {
+                    yearGroups.map(({ year, posts }) => (
+                        <section data-year-group={String(year)} class="arc-year-section">
+                            <div class="arc-year-header">
+                                <span class="arc-year-num">{year}</span>
+                                <hr class="arc-year-rule" />
+                                <span id={`year-count-${year}`} class="arc-year-count">
+                                    {posts.length}&nbsp;{posts.length === 1 ? 'Article' : 'Articles'}
+                                </span>
+                            </div>
+                            <div class="sp-archive-list">
+                                {posts.map((post) => {
+                                    const num = articleNumberMap.get(post.id) ?? 0;
+                                    const date = new Date(post.data.publishDate);
+                                    const primaryCat = post.data.categories?.[0] ?? '';
+                                    const readMins = getReadingTime(post.body ?? '');
+                                    return (
+                                        <a
+                                            href={`/${post.id}/`}
+                                            class="sp-archive-row"
+                                            data-post-categories={post.data.categories?.join(',') ?? ''}
+                                            data-post-year={String(year)}
+                                        >
+                                            <span class="sp-col-n">{num}</span>
+                                            <span class="sp-col-date">{fmtDate(date)}</span>
+                                            <span class="sp-col-cat">{primaryCat}</span>
+                                            <span class="sp-col-title" set:html={post.data.title} />
+                                            <span class="sp-col-read">{readMins}&nbsp;min</span>
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        </section>
+                    ))
+                }
             </div>
         </main>
-
     </div>
 </BaseLayout>
 
 <style>
     /* ── Archive page layout ───────────────────────────────── */
 
-    .arc-hero { padding: 64px 64px 56px; }
+    .arc-hero {
+        padding: 64px 64px 56px;
+    }
     .arc-hero-inner {
-        max-width: 1280px; margin: 0 auto;
+        max-width: 1280px;
+        margin: 0 auto;
     }
 
-.arc-stats {
-        display: flex; flex-wrap: wrap; gap: 12px 20px;
+    .arc-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 20px;
         font-family: var(--font-mono);
-        font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
         color: color-mix(in srgb, var(--hero-fg) 60%, transparent);
         margin-top: 32px;
     }
 
     /* ── Filter bar ────────────────────────────────────────── */
     .arc-filters {
-        position: sticky; top: var(--sp-header-h, 107px); z-index: 40;
+        position: sticky;
+        top: var(--sp-header-h, 107px);
+        z-index: 40;
         background: var(--paper);
         border-bottom: 1px solid var(--ink);
         padding: 0 64px;
     }
     .arc-filters-row {
-        display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
         padding: 8px 0;
-        max-width: 1280px; margin: 0 auto;
+        max-width: 1280px;
+        margin: 0 auto;
     }
-    .arc-filters-row:first-child { border-bottom: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); }
+    .arc-filters-row:first-child {
+        border-bottom: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+    }
     .arc-filter-label {
         font-family: var(--font-mono);
-        font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-        color: var(--ink-soft); margin-right: 2px; flex-shrink: 0; width: 2.5rem;
+        font-size: 9px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-right: 2px;
+        flex-shrink: 0;
+        width: 2.5rem;
     }
     .arc-filter {
         font-family: var(--font-mono);
-        font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
-        padding: 4px 10px; border: 1px solid color-mix(in srgb, var(--ink) 25%, transparent);
-        background: transparent; color: var(--ink-soft);
-        cursor: pointer; flex-shrink: 0;
-        transition: border-color 0.12s, background 0.12s, color 0.12s;
+        font-size: 9px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border: 1px solid color-mix(in srgb, var(--ink) 25%, transparent);
+        background: transparent;
+        color: var(--ink-soft);
+        cursor: pointer;
+        flex-shrink: 0;
+        transition:
+            border-color 0.12s,
+            background 0.12s,
+            color 0.12s;
     }
     .arc-filter:hover {
-        border-color: var(--ox); color: var(--ox);
+        border-color: var(--ox);
+        color: var(--ox);
     }
     .arc-filter.active {
-        border-color: var(--ink); background: var(--ink); color: var(--field-fg);
+        border-color: var(--ink);
+        background: var(--ink);
+        color: var(--field-fg);
     }
 
     /* ── Main content area ─────────────────────────────────── */
-    .arc-main { overflow-x: hidden; padding: 0 64px; }
+    .arc-main {
+        overflow-x: hidden;
+        padding: 0 64px;
+    }
     .arc-inner {
-        max-width: 1280px; margin: 0 auto;
+        max-width: 1280px;
+        margin: 0 auto;
         padding: 0 0 80px;
     }
     .arc-count {
         font-family: var(--font-mono);
-        font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-        color: var(--ink-soft); margin: 24px 0 0;
+        font-size: 9px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin: 24px 0 0;
     }
 
     /* ── Featured card ─────────────────────────────────────── */
@@ -258,73 +295,137 @@ function fmtFullDate(date: Date): string {
         margin: 24px 0 48px;
     }
     .arc-featured-meta {
-        display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
         font-family: var(--font-mono);
-        font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-        color: var(--ink-soft); margin-bottom: 20px;
+        font-size: 9px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-bottom: 20px;
     }
-    .arc-featured-badge { color: var(--ox); }
+    .arc-featured-badge {
+        color: var(--ox);
+    }
     .arc-featured-title {
         font-family: var(--font-display);
         font-weight: var(--weight-display);
         font-size: clamp(28px, 4vw, 48px);
-        line-height: 0.95; letter-spacing: -0.02em;
-        color: var(--ink); margin: 0 0 20px;
+        line-height: 0.95;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        margin: 0 0 20px;
     }
     .arc-featured-title a {
-        color: inherit; text-decoration: none;
+        color: inherit;
+        text-decoration: none;
     }
-    .arc-featured-title a:hover { color: var(--ox); }
+    .arc-featured-title a:hover {
+        color: var(--ox);
+    }
     .arc-featured-excerpt {
-        color: var(--ink-soft); line-height: 1.6;
-        margin: 0 0 24px; max-width: 64ch; font-size: 15px;
+        color: var(--ink-soft);
+        line-height: 1.6;
+        margin: 0 0 24px;
+        max-width: 64ch;
+        font-size: 15px;
     }
     .arc-featured-cta {
         font-family: var(--font-mono);
-        font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
-        color: var(--ox); text-decoration: none;
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ox);
+        text-decoration: none;
     }
-    .arc-featured-cta:hover { text-decoration: underline; }
+    .arc-featured-cta:hover {
+        text-decoration: underline;
+    }
 
     /* ── Year sections ─────────────────────────────────────── */
-    .arc-year-section { margin-bottom: 48px; }
+    .arc-year-section {
+        margin-bottom: 48px;
+    }
     .arc-year-header {
-        display: flex; align-items: center; gap: 20px;
-        margin-bottom: 4px; padding-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 4px;
+        padding-top: 8px;
     }
     .arc-year-num {
         font-family: var(--font-display);
         font-weight: var(--weight-display);
         font-size: clamp(48px, 6vw, 80px);
-        line-height: 1; color: var(--ox); flex-shrink: 0;
+        line-height: 1;
+        color: var(--ox);
+        flex-shrink: 0;
     }
     .arc-year-rule {
-        flex: 1; border: none; border-top: 1px solid var(--ink);
+        flex: 1;
+        border: none;
+        border-top: 1px solid var(--ink);
     }
     .arc-year-count {
         font-family: var(--font-mono);
-        font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-        color: var(--ink-soft); flex-shrink: 0;
+        font-size: 9px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        flex-shrink: 0;
     }
 
     /* sp-archive-list needs max-width reset inside arc-inner (already constrained by parent) */
-    .arc-inner .sp-archive-list { max-width: none; }
+    .arc-inner .sp-archive-list {
+        max-width: none;
+    }
 
     /* ── Responsive ────────────────────────────────────────── */
     @media (max-width: 768px) {
-        .arc-hero { padding: 40px 24px 36px; }
-        .arc-filters { position: static; padding: 0 24px; }
-        .arc-filters-row { gap: 6px; padding: 10px 0; flex-wrap: wrap; }
-        .arc-filter { padding: 10px 14px; min-height: 44px; font-size: 10px; }
-        .arc-main { padding: 0 24px; }
-        .arc-inner { padding: 0 0 60px; }
-        .arc-featured { padding: 24px; }
-        .sp-header { padding: 20px 24px; grid-template-columns: 1fr auto; }
-        .sp-header .sp-header-right { display: none; }
-        .sp-nav { gap: 14px; font-size: 12px; }
+        .arc-hero {
+            padding: 40px 24px 36px;
+        }
+        .arc-filters {
+            position: static;
+            padding: 0 24px;
+        }
+        .arc-filters-row {
+            gap: 6px;
+            padding: 10px 0;
+            flex-wrap: wrap;
+        }
+        .arc-filter {
+            padding: 10px 14px;
+            min-height: 44px;
+            font-size: 10px;
+        }
+        .arc-main {
+            padding: 0 24px;
+        }
+        .arc-inner {
+            padding: 0 0 60px;
+        }
+        .arc-featured {
+            padding: 24px;
+        }
+        .sp-header {
+            padding: 20px 24px;
+            grid-template-columns: 1fr auto;
+        }
+        .sp-header .sp-header-right {
+            display: none;
+        }
+        .sp-nav {
+            gap: 14px;
+            font-size: 12px;
+        }
     }
     @media (max-width: 600px) {
-        .arc-filters { padding: 0 20px; }
+        .arc-filters {
+            padding: 0 20px;
+        }
     }
 </style>
 
@@ -364,7 +465,7 @@ function fmtFullDate(date: Date): string {
                 }
             }
 
-            document.querySelectorAll<HTMLElement>('[data-year-group]').forEach(section => {
+            document.querySelectorAll<HTMLElement>('[data-year-group]').forEach((section) => {
                 const year = section.dataset.yearGroup ?? '';
                 const count = yearCounts.get(year) ?? 0;
                 section.style.display = count === 0 ? 'none' : '';
@@ -375,18 +476,18 @@ function fmtFullDate(date: Date): string {
             if (countEl) countEl.textContent = `${total}\u00a0${total === 1 ? 'Article' : 'Articles'}`;
         }
 
-        kindButtons.forEach(btn => {
+        kindButtons.forEach((btn) => {
             btn.addEventListener('click', () => {
                 activeKind = btn.dataset.kind ?? 'all';
-                kindButtons.forEach(b => b.classList.toggle('active', b === btn));
+                kindButtons.forEach((b) => b.classList.toggle('active', b === btn));
                 applyFilters();
             });
         });
 
-        yearButtons.forEach(btn => {
+        yearButtons.forEach((btn) => {
             btn.addEventListener('click', () => {
                 activeYear = btn.dataset.year ?? 'all';
-                yearButtons.forEach(b => b.classList.toggle('active', b === btn));
+                yearButtons.forEach((b) => b.classList.toggle('active', b === btn));
                 applyFilters();
             });
         });

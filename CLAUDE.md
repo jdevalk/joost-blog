@@ -52,6 +52,23 @@ When taking a post out of draft, do all of these in the same change:
 
    `scripts/check-src.mjs` runs in the `build` script and fails the build if `public/og/<slug>.webp` is missing for the latest published post. Commit the generated `.webp` alongside the post.
 
+## Markdown alternates
+
+`@jdevalk/astro-seo-graph` is configured with `markdownAlternate: true`, which auto-emits `<link rel="alternate" type="text/markdown">` on every built HTML page. At build-end the integration checks each alternate URL against the build output and warns if the corresponding `.md` file is missing.
+
+When adding a new top-level page or content collection, also add a matching `.md` endpoint, otherwise the build will start warning about stripped markdown alternates. Patterns in use:
+
+- **Content collections** — use `createMarkdownEndpoint` from the integration. See `src/pages/[slug].md.ts` (blog + pages), `src/pages/videos/[slug].md.ts`, `src/pages/code/[slug].md.ts`.
+- **Listing or static pages** — hand-rolled `APIRoute` returning a markdown response. See `src/pages/blog.md.ts`, `src/pages/category/[slug].md.ts`, `src/pages/about-me.md.ts`.
+
+A few routes are intentionally skipped (`404`, `drafts`, `search`). Their warnings are expected and don't fail the build.
+
+## Prettier
+
+Format with `pnpm format`; `pnpm format:check` runs as the first step of `pnpm build`, so unformatted code fails CI.
+
+`.prettierignore` excludes two specific `.astro` files (`src/pages/[slug].astro`, `src/pages/videos/[slug].astro`) because `prettier-plugin-astro` 0.14.1 mis-parses their TypeScript frontmatter. Note the gitignore-style escaping (`\[slug\]`) — bracket characters need escaping or they're treated as a glob character class. If a new `.astro` route hits the same parser error, ignore it the same way until the upstream plugin is fixed.
+
 ## Cloudflare credentials
 
 Scripts that hit Cloudflare's API (`generate-nlweb-index.mjs`, `generate-featured-images.mjs`) read `CF_ACCOUNT_ID` and `CF_API_TOKEN` from `.env`. The npm scripts pass `--env-file-if-exists=.env` to Node so nothing needs manual loading.

@@ -6,16 +6,13 @@ export const GET: APIRoute = async () => {
 
     const jsonLd = {
         '@context': 'https://schema.org',
-        '@graph': entities,
+        '@graph': entities
     };
 
-    return new Response(
-        JSON.stringify(jsonLd, null, 2),
-        {
-            headers: {
-                'Content-Type': 'application/ld+json',
-                'Cache-Control': 'max-age=300'
-            }
+    return new Response(JSON.stringify(jsonLd, null, 2), {
+        headers: {
+            'Content-Type': 'application/ld+json',
+            'Cache-Control': 'max-age=300'
         }
-    );
+    });
 };

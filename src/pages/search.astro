@@ -4,10 +4,14 @@ import Search from 'astro-pagefind/components/Search';
 ---
 
 <BaseLayout title="Search" description="Search all blog posts, videos, and pages on Joost.blog — covering SEO, WordPress, open source, AI, and the open web.">
-    <main class="max-w-4xl mx-auto px-4 py-8 sm:py-12 grow">
-        <h1 class="text-3xl font-bold mb-8 dark:text-slate-100">Search</h1>
+    <main class="mx-auto max-w-4xl grow px-4 py-8 sm:py-12">
+        <h1 class="mb-8 text-3xl font-bold dark:text-slate-100">Search</h1>
         <div data-pagefind-ignore="all">
-            <Search id="search" className="pagefind-ui" uiOptions={{ showSubResults: true, showImages: true, showEmptyFilters: false, pageSize: 10, resetStyles: true }} />
+            <Search
+                id="search"
+                className="pagefind-ui"
+                uiOptions={{ showSubResults: true, showImages: true, showEmptyFilters: false, pageSize: 10, resetStyles: true }}
+            />
         </div>
     </main>
 </BaseLayout>

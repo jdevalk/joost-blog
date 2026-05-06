@@ -1,12 +1,4 @@
-export type SchemaPageType =
-    | 'blogPost'
-    | 'video'
-    | 'homepage'
-    | 'about'
-    | 'blogListing'
-    | 'category'
-    | 'videoListing'
-    | 'page';
+export type SchemaPageType = 'blogPost' | 'video' | 'homepage' | 'about' | 'blogListing' | 'category' | 'videoListing' | 'page';
 
 export interface SchemaPageContext {
     pageType: SchemaPageType;

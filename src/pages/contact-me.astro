@@ -19,19 +19,17 @@ const pageContext: SchemaPageContext = {
     <SchemaGraph pageContext={pageContext} />
 
     <div class="sp-root sp-blocks sp-contact">
-
         <section class="sp-hero sp-contact-hero">
             <div class="sp-section-inner">
-            <div class="sp-code-kicker">
-                <span>SECTION VI</span><span class="rule"></span><span>GET IN TOUCH</span>
-            </div>
-            <h1 class="sp-contact-title">
-                I'd <em>love</em> to hear from you.
-            </h1>
-            <p class="sp-contact-lede">
-                Use the form below, or one of the other ways to reach me. I read everything,
-                even if it takes me a little while to reply.
-            </p>
+                <div class="sp-code-kicker">
+                    <span>SECTION VI</span><span class="rule"></span><span>GET IN TOUCH</span>
+                </div>
+                <h1 class="sp-contact-title">
+                    I'd <em>love</em> to hear from you.
+                </h1>
+                <p class="sp-contact-lede">
+                    Use the form below, or one of the other ways to reach me. I read everything, even if it takes me a little while to reply.
+                </p>
             </div>
         </section>
 
@@ -41,8 +39,8 @@ const pageContext: SchemaPageContext = {
                     <div class="lbl">AI-powered answers</div>
                     <h4>Got a question? Ask Joost's AI.</h4>
                     <p>
-                        Questions about SEO, Astro, EmDash, WordPress, open source, or building on the web?
-                        Get answers grounded in 18 years of writing — powered by AI.
+                        Questions about SEO, Astro, EmDash, WordPress, open source, or building on the web? Get answers grounded in 18 years of writing —
+                        powered by AI.
                         <a href="/ask-joost/">Ask Joost's AI &rarr;</a>
                     </p>
                 </div>
@@ -50,8 +48,8 @@ const pageContext: SchemaPageContext = {
                     <div class="lbl">Looking for investment?</div>
                     <h4>Use the Emilia Capital contact form.</h4>
                     <p>
-                        Marieke and I invest through <a href="https://emilia.capital/">Emilia Capital</a>. Pitches and intros go
-                        through that contact form so nothing gets lost in my inbox. <a href="https://emilia.capital/contact/">emilia.capital/contact &rarr;</a>
+                        Marieke and I invest through <a href="https://emilia.capital/">Emilia Capital</a>. Pitches and intros go through that contact form so
+                        nothing gets lost in my inbox. <a href="https://emilia.capital/contact/">emilia.capital/contact &rarr;</a>
                     </p>
                 </div>
             </div>
@@ -86,7 +84,13 @@ const pageContext: SchemaPageContext = {
                         <textarea id="message" name="message" required rows="8" placeholder="Write as much as you want…"></textarea>
                     </label>
 
-                    <div id="form-status" role="status" aria-live="polite" style="display:none;margin-bottom:16px;padding:12px 16px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.1em"></div>
+                    <div
+                        id="form-status"
+                        role="status"
+                        aria-live="polite"
+                        style="display:none;margin-bottom:16px;padding:12px 16px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.1em"
+                    >
+                    </div>
 
                     <div class="sp-form-foot">
                         <span class="note">¶ Required fields marked with *</span>
@@ -132,7 +136,6 @@ const pageContext: SchemaPageContext = {
                 </aside>
             </div>
         </section>
-
     </div>
 </BaseLayout>
 
@@ -173,7 +176,7 @@ const pageContext: SchemaPageContext = {
                 const result = await response.json();
 
                 if (response.ok) {
-                    showStatus('Message sent! I\'ll get back to you soon.', 'success');
+                    showStatus("Message sent! I'll get back to you soon.", 'success');
                     form.reset();
                     timestampInput.value = Date.now().toString();
                 } else {

@@ -9,36 +9,42 @@ const { title, publishDate, updatedDate, featureImage, featureImageAlt, excerpt,
 const readingTime = getReadingTime(post.body ?? '');
 ---
 
-<article class="group flex flex-col rounded-lg border border-slate-200 bg-white shadow-card transition duration-300 hover:shadow-card-hover hover:-translate-y-0.5 dark:border-[#2a2623] dark:bg-[#1e1b19]/50">
-    {featureImage && (
-        <a href={`/${post.id}/`} aria-label={title} class="block overflow-hidden rounded-t-lg" style={`view-transition-name: post-image-${post.id}`}>
-            <CustomImage
-                src={featureImage}
-                alt={featureImageAlt}
-                class="w-full aspect-[16/9] object-cover transition-transform duration-500 group-hover:scale-105"
-                widths={[320, 480, 640, 768]}
-                sizes="(min-width: 1024px) 384px, (min-width: 640px) 50vw, calc(100vw - 32px)"
-            />
-        </a>
-    )}
+<article
+    class="group shadow-card hover:shadow-card-hover flex flex-col rounded-lg border border-slate-200 bg-white transition duration-300 hover:-translate-y-0.5 dark:border-[#2a2623] dark:bg-[#1e1b19]/50"
+>
+    {
+        featureImage && (
+            <a href={`/${post.id}/`} aria-label={title} class="block overflow-hidden rounded-t-lg" style={`view-transition-name: post-image-${post.id}`}>
+                <CustomImage
+                    src={featureImage}
+                    alt={featureImageAlt}
+                    class="aspect-[16/9] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    widths={[320, 480, 640, 768]}
+                    sizes="(min-width: 1024px) 384px, (min-width: 640px) 50vw, calc(100vw - 32px)"
+                />
+            </a>
+        )
+    }
     <div class="flex flex-1 flex-col p-5">
         <div class="mb-2 flex flex-wrap items-center gap-2 text-xs">
-            {categories && categories.length > 0 && categories.map((cat: string) => (
-                <a
-                    href={`/category/${slugify(cat)}/`}
-                    class="rounded-full bg-primary/15 px-2.5 py-0.5 font-bold text-primary transition-colors duration-300 hover:bg-primary hover:text-white dark:bg-accent/15 dark:text-accent dark:hover:bg-accent dark:hover:text-slate-900"
-                >
-                    {cat}
-                </a>
-            ))}
+            {
+                categories &&
+                    categories.length > 0 &&
+                    categories.map((cat: string) => (
+                        <a
+                            href={`/category/${slugify(cat)}/`}
+                            class="bg-primary/15 text-primary hover:bg-primary dark:bg-accent/15 dark:text-accent dark:hover:bg-accent rounded-full px-2.5 py-0.5 font-bold transition-colors duration-300 hover:text-white dark:hover:text-slate-900"
+                        >
+                            {cat}
+                        </a>
+                    ))
+            }
         </div>
-        <h2 class="text-xl font-extrabold leading-snug text-slate-900 dark:text-slate-100" style={`view-transition-name: post-title-${post.id}`}>
+        <h2 class="text-xl leading-snug font-extrabold text-slate-900 dark:text-slate-100" style={`view-transition-name: post-title-${post.id}`}>
             <a href={`/${post.id}/`} class="hover:text-primary dark:hover:text-accent transition-colors duration-300">{title}</a>
         </h2>
-        {excerpt && (
-            <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-2">{excerpt}</p>
-        )}
-        <div class="mt-auto pt-4 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400" style={`view-transition-name: post-meta-${post.id}`}>
+        {excerpt && <p class="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{excerpt}</p>}
+        <div class="mt-auto flex items-center gap-2 pt-4 text-xs text-slate-500 dark:text-slate-400" style={`view-transition-name: post-meta-${post.id}`}>
             <FormattedDate date={publishDate} />
             <span>&middot;</span>
             <span>{readingTime} min read</span>

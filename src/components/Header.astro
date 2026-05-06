@@ -13,14 +13,16 @@ import siteConfig from '../data/site-config';
             </a>
         </div>
         <nav class="sp-nav" id="sp-nav" aria-label="Primary navigation">
-            {siteConfig.primaryNavLinks?.map(link => (
-                <a href={link.href} aria-current={Astro.url.pathname.startsWith(link.href) ? 'page' : undefined}>{link.text}</a>
-            ))}
+            {
+                siteConfig.primaryNavLinks?.map((link) => (
+                    <a href={link.href} aria-current={Astro.url.pathname.startsWith(link.href) ? 'page' : undefined}>
+                        {link.text}
+                    </a>
+                ))
+            }
         </nav>
         <div class="sp-header-right">
-            <button class="sp-search" data-open-search aria-label="Search (⌘K)">
-                ⌕&nbsp;&nbsp;search the archive
-            </button>
+            <button class="sp-search" data-open-search aria-label="Search (⌘K)"> ⌕&nbsp;&nbsp;search the archive </button>
             <button class="sp-hamburger" id="sp-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="sp-nav">
                 <span></span><span></span><span></span>
             </button>
@@ -38,7 +40,7 @@ import siteConfig from '../data/site-config';
         hamburger.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
     });
 
-    nav?.querySelectorAll('a').forEach(link => {
+    nav?.querySelectorAll('a').forEach((link) => {
         link.addEventListener('click', () => {
             nav.classList.remove('is-open');
             hamburger?.setAttribute('aria-expanded', 'false');

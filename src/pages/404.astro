@@ -5,31 +5,27 @@ import FuzzyRedirect from '@jdevalk/astro-seo-graph/FuzzyRedirect.astro';
 import { getPublishedPosts, getReadingTime } from '../utils/post-utils';
 
 const allPosts = getPublishedPosts(await getCollection('blog'));
-const allPostsSorted = [...allPosts].sort(
-    (a, b) => new Date(a.data.publishDate).getTime() - new Date(b.data.publishDate).getTime()
-);
+const allPostsSorted = [...allPosts].sort((a, b) => new Date(a.data.publishDate).getTime() - new Date(b.data.publishDate).getTime());
 
-const featuredPosts = allPosts.filter(p => p.data.isFeatured).slice(0, 4);
+const featuredPosts = allPosts.filter((p) => p.data.isFeatured).slice(0, 4);
 const displayPosts = featuredPosts.length >= 4 ? featuredPosts : allPosts.slice(0, 4);
 
 function dotDate(date: Date): string {
-    return `${date.getFullYear()}·${String(date.getMonth()+1).padStart(2,'0')}·${String(date.getDate()).padStart(2,'0')}`;
+    return `${date.getFullYear()}·${String(date.getMonth() + 1).padStart(2, '0')}·${String(date.getDate()).padStart(2, '0')}`;
 }
 
-function catLabel(post: typeof allPosts[0]): string {
+function catLabel(post: (typeof allPosts)[0]): string {
     return post.data.categories?.[0] ?? 'Article';
 }
 
-function articleNum(post: typeof allPosts[0]): string {
-    const idx = allPostsSorted.findIndex(p => p.id === post.id) + 1;
+function articleNum(post: (typeof allPosts)[0]): string {
+    const idx = allPostsSorted.findIndex((p) => p.id === post.id) + 1;
     return String(idx).padStart(2, '0');
 }
 ---
 
 <BaseLayout title="Page Not Found — Joost.blog">
-
     <div class="sp-root sp-blocks">
-
         <!-- ── Hero ───────────────────────────────────────────── -->
         <section class="sp-404-hero">
             <div class="sp-404-stamp" aria-hidden="true">
@@ -38,7 +34,19 @@ function articleNum(post: typeof allPosts[0]): string {
             <div class="sp-404-inner">
                 <div class="sp-404-number" aria-label="404">
                     <div class="sp-404-digits">
-                        <span class="sp-404-four">4</span><span class="sp-404-zero">0<svg class="sp-404-slash" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><line x1="25" y1="80" x2="75" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke" /></svg></span><span class="sp-404-four">4</span>
+                        <span class="sp-404-four">4</span><span class="sp-404-zero"
+                            >0<svg class="sp-404-slash" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"
+                                ><line
+                                    x1="25"
+                                    y1="80"
+                                    x2="75"
+                                    y2="20"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    vector-effect="non-scaling-stroke"></line></svg
+                            ></span
+                        ><span class="sp-404-four">4</span>
                     </div>
                 </div>
 
@@ -51,7 +59,10 @@ function articleNum(post: typeof allPosts[0]): string {
 
                     <h1 class="sp-display sp-404-display">A <em>misprint.</em></h1>
 
-                    <p class="sp-drop-body sp-404-lede">The page you asked for isn't in the archive. Either the essay was unpublished, the URL was mistyped, or an older link rotted in the seventeen-year drawer this blog keeps.</p>
+                    <p class="sp-drop-body sp-404-lede">
+                        The page you asked for isn't in the archive. Either the essay was unpublished, the URL was mistyped, or an older link rotted in the
+                        seventeen-year drawer this blog keeps.
+                    </p>
 
                     <div class="sp-404-divider"></div>
 
@@ -80,18 +91,22 @@ function articleNum(post: typeof allPosts[0]): string {
         <section class="sp-compositor">
             <div class="sp-compositor-inner">
                 <div class="sp-compositor-aside">
-                    <div class="sp-compositor-label">Compositor's<br/>Note</div>
+                    <div class="sp-compositor-label">Compositor's<br />Note</div>
                     <div class="sp-compositor-rule"></div>
                 </div>
                 <div class="sp-compositor-body">
                     <p class="sp-compositor-intro">Four likely causes of this misprint, in rough order of probability:</p>
                     <ol class="sp-compositor-list">
-                        <li>The URL was typed or pasted with a stray character — trailing slashes, smart quotes, or an encoding slip are the usual culprits.</li>
+                        <li>
+                            The URL was typed or pasted with a stray character — trailing slashes, smart quotes, or an encoding slip are the usual culprits.
+                        </li>
                         <li>The essay was moved when this site migrated off WordPress to Astro in early 2025. Most old links redirect; a handful don't.</li>
                         <li>The piece was unpublished on purpose. This happens rarely and only when I've changed my mind about something I wrote.</li>
                         <li>The link you followed is from a site that copied an early draft URL. That's on them, but I'm sorry all the same.</li>
                     </ol>
-                    <p class="sp-compositor-note">¶ If you got here from one of my own pages, that's a bug — <a href="/contact-me/">email me</a> and I'll fix it.</p>
+                    <p class="sp-compositor-note">
+                        ¶ If you got here from one of my own pages, that's a bug — <a href="/contact-me/">email me</a> and I'll fix it.
+                    </p>
                 </div>
             </div>
         </section>
@@ -103,20 +118,20 @@ function articleNum(post: typeof allPosts[0]): string {
                 <div class="sp-section-meta">Four essays people actually read</div>
             </div>
             <div class="sp-archive-list">
-                {displayPosts.map((post) => (
-                    <a href={`/${post.id}/`} class="sp-archive-row">
-                        <span class="sp-col-n">{articleNum(post)}</span>
-                        <span class="sp-col-date">{dotDate(new Date(post.data.publishDate))}</span>
-                        <span class="sp-col-cat">{catLabel(post)}</span>
-                        <span class="sp-col-title" set:html={post.data.title} />
-                        <span class="sp-col-read">{getReadingTime(post.body ?? '')} min</span>
-                    </a>
-                ))}
+                {
+                    displayPosts.map((post) => (
+                        <a href={`/${post.id}/`} class="sp-archive-row">
+                            <span class="sp-col-n">{articleNum(post)}</span>
+                            <span class="sp-col-date">{dotDate(new Date(post.data.publishDate))}</span>
+                            <span class="sp-col-cat">{catLabel(post)}</span>
+                            <span class="sp-col-title" set:html={post.data.title} />
+                            <span class="sp-col-read">{getReadingTime(post.body ?? '')} min</span>
+                        </a>
+                    ))
+                }
             </div>
             <a class="sp-archive-more" href="/blog/">Browse all {allPosts.length} essays →</a>
         </section>
-
-
     </div>
 </BaseLayout>
 
@@ -312,7 +327,9 @@ function articleNum(post: typeof allPosts[0]): string {
         text-transform: uppercase;
         color: var(--hero-fg);
         text-decoration: none;
-        transition: border-color 0.12s, color 0.12s;
+        transition:
+            border-color 0.12s,
+            color 0.12s;
         white-space: nowrap;
     }
 

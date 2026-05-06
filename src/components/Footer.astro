@@ -8,52 +8,51 @@ const currentYear = new Date().getFullYear();
 
 <footer class="sp-footer">
     <div class="sp-footer-inner">
-    <div class="sp-footer-cols">
-        <div>
-            <div class="sp-footer-author">
-                <div class="sp-footer-author-portrait">
-                    <Image
-                        src={profilePic}
-                        alt="Joost de Valk"
-                        width={200}
-                        loading="lazy"
-                        decoding="async"
-                    />
+        <div class="sp-footer-cols">
+            <div>
+                <div class="sp-footer-author">
+                    <div class="sp-footer-author-portrait">
+                        <Image src={profilePic} alt="Joost de Valk" width={200} loading="lazy" decoding="async" />
+                    </div>
+                    <div class="sp-footer-author-name">Joost de Valk</div>
                 </div>
-                <div class="sp-footer-author-name">Joost de Valk</div>
+                <div class="sp-footer-bio">
+                    Internet entrepreneur from the Netherlands. Founder of Yoast, investor through Emilia Capital, and maker of Progress Planner.
+                </div>
             </div>
-            <div class="sp-footer-bio">
-                Internet entrepreneur from the Netherlands. Founder of Yoast, investor through
-                Emilia Capital, and maker of Progress Planner.
+            <div>
+                <div class="sp-footer-label">Writing</div>
+                <ul>
+                    <li><a href="/blog/">Blog</a></li>
+                    <li><a href="/code/">Code</a></li>
+                    <li><a href="/cms-market-share/">CMS Market Share</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="sp-footer-label">Work</div>
+                <ul>
+                    <li><a href="https://progressplanner.com/" target="_blank" rel="noopener noreferrer">Progress Planner</a></li>
+                    <li><a href="https://emilia.capital/" target="_blank" rel="noopener noreferrer">Emilia Capital</a></li>
+                    <li><a href="https://rondo.club/" target="_blank" rel="noopener noreferrer">Rondo</a></li>
+                    <li><a href="/code/">Open source</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="sp-footer-label">Elsewhere</div>
+                <ul>
+                    {
+                        siteConfig.socialLinks.map((link) => (
+                            <li>
+                                <a href={link.href} target="_blank" rel="noopener noreferrer">
+                                    {link.text}
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
             </div>
         </div>
-        <div>
-            <div class="sp-footer-label">Writing</div>
-            <ul>
-                <li><a href="/blog/">Blog</a></li>
-                <li><a href="/code/">Code</a></li>
-                <li><a href="/cms-market-share/">CMS Market Share</a></li>
-            </ul>
-        </div>
-        <div>
-            <div class="sp-footer-label">Work</div>
-            <ul>
-                <li><a href="https://progressplanner.com/" target="_blank" rel="noopener noreferrer">Progress Planner</a></li>
-                <li><a href="https://emilia.capital/" target="_blank" rel="noopener noreferrer">Emilia Capital</a></li>
-                <li><a href="https://rondo.club/" target="_blank" rel="noopener noreferrer">Rondo</a></li>
-                <li><a href="/code/">Open source</a></li>
-            </ul>
-        </div>
-        <div>
-            <div class="sp-footer-label">Elsewhere</div>
-            <ul>
-                {siteConfig.socialLinks.map(link => (
-                    <li><a href={link.href} target="_blank" rel="noopener noreferrer">{link.text}</a></li>
-                ))}
-            </ul>
-        </div>
-    </div>
-    <div class="sp-footer-rule"></div>
-    <div class="sp-colophon">Set in <em>Domaine</em> &amp; Pitch. Built with Astro. Wijchen, Netherlands. &copy; 2015&ndash;{currentYear}.</div>
+        <div class="sp-footer-rule"></div>
+        <div class="sp-colophon">Set in <em>Domaine</em> &amp; Pitch. Built with Astro. Wijchen, Netherlands. &copy; 2015&ndash;{currentYear}.</div>
     </div>
 </footer>

@@ -28,7 +28,7 @@ export function getJoostPersonData(ids: IdFactory) {
             'Web Development',
             'Artificial Intelligence',
             'Schema.org',
-            'Content Management Systems',
+            'Content Management Systems'
         ],
         sameAs: [
             `${SITE_URL}/about-me/`,
@@ -42,79 +42,79 @@ export function getJoostPersonData(ids: IdFactory) {
             'https://joost.net/@joost',
             'https://github.com/jdevalk',
             'https://profiles.wordpress.org/joostdevalk',
-            'https://emilia.capital/joost/',
+            'https://emilia.capital/joost/'
         ],
         worksFor: [
             {
                 '@type': 'EmployeeRole',
                 roleName: 'Partner',
                 startDate: '2020',
-                worksFor: { '@id': ids.organization('emilia-capital') },
+                worksFor: { '@id': ids.organization('emilia-capital') }
             },
             {
                 '@type': 'EmployeeRole',
                 roleName: 'Chair of the Board',
                 startDate: '2024',
-                worksFor: { '@id': ids.organization('post-status') },
+                worksFor: { '@id': ids.organization('post-status') }
             },
             {
                 '@type': 'EmployeeRole',
                 roleName: 'Advisor',
                 startDate: '2020',
-                worksFor: { '@id': ids.organization('wordproof') },
+                worksFor: { '@id': ids.organization('wordproof') }
             },
             {
                 '@type': 'EmployeeRole',
                 roleName: 'Board Member',
                 startDate: '2022-08-01',
-                worksFor: { '@id': ids.organization('atarim') },
+                worksFor: { '@id': ids.organization('atarim') }
             },
             {
                 '@type': 'EmployeeRole',
                 roleName: 'Board Member',
                 startDate: '2024-08-01',
-                worksFor: { '@id': ids.organization('patchstack') },
+                worksFor: { '@id': ids.organization('patchstack') }
             },
             {
                 '@type': 'EmployeeRole',
                 roleName: 'CEO',
                 startDate: '2023',
-                worksFor: { '@id': ids.organization('blokjes') },
+                worksFor: { '@id': ids.organization('blokjes') }
             },
             {
                 '@type': 'EmployeeRole',
                 roleName: 'CEO',
                 startDate: '2010',
                 endDate: '2019',
-                worksFor: { '@id': ids.organization('yoast') },
-            },
+                worksFor: { '@id': ids.organization('yoast') }
+            }
         ],
         spouse: {
             '@id': `${SITE_URL}/#/schema.org/Person/marieke`,
-            name: 'Marieke van de Rakt',
+            name: 'Marieke van de Rakt'
         },
         children: [
             {
                 '@type': 'Person' as const,
                 '@id': `${SITE_URL}/#/schema.org/Person/tycho`,
-                name: 'Tycho de Valk',
+                name: 'Tycho de Valk'
             },
             {
                 '@type': 'Person' as const,
                 '@id': `${SITE_URL}/#/schema.org/Person/wende`,
-                name: 'Wende de Valk',
+                name: 'Wende de Valk'
             },
             {
                 '@type': 'Person' as const,
                 '@id': `${SITE_URL}/#/schema.org/Person/ravi`,
-                name: 'Ravi de Valk',
+                name: 'Ravi de Valk'
             },
             {
                 '@type': 'Person' as const,
                 '@id': `${SITE_URL}/#/schema.org/Person/borre`,
-                name: 'Borre de Valk',
-            },
-        ],
+                name: 'Borre de Valk'
+            }
+        ]
     };
 }
 
@@ -126,7 +126,7 @@ export function getCountryNl(ids: IdFactory) {
     return {
         '@type': 'Country' as const,
         '@id': ids.country('NL'),
-        name: 'The Netherlands',
+        name: 'The Netherlands'
     };
 }
 
@@ -140,26 +140,26 @@ export const familyMembers = [
     {
         '@type': 'Person' as const,
         '@id': `${SITE_URL}/#/schema.org/Person/marieke`,
-        name: 'Marieke van de Rakt',
+        name: 'Marieke van de Rakt'
     },
     {
         '@type': 'Person' as const,
         '@id': `${SITE_URL}/#/schema.org/Person/tycho`,
-        name: 'Tycho de Valk',
+        name: 'Tycho de Valk'
     },
     {
         '@type': 'Person' as const,
         '@id': `${SITE_URL}/#/schema.org/Person/wende`,
-        name: 'Wende de Valk',
+        name: 'Wende de Valk'
     },
     {
         '@type': 'Person' as const,
         '@id': `${SITE_URL}/#/schema.org/Person/ravi`,
-        name: 'Ravi de Valk',
+        name: 'Ravi de Valk'
     },
     {
         '@type': 'Person' as const,
         '@id': `${SITE_URL}/#/schema.org/Person/borre`,
-        name: 'Borre de Valk',
-    },
+        name: 'Borre de Valk'
+    }
 ];

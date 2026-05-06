@@ -12,12 +12,12 @@ if (!subscribe?.enabled || !subscribe?.form?.action) {
 
 <section
     class:list={[
-        'mx-auto flex w-full max-w-3xl flex-col items-center gap-4 rounded-xl bg-slate-50 px-6 py-8 text-center dark:bg-[#1e1b19]/50 sm:px-12 sm:py-12',
+        'mx-auto flex w-full max-w-3xl flex-col items-center gap-4 rounded-xl bg-slate-50 px-6 py-8 text-center sm:px-12 sm:py-12 dark:bg-[#1e1b19]/50',
         className
     ]}
 >
-    {subscribe.title && <h2 class="max-w-xl text-xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-2xl">{subscribe.title}</h2>}
-    {subscribe.text && <p class="max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-400 sm:text-base">{subscribe.text}</p>}
+    {subscribe.title && <h2 class="max-w-xl text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl dark:text-slate-100">{subscribe.title}</h2>}
+    {subscribe.text && <p class="max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-400">{subscribe.text}</p>}
     <form
         action={subscribe.form.action}
         method="post"
@@ -31,7 +31,7 @@ if (!subscribe?.enabled || !subscribe?.form?.action) {
             required
             autocomplete="email"
             placeholder="name@example.com"
-            class="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-600 dark:bg-[#2a2623] dark:text-slate-200 dark:placeholder:text-slate-500 dark:focus:border-accent dark:focus:ring-accent/20"
+            class="focus:border-primary focus:ring-primary/20 dark:focus:border-accent dark:focus:ring-accent/20 w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 placeholder:text-slate-400 focus:ring-2 focus:outline-none dark:border-slate-600 dark:bg-[#2a2623] dark:text-slate-200 dark:placeholder:text-slate-500"
             aria-label="Email address"
         />
         {subscribe.form.hiddenFields?.map((field) => <input type="hidden" name={field.name} value={field.value} />)}
@@ -44,7 +44,7 @@ if (!subscribe?.enabled || !subscribe?.form?.action) {
         }
         <button
             type="submit"
-            class="inline-flex w-full cursor-pointer items-center justify-center rounded-lg bg-primary px-6 py-2.5 text-sm font-bold text-white shadow-md transition duration-300 hover:bg-secondary hover:shadow-lg sm:w-auto"
+            class="bg-primary hover:bg-secondary inline-flex w-full cursor-pointer items-center justify-center rounded-lg px-6 py-2.5 text-sm font-bold text-white shadow-md transition duration-300 hover:shadow-lg sm:w-auto"
         >
             Subscribe
         </button>

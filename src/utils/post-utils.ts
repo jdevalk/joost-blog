@@ -38,11 +38,7 @@ function getLinkedSlugs(body: string): Set<string> {
     return slugs;
 }
 
-export function getRelatedPosts(
-    currentPost: CollectionEntry<'blog'>,
-    allPosts: CollectionEntry<'blog'>[],
-    limit: number = 3
-): CollectionEntry<'blog'>[] {
+export function getRelatedPosts(currentPost: CollectionEntry<'blog'>, allPosts: CollectionEntry<'blog'>[], limit: number = 3): CollectionEntry<'blog'>[] {
     const otherPosts = allPosts.filter((post) => post.id !== currentPost.id && isPublished(post));
     const currentCategories = currentPost.data.categories ?? [];
     const linkedSlugs = getLinkedSlugs(currentPost.body ?? '');
@@ -51,9 +47,7 @@ export function getRelatedPosts(
 
     // First: posts linked from the current post
     if (linkedSlugs.size > 0) {
-        const linked = otherPosts
-            .filter((post) => linkedSlugs.has(post.id))
-            .sort(sortPostsByDateDesc);
+        const linked = otherPosts.filter((post) => linkedSlugs.has(post.id)).sort(sortPostsByDateDesc);
         for (const post of linked) {
             if (related.length >= limit) break;
             if (!usedIds.has(post.id)) {
@@ -66,9 +60,7 @@ export function getRelatedPosts(
     // Second: posts sharing the first category, sorted by date desc
     if (currentCategories.length > 0 && related.length < limit) {
         const firstCat = currentCategories[0];
-        const sameCat = otherPosts
-            .filter((post) => post.data.categories?.includes(firstCat))
-            .sort(sortPostsByDateDesc);
+        const sameCat = otherPosts.filter((post) => post.data.categories?.includes(firstCat)).sort(sortPostsByDateDesc);
         for (const post of sameCat) {
             if (related.length >= limit) break;
             if (!usedIds.has(post.id)) {
@@ -81,9 +73,7 @@ export function getRelatedPosts(
     // Third: posts from other shared categories
     for (let i = 1; i < currentCategories.length && related.length < limit; i++) {
         const cat = currentCategories[i];
-        const sameCat = otherPosts
-            .filter((post) => post.data.categories?.includes(cat))
-            .sort(sortPostsByDateDesc);
+        const sameCat = otherPosts.filter((post) => post.data.categories?.includes(cat)).sort(sortPostsByDateDesc);
         for (const post of sameCat) {
             if (related.length >= limit) break;
             if (!usedIds.has(post.id)) {

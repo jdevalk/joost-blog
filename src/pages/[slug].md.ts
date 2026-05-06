@@ -6,11 +6,8 @@ type Entry = CollectionEntry<'blog'> | CollectionEntry<'pages'>;
 
 export async function getStaticPaths() {
     const [posts, pages] = await Promise.all([getCollection('blog'), getCollection('pages')]);
-    const skip = new Set(['videos', 'clicky', 'about-me', 'contact-me', 'contact', 'cms-market-share']);
-    const all: Entry[] = [
-        ...posts.filter((p) => !p.data.draft),
-        ...pages.filter((p) => !skip.has(p.id))
-    ];
+    const skip = new Set(['videos', 'clicky', 'about-me', 'contact-me', 'contact']);
+    const all: Entry[] = [...posts.filter((p) => !p.data.draft), ...pages.filter((p) => !skip.has(p.id))];
     return all.map((entry) => ({ params: { slug: entry.id } }));
 }
 
@@ -22,7 +19,15 @@ export const GET = createMarkdownEndpoint<Entry>({
     mapper: (entry, slug) => {
         if (entry.id !== slug) return null;
         if (!entry.body) return null;
-        const data = entry.data as { title?: string; excerpt?: string; publishDate?: Date; updatedDate?: Date; categories?: string[]; tags?: string[]; draft?: boolean };
+        const data = entry.data as {
+            title?: string;
+            excerpt?: string;
+            publishDate?: Date;
+            updatedDate?: Date;
+            categories?: string[];
+            tags?: string[];
+            draft?: boolean;
+        };
         if (data.draft) return null;
         const rawBody = entry.body ?? '';
         const body = rawBody

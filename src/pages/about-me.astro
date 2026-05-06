@@ -8,11 +8,9 @@ import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
 
 const allVideos = await getCollection('videos');
-const recentVideos = allVideos
-    .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
-    .slice(0, 4);
+const recentVideos = allVideos.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()).slice(0, 4);
 
-async function resolveThumb(video: typeof recentVideos[0]): Promise<string | null> {
+async function resolveThumb(video: (typeof recentVideos)[0]): Promise<string | null> {
     if (video.data.thumbnailUrl) return video.data.thumbnailUrl;
     const yt = video.data.youtubeId;
     if (yt) return `https://img.youtube.com/vi/${yt}/maxresdefault.jpg`;
@@ -32,9 +30,7 @@ function formatDuration(isoDuration: string | undefined): string | null {
     const h = parseInt(match[1] || '0');
     const m = parseInt(match[2] || '0');
     const s = parseInt(match[3] || '0');
-    return h > 0
-        ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-        : `${m}:${String(s).padStart(2, '0')}`;
+    return h > 0 ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}` : `${m}:${String(s).padStart(2, '0')}`;
 }
 
 const title = 'About Joost de Valk';
@@ -52,7 +48,6 @@ const pageContext: SchemaPageContext = {
     <SchemaGraph pageContext={pageContext} />
 
     <div class="sp-root sp-blocks sp-about">
-
         <section class="sp-hero">
             <div class="sp-about-hero-grid">
                 <div>
@@ -63,19 +58,16 @@ const pageContext: SchemaPageContext = {
                         Hi! I'm <em>Joost</em> de Valk
                     </h1>
                     <p class="sp-section-lede">
-                        I'm an internet entrepreneur from the Netherlands. I'm married to <a href="https://marieke.com/">Marieke</a>;
-                        we have four children and live in Wijchen, the Netherlands.
+                        I'm an internet entrepreneur from the Netherlands. I'm married to <a href="https://marieke.com/">Marieke</a>; we have four children and
+                        live in Wijchen, the Netherlands.
                     </p>
                     <p class="sp-about-sub">
-                        I have a long history in open source and digital marketing. I founded Yoast and its
-                        Yoast SEO plugin for WordPress.
+                        I have a long history in open source and digital marketing. I founded Yoast and its Yoast SEO plugin for WordPress.
                     </p>
                 </div>
                 <div class="sp-about-portrait">
                     <Image src={profilePic} alt="Joost de Valk" width={800} loading="lazy" decoding="async" />
-                    <div class="sp-about-portrait-cap">
-                        Portrait · Aquilea, 2026
-                    </div>
+                    <div class="sp-about-portrait-cap">Portrait · Aquilea, 2026</div>
                 </div>
             </div>
         </section>
@@ -88,31 +80,30 @@ const pageContext: SchemaPageContext = {
             <div class="sp-about-story-grid">
                 <article class="sp-about-prose" data-pagefind-body>
                     <p>
-                        I have worn a couple of different hats in my time at Yoast. First, for
-                        almost 9 years, I was the CEO, then I became Chief Product Officer
-                        when my wife <a href="https://marieke.com/">Marieke</a> took over as CEO. We sold Yoast to Newfold Digital
-                        in August of 2021, after which I became Head of WordPress Strategy at Newfold
-                        for a while. I then came back for a 6-month stint as interim CTO (because
-                        they were suddenly without one) in 2022-2023. I finally left the company
-                        in April 2023.
+                        I have worn a couple of different hats in my time at Yoast. First, for almost 9 years, I was the CEO, then I became Chief Product
+                        Officer when my wife <a href="https://marieke.com/">Marieke</a> took over as CEO. We sold Yoast to Newfold Digital in August of 2021, after
+                        which I became Head of WordPress Strategy at Newfold for a while. I then came back for a 6-month stint as interim CTO (because they were suddenly
+                        without one) in 2022-2023. I finally left the company in April 2023.
                     </p>
                     <p>
                         When we left Yoast, Marieke and I started investing through our company,
-                        <a href="https://emilia.capital/">Emilia Capital</a>. We invest in companies that play at least partly in
-                        the digital space (and often in WordPress). Because of that, I'm
-                        on the board of <a href="https://patchstack.com/">PatchStack</a> and <a href="https://atarim.io/">Atarim</a>. We also started our own
-                        new company; we're working hard on <a href="https://progressplanner.com/">Progress Planner</a>.
+                        <a href="https://emilia.capital/">Emilia Capital</a>. We invest in companies that play at least partly in the digital space (and often
+                        in WordPress). Because of that, I'm on the board of <a href="https://patchstack.com/">PatchStack</a> and <a href="https://atarim.io/"
+                            >Atarim</a
+                        >. We also started our own new company; we're working hard on <a href="https://progressplanner.com/">Progress Planner</a>.
                     </p>
                     <p>
-                        I founded Yoast in 2010 after working as a digital marketing consultant in
-                        several different companies. I've worked on some of the biggest SEO
-                        projects in the world, like the <a href="https://www.theguardian.com/info/developer-blog/2014/feb/18/how-the-guardian-successfully-moved-domain">Guardian's site migration from
-                        .co.uk to theguardian.com</a>.
+                        I founded Yoast in 2010 after working as a digital marketing consultant in several different companies. I've worked on some of the
+                        biggest SEO projects in the world, like the <a
+                            href="https://www.theguardian.com/info/developer-blog/2014/feb/18/how-the-guardian-successfully-moved-domain"
+                            >Guardian's site migration from .co.uk to theguardian.com</a
+                        >.
                     </p>
                     <p>
                         In my spare time, I can often be found coaching kids' soccer at
-                        <a href="https://svawc.nl/">AWC</a>, where I'm also a board member. This is also why I started
-                        working on <a href="https://rondo.club/">Rondo</a>. On holidays, Marieke and I love spending time in our
+                        <a href="https://svawc.nl/">AWC</a>, where I'm also a board member. This is also why I started working on <a href="https://rondo.club/"
+                            >Rondo</a
+                        >. On holidays, Marieke and I love spending time in our
                         <a href="https://limonaia.house/">holiday home in Tuscany</a> or traveling to other places in the world.
                     </p>
                 </article>
@@ -138,20 +129,22 @@ const pageContext: SchemaPageContext = {
                 <h3>Find me online.</h3>
             </div>
             <div class="sp-about-social-grid">
-                {[
-                    {n:'GitHub', h:'@jdevalk', url:'https://github.com/jdevalk'},
-                    {n:'LinkedIn', h:'in/jdevalk', url:'https://www.linkedin.com/in/jdevalk/'},
-                    {n:'Bluesky', h:'@joost.blog', url:'https://bsky.app/profile/joost.blog'},
-                    {n:'Threads', h:'@joostdevalk', url:'https://www.threads.net/@joostdevalk'},
-                    {n:'WordPress', h:'joostdevalk', url:'https://profiles.wordpress.org/joostdevalk'},
-                    {n:'Instagram', h:'@joostdevalk', url:'https://www.instagram.com/joostdevalk'},
-                ].map(({n, h, url}) => (
-                    <a href={url} class="sp-about-social-card" target="_blank" rel="noopener noreferrer">
-                        <div class="n">{n}</div>
-                        <div class="h">{h}</div>
-                        <div class="arr">&rarr;</div>
-                    </a>
-                ))}
+                {
+                    [
+                        { n: 'GitHub', h: '@jdevalk', url: 'https://github.com/jdevalk' },
+                        { n: 'LinkedIn', h: 'in/jdevalk', url: 'https://www.linkedin.com/in/jdevalk/' },
+                        { n: 'Bluesky', h: '@joost.blog', url: 'https://bsky.app/profile/joost.blog' },
+                        { n: 'Threads', h: '@joostdevalk', url: 'https://www.threads.net/@joostdevalk' },
+                        { n: 'WordPress', h: 'joostdevalk', url: 'https://profiles.wordpress.org/joostdevalk' },
+                        { n: 'Instagram', h: '@joostdevalk', url: 'https://www.instagram.com/joostdevalk' }
+                    ].map(({ n, h, url }) => (
+                        <a href={url} class="sp-about-social-card" target="_blank" rel="noopener noreferrer">
+                            <div class="n">{n}</div>
+                            <div class="h">{h}</div>
+                            <div class="arr">&rarr;</div>
+                        </a>
+                    ))
+                }
             </div>
         </section>
 
@@ -161,25 +154,23 @@ const pageContext: SchemaPageContext = {
                 <h2>Recent speaking engagements.</h2>
             </div>
             <div class="sp-about-speaking-grid">
-                {recentVideos.map((v, i) => {
-                    const dur = formatDuration(v.data.duration);
-                    const thumb = recentThumbs[i];
-                    const month = new Intl.DateTimeFormat('en', {month: 'short', year: 'numeric'}).format(new Date(v.data.publishDate)).toUpperCase();
-                    return (
-                        <a href={`/videos/${v.id}/`} class="sp-about-talk">
-                            <div
-                                class="sp-about-talk-thumb"
-                                style={thumb ? `--thm-bg: url('${thumb}')` : ''}
-                                data-has-thumb={thumb ? 'true' : undefined}
-                            >
-                                <div class="play">&#9654;</div>
-                                {dur && <div class="dur">{dur}</div>}
-                            </div>
-                            <div class="sp-about-talk-meta">{month}</div>
-                            <h4>{v.data.title}</h4>
-                        </a>
-                    );
-                })}
+                {
+                    recentVideos.map((v, i) => {
+                        const dur = formatDuration(v.data.duration);
+                        const thumb = recentThumbs[i];
+                        const month = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' }).format(new Date(v.data.publishDate)).toUpperCase();
+                        return (
+                            <a href={`/videos/${v.id}/`} class="sp-about-talk">
+                                <div class="sp-about-talk-thumb" style={thumb ? `--thm-bg: url('${thumb}')` : ''} data-has-thumb={thumb ? 'true' : undefined}>
+                                    <div class="play">&#9654;</div>
+                                    {dur && <div class="dur">{dur}</div>}
+                                </div>
+                                <div class="sp-about-talk-meta">{month}</div>
+                                <h4>{v.data.title}</h4>
+                            </a>
+                        );
+                    })
+                }
             </div>
             <div class="sp-about-speaking-foot">
                 <a href="/videos/">See all videos in the archive &rarr;</a>
@@ -191,10 +182,7 @@ const pageContext: SchemaPageContext = {
                 <div>
                     <div class="kicker">§ 04 · Code</div>
                     <h2>What I build.</h2>
-                    <p>
-                        From WordPress plugins to SaaS products, I'm always working on something.
-                        See all my current projects on my code page.
-                    </p>
+                    <p>From WordPress plugins to SaaS products, I'm always working on something. See all my current projects on my code page.</p>
                 </div>
                 <div class="sp-about-build-cta">
                     <a href="/code/" class="primary">See my code &rarr;</a>
@@ -202,6 +190,5 @@ const pageContext: SchemaPageContext = {
                 </div>
             </div>
         </section>
-
     </div>
 </BaseLayout>

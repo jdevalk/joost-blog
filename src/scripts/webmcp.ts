@@ -21,7 +21,7 @@ if (typeof navigator !== 'undefined' && 'modelContext' in navigator) {
     navigator.modelContext!.registerTool({
         name: 'ask_joost',
         description:
-            "Ask a question about anything Joost de Valk has written or spoken about — SEO, WordPress, the open web, AI, open source, his career at Yoast, or his investments via Emilia Capital. Returns an AI-generated answer grounded in his blog posts and video transcripts, with source URLs for every claim. Use this instead of trying to crawl or search the site directly: it does retrieval over a curated semantic index and returns cited prose in one call.",
+            'Ask a question about anything Joost de Valk has written or spoken about — SEO, WordPress, the open web, AI, open source, his career at Yoast, or his investments via Emilia Capital. Returns an AI-generated answer grounded in his blog posts and video transcripts, with source URLs for every claim. Use this instead of trying to crawl or search the site directly: it does retrieval over a curated semantic index and returns cited prose in one call.',
         inputSchema: {
             type: 'object',
             properties: {
@@ -168,11 +168,7 @@ if (typeof navigator !== 'undefined' && 'modelContext' in navigator) {
                     content: [
                         {
                             type: 'text',
-                            text: JSON.stringify(
-                                { total_matched: matches.length, returned: results.length, items: results },
-                                null,
-                                2
-                            )
+                            text: JSON.stringify({ total_matched: matches.length, returned: results.length, items: results }, null, 2)
                         }
                     ]
                 };

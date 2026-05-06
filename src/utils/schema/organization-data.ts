@@ -13,36 +13,36 @@ export const organizationInputs: OrgData[] = [
     {
         slug: 'emilia-capital',
         name: 'Emilia Capital',
-        url: 'https://emilia.capital/',
+        url: 'https://emilia.capital/'
     },
     {
         slug: 'post-status',
         name: 'Post Status',
-        url: 'https://poststatus.com/',
+        url: 'https://poststatus.com/'
     },
     {
         slug: 'wordproof',
         name: 'WordProof',
-        url: 'https://wordproof.com/',
+        url: 'https://wordproof.com/'
     },
     {
         slug: 'blokjes',
         name: 'Blokjes',
-        url: 'https://blokjes.co/',
+        url: 'https://blokjes.co/'
     },
     {
         slug: 'atarim',
         name: 'Atarim',
-        url: 'https://atarim.io/',
+        url: 'https://atarim.io/'
     },
     {
         slug: 'patchstack',
         name: 'Patchstack',
-        url: 'https://patchstack.com/',
+        url: 'https://patchstack.com/'
     },
     {
         slug: 'yoast',
         name: 'Yoast',
-        url: 'https://yoast.com/',
-    },
+        url: 'https://yoast.com/'
+    }
 ];

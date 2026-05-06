@@ -7,16 +7,12 @@ import type { SchemaPageContext } from '../../utils/schema';
 import { canonicalUrl } from '../../utils/schema/constants';
 
 const allVideos = await getCollection('videos');
-const sorted = allVideos.sort(
-    (a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
-);
+const sorted = allVideos.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
 const featuredVideo = sorted.find((v) => v.data.featured) ?? sorted[0];
 const listVideos = sorted.filter((v) => v.id !== featuredVideo.id);
 
 // Sequential numbering: featured = #1, rest = #2..N (oldest→newest)
-const listAsc = [...listVideos].sort(
-    (a, b) => new Date(a.data.publishDate).getTime() - new Date(b.data.publishDate).getTime()
-);
+const listAsc = [...listVideos].sort((a, b) => new Date(a.data.publishDate).getTime() - new Date(b.data.publishDate).getTime());
 const videoNumberMap = new Map(listAsc.map((v, i) => [v.id, i + 2]));
 
 // Year groups, newest first
@@ -28,14 +24,12 @@ for (const video of listVideos) {
     if (!yearGroupMap.has(year)) yearGroupMap.set(year, []);
     yearGroupMap.get(year)!.push(video);
 }
-const yearGroups = [...yearGroupMap.entries()]
-    .sort((a, b) => b[0] - a[0])
-    .map(([year, videos]) => ({ year, videos }));
-const allYears = yearGroups.map(g => g.year);
+const yearGroups = [...yearGroupMap.entries()].sort((a, b) => b[0] - a[0]).map(([year, videos]) => ({ year, videos }));
+const allYears = yearGroups.map((g) => g.year);
 
 const typeOrder = ['keynote', 'talk', 'podcast', 'interview', 'panel'] as const;
-const existingTypes = new Set(listVideos.map(v => v.data.type).filter(Boolean));
-const allTypes = typeOrder.filter(t => existingTypes.has(t));
+const existingTypes = new Set(listVideos.map((v) => v.data.type).filter(Boolean));
+const allTypes = typeOrder.filter((t) => existingTypes.has(t));
 
 function formatDuration(isoDuration: string | undefined): string | null {
     if (!isoDuration) return null;
@@ -44,18 +38,19 @@ function formatDuration(isoDuration: string | undefined): string | null {
     const h = parseInt(match[1] || '0');
     const m = parseInt(match[2] || '0');
     const s = parseInt(match[3] || '0');
-    return h > 0
-        ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-        : `${m}:${String(s).padStart(2, '0')}`;
+    return h > 0 ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}` : `${m}:${String(s).padStart(2, '0')}`;
 }
 
 function dotDate(date: Date): string {
-    return `${date.getFullYear()}·${String(date.getMonth()+1).padStart(2,'0')}·${String(date.getDate()).padStart(2,'0')}`;
+    return `${date.getFullYear()}·${String(date.getMonth() + 1).padStart(2, '0')}·${String(date.getDate()).padStart(2, '0')}`;
 }
 
 function getExcerpt(body: string | undefined): string {
     if (!body) return '';
-    const stripped = body.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    const stripped = body
+        .replace(/<[^>]+>/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
     if (stripped.length <= 150) return stripped;
     return `${stripped.slice(0, 147).trim()}...`;
 }
@@ -64,7 +59,7 @@ const featuredDuration = formatDuration(featuredVideo.data.duration);
 const featuredExcerpt = getExcerpt(featuredVideo.body);
 const featuredDate = dotDate(new Date(featuredVideo.data.publishDate));
 
-async function resolveThumb(video: typeof sorted[0]): Promise<string | null> {
+async function resolveThumb(video: (typeof sorted)[0]): Promise<string | null> {
     if (video.data.thumbnailUrl) return video.data.thumbnailUrl;
     if (video.data.featureImage) {
         const img = await getImage({ src: video.data.featureImage, width: 800 });
@@ -90,37 +85,35 @@ const pageContext: SchemaPageContext = {
     <SchemaGraph pageContext={pageContext} />
 
     <div class="sp-root sp-blocks sp-videos">
-
         <section class="sp-hero">
             <div class="sp-section-inner">
-            <div class="sp-code-kicker">
-                <span>SECTION IV</span><span class="rule"></span><span>TALKS · INTERVIEWS · PODCASTS</span>
-            </div>
-            <h1 class="sp-display">
-                <em>Videos</em>.
-            </h1>
-            <p class="sp-section-lede">
-                A curated archive of conference talks, podcast interviews, and keynotes on WordPress,
-                SEO, open source, and building products on the web.
-            </p>
-            <div class="sp-videos-stats">
-                <div class="s">
-                    <div class="n">{allVideos.length}</div>
-                    <div class="l">Recordings</div>
+                <div class="sp-code-kicker">
+                    <span>SECTION IV</span><span class="rule"></span><span>TALKS · INTERVIEWS · PODCASTS</span>
                 </div>
-                <div class="s">
-                    <div class="n">18+</div>
-                    <div class="l">Years</div>
+                <h1 class="sp-display">
+                    <em>Videos</em>.
+                </h1>
+                <p class="sp-section-lede">
+                    A curated archive of conference talks, podcast interviews, and keynotes on WordPress, SEO, open source, and building products on the web.
+                </p>
+                <div class="sp-videos-stats">
+                    <div class="s">
+                        <div class="n">{allVideos.length}</div>
+                        <div class="l">Recordings</div>
+                    </div>
+                    <div class="s">
+                        <div class="n">18+</div>
+                        <div class="l">Years</div>
+                    </div>
+                    <div class="s">
+                        <div class="n">30+</div>
+                        <div class="l">Countries</div>
+                    </div>
+                    <div class="s">
+                        <div class="n">100+</div>
+                        <div class="l">Hours</div>
+                    </div>
                 </div>
-                <div class="s">
-                    <div class="n">30+</div>
-                    <div class="l">Countries</div>
-                </div>
-                <div class="s">
-                    <div class="n">100+</div>
-                    <div class="l">Hours</div>
-                </div>
-            </div>
             </div>
         </section>
 
@@ -159,76 +152,87 @@ const pageContext: SchemaPageContext = {
                     <span class="lbl">Year</span>
                     <div class="chips">
                         <button class="chip on" type="button" data-year="all">All</button>
-                        {allYears.map(year => (
-                            <button class="chip" type="button" data-year={String(year)}>{year}</button>
-                        ))}
+                        {
+                            allYears.map((year) => (
+                                <button class="chip" type="button" data-year={String(year)}>
+                                    {year}
+                                </button>
+                            ))
+                        }
                     </div>
                 </div>
                 <div class="sp-videos-filter-group">
                     <span class="lbl">Type</span>
                     <div class="chips">
                         <button class="chip on" type="button" data-type="all">All</button>
-                        {allTypes.map(type => (
-                            <button class="chip" type="button" data-type={type}>{type}</button>
-                        ))}
+                        {
+                            allTypes.map((type) => (
+                                <button class="chip" type="button" data-type={type}>
+                                    {type}
+                                </button>
+                            ))
+                        }
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="sp-videos-list" data-pagefind-ignore="all">
-            {yearGroups.map(({ year, videos }) => {
-                const thumbOffset = listVideos.indexOf(videos[0]);
-                return (
-                <div class="sp-videos-year-section" data-year-group={String(year)}>
-                    <div class="sp-videos-year-header">
-                        <span class="sp-videos-year-num">{year}</span>
-                        <hr class="sp-videos-year-rule" />
-                        <span id={`year-count-${year}`} class="sp-videos-year-count">{videos.length}&nbsp;{videos.length === 1 ? 'Video' : 'Videos'}</span>
-                    </div>
-                    {videos.map((video) => {
-                        const num = videoNumberMap.get(video.id) ?? 0;
-                        const dur = formatDuration(video.data.duration);
-                        const date = dotDate(new Date(video.data.publishDate));
-                        const excerpt = getExcerpt(video.body);
-                        const thumbIdx = listVideos.indexOf(video);
-                        const thumb = listThumbs[thumbIdx];
-                        return (
-                            <div class="sp-videos-row" data-video-year={String(year)} data-video-type={video.data.type ?? ''}>
-                                <div class="sp-videos-num">{num}</div>
-                                <a
-                                    href={`/videos/${video.id}/`}
-                                    class="sp-videos-thumb"
-                                    style={thumb ? `--thm-bg: url('${thumb}')` : ''}
-                                    data-has-thumb={thumb ? 'true' : undefined}
-                                >
-                                    <div class="thm-play">&#9654;</div>
-                                    {dur && <div class="thm-dur">{dur}</div>}
-                                </a>
-                                <div class="sp-videos-meta">
-                                    <div class="d">{date}</div>
-                                    {video.data.type && <div class="t">{video.data.type}</div>}
-                                    {video.data.with && (
-                                        <div class="w">
-                                            with {Array.isArray(video.data.with)
-                                                ? video.data.with.join(', ')
-                                                : video.data.with}
-                                        </div>
-                                    )}
-                                </div>
-                                <div class="sp-videos-body">
-                                    <h4><a href={`/videos/${video.id}/`}>{video.data.title}</a></h4>
-                                    {excerpt && <p>{excerpt}</p>}
-                                    <a href={`/videos/${video.id}/`} class="lnk">Watch &rarr;</a>
-                                </div>
+            {
+                yearGroups.map(({ year, videos }) => {
+                    const thumbOffset = listVideos.indexOf(videos[0]);
+                    return (
+                        <div class="sp-videos-year-section" data-year-group={String(year)}>
+                            <div class="sp-videos-year-header">
+                                <span class="sp-videos-year-num">{year}</span>
+                                <hr class="sp-videos-year-rule" />
+                                <span id={`year-count-${year}`} class="sp-videos-year-count">
+                                    {videos.length}&nbsp;{videos.length === 1 ? 'Video' : 'Videos'}
+                                </span>
                             </div>
-                        );
-                    })}
-                </div>
-                );
-            })}
+                            {videos.map((video) => {
+                                const num = videoNumberMap.get(video.id) ?? 0;
+                                const dur = formatDuration(video.data.duration);
+                                const date = dotDate(new Date(video.data.publishDate));
+                                const excerpt = getExcerpt(video.body);
+                                const thumbIdx = listVideos.indexOf(video);
+                                const thumb = listThumbs[thumbIdx];
+                                return (
+                                    <div class="sp-videos-row" data-video-year={String(year)} data-video-type={video.data.type ?? ''}>
+                                        <div class="sp-videos-num">{num}</div>
+                                        <a
+                                            href={`/videos/${video.id}/`}
+                                            class="sp-videos-thumb"
+                                            style={thumb ? `--thm-bg: url('${thumb}')` : ''}
+                                            data-has-thumb={thumb ? 'true' : undefined}
+                                        >
+                                            <div class="thm-play">&#9654;</div>
+                                            {dur && <div class="thm-dur">{dur}</div>}
+                                        </a>
+                                        <div class="sp-videos-meta">
+                                            <div class="d">{date}</div>
+                                            {video.data.type && <div class="t">{video.data.type}</div>}
+                                            {video.data.with && (
+                                                <div class="w">with {Array.isArray(video.data.with) ? video.data.with.join(', ') : video.data.with}</div>
+                                            )}
+                                        </div>
+                                        <div class="sp-videos-body">
+                                            <h4>
+                                                <a href={`/videos/${video.id}/`}>{video.data.title}</a>
+                                            </h4>
+                                            {excerpt && <p>{excerpt}</p>}
+                                            <a href={`/videos/${video.id}/`} class="lnk">
+                                                Watch &rarr;
+                                            </a>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    );
+                })
+            }
         </div>
-
     </div>
 </BaseLayout>
 
@@ -246,14 +250,12 @@ const pageContext: SchemaPageContext = {
         for (const row of rows) {
             const year = row.dataset.videoYear ?? '';
             const type = row.dataset.videoType ?? '';
-            const visible =
-                (activeYear === 'all' || year === activeYear) &&
-                (activeType === 'all' || type === activeType);
+            const visible = (activeYear === 'all' || year === activeYear) && (activeType === 'all' || type === activeType);
             row.style.display = visible ? '' : 'none';
             if (visible) yearCounts.set(year, (yearCounts.get(year) ?? 0) + 1);
         }
 
-        document.querySelectorAll<HTMLElement>('[data-year-group]').forEach(section => {
+        document.querySelectorAll<HTMLElement>('[data-year-group]').forEach((section) => {
             const year = section.dataset.yearGroup ?? '';
             const count = yearCounts.get(year) ?? 0;
             section.style.display = count > 0 ? '' : 'none';
@@ -262,18 +264,18 @@ const pageContext: SchemaPageContext = {
         });
     }
 
-    yearChips.forEach(btn => {
+    yearChips.forEach((btn) => {
         btn.addEventListener('click', () => {
             activeYear = btn.dataset.year ?? 'all';
-            yearChips.forEach(b => b.classList.toggle('on', b === btn));
+            yearChips.forEach((b) => b.classList.toggle('on', b === btn));
             applyFilter();
         });
     });
 
-    typeChips.forEach(btn => {
+    typeChips.forEach((btn) => {
         btn.addEventListener('click', () => {
             activeType = btn.dataset.type ?? 'all';
-            typeChips.forEach(b => b.classList.toggle('on', b === btn));
+            typeChips.forEach((b) => b.classList.toggle('on', b === btn));
             applyFilter();
         });
     });

@@ -18,26 +18,26 @@ const pageContext: SchemaPageContext = {
 
 // Build plugin list at build time
 const dataDir = path.join(process.cwd(), 'public/data/plugin-stats');
-const files = fs.readdirSync(dataDir).filter(f => f.endsWith('-active-installs.json'));
+const files = fs.readdirSync(dataDir).filter((f) => f.endsWith('-active-installs.json'));
 
 function formatPluginName(slug: string): string {
     let name = slug.replace(/-/g, ' ');
     const replacements: Record<string, string> = {
-        'seo': 'SEO',
-        'wooc': 'WooC',
-        'aaa': 'AAA',
-        'wp': 'WP',
+        seo: 'SEO',
+        wooc: 'WooC',
+        aaa: 'AAA',
+        wp: 'WP'
     };
     for (const [search, replace] of Object.entries(replacements)) {
         name = name.replace(new RegExp(search, 'gi'), replace);
     }
     // Capitalize first letter of each word
-    name = name.replace(/\b\w/g, c => c.toUpperCase());
+    name = name.replace(/\b\w/g, (c) => c.toUpperCase());
     return name;
 }
 
 const plugins = files
-    .map(f => {
+    .map((f) => {
         const slug = f.replace('-active-installs.json', '');
         return { slug, name: formatPluginName(slug) };
     })
@@ -58,7 +58,9 @@ const plugins = files
                 </nav>
                 <div class="sp-post-category" style="display:flex;align-items:center;gap:12px;">
                     Plugin Data
-                    <span style="background:#dc2626;color:#fff;font-size:10px;letter-spacing:0.15em;padding:3px 9px;border-radius:3px;vertical-align:middle;">CONFIDENTIAL</span>
+                    <span style="background:#dc2626;color:#fff;font-size:10px;letter-spacing:0.15em;padding:3px 9px;border-radius:3px;vertical-align:middle;"
+                        >CONFIDENTIAL</span
+                    >
                 </div>
                 <h1 class="sp-post-title">Plugin Stats</h1>
                 <div class="sp-post-meta-row">
@@ -68,47 +70,52 @@ const plugins = files
             </div>
         </section>
 
-    <main class="px-4 py-10 sm:px-8 w-full">
-        <div class="mb-6 flex items-end justify-between gap-4">
-            <div>
-                <label for="plugin-select" class="block text-sm font-medium mb-2">Select a plugin:</label>
-                <select id="plugin-select" class="w-full max-w-sm rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 px-4 py-2 text-base focus:outline-none focus:ring-2 focus:ring-primary">
-                    <option value="">— Select —</option>
-                    {plugins.map(p => (
-                        <option value={p.slug}>{p.name}</option>
-                    ))}
-                </select>
-            </div>
-        </div>
-
-        <div id="chart-container" class="hidden">
-            <div class="relative w-full bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
-                <div class="flex flex-wrap gap-4 mb-4 text-sm">
-                    <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-sm" style="background:#3b82f6"></span> Active installs</span>
-                    <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-sm" style="background:#ef4444"></span> Downloads per week</span>
+        <main class="w-full px-4 py-10 sm:px-8">
+            <div class="mb-6 flex items-end justify-between gap-4">
+                <div>
+                    <label for="plugin-select" class="mb-2 block text-sm font-medium">Select a plugin:</label>
+                    <select
+                        id="plugin-select"
+                        class="focus:ring-primary w-full max-w-sm rounded-lg border border-slate-300 bg-white px-4 py-2 text-base text-slate-900 focus:ring-2 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                    >
+                        <option value="">— Select —</option>
+                        {plugins.map((p) => <option value={p.slug}>{p.name}</option>)}
+                    </select>
                 </div>
-                <canvas id="chart" class="w-full" style="height:640px"></canvas>
             </div>
 
-            <div class="mt-6 flex gap-4">
-                <button id="toggle-table" class="text-sm font-medium text-primary hover:underline">Show data as table</button>
-                <button id="download-csv" class="text-sm font-medium text-primary hover:underline">Download as CSV</button>
-            </div>
+            <div id="chart-container" class="hidden">
+                <div class="relative w-full rounded-xl border border-slate-200 bg-white p-4 sm:p-6 dark:border-slate-700 dark:bg-slate-800">
+                    <div class="mb-4 flex flex-wrap gap-4 text-sm">
+                        <span class="flex items-center gap-1.5"
+                            ><span class="inline-block h-3 w-3 rounded-sm" style="background:#3b82f6"></span> Active installs</span
+                        >
+                        <span class="flex items-center gap-1.5"
+                            ><span class="inline-block h-3 w-3 rounded-sm" style="background:#ef4444"></span> Downloads per week</span
+                        >
+                    </div>
+                    <canvas id="chart" class="w-full" style="height:640px"></canvas>
+                </div>
 
-            <div id="table-container" class="hidden mt-4 overflow-x-auto">
-                <table class="min-w-[400px] max-w-full text-sm border-collapse">
-                    <thead>
-                        <tr class="border-b border-slate-300 dark:border-slate-600">
-                            <th class="text-left py-2 pr-6">Date</th>
-                            <th class="text-right py-2 pr-6">Active installs</th>
-                            <th class="text-right py-2">Downloads</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body"></tbody>
-                </table>
+                <div class="mt-6 flex gap-4">
+                    <button id="toggle-table" class="text-primary text-sm font-medium hover:underline">Show data as table</button>
+                    <button id="download-csv" class="text-primary text-sm font-medium hover:underline">Download as CSV</button>
+                </div>
+
+                <div id="table-container" class="mt-4 hidden overflow-x-auto">
+                    <table class="max-w-full min-w-[400px] border-collapse text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-300 dark:border-slate-600">
+                                <th class="py-2 pr-6 text-left">Date</th>
+                                <th class="py-2 pr-6 text-right">Active installs</th>
+                                <th class="py-2 text-right">Downloads</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-    </main>
+        </main>
     </div>
 </BaseLayout>
 
@@ -136,7 +143,7 @@ const plugins = files
         if (!currentDates.length) return;
         const rows = [['Date', 'Active installs', 'Downloads']];
         currentDates.forEach((d, i) => rows.push([d, String(currentInstalls[i]), String(currentDownloads[i])]));
-        const csv = rows.map(r => r.join(',')).join('\n');
+        const csv = rows.map((r) => r.join(',')).join('\n');
         const blob = new Blob([csv], { type: 'text/csv' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
@@ -163,12 +170,14 @@ const plugins = files
         loadPlugin(initialPlugin);
     }
 
-    interface DataMap { [date: string]: string | number }
+    interface DataMap {
+        [date: string]: string | number;
+    }
 
     function aggregateDownloadsByWeek(activeInstalls: DataMap, downloads: DataMap): DataMap {
         const weekDates = Object.keys(activeInstalls).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
         const totals: Record<string, number> = {};
-        weekDates.forEach(d => totals[d] = 0);
+        weekDates.forEach((d) => (totals[d] = 0));
 
         for (const [date, val] of Object.entries(downloads)) {
             const dt = new Date(date).getTime();
@@ -191,14 +200,14 @@ const plugins = files
 
     async function loadPlugin(slug: string) {
         const [activeData, downloadsData] = await Promise.all([
-            fetch(`/data/plugin-stats/${slug}-active-installs.json`).then(r => r.json()),
-            fetch(`/data/plugin-stats/${slug}-downloads.json`).then(r => r.json())
+            fetch(`/data/plugin-stats/${slug}-active-installs.json`).then((r) => r.json()),
+            fetch(`/data/plugin-stats/${slug}-downloads.json`).then((r) => r.json())
         ]);
 
         const weeklyDownloads = aggregateDownloadsByWeek(activeData, downloadsData);
         const dates = Object.keys(activeData);
-        const installs = dates.map(d => Number(activeData[d]));
-        const downloads = dates.map(d => Number(weeklyDownloads[d] || 0));
+        const installs = dates.map((d) => Number(activeData[d]));
+        const downloads = dates.map((d) => Number(weeklyDownloads[d] || 0));
 
         currentDates = dates;
         currentInstalls = installs;
@@ -232,7 +241,7 @@ const plugins = files
         if (n === 0) return;
 
         const maxInstalls = Math.max(...installs);
-        const maxDownloads = Math.max(...downloads.filter(d => d > 0));
+        const maxDownloads = Math.max(...downloads.filter((d) => d > 0));
 
         const isDark = document.documentElement.classList.contains('dark');
         const textColor = isDark ? '#94a3b8' : '#64748b';
@@ -313,13 +322,16 @@ const plugins = files
     }
 
     function fillTable(dates: string[], installs: number[], downloads: number[]) {
-        tableBody.innerHTML = dates.map((d, i) =>
-            `<tr class="border-b border-slate-200 dark:border-slate-700">
+        tableBody.innerHTML = dates
+            .map(
+                (d, i) =>
+                    `<tr class="border-b border-slate-200 dark:border-slate-700">
                 <td class="py-1.5 pr-6">${d}</td>
                 <td class="py-1.5 pr-6 text-right">${installs[i].toLocaleString()}</td>
                 <td class="py-1.5 text-right">${downloads[i].toLocaleString()}</td>
             </tr>`
-        ).join('');
+            )
+            .join('');
     }
 
     // Handle resize

@@ -9,4 +9,5 @@ interface Props {
 const { pageContext } = Astro.props;
 const schema = buildSchemaGraph(pageContext);
 ---
+
 <JsonLd schema={schema} />
