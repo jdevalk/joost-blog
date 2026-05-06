@@ -459,6 +459,7 @@
     background: var(--hero-bg-deep); color: var(--hero-fg);
     padding: 0 64px;
 }
+[data-palette="ochre"] .sp-footer { --hero-fg: #f0eae2; }
 .sp-footer-inner {
     max-width: 1280px; margin: 0 auto;
     padding: 72px 0 48px;
@@ -481,7 +482,7 @@
 }
 .sp-footer-bio {
     font-size: 13px; line-height: 1.6;
-    color: color-mix(in srgb, var(--hero-fg) 60%, transparent); max-width: 34ch; margin-bottom: 24px;
+    color: color-mix(in srgb, var(--hero-fg) 78%, transparent); max-width: 34ch; margin-bottom: 24px;
 }
 .sp-footer-mark {
     font-family: var(--font-display);
@@ -489,7 +490,7 @@
 }
 .sp-footer-colophon {
     font-size: 13px; line-height: 1.6;
-    color: color-mix(in srgb, var(--hero-fg) 60%, transparent); max-width: 32ch;
+    color: color-mix(in srgb, var(--hero-fg) 78%, transparent); max-width: 32ch;
 }
 .sp-footer-colophon em {
     font-family: var(--font-display);
@@ -510,7 +511,7 @@
 .sp-colophon {
     font-family: var(--font-mono);
     font-size: 11px; letter-spacing: 0.1em;
-    color: color-mix(in srgb, var(--hero-fg) 50%, transparent);
+    color: color-mix(in srgb, var(--hero-fg) 78%, transparent);
 }
 
 /* ═══════════════════════════════════════════════════════════
