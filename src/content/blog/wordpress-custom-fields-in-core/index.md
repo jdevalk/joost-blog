@@ -61,7 +61,7 @@ The same fix unlocks multilingual, by the way. Typed, translatable fields are fa
 
 ## What good looks like
 
-My developer Filip built [field-kit](https://github.com/emdash-cms/emdash/discussions/571) for EmDash last month. It is a small plugin that does one thing well: it gives EmDash's `json` field type a real editor UI, configured entirely through seed config, no React required. He's already working on a [follow-up](https://github.com/ilicfilip/field-kit/pull/2) adding `visibleWhen`, so fields can show or hide based on the value of other fields in the same record.
+One of the developers on our team, [Filip Ilić](https://github.com/ilicfilip), built [field-kit](https://github.com/emdash-cms/emdash/discussions/571) for EmDash last month. It is a small plugin that does one thing well: it gives EmDash's `json` field type a real editor UI, configured entirely through seed config, no React required. He's already working on a [follow-up](https://github.com/ilicfilip/field-kit/pull/2) adding `visibleWhen`, so fields can show or hide based on the value of other fields in the same record.
 
 Four widgets:
 
