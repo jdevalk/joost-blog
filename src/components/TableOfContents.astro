@@ -28,13 +28,7 @@ for (const h of headings.filter((h) => h.depth === 2 || h.depth === 3)) {
 {
     tocItems.length > 0 && (
         <nav class="sp-post-toc" aria-label="Table of contents">
-            <button
-                type="button"
-                class="sp-post-toc-mobile"
-                aria-expanded="false"
-                aria-controls="sp-post-toc-body"
-                data-toc-toggle
-            >
+            <button type="button" class="sp-post-toc-mobile" aria-expanded="false" aria-controls="sp-post-toc-body" data-toc-toggle>
                 <span class="sp-post-toc-mobile-eyebrow">Contents</span>
                 <span class="sp-post-toc-mobile-current" data-toc-current>
                     Top of page
