@@ -206,35 +206,86 @@ const primaryCategory = blogData?.categories?.[0] ?? null;
 
         if (headings.length === 0) return;
 
+        const tocEl = document.querySelector<HTMLElement>('.sp-post-toc');
+        const toggleBtn = document.querySelector<HTMLButtonElement>('[data-toc-toggle]');
+        const currentLabel = document.querySelector<HTMLElement>('[data-toc-current]');
+
+        const setOpen = (open: boolean) => {
+            if (!tocEl || !toggleBtn) return;
+            tocEl.dataset.tocOpen = open ? 'true' : 'false';
+            toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        };
+
+        const setActive = (active: string | null) => {
+            let activeLink: HTMLAnchorElement | null = null;
+            links.forEach(link => {
+                const isActive = active !== null && link.hash === `#${active}`;
+                link.classList.toggle('active', isActive);
+                if (isActive) activeLink = link;
+            });
+            if (activeLink) {
+                const link = activeLink as HTMLAnchorElement;
+                if (currentLabel) {
+                    const heading = active ? document.getElementById(active) : null;
+                    currentLabel.textContent = heading?.textContent?.trim() || 'Top of page';
+                }
+                const toc = link.closest('.sp-post-toc') as HTMLElement | null;
+                if (toc) {
+                    const tocRect = toc.getBoundingClientRect();
+                    const linkRect = link.getBoundingClientRect();
+                    const padding = 16;
+                    if (linkRect.top < tocRect.top + padding) {
+                        toc.scrollBy({ top: linkRect.top - tocRect.top - padding, behavior: 'smooth' });
+                    } else if (linkRect.bottom > tocRect.bottom - padding) {
+                        toc.scrollBy({ top: linkRect.bottom - tocRect.bottom + padding, behavior: 'smooth' });
+                    }
+                }
+            } else if (currentLabel) {
+                currentLabel.textContent = 'Top of page';
+            }
+        };
+
+        if (toggleBtn && tocEl) {
+            toggleBtn.addEventListener('click', () => {
+                setOpen(tocEl.dataset.tocOpen !== 'true');
+            });
+            tocEl.addEventListener('click', (e) => {
+                const target = e.target as HTMLElement;
+                const link = target.closest<HTMLAnchorElement>('[data-toc-link]');
+                if (link) {
+                    setActive(link.hash.slice(1));
+                    setOpen(false);
+                }
+            });
+            document.addEventListener('click', (e) => {
+                if (tocEl.dataset.tocOpen !== 'true') return;
+                if (!tocEl.contains(e.target as Node)) setOpen(false);
+            });
+
+            const hero = document.querySelector<HTMLElement>('.sp-post-hero');
+            if (hero) {
+                const heroObserver = new IntersectionObserver(
+                    (entries) => {
+                        tocEl.dataset.tocVisible = entries[0]!.isIntersecting ? 'false' : 'true';
+                        if (entries[0]!.isIntersecting) setOpen(false);
+                    },
+                    { threshold: 0 },
+                );
+                heroObserver.observe(hero);
+            }
+        }
+
         const observer = new IntersectionObserver(
             () => {
-                let active = headings[0]!.id;
+                let active: string | null = null;
                 for (const heading of headings) {
-                    if (heading.getBoundingClientRect().top <= 120) {
+                    if (heading.getBoundingClientRect().top <= 220) {
                         active = heading.id;
                     }
                 }
-                let activeLink: HTMLAnchorElement | null = null;
-                links.forEach(link => {
-                    const isActive = link.hash === `#${active}`;
-                    link.classList.toggle('active', isActive);
-                    if (isActive) activeLink = link;
-                });
-                if (activeLink) {
-                    const toc = (activeLink as HTMLAnchorElement).closest('.sp-post-toc') as HTMLElement | null;
-                    if (toc) {
-                        const tocRect = toc.getBoundingClientRect();
-                        const linkRect = (activeLink as HTMLAnchorElement).getBoundingClientRect();
-                        const padding = 16;
-                        if (linkRect.top < tocRect.top + padding) {
-                            toc.scrollBy({ top: linkRect.top - tocRect.top - padding, behavior: 'smooth' });
-                        } else if (linkRect.bottom > tocRect.bottom - padding) {
-                            toc.scrollBy({ top: linkRect.bottom - tocRect.bottom + padding, behavior: 'smooth' });
-                        }
-                    }
-                }
+                setActive(active);
             },
-            { rootMargin: '-80px 0px -70% 0px', threshold: 0 },
+            { rootMargin: '-180px 0px -70% 0px', threshold: 0 },
         );
 
         headings.forEach(h => observer.observe(h));

@@ -38,30 +38,54 @@ const pageContext: SchemaPageContext = {
         <section class="sp-post-body sp-cms-body">
             <div class="sp-post-grid">
                 <nav class="sp-post-toc" aria-label="Table of contents">
-                    <div class="lbl">
-                        On this page <a href="#" aria-label="Back to top"
-                            ><svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="13"
-                                height="13"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                aria-hidden="true"><polyline points="18 15 12 9 6 15"></polyline></svg
-                            ></a
-                        >
+                    <button
+                        type="button"
+                        class="sp-post-toc-mobile"
+                        aria-expanded="false"
+                        aria-controls="sp-post-toc-body"
+                        data-toc-toggle
+                    >
+                        <span class="sp-post-toc-mobile-eyebrow">Contents</span>
+                        <span class="sp-post-toc-mobile-current" data-toc-current>Top of page</span>
+                        <svg
+                            class="sp-post-toc-mobile-chev"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="sp-post-toc-body" id="sp-post-toc-body">
+                        <div class="lbl">
+                            On this page <a href="#" aria-label="Back to top"
+                                ><svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="13"
+                                    height="13"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"><polyline points="18 15 12 9 6 15"></polyline></svg
+                                ></a
+                            >
+                        </div>
+                        <ol>
+                            <li><a href="#most-popular-cmses" data-toc-link><span class="sp-post-toc-num">01</span>Most popular CMSes</a></li>
+                            <li><a href="#most-popular-ecommerce-systems" data-toc-link><span class="sp-post-toc-num">02</span>eCommerce systems</a></li>
+                            <li><a href="#most-popular-wordpress-page-builders" data-toc-link><span class="sp-post-toc-num">03</span>Page builders</a></li>
+                            <li><a href="#most-popular-wordpress-block-libraries" data-toc-link><span class="sp-post-toc-num">04</span>Block libraries</a></li>
+                            <li><a href="#most-popular-wordpress-seo-plugins" data-toc-link><span class="sp-post-toc-num">05</span>SEO plugins</a></li>
+                            <li><a href="#methodology-explanation" data-toc-link><span class="sp-post-toc-num">06</span>Methodology</a></li>
+                        </ol>
                     </div>
-                    <ol>
-                        <li><a href="#most-popular-cmses" data-toc-link><span class="sp-post-toc-num">01</span>Most popular CMSes</a></li>
-                        <li><a href="#most-popular-ecommerce-systems" data-toc-link><span class="sp-post-toc-num">02</span>eCommerce systems</a></li>
-                        <li><a href="#most-popular-wordpress-page-builders" data-toc-link><span class="sp-post-toc-num">03</span>Page builders</a></li>
-                        <li><a href="#most-popular-wordpress-block-libraries" data-toc-link><span class="sp-post-toc-num">04</span>Block libraries</a></li>
-                        <li><a href="#most-popular-wordpress-seo-plugins" data-toc-link><span class="sp-post-toc-num">05</span>SEO plugins</a></li>
-                        <li><a href="#methodology-explanation" data-toc-link><span class="sp-post-toc-num">06</span>Methodology</a></li>
-                    </ol>
                 </nav>
                 <div>
                     <div class="sp-cms-intro">
@@ -854,15 +878,66 @@ const pageContext: SchemaPageContext = {
         const headingIds = Array.from(links).map((l) => l.hash.slice(1));
         const headings = headingIds.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => el !== null);
         if (headings.length === 0) return;
+
+        const tocEl = document.querySelector<HTMLElement>('.sp-post-toc');
+        const toggleBtn = document.querySelector<HTMLButtonElement>('[data-toc-toggle]');
+        const currentLabel = document.querySelector<HTMLElement>('[data-toc-current]');
+
+        const setOpen = (open: boolean) => {
+            if (!tocEl || !toggleBtn) return;
+            tocEl.dataset.tocOpen = open ? 'true' : 'false';
+            toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        };
+
+        const setActive = (active: string | null) => {
+            let activeLink: HTMLAnchorElement | null = null;
+            links.forEach((link) => {
+                const isActive = active !== null && link.hash === `#${active}`;
+                link.classList.toggle('active', isActive);
+                if (isActive) activeLink = link;
+            });
+            if (currentLabel) {
+                const heading = activeLink && active ? document.getElementById(active) : null;
+                currentLabel.textContent = heading?.textContent?.trim() || 'Top of page';
+            }
+        };
+
+        if (toggleBtn && tocEl) {
+            toggleBtn.addEventListener('click', () => setOpen(tocEl.dataset.tocOpen !== 'true'));
+            tocEl.addEventListener('click', (e) => {
+                const link = (e.target as HTMLElement).closest<HTMLAnchorElement>('[data-toc-link]');
+                if (link) {
+                    setActive(link.hash.slice(1));
+                    setOpen(false);
+                }
+            });
+            document.addEventListener('click', (e) => {
+                if (tocEl.dataset.tocOpen !== 'true') return;
+                if (!tocEl.contains(e.target as Node)) setOpen(false);
+            });
+
+            const hero = document.querySelector<HTMLElement>('.sp-post-hero');
+            if (hero) {
+                const heroObserver = new IntersectionObserver(
+                    (entries) => {
+                        tocEl.dataset.tocVisible = entries[0]!.isIntersecting ? 'false' : 'true';
+                        if (entries[0]!.isIntersecting) setOpen(false);
+                    },
+                    { threshold: 0 }
+                );
+                heroObserver.observe(hero);
+            }
+        }
+
         const observer = new IntersectionObserver(
             () => {
-                let active = headings[0]!.id;
+                let active: string | null = null;
                 for (const heading of headings) {
-                    if (heading.getBoundingClientRect().top <= 120) active = heading.id;
+                    if (heading.getBoundingClientRect().top <= 220) active = heading.id;
                 }
-                links.forEach((link) => link.classList.toggle('active', link.hash === `#${active}`));
+                setActive(active);
             },
-            { rootMargin: '-80px 0px -70% 0px', threshold: 0 }
+            { rootMargin: '-180px 0px -70% 0px', threshold: 0 }
         );
         headings.forEach((h) => observer.observe(h));
     }
