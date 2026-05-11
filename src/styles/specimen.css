@@ -903,15 +903,14 @@
 /* Share row */
 .sp-share {
     margin-top: 40px; padding: 20px 0;
-    border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+    border-top: 1px solid var(--ink);
     display: flex; gap: 20px; align-items: baseline;
     font-family: var(--font-mono);
     font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
     color: var(--ink-soft);
 }
-.sp-share a { color: var(--dusk); text-decoration: none; }
-.sp-share a:hover { text-decoration: underline; }
-.sp-share-spacer { margin-left: auto; }
+.sp-share a { color: var(--dusk); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--dusk) 40%, transparent); }
+.sp-share a:hover { border-bottom-color: var(--dusk); }
 
 /* Related posts — indigo strip */
 .sp-related {

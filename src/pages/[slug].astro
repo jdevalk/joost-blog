@@ -145,10 +145,11 @@ const primaryCategory = blogData?.categories?.[0] ?? null;
                     <Content />
 
                     <div class="sp-share" data-pagefind-ignore="all">
-                        <span>Reply on</span>
+                        <span>Reply or share</span>
                         <a href={`https://bsky.app/intent/compose?text=${encodeURIComponent(stripHtml(blogData!.title) + ' ' + href)}`} target="_blank" rel="noopener noreferrer">Bluesky</a>
                         <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(href)}&summary=${encodeURIComponent(stripHtml(blogData!.title))}`} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                        <span class="sp-share-spacer">Share →</span>
+                        <a href={`https://wa.me/?text=${encodeURIComponent(stripHtml(blogData!.title) + '\n\n' + href)}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                        <a href={`mailto:?subject=${encodeURIComponent(stripHtml(blogData!.title))}&body=${encodeURIComponent('Thought you might like this:\n\n' + href)}`}>Email</a>
                     </div>
                 </article>
 
