@@ -2,7 +2,7 @@
 title: 'FAQ schema <em>died twice</em>. The fix is FAQSection.'
 seo:
   description: Google killed FAQ rich results on May 7, 2026. The lesson isn't that schema is dead. It's that GEO is starting the same cycle in AI search.
-publishDate: 2026-05-10T00:00:00.000Z
+publishDate: 2026-05-11T00:00:00.000Z
 excerpt: >-
   Google killed FAQ rich results entirely on May 7, 2026. FAQ schema spam killed
   it once in 2023, and finished it off this month. The "FAQ schema is critical
@@ -10,19 +10,15 @@ excerpt: >-
 categories:
   - SEO
 toc: true
-draft: true
-password: faq-cycle
 ---
 
 *Google killed FAQ rich results entirely on May 7, 2026. FAQ schema spam killed it once in 2023, and finished it off this month. The "FAQ schema is critical for GEO" advice now flooding LinkedIn is starting the same cycle in AI search.*
 
-On May 7, 2026, Google [stopped showing FAQ rich results](https://searchengineland.com/google-to-no-longer-support-faq-rich-results-476957) in search. The deprecation banner on the [developer documentation](https://developers.google.com/search/docs/appearance/structured-data/faqpage) now reads:
+Google [stopped showing FAQ rich results](https://searchengineland.com/google-to-no-longer-support-faq-rich-results-476957) in search. The deprecation banner on the [developer documentation](https://developers.google.com/search/docs/appearance/structured-data/faqpage) now reads:
 
 > As of May 7, 2026, FAQ rich results are no longer appearing in Google Search. We will be dropping the FAQ search appearance, rich result report, and support in the Rich results test in June 2026.
 
 Notice what isn't in that note: any guidance to remove the markup. Google's [2023 post](https://developers.google.com/search/blog/2023/08/howto-faq-changes), which first cut FAQ rich results back to government and health sites, was explicit: *"there's no need to proactively remove it."* The 2026 banner repeats that silence. The interesting question isn't what Google said. It's *why* this happened, *now*, and what we should learn from it.
-
-This is the second death of FAQ schema. The first one happened in 2023, when Google pulled FAQ rich results back for almost everyone. That first death already told us what was happening: people had abused the format so aggressively that Google had to take it away. The 2026 announcement is just the funeral.
 
 ## Why FAQ schema kept dying
 
