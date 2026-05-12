@@ -1,5 +1,9 @@
 # Repo notes
 
+## Writing conventions
+
+**Do not start a paragraph with a bold word as a pseudo-heading.** The `**Term.** Body sentence follows...` pattern (a bolded label followed by a sentence on the same line, used as an inline definition list) is not Joost's voice and breaks the reading rhythm. If you have 3+ parallel items that each warrant their own label, use real subheadings (`###` under an `##` section) so they show up in the TOC and structure-aware tooling. If you have a single short labelled item, integrate it into prose.
+
 ## Draft preview passwords
 
 Draft posts can be gated with a per-post password so they're shareable without being public.
