@@ -298,8 +298,8 @@ function renderDashboard(results, errors) {
 		.legend-swatch { display:inline-block; width:.7rem; height:.7rem; border-radius:2px; }
 		.legend-count { color:#888; font-variant-numeric:tabular-nums; }
 		.filter-row { display:flex; gap:.5rem; align-items:center; margin:0 0 .75rem; flex-wrap:wrap; }
-		.filter-row input { padding:.35rem .6rem; border:1px solid #1c2025; border-radius:3px; background:#0b0d10; color:#e6e6e6; font:inherit; font-size:.8rem; min-width:12rem; }
-		.filter-row input:focus { outline:none; border-color:#3b82f6; }
+		.filter-row input, .filter-row select { padding:.35rem .6rem; border:1px solid #1c2025; border-radius:3px; background:#0b0d10; color:#e6e6e6; font:inherit; font-size:.8rem; min-width:12rem; }
+		.filter-row input:focus, .filter-row select:focus { outline:none; border-color:#3b82f6; }
 		.filter-stats { color:#888; font-size:.75rem; }
 		.errors { background:#2a1010; border:1px solid #5a2020; padding:1rem; border-radius:4px; margin:2rem 0; }
 		.errors pre { white-space:pre-wrap; word-break:break-word; font-size:.75rem; color:#fbb; }
@@ -354,7 +354,14 @@ function renderDashboard(results, errors) {
 
 	<h2>Top paths per bot — last 7d</h2>
 	<div class="filter-row" id="paths-filter">
-		<input type="search" data-filter="bot" placeholder="Filter bot…" autocomplete="off" spellcheck="false">
+		<select data-filter="bot">
+			<option value="">All bots</option>
+			${[...new Set(rowsOrEmpty(results.topPaths).map((r) => String(r.bot || '')))]
+				.filter(Boolean)
+				.sort((a, b) => a.localeCompare(b))
+				.map((b) => `<option value="${esc(b)}">${esc(b)}</option>`)
+				.join('')}
+		</select>
 		<input type="search" data-filter="path" placeholder="Filter path…" autocomplete="off" spellcheck="false">
 		<span class="filter-stats" data-filter-stats></span>
 	</div>
@@ -374,25 +381,30 @@ function renderDashboard(results, errors) {
 			const wrap = document.getElementById('paths-filter');
 			const table = document.getElementById('paths-table');
 			if (!wrap || !table) return;
-			const inputs = wrap.querySelectorAll('input[data-filter]');
+			const botFilter = wrap.querySelector('[data-filter="bot"]');
+			const pathFilter = wrap.querySelector('[data-filter="path"]');
 			const stats = wrap.querySelector('[data-filter-stats]');
 			const rows = Array.from(table.querySelectorAll('tbody tr'));
 			const total = rows.length;
 			function apply() {
-				const f = {};
-				inputs.forEach((i) => { f[i.dataset.filter] = i.value.trim().toLowerCase(); });
+				const bot = botFilter ? botFilter.value.trim() : '';
+				const path = pathFilter ? pathFilter.value.trim().toLowerCase() : '';
 				let visible = 0;
 				for (const r of rows) {
 					const cells = r.querySelectorAll('td');
-					const bot = (cells[0]?.textContent || '').toLowerCase();
-					const path = (cells[1]?.textContent || '').toLowerCase();
-					const show = (!f.bot || bot.includes(f.bot)) && (!f.path || path.includes(f.path));
+					const rowBot = (cells[0]?.textContent || '').trim();
+					const rowPath = (cells[1]?.textContent || '').toLowerCase();
+					const show = (!bot || rowBot === bot) && (!path || rowPath.includes(path));
 					r.style.display = show ? '' : 'none';
 					if (show) visible++;
 				}
 				if (stats) stats.textContent = visible === total ? total + ' rows' : visible + ' of ' + total + ' rows';
 			}
-			inputs.forEach((i) => i.addEventListener('input', apply));
+			[botFilter, pathFilter].forEach((el) => {
+				if (!el) return;
+				el.addEventListener('input', apply);
+				el.addEventListener('change', apply);
+			});
 			apply();
 		})();
 	</script>
