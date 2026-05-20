@@ -65,7 +65,7 @@ When adding a new top-level page or content collection, also add a matching `.md
 - **Content collections** — use `createMarkdownEndpoint` from the integration. See `src/pages/[slug].md.ts` (blog + pages), `src/pages/videos/[slug].md.ts`, `src/pages/code/[slug].md.ts`.
 - **Listing or static pages** — hand-rolled `APIRoute` returning a markdown response. See `src/pages/blog.md.ts`, `src/pages/category/[slug].md.ts`, `src/pages/about-me.md.ts`.
 
-A few routes are intentionally skipped (`404`, `drafts`, `search`). Their warnings are expected and don't fail the build.
+A few routes are intentionally skipped (`404`, `admin/*`, `search`). Their warnings are expected and don't fail the build.
 
 ## Prettier
 
@@ -77,15 +77,17 @@ Format with `pnpm format`; `pnpm format:check` runs as the first step of `pnpm b
 
 `functions/_middleware.js` logs every request from a known bot (Cloudflare-verified, `signature-agent` header, or matched against a list of AI/LLM/search UA strings) to a Cloudflare Analytics Engine dataset. The dashboard at `/admin/bots` queries that dataset and shows top bots, paths, hourly counts, and detection source. All paths are logged, including static assets.
 
+Authentication for everything under `/admin/*` (including `/admin/drafts` and `/admin/bots`) is handled by a Cloudflare Access policy on the zone — configured in the Cloudflare dashboard, not in code. The dashboard function assumes the caller is already authenticated.
+
 ### One-time setup in the Cloudflare dashboard
 
 Pages → joost-blog → Settings → Functions:
 
 1. Analytics Engine binding — variable name `AGENT_LOG`, dataset name `agent_log` (matches the `DATASET` constant in `functions/admin/bots.js`). Add it for *both* Preview and Production environments.
 2. Environment variables / secrets (Settings → Environment variables):
-   - `BOT_DASHBOARD_PASSWORD` — shared password to view `/admin/bots`. Mark as secret.
    - `CF_ACCOUNT_ID` — Cloudflare account ID (plain var is fine).
    - `CF_ANALYTICS_TOKEN` — API token with permission **Account → Account Analytics → Read**. Mark as secret. Distinct from the build-time `CF_API_TOKEN` because this token only needs Analytics read.
+3. Cloudflare Access policy covering `joost.blog/admin/*` (or the equivalent application in Zero Trust).
 
 ### Adding new bots to track
 

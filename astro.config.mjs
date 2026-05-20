@@ -106,7 +106,7 @@ integrations: [mdx(), sitemap({
         entryLimit: 1000,
         filter: (page) => {
             const slug = new URL(page).pathname.replace(/^\/|\/$/g, '');
-            if (slug === 'drafts') return false;
+            if (slug.startsWith('admin/')) return false;
             return !draftSlugs.has(slug);
         },
         serialize: (item) => {

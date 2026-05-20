@@ -109,11 +109,6 @@ export async function onRequest(context) {
 	const url = new URL(context.request.url);
 	const slug = url.pathname.replace(/^\/|\/$/g, '');
 
-	// Dev-only listing — never serve in production.
-	if (slug === 'drafts') {
-		return new Response('Not found', { status: 404 });
-	}
-
 	// Only check blog-post-like paths (no dots, no nested paths with known prefixes)
 	if (!slug || slug.includes('.') || slug.startsWith('api/') || slug.startsWith('_ask/')) {
 		return context.next();

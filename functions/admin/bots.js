@@ -1,39 +1,12 @@
-// Password-gated dashboard for bot/agent traffic captured by `functions/_middleware.js`.
+// Dashboard for bot/agent traffic captured by `functions/_middleware.js`.
+// Access to /admin/* is gated by Cloudflare Access at the edge, so this
+// function assumes the caller is already authenticated.
 // Queries the Cloudflare Analytics Engine SQL API with a token stored as a Pages secret.
 
-const COOKIE_NAME = 'admin_bots';
-const COOKIE_MAX_AGE = 60 * 60 * 24; // 24h
 const DATASET = 'agent_log';
 
 export async function onRequest(context) {
-	const { request, env } = context;
-	const url = new URL(request.url);
-
-	const password = env.BOT_DASHBOARD_PASSWORD;
-	if (!password) {
-		return text('Dashboard not configured: set BOT_DASHBOARD_PASSWORD in Pages env vars.', 500);
-	}
-
-	// Accept password via ?password= and set a cookie, then redirect to clean URL.
-	if (url.searchParams.get('password') === password) {
-		return new Response(null, {
-			status: 302,
-			headers: {
-				Location: url.pathname,
-				'Set-Cookie': `${COOKIE_NAME}=${encodeURIComponent(password)}; Path=/admin; HttpOnly; Secure; SameSite=Lax; Max-Age=${COOKIE_MAX_AGE}`,
-			},
-		});
-	}
-
-	// Otherwise require a matching cookie.
-	const cookies = request.headers.get('Cookie') || '';
-	const m = cookies.match(new RegExp(`(?:^|;\\s*)${COOKIE_NAME}=([^;]*)`));
-	if (!m || decodeURIComponent(m[1]) !== password) {
-		return new Response(LOGIN_HTML, {
-			status: 401,
-			headers: { 'Content-Type': 'text/html;charset=utf-8' },
-		});
-	}
+	const { env } = context;
 
 	const accountId = env.CF_ACCOUNT_ID;
 	const token = env.CF_ANALYTICS_TOKEN;
@@ -387,16 +360,3 @@ function renderDashboard(results, errors) {
 </body>
 </html>`;
 }
-
-const LOGIN_HTML = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
-<title>Admin</title>
-<style>
-body{font-family:system-ui,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0b0d10;color:#e6e6e6}
-form{text-align:center}
-h1{font-size:1.1rem;font-weight:normal;margin-bottom:1.25rem;color:#9bb}
-input{padding:.5rem 1rem;border:1px solid #333;border-radius:4px;background:#1c2025;color:#eee;font-size:1rem;margin-right:.5rem}
-button{padding:.5rem 1rem;border:none;border-radius:4px;background:#3b82f6;color:#fff;font-size:1rem;cursor:pointer}
-button:hover{background:#2563eb}
-</style></head>
-<body><form method="get"><h1>Password required.</h1><input type="password" name="password" placeholder="Password" autofocus><button type="submit">View</button></form></body></html>`;
