@@ -258,6 +258,74 @@ function renderHourly(rows) {
 	return `<div class="bars">${bars}</div><div class="legend">${legend}</div>`;
 }
 
+function renderHourLineChart(rows) {
+	if (rows.length === 0) return `<p class="empty">No data yet.</p>`;
+
+	// rows come back from the hourly query as one entry per (hour, bot);
+	// sum across bots to get a per-hour total.
+	const totals = new Map();
+	for (const r of rows) {
+		const k = String(r.hour);
+		totals.set(k, (totals.get(k) || 0) + (Number(r.count) || 0));
+	}
+
+	// Build 24 contiguous UTC hours ending at the current hour. Zero-fill
+	// any hour with no rows so the line doesn't skip over empty slots.
+	const lastHour = new Date();
+	lastHour.setUTCMinutes(0, 0, 0);
+	const grid = [];
+	for (let i = 23; i >= 0; i--) {
+		const t = new Date(lastHour);
+		t.setUTCHours(t.getUTCHours() - i);
+		const key = t.toISOString().slice(0, 19).replace('T', ' ');
+		grid.push({ time: t, value: totals.get(key) || 0 });
+	}
+
+	const max = Math.max(...grid.map((p) => p.value), 1);
+	const W = 600;
+	const H = 200;
+	const padL = 40;
+	const padR = 8;
+	const padT = 12;
+	const padB = 26;
+	const plotW = W - padL - padR;
+	const plotH = H - padT - padB;
+	const xFor = (i) => padL + (plotW * i) / Math.max(1, grid.length - 1);
+	const yFor = (v) => padT + plotH - (plotH * v) / max;
+
+	const linePts = grid
+		.map((p, i) => `${xFor(i).toFixed(1)},${yFor(p.value).toFixed(1)}`)
+		.join(' ');
+
+	const yTicks = max <= 4 ? [0, max] : [0, Math.round(max / 2), max];
+	const gridLines = yTicks
+		.map(
+			(v) =>
+				`<line x1="${padL}" x2="${W - padR}" y1="${yFor(v).toFixed(1)}" y2="${yFor(v).toFixed(1)}" stroke="#1c2025" />` +
+				`<text x="${padL - 6}" y="${(yFor(v) + 3).toFixed(1)}" text-anchor="end" fill="#9bb" font-size="10" font-family="ui-monospace,monospace">${fmtNum(v)}</text>`
+		)
+		.join('');
+
+	const xTicks = grid
+		.map((p, i) => ({ i, t: p.time }))
+		.filter(({ i }) => i % 4 === 0 || i === grid.length - 1);
+	const xLabels = xTicks
+		.map(
+			({ i, t }) =>
+				`<text x="${xFor(i).toFixed(1)}" y="${H - 8}" text-anchor="middle" fill="#9bb" font-size="10" font-family="ui-monospace,monospace">${t.toISOString().slice(11, 13)}</text>`
+		)
+		.join('');
+
+	const dots = grid
+		.map(
+			(p, i) =>
+				`<circle cx="${xFor(i).toFixed(1)}" cy="${yFor(p.value).toFixed(1)}" r="2.5" fill="#3b82f6"><title>${esc(p.time.toISOString().slice(0, 16))} UTC: ${fmtNum(p.value)}</title></circle>`
+		)
+		.join('');
+
+	return `<svg class="line-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Crawls per hour, last 24h">${gridLines}<polyline points="${linePts}" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-linejoin="round" />${dots}${xLabels}</svg>`;
+}
+
 function renderDashboard(results, errors) {
 	const errorBlock =
 		Object.keys(errors).length === 0
@@ -304,6 +372,13 @@ function renderDashboard(results, errors) {
 		.errors { background:#2a1010; border:1px solid #5a2020; padding:1rem; border-radius:4px; margin:2rem 0; }
 		.errors pre { white-space:pre-wrap; word-break:break-word; font-size:.75rem; color:#fbb; }
 		.path { color:#bbd; word-break:break-all; }
+		.line-chart { width:100%; height:auto; max-height:220px; display:block; }
+		.panel-head { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; border-bottom:1px solid #233; padding-bottom:.25rem; margin:2rem 0 .75rem; }
+		.panel-head h2.panel-title { border:none; margin:0; padding:0; font-size:1.05rem; color:#9bb; text-transform:none; letter-spacing:0; }
+		.tabs { display:inline-flex; gap:.25rem; }
+		.tab { background:transparent; color:#9bb; border:1px solid #1c2025; padding:.2rem .55rem; border-radius:3px; font:inherit; font-size:.7rem; cursor:pointer; }
+		.tab:hover { background:#1c2025; }
+		.tab.active { background:#3b82f6; color:#fff; border-color:#3b82f6; }
 	</style>
 </head>
 <body>
@@ -314,20 +389,31 @@ function renderDashboard(results, errors) {
 
 	<div class="cols">
 		<div>
-			<h2>Top bots — last 24h</h2>
-			${renderTable(
-				['bot', 'count'],
-				rowsOrEmpty(results.top24h),
-				{ count: (v) => `<span class="num">${fmtNum(v)}</span>` }
-			)}
+			<h2>Crawls per hour — last 24h</h2>
+			${renderHourLineChart(rowsOrEmpty(results.hourly))}
 		</div>
 		<div>
-			<h2>Top bots — last 7d</h2>
-			${renderTable(
-				['bot', 'count'],
-				rowsOrEmpty(results.top7d),
-				{ count: (v) => `<span class="num">${fmtNum(v)}</span>` }
-			)}
+			<div class="panel-head">
+				<h2 class="panel-title">Top bots</h2>
+				<div class="tabs" data-tabs="top-bots">
+					<button type="button" class="tab active" data-tab="bots-24h">24h</button>
+					<button type="button" class="tab" data-tab="bots-7d">7d</button>
+				</div>
+			</div>
+			<div id="bots-24h" class="tab-pane">
+				${renderTable(
+					['bot', 'count'],
+					rowsOrEmpty(results.top24h),
+					{ count: (v) => `<span class="num">${fmtNum(v)}</span>` }
+				)}
+			</div>
+			<div id="bots-7d" class="tab-pane" hidden>
+				${renderTable(
+					['bot', 'count'],
+					rowsOrEmpty(results.top7d),
+					{ count: (v) => `<span class="num">${fmtNum(v)}</span>` }
+				)}
+			</div>
 		</div>
 	</div>
 
@@ -377,6 +463,20 @@ function renderDashboard(results, errors) {
 	</div>
 
 	<script>
+		(() => {
+			document.querySelectorAll('.tabs').forEach((group) => {
+				const buttons = group.querySelectorAll('.tab');
+				buttons.forEach((btn) => {
+					btn.addEventListener('click', () => {
+						buttons.forEach((b) => {
+							b.classList.toggle('active', b === btn);
+							const pane = document.getElementById(b.dataset.tab);
+							if (pane) pane.hidden = b !== btn;
+						});
+					});
+				});
+			});
+		})();
 		(() => {
 			const wrap = document.getElementById('paths-filter');
 			const table = document.getElementById('paths-table');
