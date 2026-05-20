@@ -81,19 +81,23 @@ export async function onRequest(context) {
 			GROUP BY hour
 			ORDER BY hour ASC
 		`,
-		bySource: `
-			SELECT
-				CASE
-					WHEN blob1 != '' THEN 'signature-agent'
-					WHEN blob3 != '' THEN 'ua-match'
-					WHEN blob2 != '' THEN 'cf-verified'
-					ELSE 'other'
-				END AS source,
-				SUM(_sample_interval) AS count
+		// Analytics Engine SQL doesn't support CASE/IF, so we count each source
+		// with separate queries and combine client-side. Precedence matters:
+		// signature-agent > ua-match > cf-verified, mirroring the middleware.
+		src_signatureAgent: `
+			SELECT SUM(_sample_interval) AS count
 			FROM ${DATASET}
-			WHERE timestamp > NOW() - INTERVAL '7' DAY
-			GROUP BY source
-			ORDER BY count DESC
+			WHERE timestamp > NOW() - INTERVAL '7' DAY AND blob1 != ''
+		`,
+		src_uaMatch: `
+			SELECT SUM(_sample_interval) AS count
+			FROM ${DATASET}
+			WHERE timestamp > NOW() - INTERVAL '7' DAY AND blob1 = '' AND blob3 != ''
+		`,
+		src_cfVerified: `
+			SELECT SUM(_sample_interval) AS count
+			FROM ${DATASET}
+			WHERE timestamp > NOW() - INTERVAL '7' DAY AND blob1 = '' AND blob3 = '' AND blob2 != ''
 		`,
 	};
 
@@ -152,6 +156,12 @@ function fmtNum(n) {
 function rowsOrEmpty(result) {
 	if (!result || !result.data) return [];
 	return result.data;
+}
+
+function firstCount(result) {
+	const rows = rowsOrEmpty(result);
+	if (rows.length === 0) return 0;
+	return Number(rows[0].count) || 0;
 }
 
 function renderTable(headers, rows, formatters = {}) {
@@ -271,7 +281,11 @@ function renderDashboard(results, errors) {
 	<h2>Detection source — last 7d</h2>
 	${renderTable(
 		['source', 'count'],
-		rowsOrEmpty(results.bySource),
+		[
+			{ source: 'signature-agent', count: firstCount(results.src_signatureAgent) },
+			{ source: 'ua-match', count: firstCount(results.src_uaMatch) },
+			{ source: 'cf-verified', count: firstCount(results.src_cfVerified) },
+		].filter((r) => r.count > 0),
 		{ count: (v) => `<span class="num">${fmtNum(v)}</span>` }
 	)}
 
