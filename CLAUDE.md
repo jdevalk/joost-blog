@@ -73,6 +73,46 @@ Format with `pnpm format`; `pnpm format:check` runs as the first step of `pnpm b
 
 `.prettierignore` excludes two specific `.astro` files (`src/pages/[slug].astro`, `src/pages/videos/[slug].astro`) because `prettier-plugin-astro` 0.14.1 mis-parses their TypeScript frontmatter. Note the gitignore-style escaping (`\[slug\]`) — bracket characters need escaping or they're treated as a glob character class. If a new `.astro` route hits the same parser error, ignore it the same way until the upstream plugin is fixed.
 
+## Bot traffic logging + dashboard
+
+`functions/_middleware.js` logs every request from a known bot (Cloudflare-verified, `signature-agent` header, or matched against a list of AI/LLM/search UA strings) to a Cloudflare Analytics Engine dataset. The dashboard at `/admin/bots` queries that dataset and shows top bots, paths, hourly counts, and detection source. All paths are logged, including static assets.
+
+### One-time setup in the Cloudflare dashboard
+
+Pages → joost-blog → Settings → Functions:
+
+1. Analytics Engine binding — variable name `AGENT_LOG`, dataset name `agent_log` (matches the `DATASET` constant in `functions/admin/bots.js`). Add it for *both* Preview and Production environments.
+2. Environment variables / secrets (Settings → Environment variables):
+   - `BOT_DASHBOARD_PASSWORD` — shared password to view `/admin/bots`. Mark as secret.
+   - `CF_ACCOUNT_ID` — Cloudflare account ID (plain var is fine).
+   - `CF_ANALYTICS_TOKEN` — API token with permission **Account → Account Analytics → Read**. Mark as secret. Distinct from the build-time `CF_API_TOKEN` because this token only needs Analytics read.
+
+### Adding new bots to track
+
+Edit the `BOT_UA_MATCHERS` array in `functions/_middleware.js`. Order matters — list more specific patterns first (e.g. `Applebot-Extended` before `Applebot`).
+
+### Data model
+
+Each datapoint written by the middleware:
+
+- `index1` — canonical bot identifier (signature-agent > matched UA name > `verified-other` > `unknown`)
+- `blob1` — `signature-agent` header
+- `blob2` — `'verified'` if `cf.verifiedBot` is true, else empty
+- `blob3` — matched UA name from `BOT_UA_MATCHERS`
+- `blob4` — request pathname
+- `blob5` — full user-agent (truncated to 500 chars)
+- `blob6` — referer
+- `blob7` — country (`cf.country`)
+- `blob8` — HTTP method
+
+To ad-hoc query the dataset:
+
+```sh
+curl "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/analytics_engine/sql" \
+  -H "Authorization: Bearer $CF_ANALYTICS_TOKEN" \
+  --data "SELECT index1 AS bot, SUM(_sample_interval) AS hits FROM agent_log WHERE timestamp > NOW() - INTERVAL '1' DAY GROUP BY bot ORDER BY hits DESC"
+```
+
 ## Cloudflare credentials
 
 Scripts that hit Cloudflare's API (`generate-nlweb-index.mjs`, `generate-featured-images.mjs`) read `CF_ACCOUNT_ID` and `CF_API_TOKEN` from `.env`. The npm scripts pass `--env-file-if-exists=.env` to Node so nothing needs manual loading.

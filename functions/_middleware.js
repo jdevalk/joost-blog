@@ -1,4 +1,111 @@
+// User-Agent substrings of known AI / LLM / search crawlers we want to track.
+// Match is case-insensitive on the full UA string. Order matters: more specific
+// patterns first (e.g. Applebot-Extended before Applebot).
+const BOT_UA_MATCHERS = [
+	// OpenAI
+	['GPTBot', /GPTBot/i],
+	['ChatGPT-User', /ChatGPT-User/i],
+	['OAI-SearchBot', /OAI-SearchBot/i],
+	// Anthropic
+	['ClaudeBot', /ClaudeBot/i],
+	['Claude-Web', /Claude-Web/i],
+	['Claude-User', /Claude-User/i],
+	['anthropic-ai', /anthropic-ai/i],
+	// Perplexity
+	['PerplexityBot', /PerplexityBot/i],
+	['Perplexity-User', /Perplexity-User/i],
+	// Google AI / search
+	['Google-Extended', /Google-Extended/i],
+	['GoogleOther', /GoogleOther/i],
+	['Googlebot', /Googlebot/i],
+	// Meta
+	['Meta-ExternalAgent', /Meta-ExternalAgent/i],
+	['Meta-ExternalFetcher', /Meta-ExternalFetcher/i],
+	['FacebookBot', /FacebookBot/i],
+	// Apple
+	['Applebot-Extended', /Applebot-Extended/i],
+	['Applebot', /Applebot/i],
+	// ByteDance
+	['Bytespider', /Bytespider/i],
+	// Amazon
+	['Amazonbot', /Amazonbot/i],
+	// Common Crawl (training data for many LLMs)
+	['CCBot', /CCBot/i],
+	// Cohere
+	['cohere-training-data-crawler', /cohere-training-data-crawler/i],
+	['cohere-ai', /cohere-ai/i],
+	// DuckDuckGo
+	['DuckAssistBot', /DuckAssistBot/i],
+	// Mistral
+	['MistralAI-User', /MistralAI-User/i],
+	// You.com
+	['YouBot', /YouBot/i],
+	// Kagi
+	['KagiBot', /KagiBot/i],
+	// Webz.io (sells LLM training data)
+	['omgilibot', /omgilibot/i],
+	['omgili', /omgili/i],
+	// Diffbot
+	['Diffbot', /Diffbot/i],
+	// Allen AI
+	['AI2Bot', /AI2Bot/i],
+	// Timpi
+	['Timpibot', /Timpibot/i],
+	// NICT (Japan)
+	['ICC-Crawler', /ICC-Crawler/i],
+	// Huawei
+	['PetalBot', /PetalBot/i],
+	// Imagesift (TheHive)
+	['ImagesiftBot', /ImagesiftBot/i],
+	// Search
+	['Bingbot', /Bingbot/i],
+	['YandexBot', /YandexBot/i],
+];
+
+function matchBotName(ua) {
+	if (!ua) return '';
+	for (const [name, pattern] of BOT_UA_MATCHERS) {
+		if (pattern.test(ua)) return name;
+	}
+	return '';
+}
+
+function logBotIfApplicable(context) {
+	const dataset = context.env.AGENT_LOG;
+	if (!dataset) return; // binding not configured — silently skip
+	try {
+		const req = context.request;
+		const url = new URL(req.url);
+		const sigAgent = req.headers.get('signature-agent') || '';
+		const verified = req.cf?.verifiedBot ? 'verified' : '';
+		const ua = req.headers.get('user-agent') || '';
+		const matchedBot = matchBotName(ua);
+
+		if (!sigAgent && !verified && !matchedBot) return;
+
+		const identity = sigAgent || matchedBot || (verified ? 'verified-other' : 'unknown');
+
+		dataset.writeDataPoint({
+			blobs: [
+				sigAgent,
+				verified,
+				matchedBot,
+				url.pathname,
+				ua.slice(0, 500),
+				req.headers.get('referer') || '',
+				req.cf?.country || '',
+				req.method,
+			],
+			indexes: [identity],
+		});
+	} catch {
+		// Never break a request because logging failed.
+	}
+}
+
 export async function onRequest(context) {
+	logBotIfApplicable(context);
+
 	const url = new URL(context.request.url);
 	const slug = url.pathname.replace(/^\/|\/$/g, '');
 
