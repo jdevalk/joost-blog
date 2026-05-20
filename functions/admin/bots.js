@@ -297,6 +297,10 @@ function renderDashboard(results, errors) {
 		.legend-item { display:inline-flex; align-items:center; gap:.4rem; color:#bbd; }
 		.legend-swatch { display:inline-block; width:.7rem; height:.7rem; border-radius:2px; }
 		.legend-count { color:#888; font-variant-numeric:tabular-nums; }
+		.filter-row { display:flex; gap:.5rem; align-items:center; margin:0 0 .75rem; flex-wrap:wrap; }
+		.filter-row input { padding:.35rem .6rem; border:1px solid #1c2025; border-radius:3px; background:#0b0d10; color:#e6e6e6; font:inherit; font-size:.8rem; min-width:12rem; }
+		.filter-row input:focus { outline:none; border-color:#3b82f6; }
+		.filter-stats { color:#888; font-size:.75rem; }
 		.errors { background:#2a1010; border:1px solid #5a2020; padding:1rem; border-radius:4px; margin:2rem 0; }
 		.errors pre { white-space:pre-wrap; word-break:break-word; font-size:.75rem; color:#fbb; }
 		.path { color:#bbd; word-break:break-all; }
@@ -349,6 +353,12 @@ function renderDashboard(results, errors) {
 	${renderHourly(rowsOrEmpty(results.hourly))}
 
 	<h2>Top paths per bot — last 7d</h2>
+	<div class="filter-row" id="paths-filter">
+		<input type="search" data-filter="bot" placeholder="Filter bot…" autocomplete="off" spellcheck="false">
+		<input type="search" data-filter="path" placeholder="Filter path…" autocomplete="off" spellcheck="false">
+		<span class="filter-stats" data-filter-stats></span>
+	</div>
+	<div id="paths-table">
 	${renderTable(
 		['bot', 'path', 'count'],
 		rowsOrEmpty(results.topPaths),
@@ -357,6 +367,35 @@ function renderDashboard(results, errors) {
 			count: (v) => `<span class="num">${fmtNum(v)}</span>`,
 		}
 	)}
+	</div>
+
+	<script>
+		(() => {
+			const wrap = document.getElementById('paths-filter');
+			const table = document.getElementById('paths-table');
+			if (!wrap || !table) return;
+			const inputs = wrap.querySelectorAll('input[data-filter]');
+			const stats = wrap.querySelector('[data-filter-stats]');
+			const rows = Array.from(table.querySelectorAll('tbody tr'));
+			const total = rows.length;
+			function apply() {
+				const f = {};
+				inputs.forEach((i) => { f[i.dataset.filter] = i.value.trim().toLowerCase(); });
+				let visible = 0;
+				for (const r of rows) {
+					const cells = r.querySelectorAll('td');
+					const bot = (cells[0]?.textContent || '').toLowerCase();
+					const path = (cells[1]?.textContent || '').toLowerCase();
+					const show = (!f.bot || bot.includes(f.bot)) && (!f.path || path.includes(f.path));
+					r.style.display = show ? '' : 'none';
+					if (show) visible++;
+				}
+				if (stats) stats.textContent = visible === total ? total + ' rows' : visible + ' of ' + total + ' rows';
+			}
+			inputs.forEach((i) => i.addEventListener('input', apply));
+			apply();
+		})();
+	</script>
 </body>
 </html>`;
 }
