@@ -75,10 +75,10 @@ export async function onRequest(context) {
 			LIMIT 200
 		`,
 		hourly: `
-			SELECT toStartOfHour(timestamp) AS hour, SUM(_sample_interval) AS count
+			SELECT toStartOfHour(timestamp) AS hour, index1 AS bot, SUM(_sample_interval) AS count
 			FROM ${DATASET}
 			WHERE timestamp > NOW() - INTERVAL '1' DAY
-			GROUP BY hour
+			GROUP BY hour, bot
 			ORDER BY hour ASC
 		`,
 		// Analytics Engine SQL doesn't support CASE/IF, so we count each source
@@ -185,26 +185,104 @@ function renderTable(headers, rows, formatters = {}) {
 	return `<table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
 }
 
+// Stable-ish palette. First N bots by total volume get a color; rest fold
+// into 'other' (gray). Order chosen for distinguishability on a dark bg.
+const BOT_PALETTE = [
+	'#3b82f6', // blue
+	'#ef4444', // red
+	'#10b981', // green
+	'#f59e0b', // amber
+	'#8b5cf6', // violet
+	'#ec4899', // pink
+	'#06b6d4', // cyan
+	'#84cc16', // lime
+	'#f97316', // orange
+	'#a855f7', // purple
+];
+const OTHER_COLOR = '#64748b'; // slate
+
 function renderHourly(rows) {
 	if (rows.length === 0) return `<p class="empty">No data yet.</p>`;
-	const max = Math.max(...rows.map((r) => Number(r.count) || 0));
-	const bars = rows
-		.map((r) => {
-			const pct = max > 0 ? (Number(r.count) / max) * 100 : 0;
+
+	// Bucket rows by hour and tally total per bot for color assignment.
+	const byHour = new Map();
+	const botTotals = new Map();
+	for (const r of rows) {
+		const hour = String(r.hour);
+		const bot = String(r.bot || 'unknown');
+		const count = Number(r.count) || 0;
+		if (!byHour.has(hour)) byHour.set(hour, []);
+		byHour.get(hour).push({ bot, count });
+		botTotals.set(bot, (botTotals.get(bot) || 0) + count);
+	}
+
+	const sortedBots = [...botTotals.entries()].sort((a, b) => b[1] - a[1]);
+	const topBots = sortedBots.slice(0, BOT_PALETTE.length).map(([name]) => name);
+	const topBotIndex = new Map(topBots.map((name, i) => [name, i]));
+	const colorFor = (bot) =>
+		topBotIndex.has(bot) ? BOT_PALETTE[topBotIndex.get(bot)] : OTHER_COLOR;
+
+	const hours = [...byHour.entries()]
+		.map(([hour, entries]) => ({
+			hour,
+			total: entries.reduce((s, e) => s + e.count, 0),
+			entries,
+		}))
+		.sort((a, b) => a.hour.localeCompare(b.hour));
+
+	const max = Math.max(...hours.map((h) => h.total), 0);
+
+	const bars = hours
+		.map(({ hour, total, entries }) => {
+			const widthPct = max > 0 ? (total / max) * 100 : 0;
+			// Sort segments within a bar: top bots in palette order, then "other"
+			// entries by size — so the colored segments group consistently across hours.
+			const sortedEntries = entries.slice().sort((a, b) => {
+				const ai = topBotIndex.has(a.bot) ? topBotIndex.get(a.bot) : Infinity;
+				const bi = topBotIndex.has(b.bot) ? topBotIndex.get(b.bot) : Infinity;
+				if (ai !== bi) return ai - bi;
+				return b.count - a.count;
+			});
+			const segments = sortedEntries
+				.map(({ bot, count }) => {
+					const segPct = total > 0 ? (count / total) * 100 : 0;
+					return `<span class="bar-seg" style="width:${segPct.toFixed(2)}%;background:${colorFor(bot)}" title="${esc(bot)}: ${fmtNum(count)}"></span>`;
+				})
+				.join('');
 			// ClickHouse returns "YYYY-MM-DD HH:MM:SS" (no T, no Z). Safari parses that
 			// as local time, drifting the axis by the viewer's UTC offset — normalize first.
-			const iso = String(r.hour).replace(' ', 'T') + 'Z';
+			const iso = hour.replace(' ', 'T') + 'Z';
 			const label = new Date(iso).toISOString().slice(11, 16) + ' UTC';
 			return `
 				<div class="bar-row">
 					<span class="bar-label">${esc(label)}</span>
-					<span class="bar"><span class="bar-fill" style="width:${pct.toFixed(1)}%"></span></span>
-					<span class="bar-count">${fmtNum(r.count)}</span>
+					<span class="bar"><span class="bar-stack" style="width:${widthPct.toFixed(2)}%">${segments}</span></span>
+					<span class="bar-count">${fmtNum(total)}</span>
 				</div>
 			`;
 		})
 		.join('');
-	return `<div class="bars">${bars}</div>`;
+
+	const legendEntries = [
+		...topBots.map((name) => ({ name, total: botTotals.get(name), color: colorFor(name) })),
+	];
+	const otherBots = sortedBots.slice(BOT_PALETTE.length);
+	if (otherBots.length > 0) {
+		const otherTotal = otherBots.reduce((s, [, t]) => s + t, 0);
+		legendEntries.push({
+			name: `other (${otherBots.length} bot${otherBots.length === 1 ? '' : 's'})`,
+			total: otherTotal,
+			color: OTHER_COLOR,
+		});
+	}
+	const legend = legendEntries
+		.map(
+			(e) =>
+				`<span class="legend-item"><span class="legend-swatch" style="background:${e.color}"></span>${esc(e.name)} <span class="legend-count">${fmtNum(e.total)}</span></span>`
+		)
+		.join('');
+
+	return `<div class="bars">${bars}</div><div class="legend">${legend}</div>`;
 }
 
 function renderDashboard(results, errors) {
@@ -239,8 +317,13 @@ function renderDashboard(results, errors) {
 		.bar-row { display:grid; grid-template-columns:6em 1fr 5em; gap:.5rem; align-items:center; font-size:.75rem; }
 		.bar-label { color:#9bb; }
 		.bar { background:#1c2025; height:1rem; border-radius:2px; overflow:hidden; }
-		.bar-fill { display:block; height:100%; background:#3b82f6; }
+		.bar-stack { display:flex; height:100%; }
+		.bar-seg { display:block; height:100%; }
 		.bar-count { text-align:right; color:#bbb; font-variant-numeric:tabular-nums; }
+		.legend { display:flex; flex-wrap:wrap; gap:.5rem 1rem; margin-top:.75rem; font-size:.75rem; }
+		.legend-item { display:inline-flex; align-items:center; gap:.4rem; color:#bbd; }
+		.legend-swatch { display:inline-block; width:.7rem; height:.7rem; border-radius:2px; }
+		.legend-count { color:#888; font-variant-numeric:tabular-nums; }
 		.errors { background:#2a1010; border:1px solid #5a2020; padding:1rem; border-radius:4px; margin:2rem 0; }
 		.errors pre { white-space:pre-wrap; word-break:break-word; font-size:.75rem; color:#fbb; }
 		.path { color:#bbd; word-break:break-all; }
