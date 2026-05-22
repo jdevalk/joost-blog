@@ -6,7 +6,7 @@ import pagefind from 'astro-pagefind';
 import { defineConfig } from 'astro/config';
 import fs from 'fs';
 import matter from 'gray-matter';
-import { gitLastmod } from './src/utils/sitemap.ts';
+import { gitLastmod, sitemapIndexLastmod } from './src/utils/sitemap.ts';
 
 // Collect draft slugs and lastmod dates
 const draftSlugs = new Set();
@@ -35,6 +35,15 @@ function scanContent(dir, urlPrefix) {
 scanContent('src/content/blog', '/');
 scanContent('src/content/videos', '/videos/');
 scanContent('src/content/pages', '/');
+
+// Most recent content change across the whole site. @astrojs/sitemap only
+// supports a single global lastmod for the index, so this date is applied to
+// every <sitemap> entry in sitemap-index.xml. It moves forward only when
+// content actually changes (not on every deploy), giving crawlers a freshness
+// signal that points at the child sitemaps.
+const siteLastmod = lastmodMap.size
+    ? new Date(Math.max(...[...lastmodMap.values()].map((d) => d.getTime())))
+    : undefined;
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -104,6 +113,7 @@ export default defineConfig({
     },
 integrations: [mdx(), sitemap({
         entryLimit: 1000,
+        lastmod: siteLastmod,
         filter: (page) => {
             const slug = new URL(page).pathname.replace(/^\/|\/$/g, '');
             if (slug.startsWith('admin/')) return false;
@@ -128,24 +138,29 @@ integrations: [mdx(), sitemap({
                 }
             },
         },
-    }), seoGraph({
+    }), sitemapIndexLastmod(), seoGraph({
         validateInternalLinks: {
             skip: (href) => href === '/sitemap-index.xml' || href === '/schemamap.xml',
         },
         validateMetadataLength: {
             title: { min: 15, max: 70 },
         },
-        indexNow: {
-            key: '6b7e19e7ee59d4ccf983fd71c479f0f4',
-            host: 'joost.blog',
-            siteUrl: 'https://joost.blog',
-            filter: (url) => {
-                const path = new URL(url).pathname;
-                if (path === '/404') return false;
-                const slug = path.replace(/^\/|\/$/g, '');
-                return !draftSlugs.has(slug);
-            },
-        },
+        // Only submit to IndexNow from the real Cloudflare Pages production
+        // build (CF_PAGES is set there). Local `astro build` runs leave it
+        // off so they don't ping search engines.
+        indexNow: process.env.CF_PAGES
+            ? {
+                  key: '6b7e19e7ee59d4ccf983fd71c479f0f4',
+                  host: 'joost.blog',
+                  siteUrl: 'https://joost.blog',
+                  filter: (url) => {
+                      const path = new URL(url).pathname;
+                      if (path === '/404') return false;
+                      const slug = path.replace(/^\/|\/$/g, '');
+                      return !draftSlugs.has(slug);
+                  },
+              }
+            : undefined,
         llmsTxt: {
             title: 'joost.blog',
             siteUrl: 'https://joost.blog',
