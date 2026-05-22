@@ -36,3 +36,7 @@ data.db-shm
 data.db-wal
 emdash-theme/
 graphify-out/
+
+# Claude Code local files — ignore everything except the shared skills folder
+.claude/*
+!.claude/skills/
