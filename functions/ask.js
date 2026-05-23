@@ -125,20 +125,16 @@ async function handle(request, env, context) {
 	try {
 		payload = await normalizeRequest(request);
 	} catch (err) {
-		logAsk(context, { surface: 'rest', action: 'parse-error', isError: true });
+		// Parse errors and empty-query 400s are not logged — they're input
+		// validation that fires almost exclusively on scanner traffic
+		// probing /ask with no `q=` parameter, and the noise drowns out
+		// real usage in /admin/stats.
 		return json({ error: err.message }, 400);
 	}
 
 	const query = payload.decontextualized_query || payload.query;
 
 	if (!query.trim()) {
-		logAsk(context, {
-			surface: 'rest',
-			action: payload.mode || 'list',
-			text: payload.rawQuery,
-			queryId: payload.query_id,
-			isError: true,
-		});
 		return json({
 			error: 'Missing required query parameter: query',
 			query_id: payload.query_id,
