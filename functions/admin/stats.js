@@ -30,40 +30,58 @@ export async function onRequest(context) {
 		return text('Missing CF_ACCOUNT_ID or CF_ANALYTICS_TOKEN env vars.', 500);
 	}
 
-	const source = new URL(request.url).searchParams.get('source') || '';
+	const params = new URL(request.url).searchParams;
+	const source = params.get('source') || '';
 	const srcClause = SOURCE_FILTERS[source] ? ` AND (${SOURCE_FILTERS[source]})` : '';
+
+	// `?bot=` filters every crawler panel to one bot. Whitelisted to a strict
+	// charset so the value can be inlined safely as a SQL string literal —
+	// AE SQL doesn't expose parameter binding for the REST endpoint.
+	const rawBot = params.get('bot') || '';
+	const bot = /^[A-Za-z0-9._-]+$/.test(rawBot) ? rawBot : '';
+	const botClause = bot ? ` AND index1 = '${bot}'` : '';
 
 	const queries = {
 		// --- Crawlers ---------------------------------------------------------
 		agent_top24h: `
 			SELECT index1 AS bot, SUM(_sample_interval) AS count
 			FROM ${AGENT}
-			WHERE timestamp > NOW() - INTERVAL '1' DAY${srcClause}
+			WHERE timestamp > NOW() - INTERVAL '1' DAY${srcClause}${botClause}
 			GROUP BY bot ORDER BY count DESC LIMIT 50
 		`,
 		agent_top7d: `
 			SELECT index1 AS bot, SUM(_sample_interval) AS count
 			FROM ${AGENT}
-			WHERE timestamp > NOW() - INTERVAL '7' DAY${srcClause}
+			WHERE timestamp > NOW() - INTERVAL '7' DAY${srcClause}${botClause}
 			GROUP BY bot ORDER BY count DESC LIMIT 50
 		`,
 		agent_top30d: `
 			SELECT index1 AS bot, SUM(_sample_interval) AS count
 			FROM ${AGENT}
-			WHERE timestamp > NOW() - INTERVAL '30' DAY${srcClause}
+			WHERE timestamp > NOW() - INTERVAL '30' DAY${srcClause}${botClause}
 			GROUP BY bot ORDER BY count DESC LIMIT 50
 		`,
 		agent_topPaths: `
 			SELECT index1 AS bot, blob4 AS path, SUM(_sample_interval) AS count
 			FROM ${AGENT}
-			WHERE timestamp > NOW() - INTERVAL '7' DAY${srcClause}
+			WHERE timestamp > NOW() - INTERVAL '7' DAY${srcClause}${botClause}
 			GROUP BY bot, path ORDER BY count DESC LIMIT 200
 		`,
 		agent_hourly: `
 			SELECT toStartOfHour(timestamp) AS hour, index1 AS bot, SUM(_sample_interval) AS count
 			FROM ${AGENT}
-			WHERE timestamp > NOW() - INTERVAL '1' DAY${srcClause}
+			WHERE timestamp > NOW() - INTERVAL '1' DAY${srcClause}${botClause}
 			GROUP BY hour, bot ORDER BY hour ASC
+		`,
+		// Bot picker — always unfiltered so the dropdown stays usable
+		// regardless of which source/bot is currently active. 30d window
+		// catches everything that has crawled recently. Volume-ordered so
+		// the busiest bots show up first.
+		agent_botPicker: `
+			SELECT index1 AS bot, SUM(_sample_interval) AS count
+			FROM ${AGENT}
+			WHERE timestamp > NOW() - INTERVAL '30' DAY
+			GROUP BY bot ORDER BY count DESC LIMIT 200
 		`,
 		// AE SQL has no CASE/IF, so each source is its own query, combined
 		// client-side. The source picker is always 7d-unfiltered so it stays a
@@ -184,7 +202,7 @@ export async function onRequest(context) {
 		})
 	);
 
-	return new Response(renderDashboard(results, errors, source), {
+	return new Response(renderDashboard(results, errors, source, bot), {
 		headers: { 'Content-Type': 'text/html;charset=utf-8' },
 	});
 }
@@ -400,7 +418,7 @@ function statCard(label, value) {
 // Detection-source breakdown. Each row links to ?source=, the active row
 // links back to unfiltered. Always 7d, unfiltered, so it stays a usable
 // picker regardless of which source is active.
-function renderSourceTable(results, activeSource) {
+function renderSourceTable(results, activeSource, activeBot) {
 	const rows = [
 		{ source: 'signature-agent', count: firstCount(results.src_signatureAgent) },
 		{ source: 'ua-match', count: firstCount(results.src_uaMatch) },
@@ -410,7 +428,11 @@ function renderSourceTable(results, activeSource) {
 	const body = rows
 		.map((r) => {
 			const active = r.source === activeSource;
-			const href = active ? '?' : `?source=${encodeURIComponent(r.source)}`;
+			const params = new URLSearchParams();
+			if (!active) params.set('source', r.source);
+			if (activeBot) params.set('bot', activeBot);
+			const qs = params.toString();
+			const href = qs ? `?${qs}` : '?';
 			const label = active ? `${r.source} — clear filter` : r.source;
 			return `<tr class="${active ? 'src-active' : ''}"><td><a class="src-link" href="${esc(href)}">${esc(label)}</a></td><td class="num">${fmtNum(r.count)}</td></tr>`;
 		})
@@ -420,7 +442,7 @@ function renderSourceTable(results, activeSource) {
 
 // --- Page render ----------------------------------------------------------
 
-function renderDashboard(results, errors, source = '') {
+function renderDashboard(results, errors, source = '', bot = '') {
 	const errorBlock =
 		Object.keys(errors).length === 0
 			? ''
@@ -429,6 +451,15 @@ function renderDashboard(results, errors, source = '') {
 	const crawlerBots = new Set(
 		rowsOrEmpty(results.agent_topPaths).map((r) => String(r.bot || '')).filter(Boolean)
 	);
+	// Bot picker uses the unfiltered 30d list so the dropdown stays stable
+	// across source/bot selections. If the currently-selected bot is older
+	// than 30d (vanishingly unlikely), splice it in so the <select> doesn't
+	// lose the active value.
+	const pickerBots = rowsOrEmpty(results.agent_botPicker)
+		.map((r) => String(r.bot || ''))
+		.filter(Boolean);
+	if (bot && !pickerBots.includes(bot)) pickerBots.unshift(bot);
+	pickerBots.sort((a, b) => a.localeCompare(b));
 	const askModes = new Set(
 		rowsOrEmpty(results.ask_recent).map((r) => String(r.mode || '')).filter(Boolean)
 	);
@@ -519,15 +550,20 @@ function renderDashboard(results, errors, source = '') {
 	<div id="section-crawlers" class="tab-pane">
 		<div class="source-bar">
 			<label for="source-filter">Detection source</label>
-			<select id="source-filter">
+			<select id="source-filter" data-param="source">
 				${['', 'signature-agent', 'ua-match', 'cf-verified']
 					.map((v) => `<option value="${esc(v)}"${v === source ? ' selected' : ''}>${v === '' ? 'All sources' : esc(v)}</option>`)
 					.join('')}
 			</select>
+			<label for="bot-filter">Bot</label>
+			<select id="bot-filter" data-param="bot">
+				<option value=""${bot === '' ? ' selected' : ''}>All bots</option>
+				${pickerBots.map((b) => `<option value="${esc(b)}"${b === bot ? ' selected' : ''}>${esc(b)}</option>`).join('')}
+			</select>
 			${
-				source
-					? `<span class="filter-stats">Crawler panels filtered to <strong>${esc(source)}</strong>. The Detection source table keeps the full 7d breakdown.</span>`
-					: `<span class="filter-stats">Showing all bot traffic. Pick a source to filter.</span>`
+				source || bot
+					? `<span class="filter-stats">Crawler panels filtered${source ? ` to <strong>${esc(source)}</strong>` : ''}${source && bot ? ' &amp;' : ''}${bot ? ` <strong>${esc(bot)}</strong>` : ''}. The Detection source table keeps the full 7d breakdown.</span>`
+					: `<span class="filter-stats">Showing all bot traffic. Pick a source or bot to filter.</span>`
 			}
 		</div>
 
@@ -558,7 +594,7 @@ function renderDashboard(results, errors, source = '') {
 		</div>
 
 		<h2>Detection source — last 7d</h2>
-		${renderSourceTable(results, source)}
+		${renderSourceTable(results, source, bot)}
 
 		<h2>Requests per hour — last 24h</h2>
 		${renderHourlyStacked(rowsOrEmpty(results.agent_hourly))}
@@ -720,18 +756,18 @@ function renderDashboard(results, errors, source = '') {
 			if (target) target.click();
 		})();
 
-		// Source-filter select reloads the page with ?source= preserved.
-		(() => {
-			const sel = document.getElementById('source-filter');
-			if (!sel) return;
+		// Source/bot selects reload the page, updating one URL param each and
+		// preserving the others. Any <select data-param="X"> participates.
+		document.querySelectorAll('.source-bar select[data-param]').forEach((sel) => {
 			sel.addEventListener('change', () => {
 				const params = new URLSearchParams(window.location.search);
-				if (sel.value) params.set('source', sel.value);
-				else params.delete('source');
+				const key = sel.dataset.param;
+				if (sel.value) params.set(key, sel.value);
+				else params.delete(key);
 				const qs = params.toString();
 				window.location.href = window.location.pathname + (qs ? '?' + qs : '') + window.location.hash;
 			});
-		})();
+		});
 
 		// Generic table filters: a .filter-row[data-filter-for] drives the table
 		// with that id. <select data-col> = exact match, <input data-col> = substring.
