@@ -2,6 +2,7 @@ import nlwebIndex from '../src/generated/nlweb-index.mjs';
 import { MAX_QUERY_LENGTH } from './_ask/config.js';
 import { search, embedQuery } from './_ask/retrieval.js';
 import { generateAnswer, fallbackSummarize } from './_ask/generation.js';
+import { logAsk } from './_shared/ask-log.js';
 
 const SERVER_INFO = { name: 'joost.blog', version: '1.0.0' };
 const PROTOCOL_VERSION = '2025-11-25';
@@ -161,36 +162,96 @@ async function executeListRecentContent(args, request, env) {
 	}
 }
 
-async function handleMessage(msg, env, request) {
+async function handleMessage(msg, context) {
 	const { method, id, params } = msg;
+	const { env, request } = context;
 
 	// Notifications have no id — acknowledge with 202, no body (handled by caller)
 	if (id === undefined) return null;
 
+	let response;
 	switch (method) {
 		case 'initialize':
-			return ok(id, {
+			response = ok(id, {
 				protocolVersion: PROTOCOL_VERSION,
 				capabilities: { tools: {} },
 				serverInfo: SERVER_INFO,
 			});
+			break;
 
 		case 'ping':
+			// Keepalive noise — don't log, mirror cocktail.glass.
 			return ok(id, {});
 
 		case 'tools/list':
-			return ok(id, { tools: TOOLS });
+			response = ok(id, { tools: TOOLS });
+			break;
 
 		case 'tools/call': {
 			const { name, arguments: args } = params ?? {};
-			if (name === 'ask_joost') return ok(id, await executeAskJoost(args, env));
-			if (name === 'list_recent_content') return ok(id, await executeListRecentContent(args, request, env));
-			return rpcErr(id, -32601, `Unknown tool: ${name}`);
+			if (name === 'ask_joost') response = ok(id, await executeAskJoost(args, env));
+			else if (name === 'list_recent_content') response = ok(id, await executeListRecentContent(args, request, env));
+			else response = rpcErr(id, -32601, `Unknown tool: ${name}`);
+			break;
 		}
 
 		default:
-			return rpcErr(id, -32601, `Method not found: ${method}`);
+			response = rpcErr(id, -32601, `Method not found: ${method}`);
 	}
+
+	logMcp(context, msg, response);
+	return response;
+}
+
+// Writes one ask_log row per MCP message. Called per message inside
+// handleMessage so batched JSON-RPC requests (a single POST carrying
+// initialize + tools/call) produce one row per call rather than collapsing
+// into one. Mirrors cocktail.glass logMcpCall: initialize rows give the
+// client mix; tools/call rows give the tool mix and the raw arguments.
+function logMcp(context, msg, response) {
+	const method = msg?.method || '';
+	const params = msg?.params || {};
+
+	const protocolHeader = context.request.headers.get('mcp-protocol-version') || '';
+
+	if (method === 'tools/call') {
+		const toolName = String(params.name || '');
+		let args = '';
+		try {
+			args = JSON.stringify(params.arguments || {});
+		} catch {
+			args = '';
+		}
+		const isError = !!(response && (response.error || response.result?.isError));
+		logAsk(context, {
+			surface: 'mcp',
+			action: toolName || 'tools/call',
+			text: args,
+			protocol: protocolHeader,
+			isError,
+		});
+		return;
+	}
+
+	if (method === 'initialize') {
+		const clientInfo = params.clientInfo || {};
+		logAsk(context, {
+			surface: 'mcp',
+			action: 'initialize',
+			client: clientInfo.name,
+			clientVersion: clientInfo.version,
+			protocol: params.protocolVersion || protocolHeader,
+		});
+		return;
+	}
+
+	// Everything else (tools/list, unknown methods) — log lightly.
+	logAsk(context, {
+		surface: 'mcp',
+		action: method || 'unknown',
+		protocol: protocolHeader,
+		isError: !!response?.error,
+	});
 }
 
 export function onRequestOptions() {
@@ -202,7 +263,7 @@ export function onRequestGet() {
 }
 
 export async function onRequestPost(context) {
-	const { request, env } = context;
+	const { request } = context;
 
 	let body;
 	try {
@@ -212,13 +273,13 @@ export async function onRequestPost(context) {
 	}
 
 	if (Array.isArray(body)) {
-		const results = await Promise.all(body.map((msg) => handleMessage(msg, env, request)));
+		const results = await Promise.all(body.map((msg) => handleMessage(msg, context)));
 		const responses = results.filter(Boolean);
 		if (responses.length === 0) return new Response(null, { status: 202, headers: CORS });
 		return respond(responses);
 	}
 
-	const result = await handleMessage(body, env, request);
+	const result = await handleMessage(body, context);
 	if (result === null) return new Response(null, { status: 202, headers: CORS });
 	return respond(result);
 }

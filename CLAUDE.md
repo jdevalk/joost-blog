@@ -73,17 +73,22 @@ Format with `pnpm format`; `pnpm format:check` runs as the first step of `pnpm b
 
 `.prettierignore` excludes two specific `.astro` files (`src/pages/[slug].astro`, `src/pages/videos/[slug].astro`) because `prettier-plugin-astro` 0.14.1 mis-parses their TypeScript frontmatter. Note the gitignore-style escaping (`\[slug\]`) — bracket characters need escaping or they're treated as a glob character class. If a new `.astro` route hits the same parser error, ignore it the same way until the upstream plugin is fixed.
 
-## Bot traffic logging + dashboard
+## Traffic logging + dashboard
 
-`functions/_middleware.js` logs every request from a known bot (Cloudflare-verified, `signature-agent` header, or matched against a list of AI/LLM/search UA strings) to a Cloudflare Analytics Engine dataset. The dashboard at `/admin/bots` queries that dataset and shows top bots, paths, hourly counts, and detection source. All paths are logged, including static assets.
+Two Analytics Engine datasets feed one dashboard at `/admin/stats` (Crawlers / Ask / MCP tabs):
 
-Authentication for everything under `/admin/*` (including `/admin/drafts` and `/admin/bots`) is handled by a Cloudflare Access policy on the zone — configured in the Cloudflare dashboard, not in code. The dashboard function assumes the caller is already authenticated.
+- `agent_log` — every request from a known bot, written by `functions/_middleware.js`. Detection uses Cloudflare's `verifiedBot`, the `signature-agent` header, or a list of AI/LLM/search UA strings. All paths are logged, including static assets.
+- `ask_log` — every `/ask` (REST and the web UI at `/ask-joost`) and `/mcp` call, written by `functions/_shared/ask-log.js`. A `surface` blob distinguishes `rest` from `mcp`.
+
+The old `/admin/bots` URL 302s to `/admin/stats`. Authentication for everything under `/admin/*` (including `/admin/drafts` and `/admin/stats`) is handled by a Cloudflare Access policy on the zone — configured in the Cloudflare dashboard, not in code. The dashboard function assumes the caller is already authenticated.
 
 ### One-time setup in the Cloudflare dashboard
 
 Pages → joost-blog → Settings → Functions:
 
-1. Analytics Engine binding — variable name `AGENT_LOG`, dataset name `agent_log` (matches the `DATASET` constant in `functions/admin/bots.js`). Add it for *both* Preview and Production environments.
+1. Analytics Engine bindings — add **both** for **both** Preview and Production environments:
+   - Variable `AGENT_LOG` → dataset `agent_log` (crawler hits).
+   - Variable `ASK_LOG` → dataset `ask_log` (`/ask` and `/mcp` calls).
 2. Environment variables / secrets (Settings → Environment variables):
    - `CF_ACCOUNT_ID` — Cloudflare account ID (plain var is fine).
    - `CF_ANALYTICS_TOKEN` — API token with permission **Account → Account Analytics → Read**. Mark as secret. Distinct from the build-time `CF_API_TOKEN` because this token only needs Analytics read.
@@ -93,7 +98,7 @@ Pages → joost-blog → Settings → Functions:
 
 Edit the `BOT_UA_MATCHERS` array in `functions/_middleware.js`. Order matters — list more specific patterns first (e.g. `Applebot-Extended` before `Applebot`).
 
-### Data model
+### `agent_log` data model
 
 Each datapoint written by the middleware:
 
@@ -107,12 +112,34 @@ Each datapoint written by the middleware:
 - `blob7` — country (`cf.country`)
 - `blob8` — HTTP method
 
-To ad-hoc query the dataset:
+### `ask_log` data model
+
+Each datapoint written by `logAsk()` in `functions/_shared/ask-log.js`:
+
+- `index1` — action (REST mode like `list`/`stream`/`summarize`, or MCP tool name like `ask_joost`/`list_recent_content`, or MCP method like `initialize`)
+- `blob1` — surface: `rest` or `mcp`
+- `blob2` — action (duplicated from `index1` so it can be SELECTed alongside other blobs)
+- `blob3` — raw query text (REST) or JSON-encoded arguments (MCP), captured **pre-sanitize** so jailbreak attempts and language-switch directives are visible in the dashboard. Truncated to 500 chars.
+- `blob4` — MCP client name (`initialize` calls only)
+- `blob5` — MCP client version (`initialize` calls only)
+- `blob6` — MCP protocol version
+- `blob7` — user-agent (truncated to 300 chars)
+- `blob8` — country
+- `blob9` — `'1'` if the call returned an error, else empty
+- `blob10` — REST result count (string-encoded integer)
+- `blob11` — referer
+- `blob12` — REST `query_id` correlation id
+
+To ad-hoc query the datasets:
 
 ```sh
 curl "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/analytics_engine/sql" \
   -H "Authorization: Bearer $CF_ANALYTICS_TOKEN" \
   --data "SELECT index1 AS bot, SUM(_sample_interval) AS hits FROM agent_log WHERE timestamp > NOW() - INTERVAL '1' DAY GROUP BY bot ORDER BY hits DESC"
+
+curl "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/analytics_engine/sql" \
+  -H "Authorization: Bearer $CF_ANALYTICS_TOKEN" \
+  --data "SELECT blob1 AS surface, blob2 AS action, SUM(_sample_interval) AS hits FROM ask_log WHERE timestamp > NOW() - INTERVAL '1' DAY GROUP BY surface, action ORDER BY hits DESC"
 ```
 
 ## Cloudflare credentials

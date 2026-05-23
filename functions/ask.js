@@ -5,6 +5,7 @@ import {
 	generateStreamingAnswer, generateAnswer,
 	fallbackSummarize, extractSources,
 } from './_ask/generation.js';
+import { logAsk } from './_shared/ask-log.js';
 
 const headers = {
 	'Access-Control-Allow-Origin': '*',
@@ -42,8 +43,12 @@ async function normalizeRequest(request) {
 		}
 	}
 
+	const rawQuery = String(body.query || body.q || query.get('query') || query.get('q') || '').slice(0, MAX_QUERY_LENGTH);
 	return {
-		query: sanitizeQuery(String(body.query || body.q || query.get('query') || query.get('q') || '').slice(0, MAX_QUERY_LENGTH)),
+		// rawQuery is logged verbatim so the /admin/stats dashboard shows
+		// jailbreak attempts and language-switch directives we strip below.
+		rawQuery,
+		query: sanitizeQuery(rawQuery),
 		mode: body.mode || query.get('mode') || 'list',
 		site: body.site || query.get('site') || 'joost.blog',
 		prev: String(body.prev || query.get('prev') || '').slice(0, 10000),
@@ -113,19 +118,27 @@ function handleStreamingResponse(stream, sources, query, scoredResults, writer, 
 	})();
 }
 
-async function handle(request, env) {
+async function handle(request, env, context) {
 	const startTime = Date.now();
 
 	let payload;
 	try {
 		payload = await normalizeRequest(request);
 	} catch (err) {
+		logAsk(context, { surface: 'rest', action: 'parse-error', isError: true });
 		return json({ error: err.message }, 400);
 	}
 
 	const query = payload.decontextualized_query || payload.query;
 
 	if (!query.trim()) {
+		logAsk(context, {
+			surface: 'rest',
+			action: payload.mode || 'list',
+			text: payload.rawQuery,
+			queryId: payload.query_id,
+			isError: true,
+		});
 		return json({
 			error: 'Missing required query parameter: query',
 			query_id: payload.query_id,
@@ -134,6 +147,13 @@ async function handle(request, env) {
 
 	// Guard against empty or corrupt index
 	if (!Array.isArray(nlwebIndex) || nlwebIndex.length === 0) {
+		logAsk(context, {
+			surface: 'rest',
+			action: payload.mode || 'list',
+			text: payload.rawQuery,
+			queryId: payload.query_id,
+			isError: true,
+		});
 		return json({
 			error: 'Search index is unavailable. Please try again later.',
 			query_id: payload.query_id,
@@ -171,6 +191,17 @@ async function handle(request, env) {
 		description: document.description,
 		schema_object: document.schema_object,
 	}));
+
+	// One log entry per /ask request. Logged here (before streaming kicks
+	// off) so streaming calls are captured with their result count; any
+	// failure inside the SSE writer is not reflected back in this row.
+	logAsk(context, {
+		surface: 'rest',
+		action: payload.mode || 'list',
+		text: payload.rawQuery,
+		queryId: payload.query_id,
+		resultCount: scoredResults.length,
+	});
 
 	const response = {
 		query_id: payload.query_id,
@@ -263,9 +294,9 @@ export function onRequestOptions() {
 }
 
 export async function onRequestGet(context) {
-	return handle(context.request, context.env);
+	return handle(context.request, context.env, context);
 }
 
 export async function onRequestPost(context) {
-	return handle(context.request, context.env);
+	return handle(context.request, context.env, context);
 }
