@@ -82,6 +82,10 @@
     }
     :is(h1, h2, h3, h4, h5, h6) {
         scroll-margin-top: 7rem;
+        text-wrap: pretty;
+    }
+    .prose :is(p, blockquote, li) {
+        text-wrap: pretty;
     }
     @media (max-width: 900px) {
         :is(h1, h2, h3, h4, h5, h6) { scroll-margin-top: 80px; }
