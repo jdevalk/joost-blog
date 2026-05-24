@@ -9,6 +9,7 @@
         "generate-images": "node --env-file-if-exists=.env scripts/generate-featured-images.mjs",
         "generate:og": "node scripts/generate-og-images.mjs",
         "fetch-transcripts": "node scripts/fetch-transcripts.mjs",
+        "ai-roi": "node --env-file-if-exists=.env scripts/ai-crawler-roi.mjs",
         "format": "prettier --write 'src/**/*.{ts,tsx,astro}'",
         "format:check": "prettier --check 'src/**/*.{ts,tsx,astro}'",
         "build": "pnpm format:check && node scripts/generate-draft-slugs.mjs && node scripts/generate-agent-skills.mjs && node scripts/check-src.mjs && astro build",
@@ -32,10 +33,12 @@
         "youtube-caption-extractor": "^1.9.1"
     },
     "devDependencies": {
+        "@astrojs/check": "^0.9.9",
         "@tailwindcss/typography": "^0.5.19",
         "playwright": "^1.59.1",
         "prettier": "^3.8.3",
         "prettier-plugin-astro": "^0.14.1",
-        "prettier-plugin-tailwindcss": "^0.8.0"
+        "prettier-plugin-tailwindcss": "^0.8.0",
+        "typescript": "^6.0.3"
     }
 }

@@ -28,7 +28,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
@@ -40,7 +42,7 @@
     .prose a {
         @apply text-primary underline decoration-1 underline-offset-2 hover:no-underline;
     }
-    .prose a[href^="http"]:not(:where(.not-prose, .not-prose *))::after {
+    .prose a[href^='http']:not(:where(.not-prose, .not-prose *))::after {
         content: '';
         display: inline-block;
         width: 0.7em;
@@ -55,17 +57,17 @@
         -webkit-mask-size: contain;
         -webkit-mask-repeat: no-repeat;
     }
-    .prose a[href^="http"]:not(:where(.not-prose, .not-prose *)):hover::after {
+    .prose a[href^='http']:not(:where(.not-prose, .not-prose *)):hover::after {
         @apply opacity-70;
     }
-    .prose .not-prose a[href^="http"]::after {
+    .prose .not-prose a[href^='http']::after {
         content: none;
     }
-    .prose a:not([href^="http"]) {
+    .prose a:not([href^='http']) {
         @apply decoration-primary/40 decoration-2;
     }
-    .prose a:not([href^="http"]):hover {
-        @apply decoration-primary decoration-2 underline;
+    .prose a:not([href^='http']):hover {
+        @apply decoration-primary underline decoration-2;
     }
     .prose :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *, pre *)) {
         @apply rounded bg-stone-200/70 px-1.5 py-0.5 text-[0.875em] font-medium dark:bg-stone-700/70;
@@ -78,24 +80,20 @@
         @apply no-underline;
     }
     .prose a code {
-        @apply text-primary dark:text-accent underline underline-offset-[6px] decoration-1;
+        @apply text-primary dark:text-accent underline decoration-1 underline-offset-[6px];
     }
     :is(h1, h2, h3, h4, h5, h6) {
-        scroll-margin-top: 7rem;
+        /* Tracks the sticky-header height (published by Header.astro) plus a
+           small gap; falls back to a sensible value if the var isn't set. */
+        scroll-margin-top: calc(var(--sp-header-h, 7rem) + 12px);
         text-wrap: pretty;
     }
     .prose :is(p, blockquote, li) {
         text-wrap: pretty;
     }
-    @media (max-width: 900px) {
-        :is(h1, h2, h3, h4, h5, h6) { scroll-margin-top: 80px; }
-    }
-    @media (max-width: 600px) {
-        :is(h1, h2, h3, h4, h5, h6) { scroll-margin-top: 72px; }
-    }
     .prose :not(.not-prose, .not-prose *) > :is(h2, h3),
     .prose > :is(h2, h3) {
-        @apply border-l-3 border-primary dark:border-accent -ml-5 pl-[17px];
+        @apply border-primary dark:border-accent -ml-5 border-l-3 pl-[17px];
     }
     .prose pre {
         @apply rounded-lg border border-stone-200 dark:border-stone-700/50;

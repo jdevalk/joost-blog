@@ -495,13 +495,6 @@ function fmtFullDate(date: Date): string {
 
     initArchiveFilters();
 
-    // Keep filter bar sticky top in sync with header height (handles two-row wrap).
-    const header = document.querySelector<HTMLElement>('.sp-header');
-    const root = document.querySelector<HTMLElement>('.sp-root');
-    if (header && root) {
-        const ro = new ResizeObserver(() => {
-            root.style.setProperty('--sp-header-h', header.offsetHeight + 'px');
-        });
-        ro.observe(header);
-    }
+    // --sp-header-h is published globally by Header.astro and tracks the
+    // scroll-shrink state; the filter bar's sticky `top` reads it directly.
 </script>

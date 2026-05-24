@@ -280,13 +280,5 @@ const pageContext: SchemaPageContext = {
         });
     });
 
-    // Sync sticky top with header height
-    const header = document.querySelector<HTMLElement>('.sp-header');
-    const root = document.querySelector<HTMLElement>('.sp-root');
-    if (header && root) {
-        const ro = new ResizeObserver(() => {
-            root.style.setProperty('--sp-header-h', header.offsetHeight + 'px');
-        });
-        ro.observe(header);
-    }
+    // --sp-header-h is published globally by Header.astro (tracks shrink state).
 </script>

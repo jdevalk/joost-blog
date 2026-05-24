@@ -33,6 +33,64 @@ import siteConfig from '../data/site-config';
 <script>
     const hamburger = document.getElementById('sp-hamburger');
     const nav = document.getElementById('sp-nav');
+    const header = document.querySelector<HTMLElement>('.sp-header');
+    const root = document.querySelector<HTMLElement>('.sp-root');
+
+    // Publish the current header height on .sp-root as --sp-header-h.
+    // Sticky elements (TOC, filter bars) and scroll-margin-top rules use it
+    // so they follow the header when it shrinks. ResizeObserver covers both
+    // the scroll-shrink transition and responsive breakpoint changes.
+    if (header && root) {
+        const ro = new ResizeObserver(() => {
+            root.style.setProperty('--sp-header-h', header.offsetHeight + 'px');
+        });
+        ro.observe(header);
+    }
+
+    // Shrink the header once the page is scrolled past the threshold.
+    // rAF-throttled so we don't thrash on every scroll event.
+    if (header) {
+        const THRESHOLD = 24;
+        let ticking = false;
+        const update = () => {
+            header.classList.toggle('is-scrolled', window.scrollY > THRESHOLD);
+            ticking = false;
+        };
+        update();
+        window.addEventListener(
+            'scroll',
+            () => {
+                if (!ticking) {
+                    requestAnimationFrame(update);
+                    ticking = true;
+                }
+            },
+            { passive: true }
+        );
+    }
+
+    // When the user clicks an in-page anchor (e.g. a TOC link) while the
+    // header is still at full size, we'd otherwise compute the scroll target
+    // against the tall header and only shrink afterwards — making the heading
+    // land too low. Snap the header to its shrunk state synchronously (with
+    // transitions disabled for one frame) so the browser's hash navigation
+    // uses the post-shrink --sp-header-h and scroll-margin-top calc.
+    document.addEventListener('click', (e) => {
+        if (!(e.target instanceof Element) || !header || !root) return;
+        const link = e.target.closest<HTMLAnchorElement>('a[href^="#"]');
+        if (!link) return;
+        const hash = link.getAttribute('href') || '';
+        if (hash.length < 2) return; // bare "#" (back-to-top) — let it un-shrink naturally
+        if (!document.getElementById(hash.slice(1))) return;
+        if (header.classList.contains('is-scrolled')) return;
+
+        header.classList.add('sp-header--no-transition');
+        header.classList.add('is-scrolled');
+        // Force reflow so the new size is applied before reading offsetHeight.
+        void header.offsetHeight;
+        root.style.setProperty('--sp-header-h', header.offsetHeight + 'px');
+        requestAnimationFrame(() => header.classList.remove('sp-header--no-transition'));
+    });
 
     hamburger?.addEventListener('click', () => {
         const isOpen = nav?.classList.toggle('is-open');
