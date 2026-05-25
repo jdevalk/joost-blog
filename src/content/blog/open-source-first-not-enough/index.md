@@ -3,6 +3,7 @@ title: Open Source First is right, but <em>not enough</em>.
 seo:
   description: Open Source First is the right EU procurement principle. Funding the commons it depends on is the other half. What FAIR taught me about the supply side.
 publishDate: 2026-05-24T00:00:00.000Z
+updatedDate: 2026-05-25T00:00:00.000Z
 excerpt: >-
   SUSE and a coalition of European open source companies are asking the
   EU to make Open Source First a binding procurement principle ahead of
@@ -54,7 +55,7 @@ Open Source First as written, taken to its logical conclusion, sends public mone
 
 All of that is what "open source first" assumes will be there to choose from.
 
-I am not the only one making this argument. Dries Buytaert, the founder of Drupal, has been pressing the supply-side case throughout the same policy window. In ["Funding Open Source like public infrastructure"](https://dri.es/funding-open-source-like-public-infrastructure) he argues that public money currently flows around open source rather than into it. Procurement contracts go to the lowest bidder or to large IT vendors, not to the maintainers who actually build and secure the software. In ["What does 'Buy European' even mean?"](https://euobserver.com/210047/when-it-comes-to-techs-software-dependency-what-does-buy-european-even-mean/), co-authored with Nicholas Gates of OpenForum Europe, he uses Skype as the case study. European ownership, jurisdiction and headquarters are weak tests of long-term independence. Every one of those properties can change in a single board meeting.
+I am not the only one making this argument. Dries Buytaert, the founder of Drupal, has been pressing the supply-side case throughout the same policy window. In ["Funding Open Source like public infrastructure"](https://dri.es/funding-open-source-like-public-infrastructure) he argues that public money currently flows around open source rather than into it. Procurement contracts go to the lowest bidder or to large IT vendors, not to the maintainers who actually build and secure the software. In ["What does 'Buy European' even mean?"](https://euobserver.com/210047/when-it-comes-to-techs-software-dependency-what-does-buy-european-even-mean/), co-authored with Nicholas Gates of OpenForum Europe, he uses Skype as the case study. European ownership, jurisdiction and headquarters are weak tests of long-term independence. Every one of those properties can change in a single board meeting. Gates is also the lead author of a feasibility study for an [EU Sovereign Tech Fund](https://eu-stf.openforumeurope.org/), which I'll come back to below.
 
 That this argument is being made independently from both the WordPress and Drupal worlds is worth noticing. It is also worth acting on.
 
@@ -67,6 +68,8 @@ The Open Source First principle should be paired with a second principle: **some
 To return to Hirschman: Open Source First gives the public sector a credible exit. Funding the commons gives it ongoing voice in the infrastructure that exit depends on. Without exit, voice is a request the vendor can refuse. Without voice in the commons, exit just moves you from one vendor to another, never onto ground that nobody can fence off.
 
 This doesn't have to be complicated. The mechanisms already exist. Germany's [Sovereign Tech Fund](https://www.sovereign.tech/) does a small version of it. The Linux Foundation, Eclipse Foundation, NLnet and others already host the kind of neutral infrastructure projects this would underwrite. What is missing is the policy commitment to direct money there, at scale, as a structural feature of the procurement regime rather than as occasional grant-making.
+
+The good news is that the policy work has already been done. OpenForum Europe's feasibility study for an [EU Sovereign Tech Fund (EU-STF)](https://eu-stf.openforumeurope.org/) lays out a pan-European, mission-driven version of the German STF. It's a dedicated vehicle to fund the maintenance, security, and improvement of the open source infrastructure that the rest of the economy quietly runs on. Its supporters already include SUSE's CSO, Mozilla, Mercedes-Benz, the Sovereign Tech Agency, the cURL project, and GitHub's developer policy lead. The CAIDA is the natural home for a commitment to stand it up. Open Source First creates the demand. The EU-STF funds the supply.
 
 The obvious objection is that EU funding produces EU-flavored forks of what should be global infrastructure. That is a real risk, and the answer is not a parallel European stack. It is EU money flowing into the neutral foundations that already exist, none of which are controlled by any single country. That is the point. EU money in, global infrastructure out.
 
@@ -82,4 +85,8 @@ None of this is a reason not to sign the letter. Open Source First is the right 
 
 Every European company, foundation, or open source project in our space should add their name before June 3. Anyone with a line into the Commission, or to MEPs working on the file, should make the second point above as well. Procurement is the demand side. The commons is the supply side. Sovereignty needs both.
 
-[Sign the letter](https://www.suse.com/eu-tech-sovereignty-letter/), ask for the addition, and read [Dries on the same topic](https://dri.es/the-software-sovereignty-scale). The argument deserves more than one voice.
+[Sign the letter](https://www.suse.com/eu-tech-sovereignty-letter/), ask for the addition, read [Dries on the same topic](https://dri.es/the-software-sovereignty-scale), and read [the EU-STF proposal](https://eu-stf.openforumeurope.org/) for what the funding side could actually look like. The argument deserves more than one voice.
+
+---
+
+**Update, May 25, 2026:** Added a pointer to OpenForum Europe's feasibility study for an [EU Sovereign Tech Fund](https://eu-stf.openforumeurope.org/), led by Nicholas Gates. It's the concrete proposal that does the policy work for the commons-funding half of the argument, and the natural mechanism the CAIDA could commit to. I added two paragraphs and a link: one foreshadowing it in the Dries/Gates section, one in "What I'd add to the letter," and one in the closing call to action.
