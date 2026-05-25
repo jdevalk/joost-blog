@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Daily Supplements</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    background: #fafafa;
+    color: #1a1a1a;
+    margin: 0;
+    padding: 16px;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .date {
+    font-size: 13px;
+    color: #666;
+    text-transform: capitalize;
+  }
+  .progress {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    font-variant-numeric: tabular-nums;
+  }
+  .progress-bar {
+    height: 4px;
+    background: #e8e8e8;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #2d7a2d;
+    transition: width 0.3s ease;
+    border-radius: 2px;
+  }
+  .celebrate {
+    text-align: center;
+    font-size: 13px;
+    color: #2d7a2d;
+    margin: 0 0 12px;
+    font-weight: 500;
+    display: none;
+  }
+  .celebrate.show { display: block; }
+  .section {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    border: 1px solid #ececec;
+  }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+  }
+  .section-time {
+    font-size: 12px;
+    color: #888;
+    font-variant-numeric: tabular-nums;
+    background: #f4f4f4;
+    padding: 2px 8px;
+    border-radius: 8px;
+  }
+  .item {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-top: 1px solid #f1f1f1;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .item:nth-of-type(1) { border-top: none; }
+  .checkbox {
+    width: 26px;
+    height: 26px;
+    border: 2px solid #ccc;
+    border-radius: 7px;
+    flex-shrink: 0;
+    margin-right: 12px;
+    margin-top: 1px;
+    background: white;
+    transition: all 0.15s ease;
+    position: relative;
+  }
+  .checkbox::after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .item.done .checkbox {
+    background: #2d7a2d;
+    border-color: #2d7a2d;
+  }
+  .item.done .checkbox::after { opacity: 1; }
+  .item-content { flex: 1; min-width: 0; }
+  .item-name {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: #1a1a1a;
+  }
+  .item-dose {
+    font-size: 13px;
+    color: #2d7a2d;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+  .item-note {
+    font-size: 12px;
+    color: #888;
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+  .item.done .item-name,
+  .item.done .item-dose {
+    text-decoration: line-through;
+    color: #aaa;
+  }
+  .item.done .item-note { color: #bbb; }
+  .alt-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .alt-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 8px;
+    border: 1px solid #d8d8d8;
+    background: white;
+    cursor: pointer;
+    color: #555;
+    font-family: inherit;
+  }
+  .alt-btn.suggested {
+    border-color: #2d7a2d;
+    color: #2d7a2d;
+  }
+  .alt-btn.taken {
+    background: #2d7a2d;
+    color: white;
+    border-color: #2d7a2d;
+  }
+  .alt-hint {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 4px;
+  }
+  .actions {
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 4px;
+  }
+  .reset-btn {
+    font-size: 12px;
+    color: #888;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 8px;
+    font-family: inherit;
+  }
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+  .footer a {
+    color: #888;
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="date" id="date"></div>
+  <div class="progress" id="progress">0 / 0</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width: 0%"></div></div>
+<div class="celebrate" id="celebrate">All done for today.</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">Empty stomach</div>
+    <div class="section-time">06:45</div>
+  </div>
+  <div id="slot-1"></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">With breakfast</div>
+    <div class="section-time">07:15</div>
+  </div>
+  <div id="slot-2"></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">Evening (oils + dinner + bedtime)</div>
+    <div class="section-time">19:00</div>
+  </div>
+  <div id="slot-3"></div>
+</div>
+
+<div class="actions">
+  <button class="reset-btn" onclick="resetDay()">Reset today</button>
+</div>
+
+<div class="footer">
+  Plan by Dr. Alexander Auer (11.09.25) ·
+  <a href="https://docs.google.com/document/d/1AwwHk5rC29z4mkePKMdyzzIZPsuo78sAvqD4d3f4Bs0/edit" target="_blank" rel="noopener">view full plan</a>
+</div>
+
+<script>
+const ITEMS = {
+  'slot-1': [
+    { id: 'kraut', name: 'Mild kimchi', dose: '1 forkful', note: 'fermented, on empty stomach' },
+    { id: 'flora', name: 'Flora stabil', dose: 'per label', note: 'start low, ramp up slowly' }
+  ],
+  'slot-2': [
+    { id: 'mito-am',  name: 'Mitochondrien Formel Sport', dose: '3 caps', note: '' },
+    { id: 'amino-am', name: 'Aminosauren Day & Focus', dose: '14 g', note: 'travel alternative: Smart Protein' },
+    { id: 'nukl',     name: 'Nukleotide', dose: '2 caps', note: '' },
+    { id: 'mineral',  name: 'Complete Mineral Complex', dose: '1 cap', note: '' },
+    { id: 'methyl',   name: 'Methylation Master', dose: '1 cap', note: '' },
+    { id: 'b',        name: 'B-Komplex or B12', dose: '1', note: 'alternate every other day', alt: ['B-Komplex', 'B12'], alternate: true },
+    { id: 'vitc',     name: 'Vitamin C 250', dose: '1 cap', note: '8-week course' }
+  ],
+  'slot-3': [
+    { id: 'gluta',    name: 'Lipo Glutathion Booster', dose: 'per label', note: '2 bottles in protocol' },
+    { id: 'adek',     name: 'Vit. ADEK', dose: '2 drops -> 1 drop', note: '2 drops weeks 1-4, then 1 drop' },
+    { id: 'omega',    name: 'Omega 3 (EPA + DHA)', dose: 'per label', note: 'liquid or capsules' },
+    { id: 'mito-pm',  name: 'Mitochondrien Formel Sport', dose: '3 caps', note: 'with dinner' },
+    { id: 'amino-pm', name: 'Aminosauren Night & Recovery', dose: '14 g', note: '' },
+    { id: 'mag',      name: 'Magnesium', dose: 'Bisglycinat 1-2 OR Threonat 2-3', note: 'pick one form', alt: ['Bisglycinat', 'Threonat'], alternate: false }
+  ]
+};
+
+const TOTAL = Object.values(ITEMS).reduce((n, arr) => n + arr.length, 0);
+
+function todayKey() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function loadState() {
+  const raw = localStorage.getItem('supplements-state-v1');
+  let s;
+  try { s = raw ? JSON.parse(raw) : null; } catch(e) { s = null; }
+  if (!s) s = { date: todayKey(), checks: {}, alts: {} };
+  if (s.date !== todayKey()) {
+    s.date = todayKey();
+    s.checks = {};
+  }
+  if (!s.alts) s.alts = {};
+  return s;
+}
+
+function saveState(s) {
+  localStorage.setItem('supplements-state-v1', JSON.stringify(s));
+}
+
+let state = loadState();
+
+function doneCount() {
+  return Object.values(state.checks).filter(Boolean).length;
+}
+
+function updateProgress() {
+  const done = doneCount();
+  document.getElementById('progress').textContent = done + ' / ' + TOTAL;
+  document.getElementById('progress-fill').style.width = (done/TOTAL*100) + '%';
+  document.getElementById('celebrate').classList.toggle('show', done === TOTAL);
+}
+
+function toggleItem(id) {
+  state.checks[id] = !state.checks[id];
+  saveState(state);
+  render();
+}
+
+function pickAlt(id, choice) {
+  state.alts[id] = { taken: choice, date: todayKey() };
+  state.checks[id] = true;
+  saveState(state);
+  render();
+}
+
+function suggestedAlt(item) {
+  if (!item.alternate) return null;
+  const last = state.alts[item.id];
+  if (!last || !last.taken) return null;
+  if (last.date === todayKey()) return last.taken;
+  const idx = item.alt.indexOf(last.taken);
+  return item.alt[(idx + 1) % item.alt.length];
+}
+
+function takenToday(item) {
+  const a = state.alts[item.id];
+  if (a && a.date === todayKey()) return a.taken;
+  return null;
+}
+
+function render() {
+  state = loadState();
+  const today = new Date();
+  document.getElementById('date').textContent = today.toLocaleDateString('en-GB', {
+    weekday: 'long', day: 'numeric', month: 'long'
+  });
+
+  for (const slot of Object.keys(ITEMS)) {
+    const container = document.getElementById(slot);
+    container.innerHTML = '';
+    for (const item of ITEMS[slot]) {
+      const done = !!state.checks[item.id];
+      const row = document.createElement('div');
+      row.className = 'item' + (done ? ' done' : '');
+
+      const cb = document.createElement('div');
+      cb.className = 'checkbox';
+      cb.addEventListener('click', (e) => { e.stopPropagation(); toggleItem(item.id); });
+      row.appendChild(cb);
+
+      const content = document.createElement('div');
+      content.className = 'item-content';
+
+      const nm = document.createElement('div');
+      nm.className = 'item-name';
+      nm.textContent = item.name;
+      content.appendChild(nm);
+
+      const ds = document.createElement('div');
+      ds.className = 'item-dose';
+      ds.textContent = item.dose;
+      content.appendChild(ds);
+
+      if (item.note) {
+        const nt = document.createElement('div');
+        nt.className = 'item-note';
+        nt.textContent = item.note;
+        content.appendChild(nt);
+      }
+
+      if (item.alt) {
+        const taken = takenToday(item);
+        const suggested = suggestedAlt(item);
+        const altRow = document.createElement('div');
+        altRow.className = 'alt-row';
+        for (const opt of item.alt) {
+          const btn = document.createElement('button');
+          btn.className = 'alt-btn';
+          if (taken === opt) btn.classList.add('taken');
+          else if (!taken && suggested === opt) btn.classList.add('suggested');
+          btn.textContent = opt;
+          btn.addEventListener('click', (e) => { e.stopPropagation(); pickAlt(item.id, opt); });
+          altRow.appendChild(btn);
+        }
+        content.appendChild(altRow);
+
+        if (item.alternate && !taken) {
+          const last = state.alts[item.id];
+          const hint = document.createElement('div');
+          hint.className = 'alt-hint';
+          if (last && last.taken && last.date !== todayKey()) {
+            hint.textContent = 'Last taken: ' + last.taken + ' (' + last.date + '). Today: ' + suggested + '.';
+          } else if (!last) {
+            hint.textContent = 'First time: pick whichever you have on hand.';
+          }
+          content.appendChild(hint);
+        }
+      } else {
+        row.addEventListener('click', () => toggleItem(item.id));
+      }
+
+      row.appendChild(content);
+      container.appendChild(row);
+    }
+  }
+  updateProgress();
+}
+
+function resetDay() {
+  if (confirm('Reset all checks for today?')) {
+    state.checks = {};
+    saveState(state);
+    render();
+  }
+}
+
+render();
+setInterval(() => {
+  if (state.date !== todayKey()) render();
+}, 60000);
+</script>
+
+</body>
+</html>
