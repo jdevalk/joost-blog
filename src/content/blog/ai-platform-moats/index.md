@@ -1,7 +1,7 @@
 ---
 title: AI is melting the moats. Who <em>wins</em>?
 seo:
-  description: Wix laid off staff yesterday, Webflow today. AI is collapsing platform switching costs faster than anyone priced in. Here's who wins when moving between platforms is free.
+  description: Wix and Webflow just cut staff. AI is melting the switching costs that website builders relied on. Here's who wins when platforms become interchangeable.
 publishDate: 2026-05-27T00:00:00.000Z
 excerpt: >-
   Wix yesterday, Webflow today. AI is collapsing the moats that website
