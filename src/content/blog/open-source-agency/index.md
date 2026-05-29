@@ -11,7 +11,7 @@ excerpt: >-
 categories:
   - Open Source
   - AI
-isFeatured: true
+isFeatured: false
 toc: true
 ---
 Open source spent thirty years winning an argument about cost. AI is about to make that argument irrelevant. Whether open source can win the argument that replaces it (about *agency*) is an open question. The point of this post is to be honest about why.

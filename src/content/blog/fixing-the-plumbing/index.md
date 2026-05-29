@@ -10,6 +10,7 @@ excerpt: >-
 categories:
   - SEO
   - Development
+isFeatured: true
 toc: true
 ---
 Every framework, CMS, and static-site generator reinvents the same list of defaults from scratch. Most get parts of it wrong. There is no shared target.
