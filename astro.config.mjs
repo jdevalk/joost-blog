@@ -6,7 +6,7 @@ import pagefind from 'astro-pagefind';
 import { defineConfig } from 'astro/config';
 import fs from 'fs';
 import matter from 'gray-matter';
-import { gitLastmod, sitemapIndexLastmod } from './src/utils/sitemap.ts';
+import { gitLastmod } from './src/utils/sitemap.ts';
 
 // Collect draft slugs and lastmod dates
 const draftSlugs = new Set();
@@ -36,11 +36,10 @@ scanContent('src/content/blog', '/');
 scanContent('src/content/videos', '/videos/');
 scanContent('src/content/pages', '/');
 
-// Most recent content change across the whole site. @astrojs/sitemap only
-// supports a single global lastmod for the index, so this date is applied to
-// every <sitemap> entry in sitemap-index.xml. It moves forward only when
-// content actually changes (not on every deploy), giving crawlers a freshness
-// signal that points at the child sitemaps.
+// Fallback lastmod for child sitemaps with no per-URL dates. As of
+// @astrojs/sitemap 3.7.3, each <sitemap> entry in sitemap-index.xml is
+// stamped with the newest <lastmod> from the child sitemap it points to;
+// this value only fills in when a child has no per-URL <lastmod>.
 const siteLastmod = lastmodMap.size
     ? new Date(Math.max(...[...lastmodMap.values()].map((d) => d.getTime())))
     : undefined;
@@ -138,7 +137,7 @@ integrations: [mdx(), sitemap({
                 }
             },
         },
-    }), sitemapIndexLastmod(), seoGraph({
+    }), seoGraph({
         validateInternalLinks: {
             skip: (href) => href === '/sitemap-index.xml' || href === '/schemamap.xml',
         },

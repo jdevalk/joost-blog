@@ -20,7 +20,7 @@
         "@astro-community/astro-embed-youtube": "^0.5.10",
         "@astrojs/mdx": "^5.0.4",
         "@astrojs/rss": "^4.0.18",
-        "@astrojs/sitemap": "^3.7.2",
+        "@astrojs/sitemap": "^3.7.3",
         "@jdevalk/astro-seo-graph": "^1.4.1",
         "@jdevalk/seo-graph-core": "^0.6.2",
         "@tailwindcss/vite": "^4.2.4",
