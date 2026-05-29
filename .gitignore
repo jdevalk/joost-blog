@@ -37,6 +37,9 @@ data.db-wal
 emdash-theme/
 graphify-out/
 
+# AI crawler ROI report outputs (scripts/ai-crawler-roi.mjs)
+scripts/out/
+
 # Claude Code local files — ignore everything except the shared skills folder
 .claude/*
 !.claude/skills/
