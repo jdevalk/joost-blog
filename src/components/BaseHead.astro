@@ -88,13 +88,19 @@ const ogImageAlt = Astro.props.title ?? siteConfig.title;
     article={articleMeta}
     noindex={noindex}
     extraLinks={[
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'icon', href: '/favicon.ico', sizes: '48x48 32x32 16x16' },
         { rel: 'icon', type: 'image/png', href: '/favicon-512.png', sizes: '512x512' },
-        { rel: 'apple-touch-icon', href: '/favicon-512.png' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png', sizes: '180x180' },
+        { rel: 'manifest', href: '/manifest.webmanifest' },
         { rel: 'sitemap', href: '/sitemap-index.xml' },
         { rel: 'alternate', type: 'application/rss+xml', href: '/feed.xml', title: 'RSS' }
     ]}
-    extraMeta={[{ name: 'author', content: 'Joost de Valk' }]}
+    extraMeta={[
+        { name: 'author', content: 'Joost de Valk' },
+        { name: 'theme-color', content: '#5e1224', media: '(prefers-color-scheme: light)' },
+        { name: 'theme-color', content: '#3a0b16', media: '(prefers-color-scheme: dark)' }
+    ]}
 />
 
 <!-- Analytics (Cloudflare Pages Functions — only works in production) -->
