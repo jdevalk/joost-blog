@@ -23,6 +23,9 @@ export const GET: APIRoute = async () => {
     ].join('\n');
 
     return new Response(body, {
-        headers: { 'Content-Type': 'text/markdown; charset=utf-8' }
+        headers: {
+            'Content-Type': 'text/markdown; charset=utf-8',
+            Link: '<https://joost.blog/videos/>; rel="canonical"'
+        }
     });
 };

@@ -13,6 +13,9 @@ Active installs and download numbers for WordPress plugins, pulled from the Word
 `;
 
     return new Response(body, {
-        headers: { 'Content-Type': 'text/markdown; charset=utf-8' }
+        headers: {
+            'Content-Type': 'text/markdown; charset=utf-8',
+            Link: '<https://joost.blog/research/plugin-stats/>; rel="canonical"'
+        }
     });
 };

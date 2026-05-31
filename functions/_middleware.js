@@ -103,6 +103,22 @@ function logBotIfApplicable(context) {
 	}
 }
 
+// `.md` URLs are machine-readable alternates of their HTML counterparts.
+// Point crawlers at the HTML version by adding a canonical Link, preserving
+// any existing Link values set globally in `_headers`.
+async function withMarkdownCanonical(context, url) {
+	const response = await context.next();
+	const path = url.pathname;
+	if (!path.endsWith('.md') || path.startsWith('/.well-known/')) return response;
+	const stripped = path.slice(0, -3);
+	const canonicalPath = stripped === '/index' ? '/' : stripped.endsWith('/') ? stripped : `${stripped}/`;
+	const canonical = `<https://joost.blog${canonicalPath}>; rel="canonical"`;
+	const wrapped = new Response(response.body, response);
+	const existing = wrapped.headers.get('Link');
+	wrapped.headers.set('Link', existing ? `${canonical}, ${existing}` : canonical);
+	return wrapped;
+}
+
 export async function onRequest(context) {
 	logBotIfApplicable(context);
 
@@ -111,7 +127,7 @@ export async function onRequest(context) {
 
 	// Only check blog-post-like paths (no dots, no nested paths with known prefixes)
 	if (!slug || slug.includes('.') || slug.startsWith('api/') || slug.startsWith('_ask/')) {
-		return context.next();
+		return withMarkdownCanonical(context, url);
 	}
 
 	// Fetch the draft slugs map from static assets

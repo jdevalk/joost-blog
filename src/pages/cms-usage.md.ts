@@ -15,6 +15,9 @@ The interactive table is rendered from JSON at build time. For the underlying me
 `;
 
     return new Response(body, {
-        headers: { 'Content-Type': 'text/markdown; charset=utf-8' }
+        headers: {
+            'Content-Type': 'text/markdown; charset=utf-8',
+            Link: '<https://joost.blog/cms-usage/>; rel="canonical"'
+        }
     });
 };

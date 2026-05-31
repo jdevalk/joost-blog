@@ -45,6 +45,9 @@ In my spare time, I can often be found coaching kids' soccer at [AWC](https://sv
 `;
 
     return new Response(body, {
-        headers: { 'Content-Type': 'text/markdown; charset=utf-8' }
+        headers: {
+            'Content-Type': 'text/markdown; charset=utf-8',
+            Link: '<https://joost.blog/about-me/>; rel="canonical"'
+        }
     });
 };

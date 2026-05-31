@@ -23,6 +23,9 @@ For agents and crawlers: my full archive is available at [/blog/](https://joost.
 `;
 
     return new Response(body, {
-        headers: { 'Content-Type': 'text/markdown; charset=utf-8' }
+        headers: {
+            'Content-Type': 'text/markdown; charset=utf-8',
+            Link: '<https://joost.blog/ask-joost/>; rel="canonical"'
+        }
     });
 };
