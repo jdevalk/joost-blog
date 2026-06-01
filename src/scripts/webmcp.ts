@@ -6,7 +6,8 @@ type ModelContext = {
         name: string;
         description: string;
         inputSchema: object;
-        annotations?: { readOnlyHint?: boolean };
+        outputSchema?: object;
+        annotations?: { readOnlyHint?: boolean; untrustedContentHint?: boolean };
         execute: (input: unknown) => Promise<ToolResult>;
     }): void;
 };
