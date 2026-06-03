@@ -4,6 +4,15 @@
 
 **Do not start a paragraph with a bold word as a pseudo-heading.** The `**Term.** Body sentence follows...` pattern (a bolded label followed by a sentence on the same line, used as an inline definition list) is not Joost's voice and breaks the reading rhythm. If you have 3+ parallel items that each warrant their own label, use real subheadings (`###` under an `##` section) so they show up in the TOC and structure-aware tooling. If you have a single short labelled item, integrate it into prose.
 
+## Frontmatter length limits
+
+The Zod schema in [`src/content.config.ts`](src/content.config.ts) enforces hard caps on SEO fields. Builds fail if you exceed them — verify with `wc -c` before writing the file, not after.
+
+- `seo.title` — 5 to 120 characters
+- `seo.description` — 15 to 160 characters
+
+These apply to the `blog`, `pages`, and `videos` collections. When drafting, count the description first; titles rarely run long, descriptions routinely do.
+
 ## Draft preview passwords
 
 Draft posts can be gated with a per-post password so they're shareable without being public.
