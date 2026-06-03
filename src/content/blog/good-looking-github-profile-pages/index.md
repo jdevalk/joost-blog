@@ -65,3 +65,9 @@ Here too, you should pin some favorite repositories, and make sure those reposit
 ### 3. Set your profile data
 
 Go to your [profile settings](https://github.com/settings/profile) and add your social URLs, website, description, etc. Make sure to do this as it “connects” this repository to your important social profiles and then, create a link back from those social profiles and your website to your GitHub profile too. This makes people trust your profile a lot more.
+
+### 4. A note on stats widgets
+
+You’ll see lots of profiles using widgets like `github-readme-stats.vercel.app`, streak stats, and trophy widgets. I used two of these myself for years. They all run on shared Vercel infrastructure that regularly hits the GitHub API rate limit, so the images break — sometimes for hours, sometimes longer. Mine were broken for a while before I bothered to fix them.
+
+If you want stats on your profile, use [lowlighter/metrics](https://github.com/lowlighter/metrics) instead. It runs as a GitHub Action in your own magic repo, generates the SVG once a day, and commits it back to the repo. Your README then serves a static image straight from GitHub, so there’s nothing third-party to go down. [Here’s the workflow I use](https://github.com/jdevalk/jdevalk/blob/main/.github/workflows/metrics.yml).
