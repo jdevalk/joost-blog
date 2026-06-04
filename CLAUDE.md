@@ -4,6 +4,8 @@
 
 **Do not start a paragraph with a bold word as a pseudo-heading.** The `**Term.** Body sentence follows...` pattern (a bolded label followed by a sentence on the same line, used as an inline definition list) is not Joost's voice and breaks the reading rhythm. If you have 3+ parallel items that each warrant their own label, use real subheadings (`###` under an `##` section) so they show up in the TOC and structure-aware tooling. If you have a single short labelled item, integrate it into prose.
 
+**Every post over 200 words gets `##` subheadings.** Break the body into scannable sections — no wall of unbroken paragraphs. Headings are short, pointed noun phrases in Joost's register (e.g. "Defaults are infrastructure", "One spoke of a bigger wheel"), not generic labels like "Introduction" or "Conclusion". Leave the opening lede/announcement un-headed; the first `##` comes after it. A ~550-word post wants roughly 4–6 headings.
+
 ## Frontmatter length limits
 
 The Zod schema in [`src/content.config.ts`](src/content.config.ts) enforces hard caps on SEO fields. Builds fail if you exceed them — verify with `wc -c` before writing the file, not after.
