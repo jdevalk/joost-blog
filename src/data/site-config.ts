@@ -3,7 +3,7 @@ import type { SiteConfig } from '../types';
 
 const siteConfig: SiteConfig = {
     title: 'Joost.blog',
-    description: 'Joost de Valk - internet entrepreneur, founder of Yoast, investor at Emilia Capital',
+    description: 'Joost de Valk - internet entrepreneur, Group Head of AI & Growth at Your.Online, founder of Yoast',
     image: {
         src: '/images/og-default.jpg',
         alt: 'Joost.blog'
@@ -25,7 +25,7 @@ const siteConfig: SiteConfig = {
     ],
     hero: {
         title: 'Joost de Valk',
-        text: 'Internet entrepreneur from the Netherlands. I\'m the founder of Yoast, the company behind the most popular WordPress SEO plugin. Now I invest in and build digital companies through <a href="https://emilia.capital/" target="_blank" rel="noopener noreferrer">Emilia Capital</a>, and I\'m working on <a href="https://progressplanner.com/" target="_blank" rel="noopener noreferrer">Progress Planner</a> &amp; <a href="https://rondo.club/" target="_blank" rel="noopener noreferrer">Rondo</a>.<span class="block mt-3"><a href="/about-me/">Read more about me &rarr;</a></span>',
+        text: 'Internet entrepreneur from the Netherlands. I\'m Group Head of AI &amp; Growth at <a href="https://your.online/" target="_blank" rel="noopener noreferrer">Your.Online</a>, where I lead an AI team building tools to help entrepreneurs get online and grow. I founded Yoast, the most popular WordPress SEO plugin, and I still invest in digital companies through <a href="https://emilia.capital/" target="_blank" rel="noopener noreferrer">Emilia Capital</a>.<span class="block mt-3"><a href="/about-me/">Read more about me &rarr;</a></span>',
         avatar: {
             src: avatarImage,
             alt: 'Joost de Valk'

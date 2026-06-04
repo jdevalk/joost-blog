@@ -1,10 +1,10 @@
 ---
 title: A <em>new home</em> for Progress Planner, and for us
 seo:
-  description: "Progress Planner is joining Your.online, and so are Marieke, our whole team, and me. The bigger plan: local hosting brands that help your site succeed."
+  description: "Progress Planner is joining Your.Online, and so are Marieke, our whole team, and me. The bigger plan: local hosting brands that help your site succeed."
 publishDate: 2026-06-04T00:00:00.000Z
 excerpt: >-
-  Today I'm happy to share that Progress Planner is joining Your.online. And
+  Today I'm happy to share that Progress Planner is joining Your.Online. And
   it's not just Progress Planner: Marieke, our whole team, and I are joining
   too.
 categories:
@@ -14,7 +14,7 @@ toc: true
 ---
 Building software is the easy part. Keeping it going is the hard part: funded, growing, reaching new people.
 
-Today I'm happy to share that Progress Planner is [joining Your.online](https://your.online/bringing-ai-powered-online-possibilities-to-every-entrepreneur/). And it's not just Progress Planner: Marieke, our whole team, and I are joining too. I'm coming on as Group Head of AI & Growth, and Marieke as Group Head of Brand & Community. We'll work across all the brands in the group.
+Today I'm happy to share that Progress Planner is [joining Your.Online](https://your.online/bringing-ai-powered-online-possibilities-to-every-entrepreneur/). And it's not just Progress Planner: Marieke, our whole team, and I are joining too. I'm coming on as Group Head of AI & Growth, and Marieke as Group Head of Brand & Community. We'll work across all the brands in the group.
 
 ## The work nobody does
 
@@ -22,7 +22,7 @@ When we started Progress Planner, the idea was simple. A website is never "done.
 
 ## A foundation to build on
 
-To grow into what it should be, Progress Planner needs a foundation under it: people, infrastructure, and a reason to keep investing for years, not quarters. Your.online is that foundation. They're a hosting group with strong European roots and a simple belief: hosting should do more than keep your site online. It should help you make it better. That's the same bet Progress Planner makes. Now the help lives where your site already does, instead of somewhere else you have to go find.
+To grow into what it should be, Progress Planner needs a foundation under it: people, infrastructure, and a reason to keep investing for years, not quarters. Your.Online is that foundation. They're a hosting group with strong European roots and a simple belief: hosting should do more than keep your site online. It should help you make it better. That's the same bet Progress Planner makes. Now the help lives where your site already does, instead of somewhere else you have to go find.
 
 ## One spoke of a bigger wheel
 

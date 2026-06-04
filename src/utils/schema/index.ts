@@ -40,7 +40,7 @@ function buildJoostWebSite(): Record<string, unknown> {
         {
             url: `${SITE_URL}/`,
             name: 'Joost.blog',
-            description: 'Joost de Valk - internet entrepreneur, founder of Yoast, investor at Emilia Capital',
+            description: 'Joost de Valk - internet entrepreneur, Group Head of AI & Growth at Your.Online, founder of Yoast',
             publisher: { '@id': ids.person },
             hasPart: [{ '@id': ids.navigation }, { '@id': BLOG_ID }],
             inLanguage: 'en-US',

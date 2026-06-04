@@ -15,8 +15,8 @@ export function getJoostPersonData(ids: IdFactory) {
         gender: 'https://schema.org/Male',
         nationality: { '@id': ids.country('NL') },
         description:
-            'Internet entrepreneur from Wijchen, the Netherlands. Investor at Emilia Capital and actively working on Progress Planner. Founder of Yoast.',
-        jobTitle: 'Partner',
+            'Internet entrepreneur from Wijchen, the Netherlands. Group Head of AI & Growth at Your.Online. Founder of Yoast and investor at Emilia Capital.',
+        jobTitle: 'Group Head of AI & Growth',
         knowsLanguage: ['Dutch', 'English', 'German', 'French', 'Italian'],
         url: `${SITE_URL}/about-me/`,
         image: { '@id': ids.personImage },
@@ -45,6 +45,12 @@ export function getJoostPersonData(ids: IdFactory) {
             'https://emilia.capital/joost/'
         ],
         worksFor: [
+            {
+                '@type': 'EmployeeRole',
+                roleName: 'Group Head of AI & Growth',
+                startDate: '2026',
+                worksFor: { '@id': ids.organization('your-online') }
+            },
             {
                 '@type': 'EmployeeRole',
                 roleName: 'Partner',

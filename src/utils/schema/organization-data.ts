@@ -11,6 +11,11 @@ interface OrgData {
  */
 export const organizationInputs: OrgData[] = [
     {
+        slug: 'your-online',
+        name: 'Your.Online',
+        url: 'https://your.online/'
+    },
+    {
         slug: 'emilia-capital',
         name: 'Emilia Capital',
         url: 'https://emilia.capital/'

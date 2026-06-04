@@ -49,11 +49,30 @@ import siteConfig from '../data/site-config';
 
     // Shrink the header once the page is scrolled past the threshold.
     // rAF-throttled so we don't thrash on every scroll event.
+    //
+    // Hysteresis (two thresholds) is essential: the header is sticky and
+    // in-flow, so adding `is-scrolled` shrinks it ~44px (101 -> 57), which
+    // pulls the scroll position up by that same amount. With a single
+    // threshold, that shift crosses back over the line and removes the
+    // class, which grows the header and pushes the scroll past the line
+    // again — a self-sustaining oscillation that reads as shaking.
+    //
+    // The ENTER/EXIT gap must therefore exceed the shrink (~44px) so the
+    // reflow can never flip the state back. We also only un-shrink within a
+    // few px of the very top, so the header grows back where the user can't
+    // see content move. Past ENTER, the scroll auto-compensates for the
+    // shrink and the content under the viewport stays visually put.
     if (header) {
-        const THRESHOLD = 24;
+        const ENTER = 64;
+        const EXIT = 2;
         let ticking = false;
         const update = () => {
-            header.classList.toggle('is-scrolled', window.scrollY > THRESHOLD);
+            const y = window.scrollY;
+            if (!header.classList.contains('is-scrolled')) {
+                if (y > ENTER) header.classList.add('is-scrolled');
+            } else if (y < EXIT) {
+                header.classList.remove('is-scrolled');
+            }
             ticking = false;
         };
         update();

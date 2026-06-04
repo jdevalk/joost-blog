@@ -12,6 +12,8 @@ categories:
   - Strategy
 toc: false
 ---
+**Update, June 4:** Lovable co-founder and CTO Fabian Hedin [responded on X](https://x.com/FabianHedin/status/2062457276984697030): _"I agree it should change! We've committed directly to Tanner that we will be sponsoring. We're exploring how to make the partnership as impactful as possible, beyond just writing a check."_ That's the version that fits the size of the bet — credit to Lovable for moving on it fast.
+
 On June 1, [Lovable announced](https://lovable.dev/blog/building-apps-using-tanstack-start) that new projects on its platform will be built on TanStack Start. That's roughly [100,000 new apps a day](https://www.bloomberg.com/news/articles/2025-12-19/lovable-secures-6-6-billion-valuation-as-vibe-coding-takes-off) standing up on top of Tanner Linsley's open-source work. The post adds that Lovable has been "working with the TanStack team, using the skill they maintain for AI tooling as a starting point."
 
 What it doesn't say is that Lovable is sponsoring TanStack. I checked. As of today, [tanstack.com/partners](https://tanstack.com/partners) shows 13 named partners across three tiers. Lovable is not one of them.
