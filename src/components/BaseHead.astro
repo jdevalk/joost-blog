@@ -57,6 +57,14 @@ const ogImageAlt = Astro.props.title ?? siteConfig.title;
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
 
+<!-- Restore the reader's chosen palette before first paint (no flash) -->
+<script is:inline>
+    try {
+        var p = localStorage.getItem('palette');
+        if (p && /^[a-z]+$/.test(p)) document.documentElement.setAttribute('data-palette', p);
+    } catch (e) {}
+</script>
+
 <!-- Font preloads -->
 <link rel="preload" href="/fonts/DomaineDisplay-Medium.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/fonts/DomaineDisplay-MediumItalic.woff2" as="font" type="font/woff2" crossorigin />

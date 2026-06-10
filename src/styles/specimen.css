@@ -229,6 +229,10 @@
     --field-fg: #f0eae0;
 }
 
+/* Ochre — "navy & gold". The golden ochre is the ACCENT, not the ground;
+   both hero grounds are dark navy with a light foreground (the same contract
+   every other palette follows), so featured/footer/hero blocks stay legible.
+   Oxblood (--dusk) is the secondary, warm cream the paper. */
 [data-palette='ochre'] {
     --parchment: #f0eae2;
     --parchment-2: #ebe4d8;
@@ -237,11 +241,11 @@
     --ink-soft: #5a4e3a;
     --dusk: #8a1d2a;
     --terracotta: #d98c3a;
-    --hero-bg: #d98c3a;
+    --hero-bg: #243057;
     --hero-bg-deep: #1e2553;
-    --hero-fg: #1a1410;
+    --hero-fg: #f0eae2;
     --hero-rule: var(--hero-fg);
-    --hero-accent: #5e1224;
+    --hero-accent: #d98c3a;
     --field-bg: #1e2553;
     --field-bg-deep: #0e122d;
     --field-fg: #f0eae2;
@@ -267,7 +271,6 @@
     max-width: 1280px;
     margin: 0 auto;
     padding: 28px 0;
-    transition: padding 0.18s ease;
 }
 .sp-logo-link {
     display: flex;
@@ -292,10 +295,8 @@
     display: grid;
     place-items: center;
     flex-shrink: 0;
-    transition:
-        width 0.18s ease,
-        height 0.18s ease,
-        font-size 0.18s ease;
+    transform-origin: left center;
+    transition: transform 0.18s ease;
 }
 .sp-wordmark {
     display: grid;
@@ -314,9 +315,10 @@
     padding: 10px 0;
 }
 .sp-header.is-scrolled .sp-mark {
-    width: 36px;
-    height: 36px;
-    font-size: 20px;
+    /* 36/44 — visual shrink via the compositor, so the 44px layout box (and
+       thus the header height) is unaffected by the mark. Header height now
+       collapses via padding alone, applied instantly (no layout transition). */
+    transform: scale(0.818);
 }
 .sp-header.is-scrolled .sp-title {
     font-size: 20px;
@@ -817,9 +819,6 @@
     color: var(--hero-fg);
     padding: 0 64px;
 }
-[data-palette='ochre'] .sp-footer {
-    --hero-fg: #f0eae2;
-}
 .sp-footer-inner {
     max-width: 1280px;
     margin: 0 auto;
@@ -915,6 +914,13 @@
     font-size: 11px;
     letter-spacing: 0.1em;
     color: color-mix(in srgb, var(--hero-fg) 78%, transparent);
+}
+.sp-footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px 40px;
+    flex-wrap: wrap;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1122,11 +1128,22 @@
     font-family: var(--font-display);
     font-weight: var(--weight-display);
     font-style: italic;
-    font-size: 3.4em;
-    line-height: 0.82;
-    float: left;
-    margin: 0.1em 0.2em 0 0;
     color: var(--dusk);
+    /* Let the browser sink the cap a clean 3 lines, aligning its cap-height to
+       the first line's top and its baseline to the third line's baseline.
+       initial-letter handles the metrics that hand-tuned float values can't. */
+    -webkit-initial-letter: 3;
+    initial-letter: 3;
+    margin-right: 0.12em;
+}
+/* Firefox has no initial-letter yet — keep the floated approximation there. */
+@supports not ((initial-letter: 3) or (-webkit-initial-letter: 3)) {
+    .sp-prose > p:first-of-type::first-letter {
+        font-size: 3.4em;
+        line-height: 0.82;
+        float: left;
+        margin: 0.1em 0.2em 0 0;
+    }
 }
 .sp-prose em {
     font-style: italic;
@@ -4199,11 +4216,18 @@
     font-family: var(--font-display);
     font-weight: var(--weight-display);
     font-style: italic;
-    font-size: 3.4em;
-    line-height: 0.82;
-    float: left;
-    margin: 0.04em 0.15em -0.1em 0;
     color: var(--dusk);
+    -webkit-initial-letter: 3;
+    initial-letter: 3;
+    margin-right: 0.12em;
+}
+@supports not ((initial-letter: 3) or (-webkit-initial-letter: 3)) {
+    .sp-video-prose p:first-of-type::first-letter {
+        font-size: 3.4em;
+        line-height: 0.82;
+        float: left;
+        margin: 0.04em 0.15em -0.1em 0;
+    }
 }
 
 .sp-video-transcript-wrap {

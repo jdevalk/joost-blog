@@ -1,0 +1,110 @@
+---
+// Reader-facing palette switcher. Curated to the six structurally-sound
+// palettes. Omitted: ivory (identical to slate) and bone (redundant with ink).
+// Each swatch previews its palette's paper + accent. The choice persists in
+// localStorage and is restored before first paint by the inline script in
+// BaseHead.astro.
+const palettes = [
+    { id: 'slate', label: 'Slate', paper: '#e4e2dc', accent: '#e08a5a' },
+    { id: 'putty', label: 'Putty', paper: '#e8dccb', accent: '#c47a4a' },
+    { id: 'sage', label: 'Sage', paper: '#e6e3d4', accent: '#a8b07c' },
+    { id: 'dusk', label: 'Dusk', paper: '#e6dcd6', accent: '#c89866' },
+    { id: 'ink', label: 'Ink', paper: '#f0eae0', accent: '#9a948a' },
+    { id: 'ochre', label: 'Ochre', paper: '#f0eae2', accent: '#d98c3a' }
+];
+---
+
+<div class="sp-palette" role="group" aria-label="Colour palette">
+    <span class="sp-palette-label">Palette</span>
+    <div class="sp-palette-swatches">
+        {
+            palettes.map((p) => (
+                <button
+                    type="button"
+                    class="sp-palette-swatch"
+                    data-palette-id={p.id}
+                    aria-label={`${p.label} palette`}
+                    aria-pressed="false"
+                    title={p.label}
+                    style={`--sw-paper:${p.paper};--sw-accent:${p.accent}`}
+                />
+            ))
+        }
+    </div>
+</div>
+
+<script>
+    type Plausible = (event: string, options?: { props?: Record<string, string> }) => void;
+
+    const root = document.documentElement;
+    const swatches = Array.from(document.querySelectorAll<HTMLButtonElement>('.sp-palette-swatch'));
+
+    const current = () => root.getAttribute('data-palette') || 'slate';
+
+    const sync = () => {
+        const c = current();
+        swatches.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.paletteId === c)));
+    };
+
+    swatches.forEach((b) => {
+        b.addEventListener('click', () => {
+            const id = b.dataset.paletteId;
+            if (!id) return;
+            root.setAttribute('data-palette', id);
+            try {
+                localStorage.setItem('palette', id);
+            } catch (e) {
+                /* storage blocked — palette still applies for this session */
+            }
+            sync();
+            // Report palette popularity to Plausible. No-op in dev / when the
+            // analytics script is absent or blocked.
+            (window as Window & { plausible?: Plausible }).plausible?.('Palette switch', { props: { palette: id } });
+        });
+    });
+
+    sync();
+</script>
+
+<style>
+    .sp-palette {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+    .sp-palette-label {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: color-mix(in srgb, var(--hero-fg) 78%, transparent);
+    }
+    .sp-palette-swatches {
+        display: flex;
+        gap: 8px;
+    }
+    .sp-palette-swatch {
+        width: 22px;
+        height: 22px;
+        padding: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 1px solid color-mix(in srgb, var(--hero-fg) 35%, transparent);
+        background: linear-gradient(135deg, var(--sw-paper) 0 52%, var(--sw-accent) 52% 100%);
+        transition:
+            transform 0.14s ease,
+            box-shadow 0.14s ease;
+    }
+    .sp-palette-swatch:hover {
+        transform: scale(1.12);
+    }
+    .sp-palette-swatch:focus-visible {
+        outline: 2px solid var(--hero-fg);
+        outline-offset: 2px;
+    }
+    .sp-palette-swatch[aria-pressed='true'] {
+        box-shadow:
+            0 0 0 2px var(--hero-bg-deep),
+            0 0 0 4px var(--hero-fg);
+    }
+</style>

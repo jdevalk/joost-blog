@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import profilePic from '../assets/images/joost-profile.jpg';
 import siteConfig from '../data/site-config';
+import PaletteSwitcher from './PaletteSwitcher.astro';
 
 const currentYear = new Date().getFullYear();
 ---
@@ -17,8 +18,8 @@ const currentYear = new Date().getFullYear();
                     <div class="sp-footer-author-name">Joost de Valk</div>
                 </div>
                 <div class="sp-footer-bio">
-                    Internet entrepreneur from the Netherlands. Group Head of AI &amp; Growth at Your.Online, founder of Yoast, and investor through Emilia
-                    Capital.
+                    Internet entrepreneur from the Netherlands. Group Head of AI &amp; Growth at Your.Online, investor through Emilia Capital, and founder of
+                    Yoast, the WordPress SEO plugin now on millions of sites.
                 </div>
             </div>
             <div>
@@ -54,6 +55,9 @@ const currentYear = new Date().getFullYear();
             </div>
         </div>
         <div class="sp-footer-rule"></div>
-        <div class="sp-colophon">Set in <em>Domaine</em> &amp; Pitch. Built with Astro. Wijchen, Netherlands. &copy; 2015&ndash;{currentYear}.</div>
+        <div class="sp-footer-bottom">
+            <div class="sp-colophon">Set in <em>Domaine</em> &amp; Pitch. Built with Astro. Wijchen, Netherlands. &copy; 2015&ndash;{currentYear}.</div>
+            <PaletteSwitcher />
+        </div>
     </div>
 </footer>

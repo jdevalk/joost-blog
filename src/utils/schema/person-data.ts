@@ -15,7 +15,7 @@ export function getJoostPersonData(ids: IdFactory) {
         gender: 'https://schema.org/Male',
         nationality: { '@id': ids.country('NL') },
         description:
-            'Internet entrepreneur from Wijchen, the Netherlands. Group Head of AI & Growth at Your.Online. Founder of Yoast and investor at Emilia Capital.',
+            'Internet entrepreneur from Wijchen, the Netherlands. Group Head of AI & Growth at Your.Online, investor through Emilia Capital, and founder of Yoast, the WordPress SEO plugin.',
         jobTitle: 'Group Head of AI & Growth',
         knowsLanguage: ['Dutch', 'English', 'German', 'French', 'Italian'],
         url: `${SITE_URL}/about-me/`,
