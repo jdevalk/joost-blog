@@ -1,0 +1,47 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "joost.blog",
+    "identifier": "joost.blog",
+    "documentationUrl": "https://joost.blog/okf-ard/",
+    "logoUrl": "https://joost.blog/favicon-512.png",
+    "trustManifest": {
+      "identity": "did:web:joost.blog",
+      "identityType": "did",
+      "privacyPolicyUrl": "https://joost.blog/privacy-policy/",
+      "signature": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImRpZDp3ZWI6am9vc3QuYmxvZyNhcmQtc2lnbmluZyJ9..-zmimJQ3heR5MG5eoPwMK_bArxvm_U-h4ARzWVVlLGGuoajSsXy0P0_IpM4TvxrbQd6fnvXzZcT0IuXNW7G1zQ"
+    }
+  },
+  "entries": [
+    {
+      "identifier": "urn:ai:joost.blog:mcp:joost-blog",
+      "displayName": "joost.blog — MCP server",
+      "description": "MCP server over Joost de Valk's writing on SEO, WordPress, AI, and the open web. ask_joost returns answers grounded in his posts and talks with source URLs; list_recent_content lists published posts filtered by topic and date.",
+      "mediaType": "application/mcp-server-card+json",
+      "url": "https://joost.blog/.well-known/mcp/server-card.json",
+      "tags": [
+        "mcp",
+        "seo",
+        "wordpress",
+        "open-web"
+      ],
+      "version": "1.0.0",
+      "updatedAt": "2026-06-19T00:00:00Z"
+    },
+    {
+      "identifier": "urn:ai:joost.blog:a2a:ask-joost",
+      "displayName": "Ask Joost — A2A agent",
+      "description": "A2A agent grounded in Joost de Valk's published posts and video transcripts. Answers natural-language questions about SEO, WordPress, the open web, AI, and open source, with a citation for every claim.",
+      "mediaType": "application/a2a-agent-card+json",
+      "url": "https://joost.blog/.well-known/agent-card.json",
+      "tags": [
+        "a2a",
+        "seo",
+        "wordpress",
+        "open-web"
+      ],
+      "version": "1.0.0",
+      "updatedAt": "2026-06-19T00:00:00Z"
+    }
+  ]
+}

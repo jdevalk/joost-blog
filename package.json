@@ -12,7 +12,9 @@
         "ai-roi": "node --env-file-if-exists=.env scripts/ai-crawler-roi.mjs",
         "format": "prettier --write 'src/**/*.{ts,tsx,astro}'",
         "format:check": "prettier --check 'src/**/*.{ts,tsx,astro}'",
-        "build": "pnpm format:check && node scripts/generate-draft-slugs.mjs && node scripts/generate-agent-skills.mjs && node scripts/check-src.mjs && astro build",
+        "sign:ard": "node scripts/sign-ard-catalog.mjs",
+        "check:ard": "node scripts/sign-ard-catalog.mjs --check",
+        "build": "pnpm format:check && node scripts/generate-draft-slugs.mjs && node scripts/generate-agent-skills.mjs && node scripts/check-src.mjs && node scripts/sign-ard-catalog.mjs --check && astro build",
         "preview": "astro preview",
         "astro": "astro"
     },

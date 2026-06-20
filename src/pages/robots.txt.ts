@@ -12,6 +12,7 @@ Content-Signal: ai-train=yes, search=yes, ai-input=yes
 
 Sitemap: ${siteUrl}/sitemap-index.xml
 Schemamap: ${siteUrl}/schemamap.xml
+Agentmap: ${siteUrl}/.well-known/ai-catalog.json
 `,
         { headers: { 'Content-Type': 'text/plain' } }
     );

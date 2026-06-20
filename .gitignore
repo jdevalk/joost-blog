@@ -43,3 +43,9 @@ scripts/out/
 # Claude Code local files — ignore everything except the shared skills folder
 .claude/*
 !.claude/skills/
+
+# ARD AI Catalog offline signing key — NEVER commit. Back up to secure storage.
+.ard-signing-key.json
+
+# Wrangler local cache
+.wrangler/

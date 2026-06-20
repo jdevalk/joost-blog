@@ -1,0 +1,13 @@
+{
+  "keys": [
+    {
+      "kty": "EC",
+      "crv": "P-256",
+      "x": "qWzqZoTOlurmVEe9VYYfxECMz-sGBkwK-nRch1XcaIU",
+      "y": "Zdr8fTDTqHFZStAryAM_vQjiBjmFuedtQR-tssPKhoQ",
+      "use": "sig",
+      "alg": "ES256",
+      "kid": "did:web:joost.blog#ard-signing"
+    }
+  ]
+}

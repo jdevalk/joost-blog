@@ -1,0 +1,27 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/jws-2020/v1"
+  ],
+  "id": "did:web:joost.blog",
+  "alsoKnownAs": [
+    "at://did:plc:tmuyxkwmhval7ggvy64g5xnt"
+  ],
+  "verificationMethod": [
+    {
+      "id": "did:web:joost.blog#ard-signing",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:joost.blog",
+      "publicKeyJwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "qWzqZoTOlurmVEe9VYYfxECMz-sGBkwK-nRch1XcaIU",
+        "y": "Zdr8fTDTqHFZStAryAM_vQjiBjmFuedtQR-tssPKhoQ",
+        "alg": "ES256"
+      }
+    }
+  ],
+  "assertionMethod": [
+    "did:web:joost.blog#ard-signing"
+  ]
+}
