@@ -98,6 +98,8 @@ Without a catalog, an agent discovering your site's APIs has to guess standard p
 
 [My Astro SEO plugin](/seo-graph/) ships a `createApiCatalog` route factory that emits the `application/linkset+json` format and absolutizes paths against the site URL; schema endpoints get auto-typed to their `https://schema.org/<Type>` URL so the catalog stays in sync with the schema endpoint config.
 
+Since I wrote this, agents got a catalogue standard of their own. I've added an [AI Catalog from the ARD spec](/okf-ard/) alongside the RFC 9727 one: a single signed manifest listing the MCP, A2A, and Agent Skill endpoints below, tied to my Bluesky identity. That post covers adopting it (and the OKF bundle) in full.
+
 ### Agent Skills index
 
 Coding agents (Claude Code, Cursor, GitHub Copilot) can load skill documents that shape how they write code for a specific stack. The [Agent Skills Discovery RFC](https://github.com/cloudflare/agent-skills-discovery-rfc) is a Cloudflare proposal so adoption is nascent, but the upside is real if the pattern takes hold: point an agent at `/.well-known/agent-skills/index.json` and it loads your project's conventions instead of guessing them.
