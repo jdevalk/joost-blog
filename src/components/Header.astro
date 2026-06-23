@@ -1,127 +1,25 @@
 ---
 import siteConfig from '../data/site-config';
+
+const pathname = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+    if (href === '/') return pathname === '/';
+    // Blog stays active on category pages and individual posts reached via /blog
+    if (href === '/blog/') return pathname.startsWith('/blog') || pathname.startsWith('/category');
+    return pathname.startsWith(href);
+}
 ---
 
-<header class="sp-header">
-    <div class="sp-header-inner">
-        <div class="sp-header-left">
-            <a href="/" class="sp-logo-link">
-                <div class="sp-mark">J</div>
-                <div class="sp-wordmark">
-                    <div class="sp-title">{siteConfig.title}</div>
-                </div>
-            </a>
-        </div>
-        <nav class="sp-nav" id="sp-nav" aria-label="Primary navigation">
-            {
-                siteConfig.primaryNavLinks?.map((link) => (
-                    <a href={link.href} aria-current={Astro.url.pathname.startsWith(link.href) ? 'page' : undefined}>
-                        {link.text}
-                    </a>
-                ))
-            }
-        </nav>
-        <div class="sp-header-right">
-            <button class="sp-search" data-open-search aria-label="Search (⌘K)"> ⌕&nbsp;&nbsp;search the archive </button>
-            <button class="sp-hamburger" id="sp-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="sp-nav">
-                <span></span><span></span><span></span>
-            </button>
-        </div>
-    </div>
+<header class="site-header">
+    <a href="/" class="site-wordmark">Joost de Valk</a>
+    <nav class="site-nav" aria-label="Primary navigation">
+        {
+            siteConfig.primaryNavLinks?.map((link) => (
+                <a href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
+                    {link.text}
+                </a>
+            ))
+        }
+    </nav>
 </header>
-
-<script>
-    const hamburger = document.getElementById('sp-hamburger');
-    const nav = document.getElementById('sp-nav');
-    const header = document.querySelector<HTMLElement>('.sp-header');
-    const root = document.querySelector<HTMLElement>('.sp-root');
-
-    // Publish the current header height on .sp-root as --sp-header-h.
-    // Sticky elements (TOC, filter bars) and scroll-margin-top rules use it
-    // so they follow the header when it shrinks. ResizeObserver covers both
-    // the scroll-shrink transition and responsive breakpoint changes.
-    if (header && root) {
-        const ro = new ResizeObserver(() => {
-            root.style.setProperty('--sp-header-h', header.offsetHeight + 'px');
-        });
-        ro.observe(header);
-    }
-
-    // Shrink the header once the page is scrolled past the threshold.
-    // rAF-throttled so we don't thrash on every scroll event.
-    //
-    // Hysteresis (two thresholds) is essential: the header is sticky and
-    // in-flow, so adding `is-scrolled` shrinks it ~44px (101 -> 57), which
-    // pulls the scroll position up by that same amount. With a single
-    // threshold, that shift crosses back over the line and removes the
-    // class, which grows the header and pushes the scroll past the line
-    // again — a self-sustaining oscillation that reads as shaking.
-    //
-    // The ENTER/EXIT gap must therefore exceed the shrink (~44px) so the
-    // reflow can never flip the state back. We also only un-shrink within a
-    // few px of the very top, so the header grows back where the user can't
-    // see content move. Past ENTER, the scroll auto-compensates for the
-    // shrink and the content under the viewport stays visually put.
-    if (header) {
-        const ENTER = 64;
-        const EXIT = 2;
-        let ticking = false;
-        const update = () => {
-            const y = window.scrollY;
-            if (!header.classList.contains('is-scrolled')) {
-                if (y > ENTER) header.classList.add('is-scrolled');
-            } else if (y < EXIT) {
-                header.classList.remove('is-scrolled');
-            }
-            ticking = false;
-        };
-        update();
-        window.addEventListener(
-            'scroll',
-            () => {
-                if (!ticking) {
-                    requestAnimationFrame(update);
-                    ticking = true;
-                }
-            },
-            { passive: true }
-        );
-    }
-
-    // When the user clicks an in-page anchor (e.g. a TOC link) while the
-    // header is still at full size, we'd otherwise compute the scroll target
-    // against the tall header and only shrink afterwards — making the heading
-    // land too low. Snap the header to its shrunk state synchronously (with
-    // transitions disabled for one frame) so the browser's hash navigation
-    // uses the post-shrink --sp-header-h and scroll-margin-top calc.
-    document.addEventListener('click', (e) => {
-        if (!(e.target instanceof Element) || !header || !root) return;
-        const link = e.target.closest<HTMLAnchorElement>('a[href^="#"]');
-        if (!link) return;
-        const hash = link.getAttribute('href') || '';
-        if (hash.length < 2) return; // bare "#" (back-to-top) — let it un-shrink naturally
-        if (!document.getElementById(hash.slice(1))) return;
-        if (header.classList.contains('is-scrolled')) return;
-
-        header.classList.add('sp-header--no-transition');
-        header.classList.add('is-scrolled');
-        // Force reflow so the new size is applied before reading offsetHeight.
-        void header.offsetHeight;
-        root.style.setProperty('--sp-header-h', header.offsetHeight + 'px');
-        requestAnimationFrame(() => header.classList.remove('sp-header--no-transition'));
-    });
-
-    hamburger?.addEventListener('click', () => {
-        const isOpen = nav?.classList.toggle('is-open');
-        hamburger.setAttribute('aria-expanded', String(!!isOpen));
-        hamburger.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-    });
-
-    nav?.querySelectorAll('a').forEach((link) => {
-        link.addEventListener('click', () => {
-            nav.classList.remove('is-open');
-            hamburger?.setAttribute('aria-expanded', 'false');
-            hamburger?.setAttribute('aria-label', 'Open menu');
-        });
-    });
-</script>

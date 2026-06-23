@@ -1,12 +1,13 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import avatar from '../assets/images/joost-headshot.jpg';
 import FormattedDate from '../components/FormattedDate.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import TableOfContents from '../components/TableOfContents.astro';
-import { sortPostsByDateDesc, slugify, getReadingTime, getRelatedPosts } from '../utils/post-utils';
+import { sortPostsByDateDesc, slugify, getReadingTime } from '../utils/post-utils';
 import { gitLastmod } from '../utils/sitemap';
 import fs from 'node:fs';
 
@@ -27,290 +28,336 @@ function computeUpdatedDate(entryId: string, manual: Date | undefined, publishDa
     return last.getTime() - publishDate.getTime() > 24 * 60 * 60 * 1000 ? last : null;
 }
 
+function stripTitle(s: string): string {
+    return s.replace(/\*([^*]+)\*/g, '$1');
+}
+function emTitle(s: string): string {
+    return s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+}
+
 export async function getStaticPaths() {
     const posts = (await getCollection('blog')).sort(sortPostsByDateDesc);
     const pages = await getCollection('pages');
 
-    const blogPaths = posts.map((post) => ({
+    const blogPaths = posts.map((post, i) => ({
         params: { slug: post.id },
         props: {
             entry: post,
             type: 'blog' as const,
-            relatedPosts: getRelatedPosts(post, posts),
-            readingTime: getReadingTime(post.body ?? '')
+            readingTime: getReadingTime(post.body ?? ''),
+            // posts sorted newest-first: i-1 is newer ("Next"), i+1 is older ("Previous")
+            newer: i > 0 ? { id: posts[i - 1].id, title: posts[i - 1].data.title } : null,
+            older: i < posts.length - 1 ? { id: posts[i + 1].id, title: posts[i + 1].data.title } : null
         }
     }));
 
     const pagePaths = pages
-        .filter((page) => page.id !== 'videos' && page.id !== 'clicky' && page.id !== 'about-me' && page.id !== 'contact-me' && page.id !== 'cms-market-share' && page.data.section !== 'code')
+        .filter(
+            (page) =>
+                page.id !== 'videos' &&
+                page.id !== 'clicky' &&
+                page.id !== 'about-me' &&
+                page.id !== 'contact-me' &&
+                page.id !== 'cms-market-share' &&
+                page.data.section !== 'code'
+        )
         .map((page) => ({
             params: { slug: page.id },
-            props: {
-                entry: page,
-                type: 'page' as const
-            }
+            props: { entry: page, type: 'page' as const, readingTime: 0, newer: null, older: null }
         }));
 
     return [...blogPaths, ...pagePaths];
 }
 
-const { entry, type, relatedPosts, readingTime } = Astro.props;
-const { Content, headings } = await render(entry);
-const { href } = Astro.url;
+const { entry, type, readingTime, newer, older } = Astro.props;
+const { Content } = await render(entry);
 
 const isBlog = type === 'blog';
 const blogData = isBlog ? (entry as CollectionEntry<'blog'>).data : null;
 const pageData = !isBlog ? (entry as CollectionEntry<'pages'>).data : null;
 
-const effectiveUpdatedDate = isBlog
-    ? computeUpdatedDate(entry.id, blogData!.updatedDate, blogData!.publishDate)
-    : null;
+const effectiveUpdatedDate = isBlog ? computeUpdatedDate(entry.id, blogData!.updatedDate, blogData!.publishDate) : null;
 
-function stripHtml(s: string): string { return s.replace(/<[^>]+>/g, ''); }
+function stripHtml(s: string): string {
+    return s.replace(/<[^>]+>/g, '');
+}
 
-const seoTitle = isBlog
-    ? (blogData!.seo?.title ?? stripHtml(blogData!.title))
-    : (pageData!.seo?.title ?? stripHtml(pageData!.title));
-const seoDescription = isBlog
-    ? (blogData!.seo?.description ?? blogData!.excerpt)
-    : pageData!.seo?.description;
+const seoTitle = isBlog ? (blogData!.seo?.title ?? stripHtml(stripTitle(blogData!.title))) : (pageData!.seo?.title ?? stripHtml(pageData!.title));
+const seoDescription = isBlog ? (blogData!.seo?.description ?? blogData!.excerpt) : pageData!.seo?.description;
 
 const pageCanonicalUrl = canonicalUrl(Astro.url.pathname);
 
-const pageContext: SchemaPageContext = isBlog ? {
-    pageType: 'blogPost',
-    canonicalUrl: pageCanonicalUrl,
-    title: stripHtml(blogData!.title),
-    description: blogData!.excerpt ?? blogData!.seo?.description ?? '',
-    publishDate: blogData!.publishDate,
-    updatedDate: effectiveUpdatedDate ?? undefined,
-    featureImageUrl: canonicalUrl(`/og/${entry.id}.webp`),
-    categories: blogData!.categories,
-    wordCount: (entry.body ?? '').split(/\s+/).length
-} : {
-    pageType: entry.id === 'about-me' ? 'about' : 'page',
-    canonicalUrl: pageCanonicalUrl,
-    title: pageData!.title,
-    description: pageData!.seo?.description ?? ''
-};
+const pageContext: SchemaPageContext = isBlog
+    ? {
+          pageType: 'blogPost',
+          canonicalUrl: pageCanonicalUrl,
+          title: stripHtml(stripTitle(blogData!.title)),
+          description: blogData!.excerpt ?? blogData!.seo?.description ?? '',
+          publishDate: blogData!.publishDate,
+          updatedDate: effectiveUpdatedDate ?? undefined,
+          featureImageUrl: canonicalUrl(`/og/${entry.id}.webp`),
+          categories: blogData!.categories,
+          wordCount: (entry.body ?? '').split(/\s+/).length
+      }
+    : {
+          pageType: entry.id === 'about-me' ? 'about' : 'page',
+          canonicalUrl: pageCanonicalUrl,
+          title: pageData!.title,
+          description: pageData!.seo?.description ?? ''
+      };
 
-// Blog post — TOC and computed values
-const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some(h => h.depth === 2 || h.depth === 3);
-
-// Category label
-const primaryCategory = blogData?.categories?.[0] ?? null;
+const categories = blogData?.categories ?? [];
+const primaryCategory = categories[0] ?? null;
 ---
 
-{isBlog ? (
-<BaseLayout title={seoTitle} description={seoDescription} pageType="article" publishDate={blogData!.publishDate} updatedDate={effectiveUpdatedDate ?? undefined} categories={blogData!.categories} noindex={!!blogData!.draft}>
-    <SchemaGraph pageContext={pageContext} />
-    <div class="sp-root sp-blocks sp-post">
+{
+    isBlog ? (
+        <BaseLayout
+            title={seoTitle}
+            description={seoDescription}
+            pageType="article"
+            publishDate={blogData!.publishDate}
+            updatedDate={effectiveUpdatedDate ?? undefined}
+            categories={blogData!.categories}
+            noindex={!!blogData!.draft}
+        >
+            <SchemaGraph pageContext={pageContext} />
+            <div class="sp-root sp-post">
+                <article class="post-article" data-pagefind-body>
+                    <a href="/blog/" class="post-back">
+                        ← all writing
+                    </a>
 
-        <section class="sp-post-hero" data-pagefind-body>
-            <div class="sp-section-inner">
-            <nav class="sp-post-crumbs" aria-label="Breadcrumb">
-                <a href="/">Home</a>
-                <span class="sep">/</span>
-                <a href="/blog/">Blog</a>
-                {primaryCategory && (
-                    <>
-                        <span class="sep">/</span>
-                        <a href={`/category/${slugify(primaryCategory)}/`}>{primaryCategory}</a>
-                    </>
-                )}
-                <span class="sep">/</span>
-            </nav>
-
-            <h1 class="sp-post-title" set:html={blogData!.title.replace(/\*([^*]+)\*/g, '<em>$1</em>')} />
-
-            <div class="sp-post-meta-row">
-                <span>Published · <strong><FormattedDate date={blogData!.publishDate} /></strong></span>
-                {effectiveUpdatedDate && (
-                    <span>Updated · <strong><FormattedDate date={effectiveUpdatedDate} /></strong></span>
-                )}
-                {readingTime && (
-                    <span><strong>{readingTime} min</strong> read</span>
-                )}
-                <span>By <strong>Joost de Valk</strong></span>
-            </div>
-            </div>
-        </section>
-
-        <section class="sp-post-body" data-pagefind-body>
-            <div class:list={['sp-post-grid', { 'sp-no-toc': !hasToc }]}>
-
-                {hasToc && <TableOfContents headings={headings} />}
-
-                <article class="sp-prose">
-                    <Content />
-
-                    <div class="sp-share" data-pagefind-ignore="all">
-                        <span>Reply or share</span>
-                        <a href={`https://bsky.app/intent/compose?text=${encodeURIComponent(stripHtml(blogData!.title) + ' ' + href)}`} target="_blank" rel="noopener noreferrer">Bluesky</a>
-                        <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(href)}&summary=${encodeURIComponent(stripHtml(blogData!.title))}`} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                        <a href={`https://wa.me/?text=${encodeURIComponent(stripHtml(blogData!.title) + '\n\n' + href)}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-                        <a href={`mailto:?subject=${encodeURIComponent(stripHtml(blogData!.title))}&body=${encodeURIComponent('Thought you might like this:\n\n' + href)}`}>Email</a>
+                    <div class="post-meta">
+                        {primaryCategory && (
+                            <a class="post-cat-pill" href={`/category/${slugify(primaryCategory)}/`}>
+                                {primaryCategory}
+                            </a>
+                        )}
+                        <span>
+                            <FormattedDate date={blogData!.publishDate} />
+                        </span>
+                        {readingTime > 0 && (
+                            <>
+                                <span>·</span>
+                                <span>{readingTime} min read</span>
+                            </>
+                        )}
                     </div>
-                </article>
 
-                <aside class="sp-post-margin" data-pagefind-ignore="all">
-                    {blogData!.categories && blogData!.categories.length > 0 && (
-                        <div class="m-block">
-                            <div class="m-lbl">Filed under</div>
-                            <ul>
-                                {blogData!.categories.map(cat => (
-                                    <li><a href={`/category/${slugify(cat)}/`} class="m-body">{cat}</a></li>
-                                ))}
-                            </ul>
+                    <h1 class="post-title" set:html={emTitle(blogData!.title)} />
+
+                    {blogData!.excerpt && <p class="post-standfirst">{blogData!.excerpt}</p>}
+
+                    <div class="post-author">
+                        <Image src={avatar} alt="Joost de Valk" width={84} loading="eager" />
+                        <div>
+                            <div class="name">Joost de Valk</div>
+                            <div class="sub">Founder of Yoast · Emilia Capital</div>
+                        </div>
+                    </div>
+
+                    <div class="sp-prose sp-prose--dropcap">
+                        <Content />
+                    </div>
+
+                    {categories.length > 0 && (
+                        <div class="post-tags">
+                            <span class="post-tags-label">Filed under</span>
+                            {categories.map((cat) => (
+                                <a href={`/category/${slugify(cat)}/`} class="post-tag">
+                                    {cat}
+                                </a>
+                            ))}
                         </div>
                     )}
-                </aside>
-
-            </div>
-        </section>
-
-        {relatedPosts && relatedPosts.length > 0 && (
-            <section class="sp-related" data-pagefind-ignore="all">
-                <div class="sp-section-inner">
-                <div class="rel-head">
-                    <h3>Related writing</h3>
-                    <div class="meta">From the archive</div>
-                </div>
-                <div class="sp-related-grid">
-                    {relatedPosts.slice(0, 3).map(relPost => (
-                        <a href={`/${relPost.id}/`} class="sp-related-card">
-                            <div class="date">
-                                <FormattedDate date={relPost.data.publishDate} />
-                                {getReadingTime(relPost.body ?? '') && ` · ${getReadingTime(relPost.body ?? '')} min`}
-                            </div>
-                            <h4 set:html={relPost.data.title} />
-                            {relPost.data.excerpt && <p>{relPost.data.excerpt}</p>}
-                        </a>
-                    ))}
-                </div>
-                </div>
-            </section>
-        )}
-
-    </div>
-</BaseLayout>
-
-<script>
-    function initToc() {
-        const links = document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]');
-        if (links.length === 0) return;
-
-        const headingIds = Array.from(links).map(l => l.hash.slice(1));
-        const headings = headingIds
-            .map(id => document.getElementById(id))
-            .filter((el): el is HTMLElement => el !== null);
-
-        if (headings.length === 0) return;
-
-        const tocEl = document.querySelector<HTMLElement>('.sp-post-toc');
-        const toggleBtn = document.querySelector<HTMLButtonElement>('[data-toc-toggle]');
-        const currentLabel = document.querySelector<HTMLElement>('[data-toc-current]');
-
-        const setOpen = (open: boolean) => {
-            if (!tocEl || !toggleBtn) return;
-            tocEl.dataset.tocOpen = open ? 'true' : 'false';
-            toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        };
-
-        const setActive = (active: string | null) => {
-            let activeLink: HTMLAnchorElement | null = null;
-            links.forEach(link => {
-                const isActive = active !== null && link.hash === `#${active}`;
-                link.classList.toggle('active', isActive);
-                if (isActive) activeLink = link;
-            });
-            if (activeLink) {
-                const link = activeLink as HTMLAnchorElement;
-                if (currentLabel) {
-                    const heading = active ? document.getElementById(active) : null;
-                    currentLabel.textContent = heading?.textContent?.trim() || 'Top of page';
-                }
-                const toc = link.closest('.sp-post-toc') as HTMLElement | null;
-                if (toc) {
-                    const tocRect = toc.getBoundingClientRect();
-                    const linkRect = link.getBoundingClientRect();
-                    const padding = 16;
-                    if (linkRect.top < tocRect.top + padding) {
-                        toc.scrollBy({ top: linkRect.top - tocRect.top - padding, behavior: 'smooth' });
-                    } else if (linkRect.bottom > tocRect.bottom - padding) {
-                        toc.scrollBy({ top: linkRect.bottom - tocRect.bottom + padding, behavior: 'smooth' });
-                    }
-                }
-            } else if (currentLabel) {
-                currentLabel.textContent = 'Top of page';
-            }
-        };
-
-        if (toggleBtn && tocEl) {
-            toggleBtn.addEventListener('click', () => {
-                setOpen(tocEl.dataset.tocOpen !== 'true');
-            });
-            tocEl.addEventListener('click', (e) => {
-                const target = e.target as HTMLElement;
-                const link = target.closest<HTMLAnchorElement>('[data-toc-link]');
-                if (link) {
-                    setActive(link.hash.slice(1));
-                    setOpen(false);
-                }
-            });
-            document.addEventListener('click', (e) => {
-                if (tocEl.dataset.tocOpen !== 'true') return;
-                if (!tocEl.contains(e.target as Node)) setOpen(false);
-            });
-
-            const hero = document.querySelector<HTMLElement>('.sp-post-hero');
-            if (hero) {
-                const heroObserver = new IntersectionObserver(
-                    (entries) => {
-                        tocEl.dataset.tocVisible = entries[0]!.isIntersecting ? 'false' : 'true';
-                        if (entries[0]!.isIntersecting) setOpen(false);
-                    },
-                    { threshold: 0 },
-                );
-                heroObserver.observe(hero);
-            }
-        }
-
-        const observer = new IntersectionObserver(
-            () => {
-                let active: string | null = null;
-                for (const heading of headings) {
-                    if (heading.getBoundingClientRect().top <= 220) {
-                        active = heading.id;
-                    }
-                }
-                setActive(active);
-            },
-            { rootMargin: '-180px 0px -70% 0px', threshold: 0 },
-        );
-
-        headings.forEach(h => observer.observe(h));
-    }
-
-    initToc();
-</script>
-) : (
-<BaseLayout title={seoTitle} description={seoDescription}>
-    <SchemaGraph pageContext={pageContext} />
-    <div class="sp-root sp-blocks sp-post" data-pagefind-body>
-        <section class="sp-post-hero">
-            <div class="sp-section-inner">
-                <h1 class="sp-post-title">{pageData!.title}</h1>
-            </div>
-        </section>
-        <section class="sp-post-body">
-            <div class:list={['sp-post-grid', { 'sp-no-toc': !hasToc }]}>
-                {hasToc && <TableOfContents headings={headings} />}
-                <article class="sp-prose">
-                    <Content />
                 </article>
+
+                {(newer || older) && (
+                    <nav class="post-nav" aria-label="More writing">
+                        {older ? (
+                            <a href={`/${older.id}/`} class="post-nav-cell">
+                                <div class="lbl">← Previous</div>
+                                <div class="ttl" set:html={emTitle(older.title)} />
+                            </a>
+                        ) : (
+                            <span class="post-nav-cell post-nav-empty" />
+                        )}
+                        {newer ? (
+                            <a href={`/${newer.id}/`} class="post-nav-cell post-nav-next">
+                                <div class="lbl">Next →</div>
+                                <div class="ttl" set:html={emTitle(newer.title)} />
+                            </a>
+                        ) : (
+                            <span class="post-nav-cell post-nav-empty" />
+                        )}
+                    </nav>
+                )}
             </div>
-        </section>
-    </div>
-</BaseLayout>
-)}
+        </BaseLayout>
+    ) : (
+        <BaseLayout title={seoTitle} description={seoDescription}>
+            <SchemaGraph pageContext={pageContext} />
+            <div class="sp-root sp-post" data-pagefind-body>
+                <section class="sp-post-hero">
+                    <div class="sp-section-inner">
+                        <h1 class="sp-post-title">{pageData!.title}</h1>
+                    </div>
+                </section>
+                <section class="sp-post-body">
+                    <div class="sp-prose">
+                        <Content />
+                    </div>
+                </section>
+            </div>
+        </BaseLayout>
+    )
+}
+
+<style>
+    .post-article {
+        max-width: var(--measure);
+        margin: 0 auto;
+        padding: 56px 0 24px;
+    }
+    .post-back {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        color: var(--accent);
+        text-decoration: none;
+    }
+    .post-back:hover {
+        opacity: 0.7;
+    }
+    .post-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px;
+        margin: 26px 0 18px;
+        font-family: var(--font-mono);
+        font-size: 11.5px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--faint);
+    }
+    .post-cat-pill {
+        color: var(--accent);
+        background: rgba(95, 117, 96, 0.16);
+        padding: 4px 9px;
+        text-decoration: none;
+    }
+    .post-cat-pill:hover {
+        background: var(--accent-soft);
+    }
+    .post-title {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(40px, 5vw, 60px);
+        line-height: 1.02;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        margin: 0;
+    }
+    .post-title :global(em) {
+        font-style: italic;
+        font-weight: 500;
+    }
+    .post-standfirst {
+        font-family: var(--font-text);
+        font-weight: 300;
+        font-style: italic;
+        font-size: 23px;
+        line-height: 1.5;
+        color: var(--secondary);
+        margin: 24px 0 0;
+    }
+    .post-author {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 30px 0 40px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(31, 37, 48, 0.14);
+    }
+    .post-author :global(img) {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    .post-author .name {
+        font-family: var(--font-text);
+        font-size: 16px;
+        color: var(--ink);
+        line-height: 1.3;
+    }
+    .post-author .sub {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--faint);
+    }
+    .post-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 44px 0 0;
+        padding-top: 26px;
+        border-top: 1px solid rgba(31, 37, 48, 0.14);
+    }
+    .post-tags-label {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: var(--faint);
+        text-transform: uppercase;
+        align-self: center;
+    }
+    .post-tag {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--accent);
+        text-decoration: none;
+        border: 1px solid rgba(95, 117, 96, 0.4);
+        padding: 5px 11px;
+    }
+    .post-tag:hover {
+        background: rgba(95, 117, 96, 0.12);
+    }
+    .post-nav {
+        max-width: var(--measure);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        padding: 8px 0 16px;
+    }
+    .post-nav-cell {
+        text-decoration: none;
+        padding: 20px 0;
+        border-top: 2px solid var(--rule);
+    }
+    .post-nav-cell.post-nav-next {
+        text-align: right;
+    }
+    .post-nav-empty {
+        border-top: none;
+    }
+    .post-nav-cell .lbl {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: var(--faint);
+        text-transform: uppercase;
+    }
+    .post-nav-cell .ttl {
+        font-family: var(--font-text);
+        font-size: 19px;
+        color: var(--ink);
+        margin-top: 8px;
+    }
+    .post-nav-cell:hover {
+        opacity: 0.7;
+    }
+</style>

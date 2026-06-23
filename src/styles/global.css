@@ -6,14 +6,14 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    /* Slate palette */
-    --color-primary: #4a6480;
+    /* Sage palette (notebook redesign) */
+    --color-primary: #5f7560;
     --color-secondary: #1f2530;
-    --color-accent: #e08a5a;
-    --color-warm: #e08a5a;
-    --color-base: #e4e2dc;
-    --color-surface: #dcdad3;
-    --color-tertiary: #d2d0c8;
+    --color-accent: #5f7560;
+    --color-warm: #5f7560;
+    --color-base: #e0e3da;
+    --color-surface: #eceae3;
+    --color-tertiary: #d8dbd0;
 
     /* Shadows */
     --shadow-avatar: 0 0 0 6px rgba(74, 100, 128, 0.2), 0 0 0 14px rgba(74, 100, 128, 0.08);

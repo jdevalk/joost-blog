@@ -4,361 +4,327 @@ import SchemaGraph from '../../components/SchemaGraph.astro';
 import { canonicalUrl } from '../../utils/schema/constants';
 import type { SchemaPageContext } from '../../utils/schema';
 
-const yearsShipping = new Date().getFullYear() - 2007;
-
-const astroPackages = [
+const npmPackages = [
     {
-        n: '01',
         scope: '@jdevalk/',
         name: 'seo-graph-core',
-        tagline: 'Pure TypeScript schema.org JSON-LD graph builder.',
-        desc: 'Typed piece builders, ID factory, graph assembler with deduplication. Framework-agnostic — works anywhere you can run Node.',
-        npm: 'https://www.npmjs.com/package/@jdevalk/seo-graph-core',
-        github: 'https://github.com/jdevalk/seo-graph/tree/main/packages/seo-graph-core'
+        title: 'Pure TypeScript schema.org JSON-LD graph builder',
+        desc: 'Typed piece builders, ID factory, graph assembler with deduplication. Framework-agnostic.',
+        url: 'https://www.npmjs.com/package/@jdevalk/seo-graph-core'
     },
     {
-        n: '02',
         scope: '@jdevalk/',
         name: 'astro-seo-graph',
-        tagline: 'Astro integration for seo-graph-core.',
-        desc: 'Ships a <Seo> component, schema endpoint factories, a schema map for agent discovery, hreflang alternates, and Zod content helpers.',
-        npm: 'https://www.npmjs.com/package/@jdevalk/astro-seo-graph',
-        github: 'https://github.com/jdevalk/seo-graph/tree/main/packages/astro-seo-graph'
+        title: 'Astro integration for seo-graph-core',
+        desc: 'A <Seo> component, schema endpoints, agent-discoverable schema map, hreflang alternates.',
+        url: 'https://www.npmjs.com/package/@jdevalk/astro-seo-graph'
     },
     {
-        n: '03',
         scope: '@jdevalk/',
         name: 'astro-markdown-alternate',
-        tagline: 'Markdown alternate links for Astro articles.',
-        desc: 'Injects <link rel="alternate" type="text/markdown"> into article pages at build time, making raw Markdown source discoverable by agents and crawlers.',
-        npm: 'https://www.npmjs.com/package/@jdevalk/astro-markdown-alternate',
-        github: 'https://github.com/jdevalk/astro-markdown-alternate'
-    }
-];
-
-const emdashPackages = [
-    {
-        n: '01',
-        scope: '@jdevalk/',
-        name: 'emdash-plugin-seo',
-        tagline: 'SEO plugin for EmDash CMS.',
-        desc: 'Uses seo-graph-core for JSON-LD graph generation, with EmDash-specific piece builders and metadata hooks.',
-        npm: 'https://www.npmjs.com/package/@jdevalk/emdash-plugin-seo',
-        github: 'https://github.com/jdevalk/emdash-plugin-seo'
+        title: 'Markdown alternate links for Astro',
+        desc: 'Injects rel="alternate" markdown links so raw source is discoverable by agents and crawlers.',
+        url: 'https://www.npmjs.com/package/@jdevalk/astro-markdown-alternate'
     },
     {
-        n: '02',
+        scope: '@jdevalk/',
+        name: 'emdash-plugin-seo',
+        title: 'SEO plugin for EmDash CMS',
+        desc: 'JSON-LD graph generation via seo-graph-core, with EmDash-native piece builders and hooks.',
+        url: 'https://www.npmjs.com/package/@jdevalk/emdash-plugin-seo'
+    },
+    {
         scope: '@jdevalk/',
         name: 'emdash-plugin-lettermint',
-        tagline: 'Lettermint email provider plugin for EmDash CMS.',
-        desc: 'Connects EmDash to Lettermint for email delivery, with EmDash-native hooks for transactional sending.',
-        npm: 'https://www.npmjs.com/package/@jdevalk/emdash-plugin-lettermint',
-        github: 'https://github.com/jdevalk/emdash-plugin-lettermint'
+        title: 'Lettermint email provider for EmDash',
+        desc: 'Connects EmDash to Lettermint for transactional email, with EmDash-native sending hooks.',
+        url: 'https://www.npmjs.com/package/@jdevalk/emdash-plugin-lettermint'
     }
 ];
 
 const plugins = [
     {
-        n: '01',
         name: 'Progress Planner',
-        desc: 'My current main focus. A WordPress plugin that helps you plan and track your content and site maintenance progress.',
+        desc: 'My main focus. Plan and track your content and site-maintenance progress.',
         url: 'https://progressplanner.com/',
-        image: '/images/plugins/progress-planner.svg',
-        github: 'https://github.com/ProgressPlanner/progress-planner'
+        image: '/images/plugins/progress-planner.svg'
     },
     {
-        n: '02',
         name: 'AAA Option Optimizer',
-        desc: 'Tracks autoloaded options usage and allows the user to optimize them — faster admin, faster frontend.',
+        desc: 'Tracks autoloaded options usage and helps you optimize them — faster admin, faster frontend.',
         url: 'https://progressplanner.com/plugins/aaa-option-optimizer/',
-        image: '/images/plugins/aaa-option-optimizer.svg',
-        github: 'https://github.com/ProgressPlanner/aaa-option-optimizer'
+        image: '/images/plugins/aaa-option-optimizer.svg'
     },
     {
-        n: '03',
         name: 'Brand Assets',
-        desc: 'Stop chasing down requests for your logo and color codes by creating a Brand Assets page on your site.',
+        desc: 'Stop chasing requests for your logo and colors — publish a Brand Assets page on your site.',
         url: 'https://progressplanner.com/plugins/brand-assets/',
-        image: '/images/plugins/brand-assets.svg',
-        github: 'https://github.com/ProgressPlanner/brand-assets'
+        image: '/images/plugins/brand-assets.svg'
     },
     {
-        n: '04',
         name: 'Comment Experience',
-        desc: "WordPress' comment system is incomplete. This plugin adds the little tricks that make comments actually manageable.",
+        desc: 'WordPress’ comment system is incomplete. This adds the tricks that make comments manageable.',
         url: 'https://progressplanner.com/plugins/comment-experience/',
-        image: '/images/plugins/comment-experience.svg',
-        github: 'https://github.com/ProgressPlanner/comment-experience'
+        image: '/images/plugins/comment-experience.svg'
     },
     {
-        n: '05',
-        name: 'Comment Free Zone',
-        desc: "For sites that don't need comments, this plugin removes every default entry point cleanly.",
-        url: 'https://progressplanner.com/plugins/comment-free-zone/',
-        image: '/images/plugins/comment-free-zone.svg',
-        github: 'https://github.com/ProgressPlanner/comment-free-zone'
-    },
-    {
-        n: '06',
         name: 'Fewer Tags',
-        desc: 'Make sure tags are only live on your site when they actually add value — more than a few posts in them.',
+        desc: 'Keep tags live only when they add value — more than a few posts in them — for cleaner archives.',
         url: 'https://progressplanner.com/plugins/fewer-tags/',
-        image: '/images/plugins/fewer-tags.svg',
-        github: 'https://github.com/ProgressPlanner/fewer-tags'
+        image: '/images/plugins/fewer-tags.svg'
     },
     {
-        n: '07',
         name: 'Glossary',
-        desc: 'Clear definitions that show up exactly when and where readers need them, without breaking reading flow.',
+        desc: 'Clear definitions that show up exactly when and where readers need them, without breaking flow.',
         url: 'https://progressplanner.com/plugins/glossary/',
-        image: '/images/plugins/glossary.svg',
-        github: 'https://github.com/ProgressPlanner/flavor-glossary'
+        image: '/images/plugins/glossary.svg'
     },
     {
-        n: '08',
+        name: 'Comment Free Zone',
+        desc: 'For sites that don’t need comments, this removes every default entry point cleanly.',
+        url: 'https://progressplanner.com/plugins/comment-free-zone/',
+        image: '/images/plugins/comment-free-zone.svg'
+    },
+    {
         name: 'XML Sitemaps for PDFs',
-        desc: 'If your site has a lot of PDFs, this Yoast SEO add-on is what you need to get them indexed.',
+        desc: 'A Yoast SEO add-on that gets all the PDFs on your site properly indexed.',
         url: 'https://progressplanner.com/plugins/xml-sitemap-for-pdfs/',
-        image: '/images/plugins/xml-sitemap-for-pdfs.svg',
-        github: 'https://github.com/ProgressPlanner/xml-sitemap-for-pdfs'
+        image: '/images/plugins/xml-sitemap-for-pdfs.svg'
     }
 ];
 
 const pageContext: SchemaPageContext = {
     pageType: 'page',
     canonicalUrl: canonicalUrl('/code/'),
-    title: 'The Workshop — Code & Projects',
-    description: 'Code projects, WordPress plugins, npm packages, and other software built and maintained by Joost de Valk.'
+    title: 'Code — open-source packages & WordPress plugins',
+    description: 'Open-source npm packages and WordPress plugins built and maintained by Joost de Valk.'
 };
 ---
 
-<BaseLayout title="Code" description="Code projects, WordPress plugins, and other software I've built and maintain.">
+<BaseLayout title="Code" description="Open-source npm packages and WordPress plugins that Joost de Valk builds and actively maintains.">
     <SchemaGraph pageContext={pageContext} />
 
-    <div class="sp-root sp-blocks sp-code" data-pagefind-body>
-        <section class="sp-hero">
-            <div class="sp-section-inner">
-                <div class="sp-code-kicker">
-                    <span>SECTION III</span>
-                    <span class="rule"></span>
-                    <span>OPEN SOURCE · PLUGINS · PACKAGES</span>
-                    <span class="rule"></span>
-                    <span>MIT &amp; GPL</span>
-                </div>
-                <h1 class="sp-display">The <em>Workshop</em>.</h1>
+    <div class="sp-root sp-code" data-pagefind-body>
+        <section class="code-hero">
+            <div>
+                <h1 class="sp-display">Code</h1>
                 <p class="sp-section-lede">
-                    Building tools that make the web &amp; the world better — from WordPress and EmDash plugins to Astro integrations, Schema infrastructure and
-                    club management software.
-                </p>
-                <div class="sp-code-stats">
-                    <div class="sp-code-stat">
-                        <div class="n">{plugins.length + astroPackages.length + emdashPackages.length + 1}</div>
-                        <div class="lbl">projects</div>
-                    </div>
-                    <div class="sp-code-stat">
-                        <div class="n">{astroPackages.length + emdashPackages.length}</div>
-                        <div class="lbl">npm packages</div>
-                    </div>
-                    <div class="sp-code-stat">
-                        <div class="n">{plugins.length}</div>
-                        <div class="lbl">WP plugins</div>
-                    </div>
-                    <div class="sp-code-stat">
-                        <div class="n">{yearsShipping}yr</div>
-                        <div class="lbl">shipping</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <nav class="code-toc" aria-label="Contents">
-            <div class="sp-section-inner">
-                <div class="code-toc-kicker">Contents</div>
-                <ol class="code-toc-list">
-                    <li>
-                        <a href="#sec-astro" data-band="astro">
-                            <span class="sec">§ 01</span>
-                            <span class="name">Astro</span>
-                            <span class="dots" aria-hidden="true"></span>
-                            <span class="count">{astroPackages.length} package{astroPackages.length !== 1 ? 's' : ''}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#sec-emdash" data-band="emdash">
-                            <span class="sec">§ 02</span>
-                            <span class="name">EmDash</span>
-                            <span class="dots" aria-hidden="true"></span>
-                            <span class="count">{emdashPackages.length} package{emdashPackages.length !== 1 ? 's' : ''}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#sec-wp" data-band="wp">
-                            <span class="sec">§ 03</span>
-                            <span class="name">WordPress</span>
-                            <span class="dots" aria-hidden="true"></span>
-                            <span class="count">{plugins.length} plugin{plugins.length !== 1 ? 's' : ''}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#sec-rondo" data-band="rondo">
-                            <span class="sec">§ 04</span>
-                            <span class="name">Rondo</span>
-                            <span class="dots" aria-hidden="true"></span>
-                            <span class="count">GPL</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#sec-other" data-band="other">
-                            <span class="sec">§ 05</span>
-                            <span class="name">Elsewhere</span>
-                            <span class="dots" aria-hidden="true"></span>
-                            <span class="count">prose</span>
-                        </a>
-                    </li>
-                </ol>
-            </div>
-        </nav>
-
-        <section id="sec-astro" class="sp-code-section-head" data-band="astro">
-            <div class="sp-section-inner">
-                <div class="kicker">§ 01 · Astro</div>
-                <h3>SEO &amp; Schema.org for Astro.</h3>
-                <p class="intro">
-                    A shared schema.org JSON-LD graph engine and an Astro integration — agent-ready SEO infrastructure for the modern web, all open source.
+                    Open-source packages and WordPress plugins I build and maintain — most of it on
+                    <a href="https://github.com/jdevalk" target="_blank" rel="noopener noreferrer">GitHub</a> and
+                    <a href="https://www.npmjs.com/~jdevalk" target="_blank" rel="noopener noreferrer">npm</a>.
                 </p>
             </div>
-        </section>
-        <section class="sp-pkg-list">
-            {
-                astroPackages.map((pkg) => (
-                    <article class="sp-pkg">
-                        <div class="n">{pkg.n}</div>
-                        <div>
-                            <div class="name">
-                                <span class="at">{pkg.scope}</span>
-                                {pkg.name}
-                            </div>
-                            <h4 class="tagline">{pkg.tagline}</h4>
-                            <p class="desc">{pkg.desc}</p>
-                        </div>
-                        <div class="links">
-                            <a href={pkg.npm} target="_blank" rel="noopener noreferrer">
-                                npm →
-                            </a>
-                            <a href={pkg.github} target="_blank" rel="noopener noreferrer">
-                                GitHub →
-                            </a>
-                        </div>
-                    </article>
-                ))
-            }
-        </section>
-
-        <section id="sec-emdash" class="sp-code-section-head" data-band="emdash">
-            <div class="sp-section-inner">
-                <div class="kicker">§ 02 · EmDash</div>
-                <h3>EmDash plugins.</h3>
-                <p class="intro">Open-source plugins for the EmDash CMS — SEO, schema.org graph generation, and email delivery.</p>
+            <div class="code-whoami">
+                <div class="lbl">whoami</div>
+                <div><span class="p">$</span> shipping since <span class="v">2007</span></div>
+                <div><span class="p">$</span> npm scope <span class="v">@jdevalk</span></div>
+                <div><span class="p">$</span> gh <span class="v">/jdevalk</span></div>
             </div>
         </section>
-        <section class="sp-pkg-list">
-            {
-                emdashPackages.map((pkg) => (
-                    <article class="sp-pkg">
-                        <div class="n">{pkg.n}</div>
-                        <div>
-                            <div class="name">
-                                <span class="at">{pkg.scope}</span>
-                                {pkg.name}
-                            </div>
-                            <h4 class="tagline">{pkg.tagline}</h4>
-                            <p class="desc">{pkg.desc}</p>
-                        </div>
-                        <div class="links">
-                            <a href={pkg.npm} target="_blank" rel="noopener noreferrer">
-                                npm →
-                            </a>
-                            <a href={pkg.github} target="_blank" rel="noopener noreferrer">
-                                GitHub →
-                            </a>
-                        </div>
-                    </article>
-                ))
-            }
-        </section>
 
-        <section id="sec-wp" class="sp-code-section-head" data-band="wp">
-            <div class="sp-section-inner">
-                <div class="kicker">§ 03 · WordPress</div>
-                <h3>WordPress plugins.</h3>
-                <p class="intro">I was the original author of Yoast SEO and most of its add-ons, and never really stopped coding on WordPress plugins.</p>
+        <section class="code-section">
+            <div class="sp-section-head">
+                <h2>npm packages</h2>
+                <span class="sp-section-meta">TypeScript · Astro &amp; EmDash</span>
             </div>
-        </section>
-        <section class="sp-plugins">
-            <div class="sp-plugin-grid">
+            <div class="code-npm-grid">
                 {
-                    plugins.map((plugin) => (
-                        <div class="sp-plugin">
-                            <div class="icon">
-                                {plugin.image ? (
-                                    <img src={plugin.image} alt={plugin.name} loading="lazy" decoding="async" width="72" height="72" />
-                                ) : (
-                                    plugin.name.charAt(0)
-                                )}
+                    npmPackages.map((pkg) => (
+                        <a href={pkg.url} class="code-npm" target="_blank" rel="noopener noreferrer">
+                            <div class="name">
+                                <span class="scope">{pkg.scope}</span>
+                                {pkg.name}
                             </div>
-                            <div>
-                                <div class="n">№ {plugin.n}</div>
-                                <h4>{plugin.name}</h4>
-                                <p>{plugin.desc}</p>
-                                <div class="plugin-links">
-                                    <a href={plugin.url} target="_blank" rel="noopener noreferrer">
-                                        Plugin page →
-                                    </a>
-                                    &nbsp;&nbsp;·&nbsp;&nbsp;
-                                    <a href={plugin.github} target="_blank" rel="noopener noreferrer">
-                                        GitHub →
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                            <div class="title">{pkg.title}</div>
+                            <div class="desc">{pkg.desc}</div>
+                        </a>
                     ))
                 }
             </div>
         </section>
 
-        <section id="sec-rondo" class="sp-code-section-head" data-band="rondo">
-            <div class="sp-section-inner">
-                <div class="kicker">§ 04 · Club management software · Open source · GPL · Self-hostable</div>
-                <h3>Rondo.</h3>
-                <p class="intro">
-                    From member management and dues to invoicing, VOG, and membership passes —
-                    <a href="https://rondo.club" target="_blank" rel="noopener noreferrer">Rondo</a> automates your club processes and keeps everything in sync.
-                </p>
-                <div class="sp-code-section-links">
-                    <a href="https://rondo.club" target="_blank" rel="noopener noreferrer">rondo.club →</a>
-                    <a href="https://github.com/rondoclubmanager" target="_blank" rel="noopener noreferrer">GitHub →</a>
-                </div>
+        <section class="code-section">
+            <div class="sp-section-head">
+                <h2>WordPress plugins</h2>
+                <span class="sp-section-meta">mostly under Progress Planner</span>
             </div>
-        </section>
-
-        <section id="sec-other" class="sp-other" data-band="other">
-            <div class="sp-section-inner">
-                <div class="kicker">§ 05 · Elsewhere</div>
-                <h3>Other projects.</h3>
-                <p>
-                    I actively contribute to <a href="https://github.com/emdash-cms/emdash" target="_blank" rel="noopener noreferrer">EmDash core</a>, including
-                    per-collection sitemaps, breadcrumb support, and OG image handling. I also contribute to the software of some of the companies in our
-                    investment portfolio — read more about that on my
-                    <a href="/about-me/">about page</a>, or at <a href="https://emilia.capital/" target="_blank" rel="noopener noreferrer">Emilia Capital</a>.
-                </p>
-                <p style="margin-top: 1em;">
-                    On the tooling side: <a href="/code/alfred-quix/">Quix</a> is my Alfred workflow for running SEO checks, speed tests, and other web analysis tools
-                    on the current browser URL with a few keystrokes. I also maintain a
-                    <a href="https://github.com/jdevalk/skills" target="_blank" rel="noopener noreferrer">library of Claude Code skills</a> — reusable agent scripts
-                    that automate common dev and content workflows. And <a href="https://obsid.net/" target="_blank" rel="noopener noreferrer">obsid.net</a> is a
-                    tiny redirect service that turns a vault and file name into a shareable link that opens the note in Obsidian.
-                </p>
+            <div class="code-plugin-grid">
+                {
+                    plugins.map((p) => (
+                        <a href={p.url} class="code-plugin" target="_blank" rel="noopener noreferrer">
+                            <img src={p.image} alt={p.name} width="40" height="40" loading="lazy" decoding="async" />
+                            <div class="name">{p.name}</div>
+                            <div class="desc">{p.desc}</div>
+                            <div class="link">view plugin →</div>
+                        </a>
+                    ))
+                }
             </div>
+            <p class="code-closing">
+                I was the original author of <a href="https://yoast.com/wordpress/plugins/seo/" target="_blank" rel="noopener noreferrer">Yoast SEO</a> and still
+                occasionally contribute, and I actively contribute to other projects across the
+                <a href="https://emilia.capital/" target="_blank" rel="noopener noreferrer">Emilia Capital</a> portfolio — including
+                <a href="https://rondo.club" target="_blank" rel="noopener noreferrer">Rondo</a>, open-source club-management software, and
+                <a href="https://github.com/emdash-cms/emdash" target="_blank" rel="noopener noreferrer">EmDash core</a>.
+            </p>
         </section>
     </div>
 </BaseLayout>
+
+<style>
+    .code-hero {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 48px;
+        align-items: end;
+        padding: 60px 0 38px;
+    }
+    .code-whoami {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--accent);
+        line-height: 1.9;
+        border: 1px solid rgba(95, 117, 96, 0.4);
+        padding: 18px 22px;
+        background: rgba(95, 117, 96, 0.08);
+        border-radius: 2px;
+    }
+    .code-whoami .lbl {
+        color: var(--faint);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 10.5px;
+        margin-bottom: 8px;
+    }
+    .code-whoami .p,
+    .code-whoami .v {
+        color: var(--ink);
+    }
+
+    .code-section {
+        padding: 8px 0 16px;
+    }
+    .code-section + .code-section {
+        padding-top: 34px;
+    }
+    .code-npm-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .code-npm {
+        text-decoration: none;
+        padding: 22px 26px 22px 0;
+        border-bottom: 1px solid var(--hair);
+        transition: background 0.15s;
+    }
+    .code-npm:nth-child(odd) {
+        border-right: 1px solid var(--hair);
+    }
+    .code-npm:nth-child(even) {
+        padding: 22px 0 22px 26px;
+    }
+    .code-npm:hover {
+        background: rgba(31, 37, 48, 0.035);
+    }
+    .code-npm .name {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--accent);
+    }
+    .code-npm .scope {
+        color: var(--faint);
+    }
+    .code-npm .title {
+        font-family: var(--font-text);
+        font-size: 19px;
+        color: var(--ink);
+        margin-top: 8px;
+    }
+    .code-npm .desc {
+        font-family: var(--font-text);
+        font-size: 15px;
+        color: var(--muted);
+        margin-top: 6px;
+        line-height: 1.45;
+    }
+
+    .code-plugin-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+        padding-top: 24px;
+    }
+    .code-plugin {
+        text-decoration: none;
+        background: var(--card);
+        border: 1px solid rgba(31, 37, 48, 0.12);
+        padding: 22px;
+        display: block;
+        transition: border-color 0.15s;
+    }
+    .code-plugin:hover {
+        border-color: var(--accent);
+    }
+    .code-plugin img {
+        width: 40px;
+        height: 40px;
+        display: block;
+    }
+    .code-plugin .name {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: 20px;
+        color: var(--ink);
+        margin-top: 16px;
+    }
+    .code-plugin .desc {
+        font-family: var(--font-text);
+        font-size: 15px;
+        color: var(--muted);
+        margin-top: 6px;
+        line-height: 1.45;
+    }
+    .code-plugin .link {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--accent);
+        margin-top: 14px;
+    }
+    .code-closing {
+        font-family: var(--font-text);
+        font-size: 16px;
+        color: var(--muted);
+        margin: 26px 0 0;
+        max-width: 64ch;
+        line-height: 1.55;
+    }
+    .code-closing a {
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 1px solid var(--accent-soft-strong);
+    }
+
+    @media (max-width: 820px) {
+        .code-hero {
+            grid-template-columns: 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+        .code-plugin-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    @media (max-width: 560px) {
+        .code-npm-grid,
+        .code-plugin-grid {
+            grid-template-columns: 1fr;
+        }
+        .code-npm,
+        .code-npm:nth-child(odd) {
+            border-right: none;
+        }
+        .code-npm:nth-child(even) {
+            padding: 22px 26px 22px 0;
+        }
+    }
+</style>

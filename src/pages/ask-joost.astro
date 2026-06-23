@@ -21,7 +21,7 @@ const pageContext: SchemaPageContext = {
     <div class="sp-root sp-blocks sp-ask">
         <section class="sp-hero sp-ask-hero">
             <div class="sp-section-inner">
-                <div class="sp-about-kicker">
+                <div class="sp-code-kicker">
                     <span>§ Ask</span><span class="rule"></span><span>Answers from 18 years of writing</span>
                 </div>
                 <h1 class="sp-ask-title">
@@ -72,6 +72,261 @@ const pageContext: SchemaPageContext = {
         </section>
     </div>
 </BaseLayout>
+
+<style>
+    .sp-ask-hero {
+        padding: 60px 0 24px;
+    }
+    .sp-ask-hero .sp-section-inner {
+        max-width: 640px;
+    }
+    .sp-ask-title {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(40px, 5vw, 64px);
+        line-height: 1;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        margin: 0;
+    }
+    .sp-ask-title em {
+        font-style: italic;
+        font-weight: 500;
+        color: var(--accent);
+    }
+    .sp-ask-lede {
+        font-family: var(--font-text);
+        font-weight: 300;
+        font-size: 19px;
+        line-height: 1.55;
+        color: var(--secondary);
+        margin: 22px 0 0;
+        max-width: 54ch;
+    }
+    .sp-ask-examples {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 26px;
+    }
+    .sp-ask-chip {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--accent);
+        background: none;
+        border: 1px solid rgba(95, 117, 96, 0.4);
+        padding: 8px 13px;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    .sp-ask-chip:hover {
+        background: rgba(95, 117, 96, 0.12);
+    }
+
+    .sp-ask-body {
+        max-width: 640px;
+        padding: 8px 0 56px;
+    }
+    .sp-ask-convo {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+    }
+    .sp-ask-user,
+    .sp-ask-joost {
+        padding-top: 20px;
+        border-top: 1px solid var(--hair);
+    }
+    .sp-ask-user .lbl,
+    .sp-ask-joost .lbl {
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--faint);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+    .sp-ask-joost .lbl .j {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: var(--paper-white);
+        font-family: var(--font-display);
+        font-size: 11px;
+    }
+    .sp-ask-user p {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 21px;
+        color: var(--ink);
+        margin: 0;
+    }
+    .sp-ask-answer {
+        font-family: var(--font-text);
+        font-size: 18px;
+        line-height: 1.65;
+        color: var(--body);
+    }
+    .sp-ask-answer :global(p) {
+        margin: 0 0 16px;
+    }
+    .sp-ask-answer :global(a) {
+        color: var(--ink);
+        border-bottom: 1px solid var(--accent-soft-strong);
+        text-decoration: none;
+    }
+    .sp-ask-sources {
+        margin-top: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: baseline;
+    }
+    .sp-ask-sources :global(.lbl) {
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--faint);
+    }
+    .sp-ask-sources :global(.src) {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--accent);
+        text-decoration: none;
+        border: 1px solid rgba(95, 117, 96, 0.4);
+        padding: 4px 10px;
+    }
+    .sp-ask-thinking .lbl {
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--faint);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .sp-ask-thinking .j {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: var(--paper-white);
+        font-family: var(--font-display);
+        font-size: 11px;
+    }
+    .sp-ask-dots {
+        display: flex;
+        gap: 6px;
+        margin-top: 12px;
+    }
+    .sp-ask-dots span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent);
+        opacity: 0.5;
+        animation: ask-bounce 1.2s infinite ease-in-out;
+    }
+    .sp-ask-dots span:nth-child(2) {
+        animation-delay: 0.15s;
+    }
+    .sp-ask-dots span:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+    @keyframes ask-bounce {
+        0%,
+        80%,
+        100% {
+            opacity: 0.3;
+        }
+        40% {
+            opacity: 1;
+        }
+    }
+    .sp-ask-error {
+        margin-top: 20px;
+        color: var(--error);
+        font-family: var(--font-text);
+    }
+
+    .sp-ask-composer {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-top: 28px;
+        flex-wrap: wrap;
+    }
+    .sp-ask-input {
+        flex: 1;
+        min-width: 240px;
+        font-family: var(--font-text);
+        font-size: 17px;
+        color: var(--ink);
+        background: var(--card);
+        border: 1px solid rgba(31, 37, 48, 0.2);
+        padding: 12px 14px;
+        border-radius: 2px;
+        outline: none;
+    }
+    .sp-ask-input:focus {
+        border-color: var(--accent);
+        background: #f1efe8;
+    }
+    .sp-ask-submit {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        letter-spacing: 0.04em;
+        color: var(--paper-white);
+        background: var(--accent);
+        border: none;
+        cursor: pointer;
+        padding: 13px 24px;
+        border-radius: 2px;
+    }
+    .sp-ask-submit:hover {
+        background: var(--accent-hover);
+    }
+    .sp-ask-reset {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--muted);
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+    .sp-ask-disclaimer {
+        font-family: var(--font-text);
+        font-size: 15px;
+        color: var(--muted);
+        margin-top: 26px;
+        padding-top: 18px;
+        border-top: 1px solid var(--hair);
+        line-height: 1.55;
+    }
+    .sp-ask-disclaimer a {
+        color: var(--ink);
+        border-bottom: 1px solid var(--accent-soft-strong);
+        text-decoration: none;
+    }
+    .hidden {
+        display: none;
+    }
+</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {

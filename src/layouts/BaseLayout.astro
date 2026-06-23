@@ -15,20 +15,19 @@ const { ...head } = Astro.props;
         <BaseHead {...head} />
     </head>
     <body>
-        <a
-            href="#main-content"
-            class="focus:bg-primary sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:px-4 focus:py-2 focus:text-white focus:shadow-lg"
-            >Skip to content</a
-        >
-        <slot name="header">
-            <Header />
-        </slot>
-        <main id="main-content">
-            <slot />
-        </main>
-        <slot name="footer">
-            <Footer />
-        </slot>
+        <a href="#main-content" class="skip-link">Skip to content</a>
+        <div class="page-shell">
+            <div class="page-rule" aria-hidden="true"></div>
+            <slot name="header">
+                <Header />
+            </slot>
+            <main id="main-content">
+                <slot />
+            </main>
+            <slot name="footer">
+                <Footer />
+            </slot>
+        </div>
         <SearchModal />
         <script>
             import '../scripts/webmcp.ts';

@@ -1,37 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
-import { getImage, Image } from 'astro:assets';
-import profilePic from '../assets/images/joost-profile.jpg';
+import { Image } from 'astro:assets';
+import profilePic from '../assets/images/joost-headshot.jpg';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
-
-const allVideos = await getCollection('videos');
-const recentVideos = allVideos.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()).slice(0, 4);
-
-async function resolveThumb(video: (typeof recentVideos)[0]): Promise<string | null> {
-    if (video.data.thumbnailUrl) return video.data.thumbnailUrl;
-    const yt = video.data.youtubeId;
-    if (yt) return `https://img.youtube.com/vi/${yt}/maxresdefault.jpg`;
-    if (video.data.featureImage) {
-        const img = await getImage({ src: video.data.featureImage, width: 800 });
-        return img.src;
-    }
-    return null;
-}
-
-const recentThumbs = await Promise.all(recentVideos.map(resolveThumb));
-
-function formatDuration(isoDuration: string | undefined): string | null {
-    if (!isoDuration) return null;
-    const match = isoDuration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
-    if (!match) return null;
-    const h = parseInt(match[1] || '0');
-    const m = parseInt(match[2] || '0');
-    const s = parseInt(match[3] || '0');
-    return h > 0 ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}` : `${m}:${String(s).padStart(2, '0')}`;
-}
 
 const title = 'About Joost de Valk';
 const description =
@@ -43,156 +16,230 @@ const pageContext: SchemaPageContext = {
     title,
     description
 };
+
+const facts = [
+    { k: 'Based in', v: 'Wijchen, Netherlands' },
+    { k: 'Founded', v: 'Yoast (2010), Progress Planner' },
+    { k: 'Invests via', v: 'Emilia Capital' },
+    { k: 'On the board of', v: 'Patchstack & Atarim' }
+];
+
+const social = [
+    { n: 'GitHub', url: 'https://github.com/jdevalk' },
+    { n: 'LinkedIn', url: 'https://www.linkedin.com/in/jdevalk/' },
+    { n: 'Bluesky', url: 'https://bsky.app/profile/joost.blog' },
+    { n: 'Mastodon', url: 'https://joost.net/@joost' },
+    { n: 'Threads', url: 'https://www.threads.net/@joostdevalk' },
+    { n: 'Instagram', url: 'https://www.instagram.com/joostdevalk' },
+    { n: 'WordPress', url: 'https://profiles.wordpress.org/joostdevalk' }
+];
 ---
 
 <BaseLayout title={title} description={description}>
     <SchemaGraph pageContext={pageContext} />
 
-    <div class="sp-root sp-blocks sp-about">
-        <section class="sp-hero">
-            <div class="sp-about-hero-grid">
-                <div>
-                    <div class="sp-code-kicker">
-                        <span>SECTION II</span><span class="rule"></span><span>ABOUT ME · WIJCHEN, NL</span>
-                    </div>
-                    <h1 class="sp-display">
-                        Hi! I'm <em>Joost</em> de Valk
-                    </h1>
-                    <p class="sp-section-lede">
-                        I'm an internet entrepreneur from the Netherlands. I'm married to <a href="https://marieke.com/">Marieke</a>; we have four children and
-                        live in Wijchen, the Netherlands.
+    <div class="sp-root sp-about">
+        <section class="about-grid" data-pagefind-body>
+            <div class="about-main">
+                <h1 class="sp-display about-h1">Hi, I&rsquo;m<br />Joost.</h1>
+                <p class="about-intro">
+                    An internet entrepreneur from the Netherlands. I&rsquo;m married to <a href="https://marieke.com/">Marieke</a>; we have four children and
+                    live in Wijchen.
+                </p>
+                <div class="sp-prose about-prose">
+                    <h2>WordPress &amp; Yoast</h2>
+                    <p>
+                        I have a long history in digital marketing and WordPress. I&rsquo;m the founder of <a href="https://yoast.com/">Yoast</a>, best known
+                        for its Yoast SEO plugin. I wore a couple of different hats there: for almost nine years I was CEO, then became Chief Product Officer
+                        when Marieke took over as CEO.
                     </p>
-                    <p class="sp-about-sub">
-                        Today I'm Group Head of AI &amp; Growth at <a href="https://your.online/">Your.Online</a>, leading a team that builds AI tools to help
-                        entrepreneurs get online and grow. Before that I founded Yoast and its SEO plugin for WordPress, and I have a long history in open
-                        source and digital marketing.
+                    <p>
+                        We sold Yoast to Newfold Digital in August 2021, after which I became Head of WordPress Strategy for a while. I came back for a
+                        six-month stint as interim CTO in 2022&ndash;2023 — they were suddenly without one — and finally left the company in April 2023.
+                    </p>
+                    <h2>Investing &amp; building now</h2>
+                    <p>
+                        When we left Yoast, Marieke and I started investing through our company, <a href="https://emilia.capital/">Emilia Capital</a>. We back
+                        companies that play at least partly in the digital space, and often in WordPress. Because of that, I sit on the board of companies like
+                        <a href="https://patchstack.com/">Patchstack</a> and <a href="https://atarim.io/">Atarim</a>. We also started a new company of our own,
+                        <a href="https://progressplanner.com/">Progress Planner</a> — which, in June 2026, together with our whole team
+                        <a href="/progress-planner-joins-your-online/">joined Your.Online</a>. I&rsquo;m now Group Head of AI &amp; Growth there.
+                    </p>
+                    <h2>Before all that</h2>
+                    <p>
+                        I started blogging in 2004 and ran css3.info, one of the first sites tracking the CSS3 standard as browsers started to support it.
+                        Alongside that I consulted on some of the biggest SEO projects in the world, like the Guardian&rsquo;s site migration from co.uk to
+                        theguardian.com. I founded Yoast in 2010.
+                    </p>
+                    <h2>Away from the desk</h2>
+                    <p>
+                        In my spare time I can often be found coaching kids&rsquo; soccer at <a href="https://svawc.nl/">AWC</a>, where I&rsquo;m also a board
+                        member. On holidays, Marieke and I love spending time in our
+                        <a href="https://limonaia.house/">holiday home in Tuscany</a> — or traveling somewhere new.
                     </p>
                 </div>
-                <div class="sp-about-portrait">
-                    <Image src={profilePic} alt="Joost de Valk" width={800} loading="lazy" decoding="async" />
-                    <div class="sp-about-portrait-cap">Portrait · Aquilea, 2026</div>
+            </div>
+
+            <aside class="about-aside">
+                <figure class="about-portrait">
+                    <Image src={profilePic} alt="Joost de Valk" width={460} loading="eager" />
+                </figure>
+                <div class="about-facts">
+                    <div class="about-facts-label">The facts</div>
+                    <dl>
+                        {
+                            facts.map((f) => (
+                                <div>
+                                    <span class="k">{f.k}</span>
+                                    <br />
+                                    {f.v}
+                                </div>
+                            ))
+                        }
+                    </dl>
                 </div>
-            </div>
+            </aside>
         </section>
 
-        <section class="sp-about-story">
-            <div class="sp-about-story-head">
-                <div class="kicker">§ 01 · Background</div>
-                <h2>My story.</h2>
+        <section class="sp-dark-panel about-cta">
+            <div>
+                <h2>Work with me?</h2>
+                <p>
+                    I reserve a portion of my time for digital &amp; growth consultancy with companies we don&rsquo;t invest in — product direction, search/SEO
+                    strategy, and leveraging the open web.
+                </p>
             </div>
-            <div class="sp-about-story-grid">
-                <article class="sp-about-prose" data-pagefind-body>
-                    <p>
-                        My story starts on the early web. I began blogging in 2004 and ran css3.info, one of the first sites tracking the CSS3 standard as
-                        browsers started to support it. Alongside that, I consulted on some of the biggest SEO projects in the world, like the <a
-                            href="https://www.theguardian.com/info/developer-blog/2014/feb/18/how-the-guardian-successfully-moved-domain"
-                            >Guardian's site migration from .co.uk to theguardian.com</a
-                        >. I founded Yoast in 2010.
-                    </p>
-                    <p>
-                        I wore a few different hats there. For almost 9 years I was the CEO, then I became Chief Product Officer when my wife
-                        <a href="https://marieke.com/">Marieke</a> took over as CEO. We sold Yoast to Newfold Digital in August of 2021, after which I became Head
-                        of WordPress Strategy at Newfold for a while. I then came back for a 6-month stint as interim CTO (because they were suddenly without one)
-                        in 2022-2023. I finally left the company in April 2023.
-                    </p>
-                    <p>
-                        When we left Yoast, Marieke and I started investing through our company,
-                        <a href="https://emilia.capital/">Emilia Capital</a>. We invest in companies that play at least partly in the digital space (and often
-                        in WordPress). Because of that, I'm on the board of <a href="https://patchstack.com/">Patchstack</a> and <a href="https://atarim.io/"
-                            >Atarim</a
-                        >. We also started our own new company, <a href="https://progressplanner.com/">Progress Planner</a>. In June 2026, Progress Planner and
-                        our whole team <a href="/progress-planner-joins-your-online/">joined Your.Online</a>, a hosting group with strong European roots. I'm
-                        now Group Head of AI &amp; Growth there, and Marieke is Group Head of Brand &amp; Community.
-                    </p>
-                    <p>
-                        In my spare time, I can often be found coaching kids' soccer at
-                        <a href="https://svawc.nl/">AWC</a>, where I'm also a board member. On holidays, Marieke and I love spending time in our
-                        <a href="https://limonaia.house/">holiday home in Tuscany</a> or traveling to other places in the world.
-                    </p>
-                </article>
-                <aside class="sp-about-timeline">
-                    <div class="m-lbl">Timeline</div>
-                    <ol>
-                        <li><span class="y">Now</span><span class="e">Group Head of AI &amp; Growth at Your.Online</span></li>
-                        <li><span class="y">2026</span><span class="e">Progress Planner joins Your.Online</span></li>
-                        <li><span class="y">2024</span><span class="e">Launched Progress Planner</span></li>
-                        <li><span class="y">2023</span><span class="e">Left Newfold; started Emilia Capital</span></li>
-                        <li><span class="y">2022</span><span class="e">Interim CTO for six months</span></li>
-                        <li><span class="y">2021</span><span class="e">Sold Yoast to Newfold Digital</span></li>
-                        <li><span class="y">2019</span><span class="e">Stepped down as CEO; Marieke takes over</span></li>
-                        <li><span class="y">2010</span><span class="e">Founded Yoast</span></li>
-                        <li><span class="y">2006</span><span class="e">Ran css3.info</span></li>
-                    </ol>
-                </aside>
-            </div>
+            <a href="/contact-me/" class="sp-btn sp-btn--mono">Get in touch →</a>
         </section>
 
-        <section class="sp-about-social">
-            <div class="sp-about-social-head">
-                <div class="kicker">§ 02 · Connect</div>
-                <h3>Find me online.</h3>
-            </div>
-            <div class="sp-about-social-grid">
+        <section class="about-social">
+            <div class="about-social-label">Find me across the web</div>
+            <div class="sp-chip-row">
                 {
-                    [
-                        { n: 'GitHub', h: '@jdevalk', url: 'https://github.com/jdevalk' },
-                        { n: 'LinkedIn', h: 'in/jdevalk', url: 'https://www.linkedin.com/in/jdevalk/' },
-                        { n: 'Bluesky', h: '@joost.blog', url: 'https://bsky.app/profile/joost.blog' },
-                        { n: 'Threads', h: '@joostdevalk', url: 'https://www.threads.net/@joostdevalk' },
-                        { n: 'WordPress', h: 'joostdevalk', url: 'https://profiles.wordpress.org/joostdevalk' },
-                        { n: 'Instagram', h: '@joostdevalk', url: 'https://www.instagram.com/joostdevalk' }
-                    ].map(({ n, h, url }) => (
-                        <a href={url} class="sp-about-social-card" target="_blank" rel="noopener noreferrer">
-                            <div class="n">{n}</div>
-                            <div class="h">{h}</div>
-                            <div class="arr">&rarr;</div>
+                    social.map((s) => (
+                        <a href={s.url} class="sp-chip" target="_blank" rel="noopener noreferrer">
+                            {s.n}
                         </a>
                     ))
                 }
             </div>
         </section>
-
-        <section class="sp-about-speaking">
-            <div class="sp-about-story-head">
-                <div class="kicker">§ 03 · On stage</div>
-                <h2>Recent speaking engagements.</h2>
-            </div>
-            <div class="sp-about-speaking-grid">
-                {
-                    recentVideos.map((v, i) => {
-                        const dur = formatDuration(v.data.duration);
-                        const thumb = recentThumbs[i];
-                        const month = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' }).format(new Date(v.data.publishDate)).toUpperCase();
-                        return (
-                            <a href={`/videos/${v.id}/`} class="sp-about-talk">
-                                <div class="sp-about-talk-thumb" style={thumb ? `--thm-bg: url('${thumb}')` : ''} data-has-thumb={thumb ? 'true' : undefined}>
-                                    <div class="play">&#9654;</div>
-                                    {dur && <div class="dur">{dur}</div>}
-                                </div>
-                                <div class="sp-about-talk-meta">{month}</div>
-                                <h4>{v.data.title}</h4>
-                            </a>
-                        );
-                    })
-                }
-            </div>
-            <div class="sp-about-speaking-foot">
-                <a href="/videos/">See all videos in the archive &rarr;</a>
-            </div>
-        </section>
-
-        <section class="sp-about-build">
-            <div class="sp-about-build-grid">
-                <div>
-                    <div class="kicker">§ 04 · Code</div>
-                    <h2>What I build.</h2>
-                    <p>From WordPress plugins to SaaS products, I'm always working on something. See all my current projects on my code page.</p>
-                </div>
-                <div class="sp-about-build-cta">
-                    <a href="/code/" class="primary">See my code &rarr;</a>
-                    <a href="/blog/" class="ghost">Read the blog &rarr;</a>
-                </div>
-            </div>
-        </section>
     </div>
 </BaseLayout>
+
+<style>
+    .about-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 54px;
+        align-items: start;
+        padding: 60px 0 20px;
+    }
+    .about-h1 {
+        font-size: clamp(52px, 6.4vw, 96px);
+        line-height: 0.94;
+    }
+    .about-intro {
+        font-family: var(--font-text);
+        font-weight: 300;
+        font-size: 22px;
+        line-height: 1.5;
+        color: var(--secondary);
+        max-width: 46ch;
+        margin: 28px 0 0;
+    }
+    .about-intro a {
+        color: var(--ink);
+        text-decoration: none;
+        background: linear-gradient(transparent 62%, var(--accent-soft) 62%);
+    }
+    .about-prose {
+        max-width: none;
+        margin: 40px 0 0;
+        font-size: 19px;
+    }
+    .about-prose h2 {
+        font-size: 26px;
+        margin: 42px 0 14px;
+    }
+
+    .about-aside {
+        position: sticky;
+        top: 30px;
+        padding-top: 6px;
+    }
+    .about-portrait {
+        margin: 0 0 0 auto;
+        border: 6px solid var(--paper-white);
+        box-shadow: 0 8px 26px rgba(31, 37, 48, 0.18);
+        transform: rotate(2deg);
+        width: 230px;
+        line-height: 0;
+    }
+    .about-portrait :global(img) {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    .about-facts {
+        margin: 28px 0 0;
+        background: var(--accent-soft);
+        border: 1px solid var(--accent);
+        padding: 18px 20px;
+        transform: rotate(-1.2deg);
+        box-shadow: 0 5px 16px rgba(31, 37, 48, 0.1);
+        border-radius: 2px;
+    }
+    .about-facts-label {
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        letter-spacing: 0.12em;
+        color: var(--accent);
+        text-transform: uppercase;
+    }
+    .about-facts dl {
+        margin: 12px 0 0;
+        font-family: var(--font-text);
+        font-size: 15.5px;
+        line-height: 1.45;
+        color: var(--body);
+        display: grid;
+        gap: 10px;
+    }
+    .about-facts .k {
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        color: var(--faint);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .about-cta {
+        margin: 36px 0 8px;
+    }
+    .about-social {
+        padding: 30px 0 0;
+    }
+    .about-social-label {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        color: var(--faint);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+    }
+
+    @media (max-width: 820px) {
+        .about-grid {
+            grid-template-columns: 1fr;
+            gap: 36px;
+        }
+        .about-aside {
+            position: static;
+            order: -1;
+        }
+        .about-portrait {
+            margin-left: 0;
+        }
+    }
+</style>
