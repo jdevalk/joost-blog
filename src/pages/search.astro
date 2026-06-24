@@ -4,39 +4,47 @@ import Search from 'astro-pagefind/components/Search';
 ---
 
 <BaseLayout title="Search" description="Search all blog posts, videos, and pages on Joost.blog — covering SEO, WordPress, open source, AI, and the open web.">
-    <main class="mx-auto max-w-4xl grow px-4 py-8 sm:py-12">
-        <h1 class="mb-8 text-3xl font-bold dark:text-slate-100">Search</h1>
-        <div data-pagefind-ignore="all">
+    <div class="sp-root">
+        <section class="sp-hero search-hero">
+            <h1 class="sp-display">Search</h1>
+            <p class="sp-section-lede">Find anything across the writing, talks, and research.</p>
+        </section>
+        <div class="search-box" data-pagefind-ignore="all">
             <Search
                 id="search"
                 className="pagefind-ui"
                 uiOptions={{ showSubResults: true, showImages: true, showEmptyFilters: false, pageSize: 10, resetStyles: true }}
             />
         </div>
-    </main>
+    </div>
 </BaseLayout>
+
+<style>
+    .search-hero {
+        padding: 60px 0 24px;
+    }
+    .search-box {
+        padding: 0 0 64px;
+    }
+</style>
 
 <style is:global>
     :root {
         --pagefind-ui-scale: 1;
-        --pagefind-ui-primary: #4a6480;
-        --pagefind-ui-text: #1f2530;
-        --pagefind-ui-background: #e4e2dc;
-        --pagefind-ui-border: #d2d0c8;
-        --pagefind-ui-tag: #dcdad3;
+        --pagefind-ui-primary: #5f7560;
+        --pagefind-ui-text: #1b2028;
+        --pagefind-ui-background: #eceae3;
+        --pagefind-ui-border: rgba(31, 37, 48, 0.2);
+        --pagefind-ui-tag: #e0e3da;
         --pagefind-ui-border-width: 1px;
-        --pagefind-ui-border-radius: 8px;
-        --pagefind-ui-image-border-radius: 8px;
+        --pagefind-ui-border-radius: 2px;
+        --pagefind-ui-image-border-radius: 2px;
         --pagefind-ui-image-box-ratio: 3 / 2;
-        --pagefind-ui-font: inherit;
+        --pagefind-ui-font: var(--font-text);
     }
-
-    .dark {
-        --pagefind-ui-primary: #e08a5a;
-        --pagefind-ui-text: #e4e2dc;
-        --pagefind-ui-background: #1f2530;
-        --pagefind-ui-border: #2c3447;
-        --pagefind-ui-tag: #2c3447;
+    .pagefind-ui__result-title,
+    .pagefind-ui__result-link {
+        font-family: var(--font-display);
     }
 </style>
 

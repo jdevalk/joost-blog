@@ -95,7 +95,7 @@ const pageContext: SchemaPageContext = {
                 <span class="sep">/</span>
                 <span>{new Date(video.data.publishDate).getFullYear()}</span>
                 <span class="sep">/</span>
-                <span style="color:var(--hero-accent)">{video.data.title}</span>
+                <span style="color:var(--accent)">{video.data.title}</span>
             </nav>
             <div class="sp-video-meta-top">
                 <span>{pubDate}</span>
@@ -128,21 +128,15 @@ const pageContext: SchemaPageContext = {
                     ></iframe>
                 </div>
             ) : video.data.videoUrl ? (
-                <div style="padding:32px 64px">
-                    <a href={video.data.videoUrl} target="_blank" rel="noopener noreferrer" class="sp-about-build-cta" style="display:inline-block">
-                        <span class="primary" style="font-family:var(--font-display);font-weight:var(--weight-display);font-style:italic;font-size:20px;padding:14px 22px;background:var(--terracotta);color:var(--ink);display:inline-block">Watch video &rarr;</span>
-                    </a>
+                <div style="padding:24px 0">
+                    <a href={video.data.videoUrl} target="_blank" rel="noopener noreferrer" class="sp-btn sp-btn--mono">Watch video →</a>
                 </div>
             ) : null}
         </div>
 
         <div class="sp-video-body" data-pagefind-body>
-            <div class="sp-video-grid">
-                <div></div>
-                <div class="sp-video-prose">
-                    <Content />
-                </div>
-                <div></div>
+            <div class="sp-prose">
+                <Content />
             </div>
         </div>
 
@@ -170,7 +164,7 @@ const pageContext: SchemaPageContext = {
                             ))}
                         </div>
                     ) : (
-                        <div style="padding:24px;white-space:pre-line;font-family:var(--font-text);font-weight:var(--weight-text);font-size:17px;line-height:1.6;color:var(--ink)">
+                        <div style="padding:24px 0;white-space:pre-line;font-family:var(--font-text);font-weight:300;font-size:17px;line-height:1.6;color:var(--body)">
                             {transcript}
                         </div>
                     )}
@@ -181,6 +175,118 @@ const pageContext: SchemaPageContext = {
 
     </div>
 </BaseLayout>
+
+<style>
+    .sp-video-hero {
+        padding: 56px 0 20px;
+    }
+    .sp-video-hero .sp-section-inner {
+        max-width: var(--measure);
+        margin: 0 auto;
+    }
+    .sp-video-crumbs {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        color: var(--faint);
+        margin-bottom: 18px;
+    }
+    .sp-video-crumbs a {
+        color: var(--accent);
+        text-decoration: none;
+    }
+    .sp-video-crumbs .sep {
+        margin: 0 8px;
+        color: var(--hair-strong);
+    }
+    .sp-video-meta-top {
+        display: flex;
+        gap: 10px;
+        font-family: var(--font-mono);
+        font-size: 11.5px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--faint);
+        margin-bottom: 14px;
+    }
+    .sp-video-title {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(34px, 4.4vw, 52px);
+        line-height: 1.04;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        margin: 0;
+    }
+    .sp-video-player-wrap {
+        max-width: 860px;
+        margin: 24px auto 8px;
+    }
+    .sp-video-player {
+        position: relative;
+        aspect-ratio: 16/9;
+        background: var(--dark);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+    .sp-video-body {
+        padding: 28px 0 12px;
+    }
+
+    .sp-video-transcript-wrap {
+        max-width: var(--measure);
+        margin: 8px auto 24px;
+    }
+    .sp-video-transcript-toggle {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        background: none;
+        border: none;
+        border-top: 2px solid var(--rule);
+        padding: 18px 0;
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: 13px;
+        color: var(--accent);
+        text-align: left;
+    }
+    .sp-video-transcript-toggle .meta {
+        margin-left: auto;
+        font-size: 10.5px;
+        letter-spacing: 0.08em;
+        color: var(--faint);
+    }
+    .sp-video-transcript-toggle .caret {
+        font-size: 9px;
+        color: var(--faint);
+    }
+    .sp-transcript-timestamped {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 8px 0 24px;
+    }
+    .sp-transcript-para {
+        display: grid;
+        grid-template-columns: 64px 1fr;
+        gap: 16px;
+        align-items: baseline;
+    }
+    .sp-transcript-ts {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--accent);
+        text-decoration: none;
+    }
+    .sp-transcript-text {
+        font-family: var(--font-text);
+        font-size: 17px;
+        line-height: 1.6;
+        color: var(--body);
+    }
+</style>
 
 <script>
     const transcriptToggle = document.getElementById('transcript-toggle');

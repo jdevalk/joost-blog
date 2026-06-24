@@ -9,40 +9,10 @@ import { canonicalUrl } from '../../utils/schema/constants';
 const allVideos = await getCollection('videos');
 const sorted = allVideos.sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
 const featuredVideo = sorted.find((v) => v.data.featured) ?? sorted[0];
-const listVideos = sorted.filter((v) => v.id !== featuredVideo.id);
+const gridVideos = sorted.filter((v) => v.id !== featuredVideo.id);
 
-// Sequential numbering: featured = #1, rest = #2..N (oldest→newest)
-const listAsc = [...listVideos].sort((a, b) => new Date(a.data.publishDate).getTime() - new Date(b.data.publishDate).getTime());
-const videoNumberMap = new Map(listAsc.map((v, i) => [v.id, i + 2]));
-
-// Year groups, newest first
-import type { CollectionEntry } from 'astro:content';
-type VideoEntry = CollectionEntry<'videos'>;
-const yearGroupMap = new Map<number, VideoEntry[]>();
-for (const video of listVideos) {
-    const year = new Date(video.data.publishDate).getFullYear();
-    if (!yearGroupMap.has(year)) yearGroupMap.set(year, []);
-    yearGroupMap.get(year)!.push(video);
-}
-const yearGroups = [...yearGroupMap.entries()].sort((a, b) => b[0] - a[0]).map(([year, videos]) => ({ year, videos }));
-const allYears = yearGroups.map((g) => g.year);
-
-const typeOrder = ['keynote', 'talk', 'podcast', 'interview', 'panel'] as const;
-const existingTypes = new Set(listVideos.map((v) => v.data.type).filter(Boolean));
-const allTypes = typeOrder.filter((t) => existingTypes.has(t));
-
-function formatDuration(isoDuration: string | undefined): string | null {
-    if (!isoDuration) return null;
-    const match = isoDuration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
-    if (!match) return null;
-    const h = parseInt(match[1] || '0');
-    const m = parseInt(match[2] || '0');
-    const s = parseInt(match[3] || '0');
-    return h > 0 ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}` : `${m}:${String(s).padStart(2, '0')}`;
-}
-
-function dotDate(date: Date): string {
-    return `${date.getFullYear()}·${String(date.getMonth() + 1).padStart(2, '0')}·${String(date.getDate()).padStart(2, '0')}`;
+function monthYear(date: Date): string {
+    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 }
 
 function getExcerpt(body: string | undefined): string {
@@ -52,12 +22,8 @@ function getExcerpt(body: string | undefined): string {
         .replace(/\s+/g, ' ')
         .trim();
     if (stripped.length <= 150) return stripped;
-    return `${stripped.slice(0, 147).trim()}...`;
+    return `${stripped.slice(0, 147).trim()}…`;
 }
-
-const featuredDuration = formatDuration(featuredVideo.data.duration);
-const featuredExcerpt = getExcerpt(featuredVideo.body);
-const featuredDate = dotDate(new Date(featuredVideo.data.publishDate));
 
 async function resolveThumb(video: (typeof sorted)[0]): Promise<string | null> {
     if (video.data.thumbnailUrl) return video.data.thumbnailUrl;
@@ -71,214 +37,259 @@ async function resolveThumb(video: (typeof sorted)[0]): Promise<string | null> {
 }
 
 const featuredThumb = await resolveThumb(featuredVideo);
-const listThumbs = await Promise.all(listVideos.map(resolveThumb));
+const featuredExcerpt = getExcerpt(featuredVideo.body);
+const gridThumbs = await Promise.all(gridVideos.map(resolveThumb));
+
+function withLabel(w: string | string[] | undefined): string {
+    if (!w) return '';
+    return Array.isArray(w) ? w.join(', ') : w;
+}
 
 const pageContext: SchemaPageContext = {
     pageType: 'videoListing',
     canonicalUrl: canonicalUrl('/videos/'),
     title: 'Videos',
-    description: 'Video presentations, podcasts, keynotes, and interviews by Joost de Valk on WordPress, SEO, open source, and the web.'
+    description: 'Conference talks, keynotes, and interviews by Joost de Valk on WordPress, SEO, open source, and the web.'
 };
 ---
 
-<BaseLayout title="Videos" description="Video presentations, podcasts, keynotes, and interviews by Joost de Valk on WordPress, SEO, open source, and the web.">
+<BaseLayout title="Videos" description="A decade of conference talks on sustainable open source, SEO, and building a business on a plugin.">
     <SchemaGraph pageContext={pageContext} />
 
-    <div class="sp-root sp-blocks sp-videos">
-        <section class="sp-hero">
-            <div class="sp-section-inner">
-                <div class="sp-code-kicker">
-                    <span>SECTION IV</span><span class="rule"></span><span>TALKS · INTERVIEWS · PODCASTS</span>
-                </div>
-                <h1 class="sp-display">
-                    <em>Videos</em>.
-                </h1>
-                <p class="sp-section-lede">
-                    A curated archive of conference talks, podcast interviews, and keynotes on WordPress, SEO, open source, and building products on the web.
-                </p>
-                <div class="sp-videos-stats">
-                    <div class="s">
-                        <div class="n">{allVideos.length}</div>
-                        <div class="l">Recordings</div>
-                    </div>
-                    <div class="s">
-                        <div class="n">18+</div>
-                        <div class="l">Years</div>
-                    </div>
-                    <div class="s">
-                        <div class="n">30+</div>
-                        <div class="l">Countries</div>
-                    </div>
-                    <div class="s">
-                        <div class="n">100+</div>
-                        <div class="l">Hours</div>
-                    </div>
-                </div>
-            </div>
+    <div class="sp-root sp-videos">
+        <section class="videos-hero">
+            <h1 class="sp-display">Talks</h1>
+            <p class="sp-section-lede">A decade of conference stages — on sustainable open source, SEO, and building a business on a plugin.</p>
         </section>
 
-        <section class="sp-videos-featured">
-            <div class="sp-videos-featured-grid">
-                <a
-                    href={`/videos/${featuredVideo.id}/`}
-                    class="sp-videos-featured-poster"
-                    style={featuredThumb ? `--pst-thumb: url('${featuredThumb}')` : ''}
-                    data-has-thumb={featuredThumb ? 'true' : undefined}
-                >
-                    <div class="pst-kicker">§ FEATURED VIDEO</div>
-                    <div class="pst-foot">
-                        <span>{featuredDate}</span>
-                        {featuredDuration && <span>{featuredDuration}</span>}
-                    </div>
-                </a>
-                <div>
-                    <div class="meta">
-                        <span class="badge">FEATURED</span>
-                        <span>{featuredDate}</span>
-                        {featuredDuration && <span>{featuredDuration}</span>}
-                    </div>
-                    <h2>{featuredVideo.data.title}</h2>
-                    {featuredExcerpt && <p class="desc">{featuredExcerpt}</p>}
-                    <div class="cta">
-                        <a href={`/videos/${featuredVideo.id}/`} class="primary">Watch now &rarr;</a>
-                    </div>
-                </div>
+        <a href={`/videos/${featuredVideo.id}/`} class="videos-featured">
+            <div class="poster" style={featuredThumb ? `--poster: url('${featuredThumb}')` : ''} data-has-thumb={featuredThumb ? 'true' : undefined}>
+                <span class="play play--lg"><span class="tri"></span></span>
+                {featuredVideo.data.type && <span class="badge">{featuredVideo.data.type}</span>}
             </div>
-        </section>
-
-        <div class="sp-videos-filter-bar">
-            <div class="sp-videos-filter-inner">
-                <div class="sp-videos-filter-group">
-                    <span class="lbl">Year</span>
-                    <div class="chips">
-                        <button class="chip on" type="button" data-year="all">All</button>
-                        {
-                            allYears.map((year) => (
-                                <button class="chip" type="button" data-year={String(year)}>
-                                    {year}
-                                </button>
-                            ))
-                        }
-                    </div>
-                </div>
-                <div class="sp-videos-filter-group">
-                    <span class="lbl">Type</span>
-                    <div class="chips">
-                        <button class="chip on" type="button" data-type="all">All</button>
-                        {
-                            allTypes.map((type) => (
-                                <button class="chip" type="button" data-type={type}>
-                                    {type}
-                                </button>
-                            ))
-                        }
-                    </div>
-                </div>
+            <div class="body">
+                <span class="eyebrow">Featured · {monthYear(new Date(featuredVideo.data.publishDate))}</span>
+                <h2>{featuredVideo.data.title}</h2>
+                {featuredExcerpt && <p>{featuredExcerpt}</p>}
+                <span class="watch">watch the talk →</span>
             </div>
-        </div>
+        </a>
 
-        <div class="sp-videos-list" data-pagefind-ignore="all">
+        <section class="videos-grid">
             {
-                yearGroups.map(({ year, videos }) => {
-                    const thumbOffset = listVideos.indexOf(videos[0]);
-                    return (
-                        <div class="sp-videos-year-section" data-year-group={String(year)}>
-                            <div class="sp-videos-year-header">
-                                <span class="sp-videos-year-num">{year}</span>
-                                <hr class="sp-videos-year-rule" />
-                                <span id={`year-count-${year}`} class="sp-videos-year-count">
-                                    {videos.length}&nbsp;{videos.length === 1 ? 'Video' : 'Videos'}
-                                </span>
-                            </div>
-                            {videos.map((video) => {
-                                const num = videoNumberMap.get(video.id) ?? 0;
-                                const dur = formatDuration(video.data.duration);
-                                const date = dotDate(new Date(video.data.publishDate));
-                                const excerpt = getExcerpt(video.body);
-                                const thumbIdx = listVideos.indexOf(video);
-                                const thumb = listThumbs[thumbIdx];
-                                return (
-                                    <div class="sp-videos-row" data-video-year={String(year)} data-video-type={video.data.type ?? ''}>
-                                        <div class="sp-videos-num">{num}</div>
-                                        <a
-                                            href={`/videos/${video.id}/`}
-                                            class="sp-videos-thumb"
-                                            style={thumb ? `--thm-bg: url('${thumb}')` : ''}
-                                            data-has-thumb={thumb ? 'true' : undefined}
-                                        >
-                                            <div class="thm-play">&#9654;</div>
-                                            {dur && <div class="thm-dur">{dur}</div>}
-                                        </a>
-                                        <div class="sp-videos-meta">
-                                            <div class="d">{date}</div>
-                                            {video.data.type && <div class="t">{video.data.type}</div>}
-                                            {video.data.with && (
-                                                <div class="w">with {Array.isArray(video.data.with) ? video.data.with.join(', ') : video.data.with}</div>
-                                            )}
-                                        </div>
-                                        <div class="sp-videos-body">
-                                            <h4>
-                                                <a href={`/videos/${video.id}/`}>{video.data.title}</a>
-                                            </h4>
-                                            {excerpt && <p>{excerpt}</p>}
-                                            <a href={`/videos/${video.id}/`} class="lnk">
-                                                Watch &rarr;
-                                            </a>
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                gridVideos.map((v, i) => (
+                    <a href={`/videos/${v.id}/`} class="video-card">
+                        <div class="thumb" style={gridThumbs[i] ? `--poster: url('${gridThumbs[i]}')` : ''} data-has-thumb={gridThumbs[i] ? 'true' : undefined}>
+                            <span class="play">
+                                <span class="tri" />
+                            </span>
+                            {v.data.type && <span class="badge">{v.data.type}</span>}
                         </div>
-                    );
-                })
+                        <div class="date">
+                            {monthYear(new Date(v.data.publishDate))}
+                            {v.data.with && ` · with ${withLabel(v.data.with)}`}
+                        </div>
+                        <div class="title">{v.data.title}</div>
+                    </a>
+                ))
             }
-        </div>
+        </section>
+
+        <section class="videos-cta">
+            <div>
+                <h2>Looking for a speaker?</h2>
+                <p>I love the chance to speak at conferences all over the world.</p>
+            </div>
+            <a href="/contact-me/" class="sp-btn sp-btn--mono">Invite me to speak →</a>
+        </section>
     </div>
 </BaseLayout>
 
-<script>
-    const yearChips = document.querySelectorAll<HTMLButtonElement>('.sp-videos-filter-bar .chip[data-year]');
-    const typeChips = document.querySelectorAll<HTMLButtonElement>('.sp-videos-filter-bar .chip[data-type]');
-    const rows = document.querySelectorAll<HTMLElement>('.sp-videos-row[data-video-year]');
-
-    let activeYear = 'all';
-    let activeType = 'all';
-
-    function applyFilter() {
-        const yearCounts = new Map<string, number>();
-
-        for (const row of rows) {
-            const year = row.dataset.videoYear ?? '';
-            const type = row.dataset.videoType ?? '';
-            const visible = (activeYear === 'all' || year === activeYear) && (activeType === 'all' || type === activeType);
-            row.style.display = visible ? '' : 'none';
-            if (visible) yearCounts.set(year, (yearCounts.get(year) ?? 0) + 1);
-        }
-
-        document.querySelectorAll<HTMLElement>('[data-year-group]').forEach((section) => {
-            const year = section.dataset.yearGroup ?? '';
-            const count = yearCounts.get(year) ?? 0;
-            section.style.display = count > 0 ? '' : 'none';
-            const labelEl = document.getElementById(`year-count-${year}`);
-            if (labelEl) labelEl.textContent = `${count} ${count === 1 ? 'Video' : 'Videos'}`;
-        });
+<style>
+    .videos-hero {
+        padding: 60px 0 36px;
+        max-width: 48ch;
     }
 
-    yearChips.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            activeYear = btn.dataset.year ?? 'all';
-            yearChips.forEach((b) => b.classList.toggle('on', b === btn));
-            applyFilter();
-        });
-    });
+    /* Poster / thumbnail shared treatment */
+    .poster,
+    .thumb {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: linear-gradient(135deg, rgba(31, 37, 48, 0.55), rgba(31, 37, 48, 0.35)), var(--poster, linear-gradient(135deg, #6a7a5d, #3d4838));
+        background-size: cover;
+        background-position: center;
+    }
+    .thumb {
+        aspect-ratio: 16/9;
+        border-radius: 2px;
+        background: linear-gradient(rgba(31, 37, 48, 0.4), rgba(31, 37, 48, 0.4)), var(--poster, linear-gradient(135deg, #5c6e57, #3d4838));
+        background-size: cover;
+        background-position: center;
+    }
+    .play {
+        position: relative;
+        z-index: 2;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.9);
+        background: rgba(31, 37, 48, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .play--lg {
+        width: 74px;
+        height: 74px;
+    }
+    .play .tri {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 9px 0 9px 15px;
+        border-color: transparent transparent transparent var(--paper-white);
+        margin-left: 4px;
+    }
+    .play--lg .tri {
+        border-width: 13px 0 13px 22px;
+        margin-left: 5px;
+    }
+    .badge {
+        position: absolute;
+        z-index: 2;
+        top: 14px;
+        left: 16px;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        color: rgba(255, 255, 255, 0.85);
+        text-transform: uppercase;
+    }
 
-    typeChips.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            activeType = btn.dataset.type ?? 'all';
-            typeChips.forEach((b) => b.classList.toggle('on', b === btn));
-            applyFilter();
-        });
-    });
+    /* Featured */
+    .videos-featured {
+        text-decoration: none;
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        background: var(--dark);
+        border-radius: 3px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        transition: opacity 0.15s;
+    }
+    .videos-featured:hover {
+        opacity: 0.97;
+    }
+    .videos-featured .poster {
+        min-height: 300px;
+    }
+    .videos-featured .body {
+        padding: 38px 36px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .videos-featured .eyebrow {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        color: var(--dark-fg-accent);
+        text-transform: uppercase;
+    }
+    .videos-featured h2 {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: 34px;
+        line-height: 1.08;
+        color: var(--paper-white);
+        margin: 14px 0 0;
+    }
+    .videos-featured p {
+        font-family: var(--font-text);
+        font-size: 17px;
+        line-height: 1.5;
+        color: var(--dark-fg-soft);
+        margin: 14px 0 0;
+    }
+    .videos-featured .watch {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--dark-fg-accent);
+        margin-top: 20px;
+    }
 
-    // --sp-header-h is published globally by Header.astro (tracks shrink state).
-</script>
+    /* Grid */
+    .videos-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 26px;
+        padding-bottom: 20px;
+    }
+    .video-card {
+        text-decoration: none;
+        display: block;
+        transition: opacity 0.15s;
+    }
+    .video-card:hover {
+        opacity: 0.92;
+    }
+    .video-card .date {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--faint);
+        margin-top: 12px;
+    }
+    .video-card .title {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: 19px;
+        color: var(--ink);
+        margin-top: 5px;
+        line-height: 1.15;
+    }
+
+    /* Speaker CTA */
+    .videos-cta {
+        margin: 34px 0 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 30px;
+        flex-wrap: wrap;
+        padding: 30px 0;
+    }
+    .videos-cta h2 {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: 30px;
+        color: var(--ink);
+        margin: 0;
+    }
+    .videos-cta p {
+        font-family: var(--font-text);
+        font-size: 18px;
+        color: var(--secondary);
+        margin: 8px 0 0;
+    }
+    .videos-cta .sp-btn {
+        color: var(--paper-white);
+    }
+
+    @media (max-width: 820px) {
+        .videos-featured {
+            grid-template-columns: 1fr;
+        }
+        .videos-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    @media (max-width: 560px) {
+        .videos-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

@@ -5,506 +5,146 @@ import FuzzyRedirect from '@jdevalk/astro-seo-graph/FuzzyRedirect.astro';
 import { getPublishedPosts, getReadingTime } from '../utils/post-utils';
 
 const allPosts = getPublishedPosts(await getCollection('blog'));
-const allPostsSorted = [...allPosts].sort((a, b) => new Date(a.data.publishDate).getTime() - new Date(b.data.publishDate).getTime());
-
 const featuredPosts = allPosts.filter((p) => p.data.isFeatured).slice(0, 4);
 const displayPosts = featuredPosts.length >= 4 ? featuredPosts : allPosts.slice(0, 4);
 
-function dotDate(date: Date): string {
-    return `${date.getFullYear()}·${String(date.getMonth() + 1).padStart(2, '0')}·${String(date.getDate()).padStart(2, '0')}`;
-}
-
-function catLabel(post: (typeof allPosts)[0]): string {
-    return post.data.categories?.[0] ?? 'Article';
-}
-
-function articleNum(post: (typeof allPosts)[0]): string {
-    const idx = allPostsSorted.findIndex((p) => p.id === post.id) + 1;
-    return String(idx).padStart(2, '0');
+function fmtDate(date: Date): string {
+    return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 ---
 
 <BaseLayout title="Page Not Found — Joost.blog">
-    <div class="sp-root sp-blocks">
-        <!-- ── Hero ───────────────────────────────────────────── -->
-        <section class="sp-404-hero">
-            <div class="sp-404-stamp" aria-hidden="true">
-                N<span class="sp-404-stamp-o">º</span>&nbsp;Errata&nbsp;·&nbsp;HTTP&nbsp;404
+    <div class="sp-root sp-404">
+        <section class="nf-hero">
+            <div class="nf-eyebrow">
+                <span>§ Missing page</span>
+                <span class="rule"></span>
+                <span>HTTP 404 · not in this edition</span>
             </div>
-            <div class="sp-404-inner">
-                <div class="sp-404-number" aria-label="404">
-                    <div class="sp-404-digits">
-                        <span class="sp-404-four">4</span><span class="sp-404-zero"
-                            >0<svg class="sp-404-slash" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"
-                                ><line
-                                    x1="25"
-                                    y1="80"
-                                    x2="75"
-                                    y2="20"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    vector-effect="non-scaling-stroke"></line></svg
-                            ></span
-                        ><span class="sp-404-four">4</span>
-                    </div>
-                </div>
+            <h1 class="sp-display">A <em>misprint.</em></h1>
+            <p class="nf-lede">
+                The page you asked for isn&rsquo;t in the archive. Either it was unpublished, the URL was mistyped, or an older link rotted in the
+                seventeen-year drawer this blog keeps.
+            </p>
 
-                <div class="sp-404-content">
-                    <div class="sp-hero-kicker sp-404-kicker">
-                        <span>§ Missing Page</span>
-                        <span class="sp-rule"></span>
-                        <span>Not in this edition</span>
-                    </div>
+            <div class="nf-url">
+                <div class="nf-url-label">You followed</div>
+                <div class="nf-url-value"><span class="origin">joost.blog</span><span id="nf-url-path"></span></div>
+            </div>
 
-                    <h1 class="sp-display sp-404-display">A <em>misprint.</em></h1>
+            <div class="nf-fuzzy empty:hidden"><FuzzyRedirect suggestionText="Did you mean" /></div>
 
-                    <p class="sp-drop-body sp-404-lede">
-                        The page you asked for isn't in the archive. Either the essay was unpublished, the URL was mistyped, or an older link rotted in the
-                        seventeen-year drawer this blog keeps.
-                    </p>
-
-                    <div class="sp-404-divider"></div>
-
-                    <div class="sp-404-url-section">
-                        <div class="sp-404-url-label">You followed</div>
-                        <div class="sp-404-url-value">
-                            <span class="sp-404-url-origin">joost.blog</span><span id="sp-404-url-path"></span>
-                        </div>
-                    </div>
-
-                    <div class="sp-404-fuzzy empty:hidden">
-                        <FuzzyRedirect suggestionText="Did you mean" />
-                    </div>
-
-                    <div class="sp-404-actions">
-                        <a href="/blog/" class="sp-404-archive-btn">Back to the archive →</a>
-                        <button class="sp-404-search-link" id="sp-404-search-btn" type="button">⌕&nbsp;Search for it</button>
-                    </div>
-                    <div class="sp-404-divider"></div>
-                    <a href="/ask-joost/" class="sp-404-ask">Ask Joost's AI →</a>
-                </div>
+            <div class="nf-actions">
+                <a href="/blog/" class="sp-btn sp-btn--mono">Back to the archive →</a>
+                <a href="/ask-joost/" class="sp-link-dashed">or ask Joost&rsquo;s AI</a>
             </div>
         </section>
 
-        <!-- ── Compositor's Note ────────────────────────────── -->
-        <section class="sp-compositor">
-            <div class="sp-compositor-inner">
-                <div class="sp-compositor-aside">
-                    <div class="sp-compositor-label">Compositor's<br />Note</div>
-                    <div class="sp-compositor-rule"></div>
-                </div>
-                <div class="sp-compositor-body">
-                    <p class="sp-compositor-intro">Four likely causes of this misprint, in rough order of probability:</p>
-                    <ol class="sp-compositor-list">
-                        <li>
-                            The URL was typed or pasted with a stray character — trailing slashes, smart quotes, or an encoding slip are the usual culprits.
-                        </li>
-                        <li>The essay was moved when this site migrated off WordPress to Astro in early 2025. Most old links redirect; a handful don't.</li>
-                        <li>The piece was unpublished on purpose. This happens rarely and only when I've changed my mind about something I wrote.</li>
-                        <li>The link you followed is from a site that copied an early draft URL. That's on them, but I'm sorry all the same.</li>
-                    </ol>
-                    <p class="sp-compositor-note">
-                        ¶ If you got here from one of my own pages, that's a bug — <a href="/contact-me/">email me</a> and I'll fix it.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ── While you're here ────────────────────────────── -->
-        <section class="sp-archive">
+        <section class="nf-while">
             <div class="sp-section-head">
-                <h3>While you're here</h3>
-                <div class="sp-section-meta">Four essays people actually read</div>
+                <h2>While you&rsquo;re here</h2>
+                <span class="sp-section-meta">A few worth reading</span>
             </div>
             <div class="sp-archive-list">
                 {
                     displayPosts.map((post) => (
                         <a href={`/${post.id}/`} class="sp-archive-row">
-                            <span class="sp-col-n">{articleNum(post)}</span>
-                            <span class="sp-col-date">{dotDate(new Date(post.data.publishDate))}</span>
-                            <span class="sp-col-cat">{catLabel(post)}</span>
-                            <span class="sp-col-title" set:html={post.data.title} />
-                            <span class="sp-col-read">{getReadingTime(post.body ?? '')} min</span>
+                            <span class="sp-row-left">
+                                <span class="sp-row-date">{fmtDate(new Date(post.data.publishDate))}</span>
+                                <span class="sp-row-title" set:html={post.data.title.replace(/\*([^*]+)\*/g, '<em>$1</em>')} />
+                            </span>
+                            <span class="sp-row-right">
+                                <span class="sp-row-cat">{post.data.categories?.[0] ?? ''}</span>
+                                <span class="sp-row-read">{getReadingTime(post.body ?? '')} min</span>
+                            </span>
                         </a>
                     ))
                 }
             </div>
-            <a class="sp-archive-more" href="/blog/">Browse all {allPosts.length} essays →</a>
+            <a class="sp-link-arrow nf-more" href="/blog/">→ browse all {allPosts.length} entries</a>
         </section>
     </div>
 </BaseLayout>
 
-<script>
-    // Populate "you followed" URL display
-    const urlPathEl = document.getElementById('sp-404-url-path');
-    if (urlPathEl) {
-        urlPathEl.textContent = window.location.pathname + window.location.search;
-    }
-
-    // Search button opens modal with pre-filled query from URL path
-    const searchBtn = document.getElementById('sp-404-search-btn');
-    searchBtn?.addEventListener('click', () => {
-        const parts = window.location.pathname.split('/').filter(Boolean);
-        const query = parts.length > 0 ? parts[parts.length - 1].replace(/-/g, ' ') : '';
-        const openBtn = document.querySelector('[data-open-search]') as HTMLElement | null;
-        if (openBtn) {
-            openBtn.click();
-            if (query) {
-                setTimeout(() => {
-                    const modalInput = document.getElementById('search-modal-input') as HTMLInputElement | null;
-                    if (modalInput) {
-                        modalInput.value = query;
-                        modalInput.dispatchEvent(new Event('input', { bubbles: true }));
-                    }
-                }, 0);
-            }
-        }
-    });
-
-    // Plausible 404 tracking
-    if ((window as any).plausible) {
-        (window as any).plausible('404', { props: { path: document.location.pathname } });
-    }
-</script>
-
 <style>
-    /* ── 404 Hero ──────────────────────────────────────────── */
-    .sp-404-hero {
-        background: var(--hero-bg);
-        color: var(--hero-fg);
-        padding: 72px 64px 80px;
-        position: relative;
-        overflow: hidden;
+    .nf-hero {
+        padding: 64px 0 40px;
     }
-
-    .sp-404-stamp {
-        position: absolute;
-        top: 40px;
-        right: 64px;
-        font-family: var(--font-mono);
-        font-size: 11px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--hero-fg);
-        border: 1.5px solid var(--hero-fg);
-        padding: 7px 14px;
-        opacity: 0.85;
-    }
-
-    .sp-404-stamp-o {
-        font-style: italic;
-        font-family: var(--font-display);
-        font-size: 13px;
-        font-weight: 500;
-    }
-
-    .sp-404-inner {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-        gap: 64px;
-        align-items: center;
-        max-width: 1280px;
-        margin: 0 auto;
-    }
-
-    /* Large "404" with slash */
-    .sp-404-number {
+    .nf-eyebrow {
         display: flex;
         align-items: center;
+        gap: 12px;
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--faint);
+        margin-bottom: 22px;
     }
-
-    .sp-404-digits {
-        position: relative;
-        font-family: var(--font-display);
-        font-weight: 500;
-        font-size: clamp(130px, 18vw, 260px);
-        line-height: 0.9;
-        letter-spacing: -0.03em;
-        display: inline-flex;
-        align-items: baseline;
-    }
-
-    .sp-404-four {
-        color: var(--hero-fg);
-    }
-
-    .sp-404-zero {
-        color: var(--hero-accent);
-        position: relative;
-        display: inline-block;
-    }
-
-    .sp-404-slash {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        overflow: visible;
-        color: var(--hero-accent);
-    }
-
-    /* Kicker */
-    .sp-404-kicker {
-        margin-bottom: 24px;
-        max-width: none;
-        color: var(--hero-fg);
-        opacity: 0.8;
-    }
-
-    /* Heading */
-    .sp-404-display {
-        font-size: clamp(56px, 6vw, 96px);
-        margin: 0 0 28px;
-        max-width: none;
-    }
-
-    /* Body copy */
-    .sp-404-lede {
-        font-size: 17px;
-        line-height: 1.6;
-        color: color-mix(in srgb, var(--hero-fg) 80%, transparent);
-        max-width: 50ch;
-        margin: 0 0 28px;
-    }
-
-    .sp-404-divider {
+    .nf-eyebrow .rule {
+        flex: 0 0 28px;
         height: 1px;
-        background: color-mix(in srgb, var(--hero-fg) 20%, transparent);
-        margin-bottom: 20px;
+        background: var(--hair-strong);
     }
-
-    /* URL display */
-    .sp-404-url-section {
-        margin-bottom: 24px;
+    .nf-lede {
+        font-family: var(--font-text);
+        font-weight: 300;
+        font-size: 20px;
+        line-height: 1.6;
+        color: var(--secondary);
+        max-width: 52ch;
+        margin: 28px 0 0;
     }
-
-    .sp-404-url-label {
+    .nf-url {
+        margin: 28px 0 0;
+    }
+    .nf-url-label {
         font-family: var(--font-mono);
         font-size: 10px;
         letter-spacing: 0.2em;
         text-transform: uppercase;
-        color: color-mix(in srgb, var(--hero-fg) 50%, transparent);
+        color: var(--faint);
         margin-bottom: 6px;
     }
-
-    .sp-404-url-value {
+    .nf-url-value {
         font-family: var(--font-mono);
         font-size: 13px;
-        color: var(--hero-accent);
+        color: var(--accent);
         word-break: break-all;
         max-width: 48ch;
     }
-
-    .sp-404-url-origin {
-        color: color-mix(in srgb, var(--hero-accent) 55%, transparent);
+    .nf-url-value .origin {
+        color: var(--faint);
     }
-
-    /* FuzzyRedirect */
-    .sp-404-fuzzy {
-        margin-bottom: 20px;
+    .nf-fuzzy {
+        margin: 18px 0 0;
         font-family: var(--font-text);
         font-size: 15px;
     }
-
-    /* Actions */
-    .sp-404-actions {
+    .nf-actions {
         display: flex;
         align-items: center;
         gap: 20px;
         flex-wrap: wrap;
-        margin-bottom: 20px;
+        margin-top: 30px;
     }
-
-    .sp-404-archive-btn {
-        display: inline-block;
-        padding: 13px 20px;
-        border: 1px solid color-mix(in srgb, var(--hero-fg) 55%, transparent);
-        font-family: var(--font-mono);
-        font-size: 11px;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--hero-fg);
-        text-decoration: none;
-        transition:
-            border-color 0.12s,
-            color 0.12s;
-        white-space: nowrap;
+    .nf-actions .sp-btn {
+        color: var(--paper-white);
     }
-
-    .sp-404-archive-btn:hover {
-        border-color: var(--hero-fg);
-        color: var(--hero-accent);
+    .nf-while {
+        padding: 24px 0 48px;
     }
-
-    .sp-404-search-link {
-        background: none;
-        border: none;
-        padding: 0;
-        font-family: var(--font-display);
-        font-style: italic;
-        font-size: 18px;
-        color: var(--hero-fg);
-        cursor: pointer;
-        transition: color 0.12s;
-    }
-
-    .sp-404-search-link:hover {
-        color: var(--hero-accent);
-    }
-
-    .sp-404-ask {
-        font-family: var(--font-display);
-        font-style: italic;
-        font-size: 18px;
-        color: var(--hero-fg);
-        text-decoration: none;
-        border-bottom: 1px solid color-mix(in srgb, var(--hero-fg) 40%, transparent);
-        padding-bottom: 1px;
-        transition: border-color 0.12s;
-        display: inline-block;
-        margin-top: 4px;
-    }
-
-    .sp-404-ask:hover {
-        border-color: var(--hero-fg);
-    }
-
-    /* ── Compositor's Note ─────────────────────────────────── */
-    .sp-compositor {
-        background: var(--parchment);
-        color: var(--ink);
-        padding: 80px 64px 72px;
-    }
-
-    .sp-compositor-inner {
-        display: grid;
-        grid-template-columns: 180px 1fr;
-        gap: 64px;
-        max-width: 1280px;
-        margin: 0 auto;
-        align-items: start;
-    }
-
-    .sp-compositor-label {
-        font-family: var(--font-mono);
-        font-size: 11px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--ink-soft);
-        line-height: 1.6;
-        margin-bottom: 12px;
-    }
-
-    .sp-compositor-rule {
-        width: 40px;
-        height: 1px;
-        background: var(--ink-soft);
-    }
-
-    .sp-compositor-intro {
-        font-family: var(--font-text);
-        font-weight: var(--weight-text);
-        font-size: 16px;
-        color: var(--ink-soft);
-        margin: 0 0 4px;
-    }
-
-    .sp-compositor-list {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 32px;
-        counter-reset: compositor;
-    }
-
-    .sp-compositor-list li {
-        counter-increment: compositor;
-        display: grid;
-        grid-template-columns: 28px 1fr;
-        gap: 20px;
-        padding: 20px 0;
-        border-bottom: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
-        font-family: var(--font-text);
-        font-weight: var(--weight-text);
-        font-size: 16px;
-        line-height: 1.65;
-        color: var(--ink);
-    }
-
-    .sp-compositor-list li::before {
-        content: counter(compositor, lower-roman) '.';
-        font-family: var(--font-display);
-        font-style: italic;
-        font-weight: 500;
-        font-size: 17px;
-        color: var(--ink-soft);
-        padding-top: 1px;
-    }
-
-    .sp-compositor-note {
-        font-family: var(--font-text);
-        font-weight: var(--weight-text);
-        font-size: 14px;
-        font-style: italic;
-        color: var(--ink-soft);
-        margin: 0;
-    }
-
-    .sp-compositor-note a {
-        color: var(--dusk);
-        text-decoration: underline;
-        text-underline-offset: 2px;
-    }
-
-    /* ── Responsive ────────────────────────────────────────── */
-    @media (max-width: 900px) {
-        .sp-404-hero {
-            padding: 64px 32px 64px;
-        }
-
-        .sp-404-stamp {
-            right: 32px;
-            top: 20px;
-        }
-
-        .sp-404-inner {
-            grid-template-columns: 1fr;
-            gap: 32px;
-        }
-
-        .sp-404-number {
-            justify-content: center;
-        }
-
-        .sp-404-digits {
-            font-size: clamp(100px, 28vw, 200px);
-        }
-
-        .sp-compositor {
-            padding: 60px 32px;
-        }
-
-        .sp-compositor-inner {
-            grid-template-columns: 1fr;
-            gap: 24px;
-        }
-    }
-
-    @media (max-width: 600px) {
-        .sp-404-hero {
-            padding: 56px 24px 56px;
-        }
-
-        .sp-404-stamp {
-            position: static;
-            display: inline-block;
-            margin-bottom: 24px;
-        }
-
-        .sp-archive {
-            padding-left: 24px;
-            padding-right: 24px;
-        }
+    .nf-more {
+        margin-top: 22px;
     }
 </style>
+
+<script>
+    const urlPathEl = document.getElementById('nf-url-path');
+    if (urlPathEl) {
+        urlPathEl.textContent = window.location.pathname + window.location.search;
+    }
+    if ((window as any).plausible) {
+        (window as any).plausible('404', { props: { path: document.location.pathname } });
+    }
+</script>

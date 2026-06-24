@@ -1,63 +1,27 @@
 ---
-import { Image } from 'astro:assets';
-import profilePic from '../assets/images/joost-profile.jpg';
-import siteConfig from '../data/site-config';
-import PaletteSwitcher from './PaletteSwitcher.astro';
-
 const currentYear = new Date().getFullYear();
+
+const elsewhere = [
+    { text: 'bsky', href: 'https://bsky.app/profile/joost.blog' },
+    { text: 'github', href: 'https://github.com/jdevalk' },
+    { text: 'linkedin', href: 'https://www.linkedin.com/in/jdevalk/' }
+];
 ---
 
-<footer class="sp-footer">
-    <div class="sp-footer-inner">
-        <div class="sp-footer-cols">
-            <div>
-                <div class="sp-footer-author">
-                    <div class="sp-footer-author-portrait">
-                        <Image src={profilePic} alt="Joost de Valk" width={200} loading="lazy" decoding="async" />
-                    </div>
-                    <div class="sp-footer-author-name">Joost de Valk</div>
-                </div>
-                <div class="sp-footer-bio">
-                    Internet entrepreneur from the Netherlands. Group Head of AI &amp; Growth at Your.Online, investor through Emilia Capital, and founder of
-                    Yoast, the WordPress SEO plugin now on millions of sites.
-                </div>
-            </div>
-            <div>
-                <div class="sp-footer-label">Writing</div>
-                <ul>
-                    <li><a href="/blog/">Blog</a></li>
-                    <li><a href="/code/">Code</a></li>
-                    <li><a href="/cms-market-share/">CMS Market Share</a></li>
-                </ul>
-            </div>
-            <div>
-                <div class="sp-footer-label">Work</div>
-                <ul>
-                    <li><a href="https://your.online/" target="_blank" rel="noopener noreferrer">Your.Online</a></li>
-                    <li><a href="https://progressplanner.com/" target="_blank" rel="noopener noreferrer">Progress Planner</a></li>
-                    <li><a href="https://emilia.capital/" target="_blank" rel="noopener noreferrer">Emilia Capital</a></li>
-                    <li><a href="/code/">Open source</a></li>
-                </ul>
-            </div>
-            <div>
-                <div class="sp-footer-label">Elsewhere</div>
-                <ul>
-                    {
-                        siteConfig.socialLinks.map((link) => (
-                            <li>
-                                <a href={link.href} target="_blank" rel="noopener noreferrer">
-                                    {link.text}
-                                </a>
-                            </li>
-                        ))
-                    }
-                </ul>
-            </div>
+<footer class="site-footer">
+    <div class="site-footer-elsewhere">
+        <div class="site-footer-elsewhere-title">Find me elsewhere</div>
+        <div class="site-footer-links">
+            {
+                elsewhere.map((link) => (
+                    <a href={link.href} target="_blank" rel="noopener noreferrer me">
+                        → {link.text}
+                    </a>
+                ))
+            }
         </div>
-        <div class="sp-footer-rule"></div>
-        <div class="sp-footer-bottom">
-            <div class="sp-colophon">Set in <em>Domaine</em> &amp; Pitch. Built with Astro. Wijchen, Netherlands. &copy; 2015&ndash;{currentYear}.</div>
-            <PaletteSwitcher />
-        </div>
+    </div>
+    <div class="site-colophon">
+        Set in Domaine &amp; Pitch<br />© {currentYear} Joost de Valk · Wijchen, NL
     </div>
 </footer>
