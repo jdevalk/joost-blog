@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import avatar from '../assets/images/joost-headshot.jpg';
 import siteConfig from '../data/site-config';
 
 const pathname = Astro.url.pathname;
@@ -12,7 +14,10 @@ function isActive(href: string): boolean {
 ---
 
 <header class="site-header">
-    <a href="/" class="site-wordmark">Joost de Valk</a>
+    <a href="/" class="site-wordmark">
+        <Image src={avatar} alt="Joost de Valk" width={72} loading="eager" class="site-avatar" />
+        <span>Joost de Valk</span>
+    </a>
     <nav class="site-nav" aria-label="Primary navigation">
         {
             siteConfig.primaryNavLinks?.map((link) => (

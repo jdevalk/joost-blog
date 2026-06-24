@@ -184,14 +184,21 @@ a {
 
 /* ── Header ──────────────────────────────────────────────────── */
 .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 24px;
-    padding: 28px 0 26px;
+    padding: 20px 0 18px;
     border-bottom: 1px solid var(--hair-strong);
+    background: var(--paper);
 }
 .site-wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
     font-family: var(--font-display);
     font-weight: 500;
     font-size: 23px;
@@ -199,6 +206,14 @@ a {
     text-decoration: none;
     letter-spacing: -0.01em;
     white-space: nowrap;
+}
+.site-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--paper-white);
+    box-shadow: 0 2px 8px rgba(31, 37, 48, 0.16);
 }
 .site-nav {
     display: flex;

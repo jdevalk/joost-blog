@@ -69,10 +69,9 @@ const pageContext: SchemaPageContext = {
             </div>
             <div class="sp-archive-list">
                 {
-                    latestPosts.map((post, i) => (
+                    latestPosts.map((post) => (
                         <a href={`/${post.id}/`} class="sp-archive-row">
                             <span class="sp-row-left">
-                                <span class="sp-row-num">{String(i + 1).padStart(3, '0')}</span>
                                 <span class="sp-row-title" set:html={post.data.title.replace(/\*([^*]+)\*/g, '<em>$1</em>')} />
                             </span>
                             <span class="sp-row-read" style="white-space:nowrap">
@@ -171,11 +170,19 @@ const pageContext: SchemaPageContext = {
     }
     .home-note ul {
         margin: 11px 0 0;
-        padding: 0 0 0 16px;
+        padding: 0 0 0 18px;
+        list-style: disc;
         font-family: var(--font-text);
         font-size: 16px;
         line-height: 1.55;
         color: var(--body);
+    }
+    .home-note li {
+        margin: 0 0 2px;
+        list-style: inherit;
+    }
+    .home-note li::marker {
+        color: var(--accent);
     }
 
     .home-blog {

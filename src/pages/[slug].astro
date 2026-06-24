@@ -7,7 +7,8 @@ import SchemaGraph from '../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { sortPostsByDateDesc, slugify, getReadingTime } from '../utils/post-utils';
+import TableOfContents from '../components/TableOfContents.astro';
+import { sortPostsByDateDesc, slugify, getReadingTime, getRelatedPosts } from '../utils/post-utils';
 import { gitLastmod } from '../utils/sitemap';
 import fs from 'node:fs';
 
@@ -45,6 +46,7 @@ export async function getStaticPaths() {
             entry: post,
             type: 'blog' as const,
             readingTime: getReadingTime(post.body ?? ''),
+            relatedPosts: getRelatedPosts(post, posts),
             // posts sorted newest-first: i-1 is newer ("Next"), i+1 is older ("Previous")
             newer: i > 0 ? { id: posts[i - 1].id, title: posts[i - 1].data.title } : null,
             older: i < posts.length - 1 ? { id: posts[i + 1].id, title: posts[i + 1].data.title } : null
@@ -63,14 +65,14 @@ export async function getStaticPaths() {
         )
         .map((page) => ({
             params: { slug: page.id },
-            props: { entry: page, type: 'page' as const, readingTime: 0, newer: null, older: null }
+            props: { entry: page, type: 'page' as const, readingTime: 0, relatedPosts: [], newer: null, older: null }
         }));
 
     return [...blogPaths, ...pagePaths];
 }
 
-const { entry, type, readingTime, newer, older } = Astro.props;
-const { Content } = await render(entry);
+const { entry, type, readingTime, relatedPosts, newer, older } = Astro.props;
+const { Content, headings } = await render(entry);
 
 const isBlog = type === 'blog';
 const blogData = isBlog ? (entry as CollectionEntry<'blog'>).data : null;
@@ -108,6 +110,8 @@ const pageContext: SchemaPageContext = isBlog
 
 const categories = blogData?.categories ?? [];
 const primaryCategory = categories[0] ?? null;
+
+const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) => h.depth === 2 || h.depth === 3);
 ---
 
 {
@@ -151,11 +155,10 @@ const primaryCategory = categories[0] ?? null;
 
                     <div class="post-author">
                         <Image src={avatar} alt="Joost de Valk" width={84} loading="eager" />
-                        <div>
-                            <div class="name">Joost de Valk</div>
-                            <div class="sub">Founder of Yoast · Emilia Capital</div>
-                        </div>
+                        <div class="name">Joost de Valk</div>
                     </div>
+
+                    {hasToc && <TableOfContents headings={headings} />}
 
                     <div class="sp-prose sp-prose--dropcap">
                         <Content />
@@ -192,6 +195,27 @@ const primaryCategory = categories[0] ?? null;
                             <span class="post-nav-cell post-nav-empty" />
                         )}
                     </nav>
+                )}
+
+                {relatedPosts && relatedPosts.length > 0 && (
+                    <section class="post-related" data-pagefind-ignore="all">
+                        <div class="sp-section-head">
+                            <h2>Related writing</h2>
+                            <span class="sp-section-meta">From the archive</span>
+                        </div>
+                        <div class="post-related-grid">
+                            {relatedPosts.slice(0, 3).map((rel) => (
+                                <a href={`/${rel.id}/`} class="post-related-card">
+                                    <div class="date">
+                                        <FormattedDate date={rel.data.publishDate} />
+                                        {` · ${getReadingTime(rel.body ?? '')} min`}
+                                    </div>
+                                    <h3 set:html={emTitle(rel.data.title)} />
+                                    {rel.data.excerpt && <p>{rel.data.excerpt}</p>}
+                                </a>
+                            ))}
+                        </div>
+                    </section>
                 )}
             </div>
         </BaseLayout>
@@ -360,4 +384,93 @@ const primaryCategory = categories[0] ?? null;
     .post-nav-cell:hover {
         opacity: 0.7;
     }
+
+    .post-related {
+        max-width: 960px;
+        margin: 24px auto 0;
+        padding: 8px 0 48px;
+    }
+    .post-related .sp-section-head {
+        margin-bottom: 0;
+    }
+    .post-related-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 24px;
+        padding-top: 26px;
+    }
+    .post-related-card {
+        text-decoration: none;
+        background: var(--card);
+        border: 1px solid rgba(31, 37, 48, 0.12);
+        padding: 22px;
+        display: block;
+        transition: border-color 0.15s;
+    }
+    .post-related-card:hover {
+        border-color: var(--accent);
+    }
+    .post-related-card .date {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--faint);
+    }
+    .post-related-card h3 {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 1.2;
+        color: var(--ink);
+        margin: 12px 0 0;
+    }
+    .post-related-card h3 :global(em) {
+        font-style: italic;
+    }
+    .post-related-card p {
+        font-family: var(--font-text);
+        font-size: 14.5px;
+        line-height: 1.5;
+        color: var(--muted);
+        margin: 8px 0 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    @media (max-width: 720px) {
+        .post-related-grid {
+            grid-template-columns: 1fr;
+        }
+    }
 </style>
+
+<script>
+    function initToc() {
+        const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'));
+        if (links.length === 0) return;
+
+        const headings = links
+            .map((l) => document.getElementById(l.hash.slice(1)))
+            .filter((el): el is HTMLElement => el !== null);
+        if (headings.length === 0) return;
+
+        const setActive = (id: string | null) => {
+            links.forEach((link) => link.classList.toggle('active', id !== null && link.hash === `#${id}`));
+        };
+
+        const observer = new IntersectionObserver(
+            () => {
+                let active: string | null = null;
+                for (const heading of headings) {
+                    if (heading.getBoundingClientRect().top <= 160) active = heading.id;
+                }
+                setActive(active);
+            },
+            { rootMargin: '-140px 0px -70% 0px', threshold: 0 }
+        );
+        headings.forEach((h) => observer.observe(h));
+    }
+
+    initToc();
+</script>
