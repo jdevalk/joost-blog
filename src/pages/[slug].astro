@@ -250,7 +250,7 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
         font-family: var(--font-mono);
         font-size: 12px;
         letter-spacing: 0.04em;
-        color: var(--accent);
+        color: var(--accent-ink);
         text-decoration: none;
     }
     .post-back:hover {
@@ -266,11 +266,11 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
         font-size: 11.5px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: var(--faint);
+        color: var(--meta);
     }
     .post-cat-pill {
-        color: var(--accent);
-        background: rgba(95, 117, 96, 0.16);
+        color: var(--accent-ink);
+        background: rgba(95, 117, 96, 0.22);
         padding: 4px 9px;
         text-decoration: none;
     }
@@ -374,7 +374,7 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
         font-family: var(--font-mono);
         font-size: 11px;
         letter-spacing: 0.06em;
-        color: var(--faint);
+        color: var(--meta);
         text-transform: uppercase;
     }
     .post-nav-cell .ttl {

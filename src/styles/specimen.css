@@ -88,8 +88,10 @@
     --faint: #8a8578;
     --accent: #5f7560;
     --accent-hover: #4f6350;
+    --accent-ink: #3f5039; /* darker sage for small accent text (readable on paper) */
     --accent-soft: rgba(95, 117, 96, 0.2);
     --accent-soft-strong: rgba(95, 117, 96, 0.55);
+    --meta: #4f4b3e; /* higher-contrast replacement for --faint on functional meta text */
     --card: #eceae3;
     --paper-white: #fbf8f1;
     --dark: #1f2530;
@@ -491,7 +493,7 @@ a {
 .sp-row-date {
     font-family: var(--font-mono);
     font-size: 11.5px;
-    color: var(--faint);
+    color: var(--meta);
     white-space: nowrap;
     width: 96px;
     flex: none;
@@ -513,13 +515,13 @@ a {
     font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: 0.04em;
-    color: var(--accent);
+    color: var(--accent-ink);
     text-transform: uppercase;
 }
 .sp-row-read {
     font-family: var(--font-mono);
     font-size: 11.5px;
-    color: var(--faint);
+    color: var(--meta);
     text-align: right;
 }
 
@@ -827,7 +829,7 @@ a {
 .sp-post-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, var(--measure)) minmax(0, 1fr);
-    column-gap: 28px;
+    column-gap: 20px;
     align-items: start;
 }
 .sp-post-grid.sp-no-toc {
@@ -842,7 +844,10 @@ a {
     top: calc(var(--sp-header-h, 86px) + 18px);
     max-height: calc(100vh - var(--sp-header-h, 86px) - 48px);
     overflow-y: auto;
-    width: 100%;
+    /* Reach a little further left into the empty gutter so the rail is wider
+       than its column without pushing the centered prose off-axis. */
+    width: calc(100% + 14px);
+    margin-left: -14px;
     border-top: 2px solid var(--rule);
     padding-top: 16px;
     scrollbar-width: none;
@@ -858,7 +863,7 @@ a {
     font-size: 10.5px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--faint);
+    color: var(--meta);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -884,7 +889,7 @@ a {
     font-family: var(--font-text);
     font-size: 14px;
     line-height: 1.25;
-    color: var(--muted);
+    color: var(--secondary);
     text-decoration: none;
     display: grid;
     grid-template-columns: 20px 1fr;
@@ -894,17 +899,19 @@ a {
 .sp-post-toc-body li.sub a {
     display: block;
     font-size: 13px;
+    color: var(--muted);
 }
 .sp-post-toc-body a:hover {
     color: var(--ink);
 }
 .sp-post-toc-body a.active {
-    color: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 700;
 }
 .sp-post-toc-num {
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--accent);
+    color: var(--accent-ink);
 }
 
 @media (max-width: 1000px) {
