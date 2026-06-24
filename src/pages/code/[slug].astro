@@ -39,9 +39,9 @@ const hasToc = !!data.toc && headings.some((h) => h.depth === 2 || h.depth === 3
     <SchemaGraph pageContext={pageContext} />
     <div class="sp-root sp-post" data-pagefind-body>
         <section class="sp-post-body">
-            <div class:list={['reading-grid', { 'sp-no-toc': !hasToc }]}>
+            <div class:list={['sp-post-grid', { 'sp-no-toc': !hasToc }]}>
                 {hasToc && <TableOfContents headings={headings} />}
-                <div class="reading-col">
+                <div class="sp-post-col">
                     <nav class="sp-post-crumbs" aria-label="Breadcrumb">
                         <a href="/">Home</a>
                         <span class="sep">/</span>
@@ -59,7 +59,7 @@ const hasToc = !!data.toc && headings.some((h) => h.depth === 2 || h.depth === 3
 </BaseLayout>
 
 <style>
-    .reading-grid {
+    .sp-post-grid {
         padding-top: 52px;
     }
     .code-doc-prose {

@@ -823,30 +823,13 @@ a {
 .sp-post-body {
     padding: 28px 0 12px;
 }
-/* Reading layout for posts & code pages: a centered [TOC rail | content]
-   unit. Everything (header, prose, nav, related) lives in the content
-   column so it stays aligned with the rail. */
-.reading-grid {
-    display: grid;
-    grid-template-columns: 220px minmax(0, var(--measure));
-    column-gap: 64px;
-    justify-content: center;
-    align-items: start;
-}
-.reading-grid.sp-no-toc {
-    display: block;
-    max-width: var(--measure);
-    margin: 0 auto;
-}
-.reading-col {
-    min-width: 0;
-}
-
-/* CMS data page keeps a centered prose column with a narrower rail. */
+/* Reading layout for posts & code pages: content column on the left, the
+   table-of-contents nav on the right. Everything (header, prose, prev/next,
+   related) lives in the content column. */
 .sp-post-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, var(--measure)) minmax(0, 1fr);
-    column-gap: 20px;
+    grid-template-columns: minmax(0, var(--measure)) 1fr;
+    column-gap: 64px;
     align-items: start;
 }
 .sp-post-grid.sp-no-toc {
@@ -854,14 +837,33 @@ a {
     max-width: var(--measure);
     margin: 0 auto;
 }
+.sp-post-col {
+    min-width: 0;
+}
+/* TOC nav always occupies the right-hand column, regardless of source order. */
+.sp-post-grid > .sp-post-toc {
+    order: 2;
+}
 
-/* ── Table of contents (sticky left rail) ─────────────────────── */
+/* CMS data page keeps its own centered, prose-first grid. */
+.cms-doc-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--measure)) minmax(0, 1fr);
+    column-gap: 20px;
+    align-items: start;
+}
+.cms-doc-grid.sp-no-toc {
+    display: block;
+    max-width: var(--measure);
+    margin: 0 auto;
+}
+
+/* ── Table of contents (sticky rail) ──────────────────────────── */
 .sp-post-toc {
     position: sticky;
-    top: calc(var(--sp-header-h, 86px) + 18px);
-    max-height: calc(100vh - var(--sp-header-h, 86px) - 48px);
+    top: calc(var(--sp-header-h, 86px) + 105px);
+    max-height: calc(100vh - var(--sp-header-h, 86px) - 130px);
     overflow-y: auto;
-    width: 100%;
     border-top: 2px solid var(--rule);
     padding-top: 16px;
     scrollbar-width: none;
@@ -929,15 +931,14 @@ a {
 }
 
 @media (max-width: 1000px) {
-    .reading-grid,
-    .sp-post-grid {
+    .sp-post-grid,
+    .cms-doc-grid {
         display: block;
         max-width: var(--measure);
         margin: 0 auto;
     }
     .sp-post-toc {
         position: static;
-        width: auto;
         max-height: none;
         margin: 0 0 28px;
         overflow: visible;

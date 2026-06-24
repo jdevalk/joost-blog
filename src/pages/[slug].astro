@@ -125,9 +125,9 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
         >
             <SchemaGraph pageContext={pageContext} />
             <div class="sp-root sp-post">
-                <div class:list={['reading-grid', { 'sp-no-toc': !hasToc }]}>
+                <div class:list={['sp-post-grid', { 'sp-no-toc': !hasToc }]}>
                     {hasToc && <TableOfContents headings={headings} />}
-                    <div class="reading-col">
+                    <div class="sp-post-col">
                     <article class="post-article" data-pagefind-body>
                         <a href="/blog/" class="post-back">
                             ← all writing
@@ -235,7 +235,7 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
 }
 
 <style>
-    .reading-grid {
+    .sp-post-grid {
         padding-top: 52px;
     }
     .post-article {
