@@ -127,12 +127,14 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
         >
             <SchemaGraph pageContext={pageContext} />
             <div class="sp-root sp-post">
-                <article class="post-article" data-pagefind-body>
-                    <a href="/blog/" class="post-back">
-                        ← all writing
-                    </a>
+                <div class:list={['sp-post-grid', { 'sp-no-toc': !hasToc }]}>
+                    {hasToc && <TableOfContents headings={headings} />}
+                    <article class="post-article" data-pagefind-body>
+                        <a href="/blog/" class="post-back">
+                            ← all writing
+                        </a>
 
-                    <div class="post-meta">
+                        <div class="post-meta">
                         {primaryCategory && (
                             <a class="post-cat-pill" href={`/category/${slugify(primaryCategory)}/`}>
                                 {primaryCategory}
@@ -158,8 +160,6 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
                         <div class="name">Joost de Valk</div>
                     </div>
 
-                    {hasToc && <TableOfContents headings={headings} />}
-
                     <div class="sp-prose sp-prose--dropcap">
                         <Content />
                     </div>
@@ -174,7 +174,8 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
                             ))}
                         </div>
                     )}
-                </article>
+                    </article>
+                </div>
 
                 {(newer || older) && (
                     <nav class="post-nav" aria-label="More writing">
@@ -239,10 +240,11 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
 }
 
 <style>
+    .sp-post-grid {
+        padding-top: 52px;
+    }
     .post-article {
-        max-width: var(--measure);
-        margin: 0 auto;
-        padding: 56px 0 24px;
+        padding: 0 0 24px;
     }
     .post-back {
         font-family: var(--font-mono);
@@ -455,21 +457,30 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
             .filter((el): el is HTMLElement => el !== null);
         if (headings.length === 0) return;
 
-        const setActive = (id: string | null) => {
-            links.forEach((link) => link.classList.toggle('active', id !== null && link.hash === `#${id}`));
+        const offset = 160;
+        let ticking = false;
+
+        const update = () => {
+            ticking = false;
+            let active: string | null = null;
+            for (const heading of headings) {
+                if (heading.getBoundingClientRect().top <= offset) active = heading.id;
+            }
+            links.forEach((link) => link.classList.toggle('active', active !== null && link.hash === `#${active}`));
         };
 
-        const observer = new IntersectionObserver(
+        update();
+        window.addEventListener(
+            'scroll',
             () => {
-                let active: string | null = null;
-                for (const heading of headings) {
-                    if (heading.getBoundingClientRect().top <= 160) active = heading.id;
+                if (!ticking) {
+                    requestAnimationFrame(update);
+                    ticking = true;
                 }
-                setActive(active);
             },
-            { rootMargin: '-140px 0px -70% 0px', threshold: 0 }
+            { passive: true }
         );
-        headings.forEach((h) => observer.observe(h));
+        window.addEventListener('resize', update, { passive: true });
     }
 
     initToc();
