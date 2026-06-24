@@ -37,25 +37,32 @@ const hasToc = !!data.toc && headings.some((h) => h.depth === 2 || h.depth === 3
 
 <BaseLayout title={seoTitle} description={seoDescription}>
     <SchemaGraph pageContext={pageContext} />
-    <div class="sp-root sp-blocks sp-post" data-pagefind-body>
-        <section class="sp-post-hero">
-            <div class="sp-section-inner">
-                <nav class="sp-post-crumbs" aria-label="Breadcrumb">
-                    <a href="/">Home</a>
-                    <span class="sep">/</span>
-                    <a href="/code/">Code</a>
-                    <span class="sep">/</span>
-                </nav>
-                <h1 class="sp-post-title" set:html={data.title} />
-            </div>
-        </section>
+    <div class="sp-root sp-post" data-pagefind-body>
         <section class="sp-post-body">
-            <div class:list={['sp-post-grid', { 'sp-no-toc': !hasToc }]}>
+            <div class:list={['reading-grid', { 'sp-no-toc': !hasToc }]}>
                 {hasToc && <TableOfContents headings={headings} />}
-                <article class="sp-prose">
-                    <Content />
-                </article>
+                <div class="reading-col">
+                    <nav class="sp-post-crumbs" aria-label="Breadcrumb">
+                        <a href="/">Home</a>
+                        <span class="sep">/</span>
+                        <a href="/code/">Code</a>
+                        <span class="sep">/</span>
+                    </nav>
+                    <h1 class="sp-post-title" set:html={data.title} />
+                    <article class="sp-prose code-doc-prose">
+                        <Content />
+                    </article>
+                </div>
             </div>
         </section>
     </div>
 </BaseLayout>
+
+<style>
+    .reading-grid {
+        padding-top: 52px;
+    }
+    .code-doc-prose {
+        margin-top: 30px;
+    }
+</style>

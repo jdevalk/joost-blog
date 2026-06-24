@@ -823,9 +823,26 @@ a {
 .sp-post-body {
     padding: 28px 0 12px;
 }
-/* 3-col reading grid: TOC rail | centered prose (680) | empty gutter.
-   The 1fr side columns keep the prose centered, aligned with the
-   full-width hero/nav/related blocks. */
+/* Reading layout for posts & code pages: a centered [TOC rail | content]
+   unit. Everything (header, prose, nav, related) lives in the content
+   column so it stays aligned with the rail. */
+.reading-grid {
+    display: grid;
+    grid-template-columns: 220px minmax(0, var(--measure));
+    column-gap: 64px;
+    justify-content: center;
+    align-items: start;
+}
+.reading-grid.sp-no-toc {
+    display: block;
+    max-width: var(--measure);
+    margin: 0 auto;
+}
+.reading-col {
+    min-width: 0;
+}
+
+/* CMS data page keeps a centered prose column with a narrower rail. */
 .sp-post-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, var(--measure)) minmax(0, 1fr);
@@ -838,16 +855,13 @@ a {
     margin: 0 auto;
 }
 
-/* ── Table of contents (sticky left rail in the gutter) ───────── */
+/* ── Table of contents (sticky left rail) ─────────────────────── */
 .sp-post-toc {
     position: sticky;
     top: calc(var(--sp-header-h, 86px) + 18px);
     max-height: calc(100vh - var(--sp-header-h, 86px) - 48px);
     overflow-y: auto;
-    /* Reach a little further left into the empty gutter so the rail is wider
-       than its column without pushing the centered prose off-axis. */
-    width: calc(100% + 14px);
-    margin-left: -14px;
+    width: 100%;
     border-top: 2px solid var(--rule);
     padding-top: 16px;
     scrollbar-width: none;
@@ -915,6 +929,7 @@ a {
 }
 
 @media (max-width: 1000px) {
+    .reading-grid,
     .sp-post-grid {
         display: block;
         max-width: var(--measure);

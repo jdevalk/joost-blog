@@ -1,7 +1,5 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
-import { Image } from 'astro:assets';
-import avatar from '../assets/images/joost-headshot.jpg';
 import FormattedDate from '../components/FormattedDate.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
 import type { SchemaPageContext } from '../utils/schema';
@@ -127,8 +125,9 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
         >
             <SchemaGraph pageContext={pageContext} />
             <div class="sp-root sp-post">
-                <div class:list={['sp-post-grid', { 'sp-no-toc': !hasToc }]}>
+                <div class:list={['reading-grid', { 'sp-no-toc': !hasToc }]}>
                     {hasToc && <TableOfContents headings={headings} />}
+                    <div class="reading-col">
                     <article class="post-article" data-pagefind-body>
                         <a href="/blog/" class="post-back">
                             ← all writing
@@ -155,11 +154,6 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
 
                     {blogData!.excerpt && <p class="post-standfirst">{blogData!.excerpt}</p>}
 
-                    <div class="post-author">
-                        <Image src={avatar} alt="Joost de Valk" width={84} loading="eager" />
-                        <div class="name">Joost de Valk</div>
-                    </div>
-
                     <div class="sp-prose sp-prose--dropcap">
                         <Content />
                     </div>
@@ -175,7 +169,6 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
                         </div>
                     )}
                     </article>
-                </div>
 
                 {(newer || older) && (
                     <nav class="post-nav" aria-label="More writing">
@@ -218,6 +211,8 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
                         </div>
                     </section>
                 )}
+                    </div>
+                </div>
             </div>
         </BaseLayout>
     ) : (
@@ -240,11 +235,16 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
 }
 
 <style>
-    .sp-post-grid {
+    .reading-grid {
         padding-top: 52px;
     }
     .post-article {
         padding: 0 0 24px;
+    }
+    .post-article .sp-prose {
+        margin-top: 34px;
+        padding-top: 30px;
+        border-top: 1px solid rgba(31, 37, 48, 0.14);
     }
     .post-back {
         font-family: var(--font-mono);
@@ -299,31 +299,6 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
         color: var(--secondary);
         margin: 24px 0 0;
     }
-    .post-author {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin: 30px 0 40px;
-        padding-top: 24px;
-        border-top: 1px solid rgba(31, 37, 48, 0.14);
-    }
-    .post-author :global(img) {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-    .post-author .name {
-        font-family: var(--font-text);
-        font-size: 16px;
-        color: var(--ink);
-        line-height: 1.3;
-    }
-    .post-author .sub {
-        font-family: var(--font-mono);
-        font-size: 11px;
-        color: var(--faint);
-    }
     .post-tags {
         display: flex;
         flex-wrap: wrap;
@@ -352,8 +327,6 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
         background: rgba(95, 117, 96, 0.12);
     }
     .post-nav {
-        max-width: var(--measure);
-        margin: 0 auto;
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 24px;
@@ -388,8 +361,7 @@ const hasToc = !!(isBlog ? blogData!.toc : pageData!.toc) && headings.some((h) =
     }
 
     .post-related {
-        max-width: 960px;
-        margin: 24px auto 0;
+        margin: 24px 0 0;
         padding: 8px 0 48px;
     }
     .post-related .sp-section-head {
