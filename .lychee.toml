@@ -6,6 +6,13 @@ exclude_path = []
 # Treat 403/401/429 as acceptable (sites blocking bots, rate limiting)
 accept = ["100..=429"]
 
+# Give slow hosts more slack before failing. Some valid links (e.g. the
+# elar.urfu.ru academic repository) resolve fine in a browser but are slow or
+# intermittently unreachable from GitHub runners, so retry before giving up.
+timeout = 30
+max_retries = 5
+retry_wait_time = 2
+
 # Skip URLs that are known-flaky, dead, or are internal paths that no longer exist
 exclude = [
     # Academic publishers and paywalled sites that block bots
@@ -15,7 +22,6 @@ exclude = [
     "d1wqtxts1xzle7\\.cloudfront\\.net",
     "dl\\.acm\\.org",
     "myscp\\.onlinelibrary\\.wiley\\.com",
-    "elar\\.urfu\\.ru",
 
     # Social platforms that block or rate-limit bots
     "unsplash\\.com",
