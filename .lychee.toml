@@ -15,6 +15,7 @@ exclude = [
     "d1wqtxts1xzle7\\.cloudfront\\.net",
     "dl\\.acm\\.org",
     "myscp\\.onlinelibrary\\.wiley\\.com",
+    "elar\\.urfu\\.ru",
 
     # Social platforms that block or rate-limit bots
     "unsplash\\.com",
