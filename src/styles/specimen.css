@@ -972,7 +972,7 @@
     font-family: var(--font-display);
     font-weight: var(--weight-display);
     font-size: clamp(56px, 7vw, 112px);
-    line-height: 1;
+    line-height: 1.1;
     letter-spacing: -0.03em;
     margin: 0 0 32px;
     max-width: 16ch;
@@ -983,6 +983,7 @@
     font-style: italic;
     color: var(--hero-accent);
     font-weight: var(--weight-display);
+    padding-right: 0.08em;
 }
 .sp-post-meta-row {
     display: flex;
