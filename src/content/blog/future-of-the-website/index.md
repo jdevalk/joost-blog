@@ -68,7 +68,7 @@ The website doesn't die in that world. Its role shifts. It becomes the canonical
 
 And then the thing that ties it all together. Generic AI slop will get you absolutely nowhere in this world. Everyone can generate it, in infinite quantities, which makes it worth exactly nothing. The only thing that can't be generated is being real: real work, real people, a real voice, real customers who really vouch for you.
 
-Here's the part most people miss: in an agent world, authenticity can't just be claimed, it has to be checkable. When an agent chooses between two suppliers, it will prefer the one whose identity is verified, whose content is signed, whose reviews are provably real. Authenticity stops being a marketing word and becomes infrastructure: [identity, provenance, trust](/building-a-trusted-web-step-1/). The boring plumbing of proving you are who you say you are is about to become the most valuable layer of the web.
+Here's the part most people miss: in an agent world, authenticity can't just be claimed, it has to be checkable. When an agent chooses between two suppliers, it will prefer the one whose identity is verified, whose content is signed, whose reviews are provably real. Authenticity stops being a marketing word and becomes infrastructure: identity, provenance, trust. The boring plumbing of proving you are who you say you are is about to become the most valuable layer of the web.
 
 ## So where does that leave the website?
 
