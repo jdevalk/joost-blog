@@ -46,7 +46,7 @@ So technical excellence is no longer a rare skill; it's a choice. That doesn't m
 
 ## Websites don't matter equally, and that's fine
 
-A plumber, carpenter or electrician who is good at the job and can communicate half decently will be busy year round, with or without a website. Could a good website make them even busier? Probably. Do they want that? Many don't, and that's a perfectly rational choice.
+Where I live, a plumber, carpenter or electrician who is good at the job and can communicate half decently will be busy year round, with or without a website. Could a good website make them even busier? Probably. Do they want that? Many don't, and that's a perfectly rational choice.
 
 For a brand, it's the opposite. The website is probably more important than the most chic high street store they could open. Partly for the experience, but mostly for a brutally simple reason: there are only so many high streets, and your potential buyers live literally everywhere.
 
