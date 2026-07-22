@@ -20,7 +20,7 @@ toc: true
 
 I've spent most of my working life on websites: building them, optimizing them, and helping millions of people do the same. So the question I keep coming back to lately is an existential one for my whole field: where are websites going? What even _is_ "the website" five years from now?
 
-Several things are true at once, and some of them pull in different directions. But they point to one destination. The website becomes the home base of your business: agents can read it, act on it, and check that you are real.
+Several things are true at once, and some of them pull in different directions. But they point to one destination. The website becomes the home base of your business: humans and agents alike can read it, act on it, and check that you are real.
 
 ## Websites are built for agents now, too
 
