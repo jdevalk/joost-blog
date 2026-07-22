@@ -5,7 +5,7 @@ seo:
   description: >-
     Websites aren't dying, but their job is changing: agent-readable surfaces,
     MCP servers, and verifiable authenticity. Where the website goes next.
-publishDate: 2026-07-17T00:00:00.000Z
+publishDate: 2026-07-22T00:00:00.000Z
 excerpt: >-
   I've spent most of my working life on websites. So the question I keep coming
   back to lately is an existential one for my whole field: what even is "the
@@ -16,8 +16,6 @@ categories:
   - AI
   - Strategy
 toc: true
-draft: true
-password: interface-bundle-2031
 ---
 
 I've spent most of my working life on websites: building them, optimizing them, and helping millions of people do the same. So the question I keep coming back to lately is an existential one for my whole field: where are websites going? What even _is_ "the website" five years from now?
