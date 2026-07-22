@@ -50,8 +50,6 @@ Where I live, a plumber, carpenter or electrician who is good at the job and can
 
 For a brand, it's the opposite. The website is probably more important than the most chic high street store they could open. Partly for the experience, but mostly for a brutally simple reason: there are only so many high streets, and your potential buyers live literally everywhere.
 
-There's a twist in the plumber's case though. The businesses that don't want a website might still want a _machine surface_, precisely because they don't want the work. An agent-readable profile that answers "available in this area, this trade, this rate, book here" wins them customers [without them ever touching a CMS](/do-you-need-a-cms/). So the real segmentation isn't website versus no website. It's presence versus experience.
-
 ## The website becomes an interface bundle
 
 A website used to be an HTML thing, in some cases with an API. That's no longer enough. If your website matters to you, it should at the very least [also be an MCP server](/agent-native/), and in many cases even ship a command-line client, so that agents can interact with your business directly: check availability, place the order, book the slot.
