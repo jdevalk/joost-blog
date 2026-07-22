@@ -72,4 +72,4 @@ In an agent world, authenticity can't just be claimed, it has to be checkable. A
 
 Not dead. Not even close. But different: the website is becoming the verified, machine-readable home base of a business. It feeds every other surface. It answers agents and takes their orders. It proves the business is real. And it still, sometimes, gets visited by an actual human, who had better find something authentic when they arrive.
 
-The websites that thrive in this world are the ones that are technically excellent (now a choice, and for the moment still an edge), present wherever agents look (which is a rendering problem), and unmistakably real (which is the hard part, and always was).
+The websites that thrive in this world are the ones that are technically excellent (now a choice, and for the moment still an edge), easy for agents to find and read (which is a plumbing problem), and unmistakably real (which is the hard part, and always was).
