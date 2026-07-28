@@ -1,8 +1,8 @@
 {
   "serverInfo": {
     "name": "joost.blog",
-    "version": "1.0.0",
-    "description": "MCP server for joost.blog — ask questions about Joost de Valk's writing on SEO, WordPress, AI, and the open web, or list his published posts."
+    "version": "1.2.0",
+    "description": "MCP server for joost.blog — ask questions about Joost de Valk's writing on SEO, WordPress, AI, and the open web, or list his published posts. Also serves his published agent skills as skill:// resources (draft Skills extension, SEP-2640)."
   },
   "endpoint": "https://joost.blog/mcp",
   "remotes": [
@@ -12,6 +12,10 @@
     }
   ],
   "capabilities": {
-    "tools": {}
+    "tools": {},
+    "resources": {},
+    "extensions": {
+      "io.modelcontextprotocol/skills": {}
+    }
   }
 }

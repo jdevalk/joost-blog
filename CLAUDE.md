@@ -131,8 +131,8 @@ Each datapoint written by `logAsk()` in `functions/_shared/ask-log.js`:
 - `blob1` — surface: `rest` or `mcp`
 - `blob2` — action (duplicated from `index1` so it can be SELECTed alongside other blobs)
 - `blob3` — raw query text (REST) or JSON-encoded arguments (MCP), captured **pre-sanitize** so jailbreak attempts and language-switch directives are visible in the dashboard. Truncated to 500 chars.
-- `blob4` — MCP client name (`initialize` calls only)
-- `blob5` — MCP client version (`initialize` calls only)
+- `blob4` — MCP client name (`initialize`/`server/discover` calls; also on every row from MCP 2026-07-28+ clients, which send `clientInfo` in `_meta` on each request)
+- `blob5` — MCP client version (same availability as `blob4`)
 - `blob6` — MCP protocol version
 - `blob7` — user-agent (truncated to 300 chars)
 - `blob8` — country

@@ -241,6 +241,8 @@ The MCP 2025-11-25 spec defines a Streamable HTTP transport. Clients POST JSON-R
 
 A protocol-correct implementation is roughly 140 lines; most of that is the tool definitions.
 
+<Aside>Since I wrote this, the spec moved my way: [MCP 2026-07-28](/mcp-goes-stateless/) made the stateless shape described here the core protocol. The `initialize` handshake and sessions are gone entirely, and the endpoint is now dual-era: it answers both old and new clients. If you're building this today, target 2026-07-28; the protocol surface for a read-only server is down to `server/discover`, `tools/list`, and `tools/call`.</Aside>
+
 isitagentready.com runs on the same pattern: it exposes a `scan_site` tool over Streamable HTTP, callable from any MCP client.
 
 ### OAuth

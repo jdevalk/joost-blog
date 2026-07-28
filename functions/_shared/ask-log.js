@@ -15,8 +15,10 @@
 //                      truncated to 500 chars. The sanitized version is
 //                      what reaches the LLM; the raw version is what we
 //                      want to see in the dashboard.
-//   blob4   client     MCP client name (initialize calls only)
-//   blob5   version    MCP client version (initialize calls only)
+//   blob4   client     MCP client name (initialize/server/discover calls;
+//                      also on every row from 2026-07-28+ clients, which
+//                      carry clientInfo in _meta on each request)
+//   blob5   version    MCP client version (same availability as blob4)
 //   blob6   protocol   MCP protocol version
 //   blob7   ua         user-agent, truncated to 300
 //   blob8   country    cf.country
