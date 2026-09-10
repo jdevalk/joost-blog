@@ -1,5 +1,5 @@
 ---
-title: Pretty XML Sitemaps
+title: <em>Pretty</em> XML Sitemaps
 section: code
 toc: true
 seo:

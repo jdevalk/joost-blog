@@ -14,7 +14,7 @@
 import { chromium } from 'playwright';
 import sharp from 'sharp';
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSync } from 'node:fs';
-import { join, resolve, basename, extname } from 'node:path';
+import { join, resolve, basename, extname, dirname } from 'node:path';
 import matter from 'gray-matter';
 
 const ROOT      = resolve('.');
@@ -228,6 +228,7 @@ async function renderToWebp(browser, html, outputPath) {
     const jpeg = await page.screenshot({ type: 'jpeg', quality: 90 });
     await page.close();
     const webp = await sharp(jpeg).webp({ quality: 85 }).toBuffer();
+    mkdirSync(dirname(outputPath), { recursive: true });
     writeFileSync(outputPath, webp);
     return true;
 }
@@ -287,7 +288,7 @@ async function main() {
         if (targetSlug && targetSlug !== slug) continue;
         const { data } = matter(readFileSync(join(PAGES_DIR, file), 'utf-8'));
         if (!data.title) continue;
-        await render(articleHtml({ title: data.title }), slug);
+        await render(articleHtml({ title: data.title }), data.section === 'code' ? `code/${slug}` : slug);
     }
 
     // Standalone pages not in content collections

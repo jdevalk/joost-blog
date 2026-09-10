@@ -1,5 +1,5 @@
 ---
-title: Why XML sitemaps are losing their pretty view
+title: Why XML sitemaps are losing their <em>pretty view</em>
 seo:
   title: Why XML sitemaps are losing their pretty view
   description: XML sitemaps still help search engines find your pages. Browsers are removing XSLT, the feature that makes some sitemaps look pretty. Here is what to do.
