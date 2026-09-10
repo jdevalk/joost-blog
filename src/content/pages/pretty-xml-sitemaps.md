@@ -8,7 +8,7 @@ seo:
 ---
 Pretty XML Sitemaps is a free Chrome extension that turns XML sitemaps and sitemap indexes into clear, searchable tables. It works automatically when you open a sitemap, without XSLT.
 
-[Download Pretty XML Sitemaps 0.2.0](/downloads/pretty-xml-sitemaps-0.2.0.zip)
+[Download Pretty XML Sitemaps 0.3.0](/downloads/pretty-xml-sitemaps-0.3.0.zip)
 
 For now, install it manually using the steps below. The extension is not yet listed in the Chrome Web Store.
 
@@ -19,13 +19,21 @@ Find the page you need without scrolling through raw XML:
 - Search for part of an address across the whole sitemap.
 - Click a link to open a page or a child sitemap.
 - See the modification dates supplied by the site.
-- Click either table header to sort by address or date. Click again to reverse the order.
+- Click a table header to sort by address or date. Click again to reverse the order.
 - Browse long lists in pages of 100 entries.
 - Switch between the table and the XML data.
 
 The view follows your browser's light or dark appearance. It only changes XML sitemaps and sitemap indexes. Feeds, other XML documents, and ordinary web pages stay as they are.
 
 ![Pretty XML Sitemaps filtering a sitemap to show three matching addresses and their modification dates.](/images/pretty-xml-sitemaps-preview.png)
+
+## Video sitemaps
+
+Video sitemaps show thumbnails linked to the player, titles linked to their pages, descriptions, tags, duration, and publication dates. Search titles, descriptions, tags, or page addresses, and click a column heading to sort. Each video gets its own row, including when a page has several videos.
+
+![Pretty XML Sitemaps showing Yoast’s video sitemap with thumbnails, titles, descriptions, tags, duration, and publication dates.](/images/pretty-xml-sitemaps-video-preview.png)
+
+If Chrome already displays a sitemap using XSLT, that view stays in place. The extension displays the video table when XSLT is unavailable or the sitemap has no stylesheet.
 
 ## Install in Chrome
 
@@ -39,7 +47,7 @@ Try it on [specification.website's sitemap index](https://specification.website/
 
 ## Your data stays in your browser
 
-The extension reads the current sitemap and its address to build the view. It sends nothing to me or an external service, and has no tracking or saved browsing history. The file on the website stays unchanged.
+The extension reads the current sitemap and its address to build the view. It uploads no sitemap data or search terms, and has no tracking or saved browsing history. Video thumbnails load directly from the image addresses listed in the sitemap, without a referrer. The image hosts receive normal browser requests. The file on the website stays unchanged.
 
 Chrome asks for website access because a sitemap can live on any domain or path. The extension checks that a document is a sitemap before displaying it. It does not request access to local files.
 
