@@ -11,7 +11,7 @@ Pretty XML Sitemaps is a browser extension by Joost de Valk. It displays XML sit
 
 ## Information processed on your device
 
-The extension checks the type of document you open. When it finds a standard XML sitemap or sitemap index, it reads that document and its address to build a table. This includes page addresses, modification dates, and video information such as titles, descriptions, tags, durations, publication dates, player links, and thumbnail addresses. The XML view can also display other information already present in the sitemap.
+The extension checks the type of document you open. When it finds a standard XML sitemap or sitemap index, it reads that document and its address to build a table. This includes page addresses, modification dates, image counts, and video information such as titles, descriptions, tags, durations, publication dates, player links, and thumbnail addresses. The XML view can also display other information already present in the sitemap.
 
 Search text is used only to filter the entries in the current tab.
 
