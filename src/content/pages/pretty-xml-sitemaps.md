@@ -8,7 +8,7 @@ seo:
 ---
 Pretty XML Sitemaps is a free Chrome extension that turns XML sitemaps and sitemap indexes into clear, searchable tables. It works automatically when you open a sitemap, without XSLT.
 
-[Download Pretty XML Sitemaps 0.1.0](/downloads/pretty-xml-sitemaps-0.1.0.zip)
+[Download Pretty XML Sitemaps 0.2.0](/downloads/pretty-xml-sitemaps-0.2.0.zip)
 
 For now, install it manually using the steps below. The extension is not yet listed in the Chrome Web Store.
 
@@ -19,6 +19,7 @@ Find the page you need without scrolling through raw XML:
 - Search for part of an address across the whole sitemap.
 - Click a link to open a page or a child sitemap.
 - See the modification dates supplied by the site.
+- Click either table header to sort by address or date. Click again to reverse the order.
 - Browse long lists in pages of 100 entries.
 - Switch between the table and the XML data.
 
