@@ -27,19 +27,19 @@ Find the page you need without scrolling through raw XML:
 
 The view follows your browser's light or dark appearance. It only changes XML sitemaps and sitemap indexes. Feeds, other XML documents, and ordinary web pages stay as they are.
 
-![Pretty XML Sitemaps filtering a sitemap to show three matching addresses and their modification dates.](/images/pretty-xml-sitemaps-preview.png)
+![Pretty XML Sitemaps filtering a sitemap to show three matching addresses and their modification dates.](/images/pretty-xml-sitemaps-preview-0.5.0.png)
 
 ## Video sitemaps
 
 Video sitemaps show thumbnails linked to the player, titles linked to their pages, descriptions, tags, duration, and publication dates. Search titles, descriptions, tags, or page addresses, and click a column heading to sort. Each video gets its own row, including when a page has several videos.
 
-![Pretty XML Sitemaps showing Yoast’s video sitemap with thumbnails, titles, descriptions, tags, duration, and publication dates.](/images/pretty-xml-sitemaps-video-preview.png)
+![Pretty XML Sitemaps showing Yoast’s video sitemap with thumbnails, titles, descriptions, tags, duration, and publication dates.](/images/pretty-xml-sitemaps-video-preview-0.5.0.png)
 
 ## News sitemaps
 
 News sitemaps show article titles, publication names, languages, and publication dates alongside the last modification dates. Search for a headline, publication, language, or address, and click a column heading to sort.
 
-![Pretty XML Sitemaps showing BBC news headlines, publications, languages, and dates in dark mode.](/images/pretty-xml-sitemaps-news-preview.png)
+![Pretty XML Sitemaps showing BBC news headlines, publications, languages, and dates in dark mode.](/images/pretty-xml-sitemaps-news-preview-0.5.0.png)
 
 Try it on [BBC’s news sitemap](https://www.bbc.co.uk/sitemaps/https-sitemap-uk-news-1.xml).
 
