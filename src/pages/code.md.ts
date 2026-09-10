@@ -35,6 +35,7 @@ Building tools that make the web and the world better — from WordPress and EmD
 
 ## Other
 
+- [Pretty XML Sitemaps](/code/pretty-xml-sitemaps/) — free Chrome extension for readable, searchable XML sitemaps and sitemap indexes.
 - [Quix for Alfred](/code/alfred-quix/) — Alfred workflow for SEO and web analysis.
 
 The full interactive page lives at [joost.blog/code/](https://joost.blog/code/).
