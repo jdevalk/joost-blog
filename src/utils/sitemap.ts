@@ -4,12 +4,14 @@ import { resolve } from 'node:path';
 import matter from 'gray-matter';
 import importedDates from '../data/imported-post-dates.json' with { type: 'json' };
 
-type Revision = { hash: string; date: string; path: string; previousPath: string };
+type Revision = { hash: string; date: string; path: string; previousPath: string; seoMaintenance: boolean };
 export type ContentLastmod = { date: Date; source: 'git' | 'wordpress' | 'updatedDate' | 'publication-fallback'; commit?: string; assumedTime?: boolean };
 
 // Importing existing articles does not establish their original edit time.
 // All other bulk commits are inspected per file, including image conversions.
 const NON_EDITORIAL_COMMITS = new Set(['a3f7e33']);
+// Audited bulk SEO/alt-text maintenance. Still compare prose, code and links.
+const SEO_MAINTENANCE_COMMITS = new Set(['62cb519bd3f4f7380d4e68d12033d99cd56136a6', 'cf0ce382a403657083d0aab1019f7cc1e19e98b4']);
 const cache = new Map<string, ContentLastmod | null>();
 
 function git(args: string[]): string {
@@ -25,7 +27,21 @@ function normalizeText(value: unknown): string | null {
         : null;
 }
 
-function editorialContent(raw: string, convertedImages = false): string {
+function withoutImageDescriptions(text: string): string {
+    // Protect inline code as well as the fenced blocks handled by the caller.
+    return text
+        .split(/(`+[^]*?`+)/g)
+        .map((part, index) =>
+            index % 2
+                ? part
+                : part
+                      .replace(/!\[(?:\\.|[^\]\\])*\](?=\(|\[)/g, '![]')
+                      .replace(/<img\b[^>]*>/gi, (tag) => tag.replace(/\s+alt\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, ''))
+        )
+        .join('');
+}
+
+function editorialContent(raw: string, convertedImages = false, seoMaintenance = false): string {
     const { data, content } = matter(raw);
     // In the historic format conversion, ignore only image URL extensions.
     // Changes to prose or code in the same commit still count as real edits.
@@ -41,7 +57,7 @@ function editorialContent(raw: string, convertedImages = false): string {
         .map((part, index) =>
             index % 2
                 ? part
-                : part
+                : (seoMaintenance ? withoutImageDescriptions(part) : part)
                       .replace(/<!--[^]*?-->/g, '')
                       .replace(/\s+/g, ' ')
                       .trim()
@@ -49,8 +65,8 @@ function editorialContent(raw: string, convertedImages = false): string {
     return JSON.stringify({
         title: normalizeText(data.title),
         excerpt: normalizeText(data.excerpt),
-        seoTitle: normalizeText(data.seo?.title),
-        seoDescription: normalizeText(data.seo?.description),
+        seoTitle: seoMaintenance ? null : normalizeText(data.seo?.title),
+        seoDescription: seoMaintenance ? null : normalizeText(data.seo?.description),
         draft: !!data.draft,
         body,
         youtubeId: data.youtubeId ?? null,
@@ -61,16 +77,25 @@ function editorialContent(raw: string, convertedImages = false): string {
 }
 
 function history(filePath: string): Revision[] {
-    return git(['log', '--follow', '--diff-filter=ACMR', '--format=%x1e%H%x09%cI', '--name-status', '--', filePath])
+    return git([
+        'log',
+        '--follow',
+        '--diff-filter=ACMR',
+        '--format=%x1e%H%x09%cI%x09%(trailers:key=Sitemap-Maintenance,valueonly,separator=%x2c)',
+        '--name-status',
+        '--',
+        filePath
+    ])
         .split('\x1e')
         .filter(Boolean)
         .map((part) => {
             const [header, ...lines] = part.trim().split('\n');
-            const [hash, date] = header.split('\t');
+            const [hash, date, maintenance] = header.split('\t');
             const status = lines.find((line) => /^[ACMR][0-9]*\t/.test(line));
             if (!status) throw new Error(`Cannot read content history for ${filePath} at ${hash}`);
             const [, firstPath, secondPath] = status.split('\t');
-            return { hash, date, path: secondPath ?? firstPath, previousPath: firstPath };
+            const seoMaintenance = SEO_MAINTENANCE_COMMITS.has(hash) || maintenance?.split(',').includes('seo-image-descriptions') === true;
+            return { hash, date, path: secondPath ?? firstPath, previousPath: firstPath, seoMaintenance };
         });
 }
 
@@ -80,14 +105,14 @@ function gitContentLastmod(filePath: string): ContentLastmod | null {
         const revision = revisions[i];
         if (NON_EDITORIAL_COMMITS.has(revision.hash.slice(0, 7))) continue;
         const convertedImages = revision.hash.startsWith('bd0591c');
-        const current = editorialContent(git(['show', `${revision.hash}:${revision.path}`]), convertedImages);
+        const current = editorialContent(git(['show', `${revision.hash}:${revision.path}`]), convertedImages, revision.seoMaintenance);
         const parentPath = `${revision.hash}^:${revision.previousPath}`;
         const parent = spawnSync('git', ['show', parentPath], { encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 });
         if (parent.error) throw parent.error;
         // A delete/restore round trip must be compared with the last stored version.
         const previous = revisions[i + 1];
         const prior = parent.status === 0 ? parent.stdout : previous ? git(['show', `${previous.hash}:${previous.path}`]) : null;
-        if (prior === null || current !== editorialContent(prior, convertedImages)) {
+        if (prior === null || current !== editorialContent(prior, convertedImages, revision.seoMaintenance)) {
             return { date: new Date(revision.date), source: 'git', commit: revision.hash };
         }
     }
