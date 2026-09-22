@@ -7,7 +7,7 @@ import { canonicalUrl } from '../utils/schema/constants';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import { sortPostsByDateDesc, slugify, getReadingTime, getRelatedPosts } from '../utils/post-utils';
-import { gitLastmod } from '../utils/sitemap';
+import { getContentLastmod } from '../utils/sitemap';
 import fs from 'node:fs';
 
 function resolvePostPath(entryId: string): string | null {
@@ -18,11 +18,10 @@ function resolvePostPath(entryId: string): string | null {
     return null;
 }
 
-function computeUpdatedDate(entryId: string, manual: Date | undefined, publishDate: Date): Date | null {
-    if (manual) return manual;
+function computeUpdatedDate(entryId: string, publishDate: Date): Date | null {
     const fp = resolvePostPath(entryId);
     if (!fp) return null;
-    const last = gitLastmod(fp);
+    const last = getContentLastmod(fp)?.date;
     if (!last) return null;
     return last.getTime() - publishDate.getTime() > 24 * 60 * 60 * 1000 ? last : null;
 }
@@ -63,7 +62,7 @@ const blogData = isBlog ? (entry as CollectionEntry<'blog'>).data : null;
 const pageData = !isBlog ? (entry as CollectionEntry<'pages'>).data : null;
 
 const effectiveUpdatedDate = isBlog
-    ? computeUpdatedDate(entry.id, blogData!.updatedDate, blogData!.publishDate)
+    ? computeUpdatedDate(entry.id, blogData!.publishDate)
     : null;
 
 function stripHtml(s: string): string { return s.replace(/<[^>]+>/g, ''); }

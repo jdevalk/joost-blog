@@ -52,6 +52,19 @@ Append `?password=XXX` to the URL once. The reader's browser stores the cookie f
 
 CI installs with `pnpm install --frozen-lockfile`. Use `pnpm install` locally, not `npm install`. Running npm only updates `package-lock.json`, leaving `pnpm-lock.yaml` stale, and the next CI build fails with `ERR_PNPM_OUTDATED_LOCKFILE`. Both lockfiles are currently tracked; `pnpm-lock.yaml` is the authoritative one.
 
+## Sitemap modification dates
+
+Sitemap `lastmod` values come from `getContentLastmod` in `src/utils/sitemap.ts`, which checks the complete per-file history, including renames/copies, for editorial changes and combines it with verified original timestamps. A shallow checkout can make its oldest available commit appear to have changed every file, producing identical dates even when `git log` succeeds.
+
+- Run `pnpm build`, which starts with `scripts/ensure-git-history.mjs` before Astro reads dates. Preserve this step when changing build commands or deployment settings; a direct `astro build` bypasses it.
+- The preflight checks `git rev-parse --is-shallow-repository`, fetches `git fetch --unshallow origin` only for shallow checkouts, and fails the build if full history cannot be retrieved. Do not hide fetch failures or substitute the deployment time.
+- When changing this logic, verify a depth-one checkout reproduces the issue, restoring history recovers per-file dates, a full checkout needs no fetch, and a failed fetch stops the build.
+- Correctness means the last meaningful content update, not merely the last file commit. Audit bulk image, formatting, migration, and homepage-feature changes; inspect mixed commits per file so genuine article edits are retained. Diverse dates or agreement between two runs of the same helper do not prove correctness.
+- Preserve original CMS modification timestamps, including timezone and precision, during migrations. Verified historical timestamps are in `src/data/imported-post-dates.json`; see `docs/sitemap-dates.md` for provenance. A publication date alone cannot establish an unknown modification time.
+- For this blog, Joost explicitly approved using the saved publication date when no modification timestamp can be recovered, and **20:00 Europe/Amsterdam** when its time is missing. Honor summer/winter offsets, prefer an original publication time when available, and retain `publication-fallback` / `assumedTime` provenance. Never describe assumed times as recovered exact modification times.
+- Run `pnpm test:sitemap` after changing the resolver, then build and verify all live post entries against their audited sources. Do not restore a global per-URL `lastmod` fallback: it stamps unrelated pages with another article's date.
+- Verify deployed child sitemaps as well as `sitemap-index.xml`: compare their URL/date pairs with a build using full history, including an older unchanged post and a recently edited post. Identical dates can be legitimate; investigate dates matching an unrelated deployment commit instead of requiring every URL to have a unique date.
+
 ## Publishing a new post
 
 When taking a post out of draft, do all of these in the same change:
@@ -80,7 +93,7 @@ A few routes are intentionally skipped (`404`, `admin/*`, `search`). Their warni
 
 ## Prettier
 
-Format with `pnpm format`; `pnpm format:check` runs as the first step of `pnpm build`, so unformatted code fails CI.
+Format with `pnpm format`; `pnpm format:check` runs after the Git-history preflight in `pnpm build`, so unformatted code fails CI.
 
 `.prettierignore` excludes two specific `.astro` files (`src/pages/[slug].astro`, `src/pages/videos/[slug].astro`) because `prettier-plugin-astro` 0.14.1 mis-parses their TypeScript frontmatter. Note the gitignore-style escaping (`\[slug\]`) — bracket characters need escaping or they're treated as a glob character class. If a new `.astro` route hits the same parser error, ignore it the same way until the upstream plugin is fixed.
 
