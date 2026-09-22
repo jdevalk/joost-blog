@@ -34,7 +34,7 @@ You still need to help search engines find your pages, and [XML sitemaps still d
 
 On [specification.website](/fixing-the-plumbing/), I [removed the XSLT view](https://github.com/jdevalk/specification.website/pull/198). All 12 sitemap files still worked and listed the same addresses. The site already has a [normal web page for browsing the content](https://specification.website/spec/).
 
-I also built [Pretty XML Sitemaps](/code/pretty-xml-sitemaps/), a free Chrome extension that makes sitemaps and sitemap indexes easy to browse and search, without XSLT.
+I also built [Sitemap Inspector](/code/sitemap-inspector/), a free Chrome extension that makes sitemaps and sitemap indexes easy to browse and search, without XSLT. It now includes sitemap feedback, file statistics, and optional live checks for redirects, noindex directives, canonical mismatches, and Googlebot robots.txt rules.
 
 If an SEO plugin or your CMS makes your sitemap, check what its developers plan to do. Keep the sitemap enabled.
 

@@ -1,3 +1,15 @@
+/pretty-xml-sitemaps-privacy-policy /sitemap-inspector-privacy-policy/ 301
+/pretty-xml-sitemaps-privacy-policy/ /sitemap-inspector-privacy-policy/ 301
+/pretty-xml-sitemaps-privacy-policy.md /sitemap-inspector-privacy-policy.md 301
+/code/pretty-xml-sitemaps /code/sitemap-inspector/ 301
+/code/pretty-xml-sitemaps/ /code/sitemap-inspector/ 301
+/code/pretty-xml-sitemaps.md /code/sitemap-inspector.md 301
+/pretty-xml-sitemaps /code/sitemap-inspector/ 301
+/pretty-xml-sitemaps/ /code/sitemap-inspector/ 301
+/pretty-xml-sitemaps.md /code/sitemap-inspector.md 301
+/sitemap-inspector /code/sitemap-inspector/ 301
+/sitemap-inspector/ /code/sitemap-inspector/ 301
+/sitemap-inspector.md /code/sitemap-inspector.md 301
 /feed /feed.xml 301
 /feed/ /feed.xml 301
 /rss.xml /feed.xml 301
