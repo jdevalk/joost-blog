@@ -109,3 +109,52 @@ test('a known original publication time is preserved instead of assuming 20:00',
     assert.equal(result.assumedTime, false);
     assert.notEqual(result.date, '2017-01-14T19:00:00.000Z');
 });
+
+const maintenanceMessage = 'Bulk SEO maintenance\n\nSitemap-Maintenance: seo-image-descriptions';
+
+test('marked bulk SEO and image-description maintenance preserves earlier article dates', (t) => {
+    const r = repository(t);
+    const original = 'Original article.\n\n![](./image.webp)\n\n<img src="./other.webp">';
+    const described = 'Original article.\n\n![A useful description](./image.webp)\n\n<img src="./other.webp" alt="Another description">';
+    r.write(post, content(original)); r.commit('2021-01-01T10:00:00Z');
+    r.write(post, content(described, 'seo:\n  title: Shorter search title\n  description: A search description\n'));
+    r.commit('2021-02-01T10:00:00Z', maintenanceMessage);
+    assert.equal(r.read().date, '2021-01-01T10:00:00.000Z');
+});
+
+test('maintenance markers do not hide prose, article titles, image sources, links, or code edits', (t) => {
+    const variants = [
+        ['Original article.', 'An actual correction.'],
+        ['![Old alt](./old.webp)', '![New alt](./new.webp)'],
+        ['[A link](https://old.example)', '[A link](https://new.example)'],
+        ['```html\n<img src="x" alt="old">\n```', '```html\n<img src="x" alt="new">\n```'],
+        ['Use `![old](x)` in Markdown.', 'Use `![new](x)` in Markdown.'],
+    ];
+    const r = repository(t);
+    variants.forEach(([before], i) => r.write(`src/content/blog/example-${i}/index.md`, content(before)));
+    r.write(post, content());
+    r.commit('2021-01-01T10:00:00Z');
+    variants.forEach(([, after], i) => r.write(`src/content/blog/example-${i}/index.md`, content(after)));
+    r.write(post, content().replace('title: Example', 'title: Corrected article title'));
+    r.commit('2021-02-01T10:00:00Z', maintenanceMessage);
+    for (let i = 0; i < variants.length; i++) assert.equal(r.read(`src/content/blog/example-${i}/index.md`).date, '2021-02-01T10:00:00.000Z');
+    assert.equal(r.read().date, '2021-02-01T10:00:00.000Z');
+});
+
+test('unmarked individual SEO and image-description edits still count', (t) => {
+    const r = repository(t);
+    r.write(post, content('![](./image.webp)')); r.commit('2021-01-01T10:00:00Z');
+    r.write(post, content('![A corrected description](./image.webp)')); r.commit('2021-02-01T10:00:00Z');
+    assert.equal(r.read().date, '2021-02-01T10:00:00.000Z');
+    r.write(post, content('![A corrected description](./image.webp)', 'seo:\n  title: An editorial title change\n')); r.commit('2021-03-01T10:00:00Z');
+    assert.equal(r.read().date, '2021-03-01T10:00:00.000Z');
+});
+
+test('excluding bulk maintenance reveals a verified WordPress modification time', (t) => {
+    const r = repository(t);
+    const imported = 'src/content/blog/how-to-get-week-numbers-in-your-mac-menu-bar/index.md';
+    r.write(imported, content('![](./image.webp)')); r.commit('2021-01-01T10:00:00Z');
+    r.write(imported, content('![Mac menu bar](./image.webp)', 'seo:\n  title: Shorter title\n'));
+    r.commit('2026-04-14T06:49:37Z', maintenanceMessage);
+    assert.deepEqual(r.read(imported), {date: '2022-09-07T07:05:09.000Z', source: 'wordpress'});
+});
