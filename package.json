@@ -15,6 +15,7 @@
         "sign:ard": "node scripts/sign-ard-catalog.mjs",
         "check:ard": "node scripts/sign-ard-catalog.mjs --check",
         "build": "node scripts/ensure-git-history.mjs && pnpm format:check && node scripts/generate-draft-slugs.mjs && node scripts/generate-agent-skills.mjs && node scripts/check-src.mjs && node scripts/sign-ard-catalog.mjs --check && astro build",
+        "test:sitemap": "node --experimental-strip-types --test scripts/test-sitemap-dates.mjs",
         "preview": "astro preview",
         "astro": "astro"
     },

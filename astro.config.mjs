@@ -6,11 +6,12 @@ import pagefind from 'astro-pagefind';
 import { defineConfig } from 'astro/config';
 import fs from 'fs';
 import matter from 'gray-matter';
-import { gitLastmod } from './src/utils/sitemap.ts';
+import { getContentLastmod } from './src/utils/sitemap.ts';
 
 // Collect draft slugs and lastmod dates
 const draftSlugs = new Set();
 const lastmodMap = new Map();
+const contentPaths = new Set();
 
 function scanContent(dir, urlPrefix) {
     if (!fs.existsSync(dir)) return;
@@ -27,7 +28,8 @@ function scanContent(dir, urlPrefix) {
         const { data } = matter(fs.readFileSync(mdPath, 'utf-8'));
         const slug = entry.isDirectory() ? entry.name : entry.name.replace(/\.mdx?$/, '');
         if (data.draft) draftSlugs.add(slug);
-        const date = gitLastmod(mdPath) ?? (data.updatedDate ? new Date(data.updatedDate) : data.publishDate ? new Date(data.publishDate) : null);
+        contentPaths.add(`${urlPrefix}${slug}/`);
+        const date = getContentLastmod(mdPath)?.date;
         if (date) lastmodMap.set(`${urlPrefix}${slug}/`, date);
     }
 }
@@ -36,13 +38,8 @@ scanContent('src/content/blog', '/');
 scanContent('src/content/videos', '/videos/');
 scanContent('src/content/pages', '/');
 
-// Fallback lastmod for child sitemaps with no per-URL dates. As of
-// @astrojs/sitemap 3.7.3, each <sitemap> entry in sitemap-index.xml is
-// stamped with the newest <lastmod> from the child sitemap it points to;
-// this value only fills in when a child has no per-URL <lastmod>.
-const siteLastmod = lastmodMap.size
-    ? new Date(Math.max(...[...lastmodMap.values()].map((d) => d.getTime())))
-    : undefined;
+// Sitemap-index dates are derived from each child's URLs by @astrojs/sitemap.
+// A global fallback would incorrectly stamp unrelated pages with the latest post.
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -112,7 +109,6 @@ export default defineConfig({
     },
 integrations: [mdx(), sitemap({
         entryLimit: 1000,
-        lastmod: siteLastmod,
         filter: (page) => {
             const slug = new URL(page).pathname.replace(/^\/|\/$/g, '');
             if (slug.startsWith('admin/')) return false;
@@ -127,7 +123,7 @@ integrations: [mdx(), sitemap({
         chunks: {
             'posts': (item) => {
                 const path = new URL(item.url).pathname;
-                if (path !== '/' && !path.startsWith('/blog/') && !path.startsWith('/videos/') && !path.startsWith('/category/') && lastmodMap.has(path) && !path.startsWith('/videos/')) {
+                if (path !== '/' && !path.startsWith('/blog/') && !path.startsWith('/videos/') && !path.startsWith('/category/') && contentPaths.has(path) && !path.startsWith('/videos/')) {
                     return item;
                 }
             },
