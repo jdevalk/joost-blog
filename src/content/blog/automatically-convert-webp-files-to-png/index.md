@@ -16,7 +16,7 @@ I had this happen to me enough that I decided to find a better solution. I run a
 
 ## Prerequisites
 
-To convert `.webp` files to `.webp` files, you need [Google’s WebP libraries](https://developers.google.com/speed/webp/download). On your Mac, the easiest way to do that is with [Brew](https://brew.sh/):
+To convert `.webp` files to `.png` files, you need [Google’s WebP libraries](https://developers.google.com/speed/webp/download). On your Mac, the easiest way to do that is with [Brew](https://brew.sh/):
 
 ```shell
 brew install webp
@@ -27,7 +27,7 @@ brew install webp
 The command to convert a WebP file to PNG would look like this:
 
 ```shell
-/usr/local/bin/dwebp -o target.webp input.webp
+dwebp -o target.png input.webp
 ```
 
 ## Adding the rule to Hazel
@@ -43,10 +43,12 @@ Now it’s time to open Hazel and add a rule:
 
 All this is pretty easy to configure in Hazel. What you’ll need is the following embedded script:
 
-![A screenshot of the Hazel configuration screen with the script highlighted.](./images/hazel-script-screenshot-3-1557x1200.webp)The script is `/bin/bash` as we need to strip the `.webp` extension with some bash magic, and replace it with `.webp`:
+![A screenshot of the Hazel configuration screen with the script highlighted.](./images/hazel-script-screenshot-3-1557x1200.webp)The script is `/bin/bash` as we need to strip the `.webp` extension with some bash magic, and replace it with `.png`:
 
 ```shell
-/usr/local/bin/dwebp -o "${1%%.*}.webp" $1
+/opt/homebrew/bin/dwebp -o "${1%.*}.png" -- "$1"
 ```
+
+This uses Homebrew’s default path on Apple Silicon Macs. On an Intel Mac, use `/usr/local/bin/dwebp` instead. Run `command -v dwebp` in Terminal to check your path. The quotes preserve spaces in filenames, and `${1%.*}` removes only the final extension, so `my.image.webp` becomes `my.image.png`.
 
 After setting up all the rules as explained above and copy pasting the script, just save the rule. You can save any WebP file to the Downloads folder (or whichever folder you decide to run this rule for) and it should be automatically converted to PNG!
