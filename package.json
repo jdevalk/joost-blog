@@ -14,7 +14,7 @@
         "format:check": "prettier --check 'src/**/*.{ts,tsx,astro}'",
         "sign:ard": "node scripts/sign-ard-catalog.mjs",
         "check:ard": "node scripts/sign-ard-catalog.mjs --check",
-        "build": "pnpm format:check && node scripts/generate-draft-slugs.mjs && node scripts/generate-agent-skills.mjs && node scripts/check-src.mjs && node scripts/sign-ard-catalog.mjs --check && astro build",
+        "build": "node scripts/ensure-git-history.mjs && pnpm format:check && node scripts/generate-draft-slugs.mjs && node scripts/generate-agent-skills.mjs && node scripts/check-src.mjs && node scripts/sign-ard-catalog.mjs --check && astro build",
         "preview": "astro preview",
         "astro": "astro"
     },
