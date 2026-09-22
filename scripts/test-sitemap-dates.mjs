@@ -22,7 +22,7 @@ function repository(t) {
         git('add', '-A');
         execFileSync('git', ['commit', '-qm', message], { cwd, env: { ...process.env, GIT_AUTHOR_DATE: date, GIT_COMMITTER_DATE: date } });
     };
-    const read = (path = post) => JSON.parse(execFileSync(process.execPath, ['--input-type=module', '-e', `import { getContentLastmod } from ${JSON.stringify(moduleUrl)}; console.log(JSON.stringify(getContentLastmod(process.argv[1])));`, path], { cwd, encoding: 'utf8' }));
+    const read = (path = post) => JSON.parse(execFileSync(process.execPath, ['--experimental-strip-types', '--input-type=module', '-e', `import { getContentLastmod } from ${JSON.stringify(moduleUrl)}; console.log(JSON.stringify(getContentLastmod(process.argv[1])));`, path], { cwd, encoding: 'utf8' }));
     return { cwd, git, write, commit, read };
 }
 
