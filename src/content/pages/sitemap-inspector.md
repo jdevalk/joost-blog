@@ -10,7 +10,7 @@ Sitemap Inspector is my free Chrome extension for browsing and checking XML site
 
 ![Sitemap Inspector artwork with its sitemap and magnifying-glass logo.](/images/sitemap-inspector-0.12.1/artwork.webp)
 
-[Download Sitemap Inspector 0.12.3](/downloads/sitemap-inspector-0.12.3.zip)
+[Download Sitemap Inspector 0.12.4](/downloads/sitemap-inspector-0.12.4.zip)
 
 Install the ZIP using the steps below. If you used an earlier version called Pretty XML Sitemaps, this is the same extension with a new name and more inspection tools.
 
@@ -69,7 +69,7 @@ For image sitemaps, the Images column counts the images listed for each page wit
 
 Requires Chrome 106 or later.
 
-1. [Download Sitemap Inspector 0.12.3](/downloads/sitemap-inspector-0.12.3.zip) and unzip it.
+1. [Download Sitemap Inspector 0.12.4](/downloads/sitemap-inspector-0.12.4.zip) and unzip it.
 2. Type `chrome://extensions` into Chrome's address bar.
 3. Turn on **Developer mode**.
 4. Click **Load unpacked** and select the unzipped folder containing `manifest.json`.
