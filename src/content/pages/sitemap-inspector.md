@@ -10,7 +10,7 @@ Sitemap Inspector is my free Chrome extension for browsing and checking XML site
 
 ![Sitemap Inspector artwork with its sitemap and magnifying-glass logo.](/images/sitemap-inspector-0.12.1/artwork.webp)
 
-[Download Sitemap Inspector 0.12.2](/downloads/sitemap-inspector-0.12.2.zip)
+[Download Sitemap Inspector 0.12.3](/downloads/sitemap-inspector-0.12.3.zip)
 
 Install the ZIP using the steps below. If you used an earlier version called Pretty XML Sitemaps, this is the same extension with a new name and more inspection tools.
 
@@ -41,7 +41,7 @@ The Statistics box shows the current file's total entry count and uncompressed s
 
 Click **Check URLs** to inspect up to 100 distinct URLs matching your current filters. Find redirects, HTTP errors, noindex directives in HTML or response headers, and canonical links that point elsewhere. Stop a batch at any time, then click again to continue with unchecked URLs. A rate-limit response pauses new checks.
 
-Redirects and canonical links that point elsewhere also appear in the feedback summary at the top, with counts and separate filters for the affected URLs.
+HTTP errors (including 404s), redirects, noindex directives, invalid canonical URLs, canonical links that point elsewhere, and incomplete checks also appear in the feedback summary at the top, with counts and separate filters for the affected URLs.
 
 For sitemap indexes, these checks read the child files, including gzip archives, to count entries and measure uncompressed size. They flag entry-limit, size-limit, and nested-index errors in the rows and summary. Incomplete checks show partial counts and sizes as lower bounds. Child files are not followed recursively.
 
@@ -69,7 +69,7 @@ For image sitemaps, the Images column counts the images listed for each page wit
 
 Requires Chrome 106 or later.
 
-1. [Download Sitemap Inspector 0.12.2](/downloads/sitemap-inspector-0.12.2.zip) and unzip it.
+1. [Download Sitemap Inspector 0.12.3](/downloads/sitemap-inspector-0.12.3.zip) and unzip it.
 2. Type `chrome://extensions` into Chrome's address bar.
 3. Turn on **Developer mode**.
 4. Click **Load unpacked** and select the unzipped folder containing `manifest.json`.
