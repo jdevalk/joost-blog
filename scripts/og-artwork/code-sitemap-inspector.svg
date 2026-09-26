@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 700 393.75">
+<!-- 16:9 version of the Chrome Web Store marquee (store/artwork/promo-marquee.svg in the extension repo). -->
+<rect width="700" height="393.75" fill="#102c34"/>
+<circle cx="696" cy="14" r="148" fill="#144c49"/>
+<circle cx="664" cy="12" r="91" fill="#196859"/>
+<g transform="translate(0 57)">
+<g transform="translate(38 31) scale(.75)">
+<rect x="16" y="16" width="96" height="96" rx="23" fill="#0e6a55"/>
+<g fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M60 60V72M32 72H88M32 72V82M60 72V82M88 72V82"/></g>
+<circle cx="32" cy="92" r="10" fill="#fff"/><circle cx="60" cy="92" r="10" fill="#fff"/><circle cx="88" cy="92" r="10" fill="#fff"/>
+<circle cx="60" cy="42" r="17" fill="none" stroke="#f5c84b" stroke-width="8"/>
+<path d="M73 29L92 10" stroke="#f5c84b" stroke-width="11" stroke-linecap="round"/>
+</g>
+<g fill="#ffffff" font-family="Arial, sans-serif" font-weight="700" font-size="50"><text x="50" y="168">Sitemap</text><text x="50" y="223">Inspector</text></g>
+<g transform="translate(410 50) scale(1.3)"><rect width="147" height="154" rx="12" fill="#eff8f5"/><path d="M0 38H147" stroke="#c1d7cf"/><rect x="15" y="15" width="73" height="8" rx="4" fill="#006d56"/>
+<g fill="#65b89d"><rect x="15" y="55" width="82" height="7" rx="3.5"/><rect x="15" y="82" width="64" height="7" rx="3.5"/><rect x="15" y="109" width="82" height="7" rx="3.5"/><rect x="15" y="136" width="64" height="7" rx="3.5"/></g>
+<g fill="#c1d7cf"><rect x="108" y="55" width="24" height="7" rx="3.5"/><rect x="108" y="82" width="24" height="7" rx="3.5"/><rect x="108" y="109" width="24" height="7" rx="3.5"/><rect x="108" y="136" width="24" height="7" rx="3.5"/></g></g>
+</g>
+</svg>

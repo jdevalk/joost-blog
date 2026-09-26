@@ -22,6 +22,8 @@ const OG_DIR    = join(ROOT, 'public/og');
 const BLOG_DIR  = join(ROOT, 'src/content/blog');
 const PAGES_DIR = join(ROOT, 'src/content/pages');
 const FONTS_DIR = join(ROOT, 'public/fonts');
+// Custom artwork replaces the generated title card: scripts/og-artwork/<slug with / as ->.svg
+const ARTWORK_DIR = join(ROOT, 'scripts/og-artwork');
 
 const args       = process.argv.slice(2);
 const forceFlag  = args.includes('--force');
@@ -241,6 +243,10 @@ async function main() {
     let skipped   = 0;
 
     async function render(html, slug) {
+        const artwork = join(ARTWORK_DIR, `${slug.replaceAll('/', '-')}.svg`);
+        if (existsSync(artwork)) {
+            html = `<!DOCTYPE html><html><body style="margin:0">${readFileSync(artwork, 'utf-8')}</body></html>`;
+        }
         const out = join(OG_DIR, `${slug}.webp`);
         const did = await renderToWebp(browser, html, out);
         if (did) { generated++; console.log(`  ✓ ${slug}.webp`); }

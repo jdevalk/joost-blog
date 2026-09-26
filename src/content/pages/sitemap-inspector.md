@@ -10,9 +10,9 @@ Sitemap Inspector is my free Chrome extension for browsing and checking XML site
 
 ![Sitemap Inspector artwork with its sitemap and magnifying-glass logo.](/images/sitemap-inspector-0.12.1/artwork.webp)
 
-[Download Sitemap Inspector 0.12.4](/downloads/sitemap-inspector-0.12.4.zip)
+[Install Sitemap Inspector from the Chrome Web Store](https://chromewebstore.google.com/detail/sitemap-inspector/nbapilepkbcgjhmfnincjlkkdnpbibba)
 
-Install the ZIP using the steps below. If you used an earlier version called Pretty XML Sitemaps, this is the same extension with a new name and more inspection tools.
+If you used an earlier version called Pretty XML Sitemaps, this is the same extension with a new name and more inspection tools.
 
 ## Browse your sitemap
 
@@ -69,6 +69,10 @@ For image sitemaps, the Images column counts the images listed for each page wit
 
 Requires Chrome 106 or later.
 
+[Install Sitemap Inspector from the Chrome Web Store](https://chromewebstore.google.com/detail/sitemap-inspector/nbapilepkbcgjhmfnincjlkkdnpbibba) and open or refresh a sitemap tab. Chrome keeps it up to date automatically.
+
+To install it manually instead:
+
 1. [Download Sitemap Inspector 0.12.4](/downloads/sitemap-inspector-0.12.4.zip) and unzip it.
 2. Type `chrome://extensions` into Chrome's address bar.
 3. Turn on **Developer mode**.
@@ -77,7 +81,7 @@ Requires Chrome 106 or later.
 
 Try it on [specification.website's sitemap index](https://specification.website/sitemap-index.xml). Click a child sitemap to browse its entries.
 
-To update an unpacked installation, replace its files with the new version, click **Reload** on its card at `chrome://extensions`, and refresh your sitemap tabs.
+To update a manual installation, replace its files with the new version, click **Reload** on its card at `chrome://extensions`, and refresh your sitemap tabs.
 
 The extension recognizes standard sitemap XML, including sitemaps served as plain text or with an RSS content type. Real feeds, other XML documents, and ordinary web pages stay unchanged. Local files and browser downloads are not supported.
 
