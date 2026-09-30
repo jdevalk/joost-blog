@@ -3547,7 +3547,7 @@
     outline: none;
 }
 .sp-ask-input::placeholder {
-    color: color-mix(in srgb, var(--field-fg) 40%, transparent);
+    color: color-mix(in srgb, var(--field-fg) 65%, transparent);
     font-style: italic;
 }
 .sp-ask-submit {
@@ -3570,8 +3570,8 @@
     letter-spacing: 0.15em;
     text-transform: uppercase;
     background: transparent;
-    color: var(--dusk);
-    border: 1px solid var(--dusk);
+    color: color-mix(in srgb, var(--field-fg) 70%, transparent);
+    border: 1px solid currentColor;
     padding: 0 14px;
     cursor: pointer;
 }
