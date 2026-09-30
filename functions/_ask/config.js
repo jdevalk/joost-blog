@@ -2,6 +2,9 @@ export const MAX_CONTEXT_CHARS = 10000;
 export const MAX_QUERY_LENGTH = 500;
 export const AI_TIMEOUT_MS = 10000;
 export const MODEL = '@cf/google/gemma-4-26b-a4b-it';
+// Gemma 4 reasons before answering by default. That burns the max_tokens budget
+// and delays the first visible token, so answers arrive late or not at all.
+export const MODEL_OPTIONS = { chat_template_kwargs: { enable_thinking: false } };
 export const EMBEDDING_MODEL = '@cf/baai/bge-base-en-v1.5';
 
 export const TYPE_LABELS = {

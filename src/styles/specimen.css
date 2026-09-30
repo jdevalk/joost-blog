@@ -3375,9 +3375,13 @@
     padding: 8px 12px;
     cursor: pointer;
 }
-.sp-ask-chip:hover {
+.sp-ask-chip:hover:not(:disabled) {
     background: var(--ink);
     color: var(--terracotta);
+}
+.sp-ask-chip:disabled {
+    opacity: 0.5;
+    cursor: progress;
 }
 
 .sp-ask-body {

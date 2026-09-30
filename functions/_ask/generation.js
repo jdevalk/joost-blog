@@ -1,4 +1,4 @@
-import { MAX_CONTEXT_CHARS, AI_TIMEOUT_MS, MODEL, TYPE_LABELS, withTimeout } from './config.js';
+import { MAX_CONTEXT_CHARS, AI_TIMEOUT_MS, MODEL, MODEL_OPTIONS, TYPE_LABELS, withTimeout } from './config.js';
 
 const SYSTEM_PROMPT = `You are a helpful assistant answering questions about Joost de Valk and his blog joost.blog. Joost is an internet entrepreneur from the Netherlands, founder of Yoast (the WordPress SEO plugin company), and investor at Emilia Capital.
 
@@ -142,6 +142,7 @@ export async function generateStreamingAnswer(ai, query, scoredResults, prevExch
 			max_tokens: 512,
 			temperature: 0.3,
 			stream: true,
+			...MODEL_OPTIONS,
 		}, {
 			headers: { 'x-session-affinity': sessionId },
 		}),
@@ -166,6 +167,7 @@ export async function generateAnswer(ai, query, scoredResults, prevExchanges, se
 				messages,
 				max_tokens: 512,
 				temperature: 0.3,
+				...MODEL_OPTIONS,
 			}, {
 				headers: { 'x-session-affinity': sessionId },
 			}),
