@@ -94,7 +94,7 @@ This is one of those cases where “boring architecture” is a feature. There�
 - **Cloudflare Pages Functions** for the `/ask` endpoint
 - **Cloudflare Workers AI**
   - `@cf/baai/bge-base-en-v1.5` for embeddings
-  - `@cf/meta/llama-3.3-70b-instruct-fp8-fast` for answer generation
+  - `@cf/google/gemma-4-26b-a4b-it` for answer generation
 - **A build-time indexing script** that generates the searchable index, embeddings, metadata, and transcript-backed content from markdown
 
 The code is pretty small. The endpoint logic is now split into focused modules for config, retrieval, and generation, but it’s still a lightweight setup rather than a framework-heavy one.
