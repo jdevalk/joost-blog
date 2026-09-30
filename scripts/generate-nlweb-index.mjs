@@ -94,7 +94,9 @@ async function loadTranscript(youtubeId) {
 
 function buildRecord(contentType, filePath, parsedFile, transcript) {
   const data = parsedFile.data || {};
-  const title = data.title || path.basename(path.dirname(filePath)) || path.parse(filePath).name;
+  // Titles may carry inline HTML (e.g. <em>) for on-site rendering; the index needs plain text.
+  const rawTitle = data.title || path.basename(path.dirname(filePath)) || path.parse(filePath).name;
+  const title = String(rawTitle).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
   const url = buildUrl(contentType, filePath, data);
   const bodyText = stripMarkdown(parsedFile.content);
   // Append transcript to body text for search indexing
