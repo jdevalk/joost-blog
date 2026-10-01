@@ -20,7 +20,7 @@ export function getJoostPersonData(ids: IdFactory) {
         knowsLanguage: ['Dutch', 'English', 'German', 'French', 'Italian'],
         url: `${SITE_URL}/about-me/`,
         image: { '@id': ids.personImage },
-        publishingPrinciples: `${SITE_URL}/about-me/`,
+        publishingPrinciples: `${SITE_URL}/about-me/#publishing-principles`,
         knowsAbout: [
             'Search Engine Optimization',
             'WordPress',
@@ -37,6 +37,7 @@ export function getJoostPersonData(ids: IdFactory) {
             'https://www.linkedin.com/in/jdevalk',
             'https://x.com/jdevalk',
             'https://bsky.app/profile/joost.blog',
+            'https://www.threads.net/@joostdevalk',
             'https://www.youtube.com/user/jdevalk',
             'https://en.wikipedia.org/wiki/Joost_de_Valk',
             'https://joost.net/@joost',

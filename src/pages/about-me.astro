@@ -83,26 +83,28 @@ const pageContext: SchemaPageContext = {
             <div class="sp-about-story-grid">
                 <article class="sp-about-prose" data-pagefind-body>
                     <p>
-                        My story starts on the early web. I began blogging in 2004 and ran css3.info, one of the first sites tracking the CSS3 standard as
-                        browsers started to support it. Alongside that, I consulted on some of the biggest SEO projects in the world, like the <a
+                        My story starts with a loan. When I was 12, I borrowed money from my parents to buy a computer, and I was building websites soon after.
+                        I began blogging in 2004 and ran css3.info, one of the first sites tracking the CSS3 standard as browsers started to support it.
+                        Alongside that, I consulted for companies like eBay, Disney and Meta, and on some of the biggest SEO projects in the world, like the <a
                             href="https://www.theguardian.com/info/developer-blog/2014/feb/18/how-the-guardian-successfully-moved-domain"
                             >Guardian's site migration from .co.uk to theguardian.com</a
-                        >. I founded Yoast in 2010.
+                        >. I founded Yoast as a company in 2010. Its SEO plugin for WordPress now runs on more than 15 million websites.
                     </p>
                     <p>
                         I wore a few different hats there. For almost 9 years I was the CEO, then I became Chief Product Officer when my wife
                         <a href="https://marieke.com/">Marieke</a> took over as CEO. We sold Yoast to Newfold Digital in August of 2021, after which I became Head
-                        of WordPress Strategy at Newfold for a while. I then came back for a 6-month stint as interim CTO (because they were suddenly without one)
-                        in 2022-2023. I finally left the company in April 2023.
+                        of WordPress Strategy at Newfold for a while. I then came back for a 6-month stint as Yoast's interim CTO (because they were suddenly without
+                        one) in 2022-2023. I finally left the company in April 2023.
                     </p>
                     <p>
-                        When we left Yoast, Marieke and I started investing through our company,
+                        Marieke and I started investing in other companies in 2020. In 2023, after we left Yoast, we gave that work a name:
                         <a href="https://emilia.capital/">Emilia Capital</a>. We invest in companies that play at least partly in the digital space (and often
                         in WordPress). Because of that, I'm on the board of <a href="https://patchstack.com/">Patchstack</a> and <a href="https://atarim.io/"
                             >Atarim</a
-                        >. We also started our own new company, <a href="https://progressplanner.com/">Progress Planner</a>. In June 2026, Progress Planner and
-                        our whole team <a href="/progress-planner-joins-your-online/">joined Your.Online</a>, a hosting group with strong European roots. I'm
-                        now Group Head of AI &amp; Growth there, and Marieke is Group Head of Brand &amp; Community.
+                        >, I chair the board of <a href="https://poststatus.com/">Post Status</a>, and I advise <a href="https://wordproof.com/">WordProof</a>.
+                        We also started our own new company, <a href="https://progressplanner.com/">Progress Planner</a>. In June 2026, Progress Planner and our
+                        whole team <a href="/progress-planner-joins-your-online/">joined Your.Online</a>, a hosting group with strong European roots. I'm now
+                        Group Head of AI &amp; Growth there, and Marieke is Group Head of Brand &amp; Community.
                     </p>
                     <p>
                         In my spare time, I can often be found coaching kids' soccer at
@@ -115,40 +117,85 @@ const pageContext: SchemaPageContext = {
                     <ol>
                         <li><span class="y">Now</span><span class="e">Group Head of AI &amp; Growth at Your.Online</span></li>
                         <li><span class="y">2026</span><span class="e">Progress Planner joins Your.Online</span></li>
+                        <li><span class="y">2025</span><span class="e">Helped build FAIR, a federated package manager for WordPress</span></li>
                         <li><span class="y">2024</span><span class="e">Launched Progress Planner</span></li>
-                        <li><span class="y">2023</span><span class="e">Left Newfold; started Emilia Capital</span></li>
-                        <li><span class="y">2022</span><span class="e">Interim CTO for six months</span></li>
+                        <li><span class="y">2023</span><span class="e">Left Newfold; our investing becomes Emilia Capital</span></li>
+                        <li><span class="y">2022</span><span class="e">Interim CTO at Yoast for six months</span></li>
                         <li><span class="y">2021</span><span class="e">Sold Yoast to Newfold Digital</span></li>
+                        <li><span class="y">2020</span><span class="e">Started investing with Marieke</span></li>
                         <li><span class="y">2019</span><span class="e">Stepped down as CEO; Marieke takes over</span></li>
+                        <li><span class="y">2019</span><span class="e">WordPress marketing &amp; communications lead</span></li>
                         <li><span class="y">2010</span><span class="e">Founded Yoast</span></li>
                         <li><span class="y">2006</span><span class="e">Ran css3.info</span></li>
+                        <li><span class="y">2004</span><span class="e">Started blogging and consulting</span></li>
                     </ol>
                 </aside>
             </div>
         </section>
 
-        <section class="sp-about-social">
-            <div class="sp-about-social-head">
-                <div class="kicker">§ 02 · Connect</div>
-                <h3>Find me online.</h3>
+        <section class="sp-about-story sp-about-story--alt">
+            <div class="sp-about-story-head">
+                <div class="kicker">§ 02 · Open source</div>
+                <h2>WordPress, and beyond.</h2>
             </div>
-            <div class="sp-about-social-grid">
-                {
-                    [
-                        { n: 'GitHub', h: '@jdevalk', url: 'https://github.com/jdevalk' },
-                        { n: 'LinkedIn', h: 'in/jdevalk', url: 'https://www.linkedin.com/in/jdevalk/' },
-                        { n: 'Bluesky', h: '@joost.blog', url: 'https://bsky.app/profile/joost.blog' },
-                        { n: 'Threads', h: '@joostdevalk', url: 'https://www.threads.net/@joostdevalk' },
-                        { n: 'WordPress', h: 'joostdevalk', url: 'https://profiles.wordpress.org/joostdevalk' },
-                        { n: 'Instagram', h: '@joostdevalk', url: 'https://www.instagram.com/joostdevalk' }
-                    ].map(({ n, h, url }) => (
-                        <a href={url} class="sp-about-social-card" target="_blank" rel="noopener noreferrer">
-                            <div class="n">{n}</div>
-                            <div class="h">{h}</div>
-                            <div class="arr">&rarr;</div>
-                        </a>
-                    ))
-                }
+            <div class="sp-about-story-grid">
+                <article class="sp-about-prose" data-pagefind-body>
+                    <p>
+                        I've been part of the WordPress community for most of my career. I've contributed to WordPress core, built and maintained free plugins,
+                        and spoken at WordCamps around the world.
+                    </p>
+                    <p>
+                        In 2019, I <a href="/leading-marketing-communication-for-wordpress/">became WordPress's marketing &amp; communications lead</a>. Six
+                        months later, I <a href="/why-im-stepping-down-from-my-wordpress-marketing-role/">stepped down</a>: the role didn't come with the say in
+                        the project's direction that leading its marketing needs.
+                    </p>
+                    <p>
+                        In 2025, together with Karim Marucchi and well over a hundred other people, I worked on <a href="https://fair.pm/">FAIR</a>, a neutral,
+                        community-governed package manager for WordPress under the Linux Foundation. It became a working technical alternative, but the big
+                        hosting companies weren't willing to invest in it. In early 2026, we
+                        <a href="/fair-wordpress-and-knowing-when-to-stop/">stopped pushing it for WordPress</a>.
+                    </p>
+                    <p>
+                        I still write a lot about where WordPress is heading, about open source governance, and about the CMS market as a whole, including my
+                        own
+                        <a href="/cms-market-share/">CMS market share research</a>. These days I also build for <a href="/emdash-cms/">EmDash</a>, Cloudflare's
+                        new CMS, and for <a href="https://astro.build/">Astro</a>, which this site runs on; you'll find my plugins and packages for both on my
+                        <a href="/code/">code page</a>.
+                    </p>
+                    <p>
+                        I also built <a href="https://specification.website/">specification.website</a>, a platform-agnostic specification of what every good
+                        website should do, backed by the standards behind it.
+                    </p>
+                </article>
+                <aside class="sp-about-timeline">
+                    <div class="m-lbl">Further reading</div>
+                    <ol>
+                        <li>
+                            <span class="y">2026</span><span class="e"
+                                ><a href="/who-can-cut-you-off/">Stewarded open source is not enough: who can cut you off?</a></span
+                            >
+                        </li>
+                        <li>
+                            <span class="y">2026</span><span class="e"
+                                ><a href="/fair-wordpress-and-knowing-when-to-stop/">FAIR, WordPress, and knowing when to stop</a></span
+                            >
+                        </li>
+                        <li>
+                            <span class="y">2025</span><span class="e"
+                                ><a href="/path-forward-for-wordpress/">A new path forward for WordPress, and for the open web</a></span
+                            >
+                        </li>
+                        <li>
+                            <span class="y">2024</span><span class="e"><a href="/wordpress-roadmap/">WordPress, and what should be on its roadmap</a></span>
+                        </li>
+                        <li>
+                            <span class="y">2019</span><span class="e"
+                                ><a href="/why-im-stepping-down-from-my-wordpress-marketing-role/">(Why) I'm stepping down from my WordPress marketing role</a
+                                ></span
+                            >
+                        </li>
+                    </ol>
+                </aside>
             </div>
         </section>
 
@@ -179,12 +226,108 @@ const pageContext: SchemaPageContext = {
             <div class="sp-about-speaking-foot">
                 <a href="/videos/">See all videos in the archive &rarr;</a>
             </div>
+
+            <div class="sp-about-kit" id="speaker-kit">
+                <div>
+                    <h3>Booking me to speak?</h3>
+                    <p class="sp-about-kit-lede">
+                        I've spoken at WordCamp Europe, WordCamp US, CloudFest, Open Source Summit North America, T3CON and YoastCon, among others. To book me,
+                        <a href="/contact-me/">get in touch</a>. Feel free to use the bios below and
+                        <a href={profilePic.src} download="joost-de-valk.jpg">my headshot</a> ({profilePic.width}&times;{profilePic.height}, the photo at the
+                        top of this page).
+                    </p>
+                    <div class="sp-about-kit-bio">
+                        <div class="m-lbl">Short bio</div>
+                        <p>
+                            Joost de Valk is an internet entrepreneur from the Netherlands. He founded Yoast, whose SEO plugin runs on more than 15 million
+                            websites, and is now Group Head of AI &amp; Growth at Your.Online.
+                        </p>
+                    </div>
+                    <div class="sp-about-kit-bio">
+                        <div class="m-lbl">Long bio</div>
+                        <p>
+                            Joost de Valk is an internet entrepreneur from Wijchen, the Netherlands. He started blogging in 2004, consulted on SEO for companies
+                            like eBay, Disney, Meta and the Guardian, and founded Yoast in 2010. Its SEO plugin for WordPress runs on more than 15 million
+                            websites. After Yoast was sold to Newfold Digital in 2021, Joost and his wife Marieke invested in digital companies through Emilia
+                            Capital and founded Progress Planner, which joined Your.Online in 2026. He is now Group Head of AI &amp; Growth at Your.Online. He
+                            sits on the boards of Patchstack and Atarim, chairs the board of Post Status, and is a long-time WordPress core contributor and open
+                            source advocate.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="sp-about-story sp-about-story--alt" id="publishing-principles">
+            <div class="sp-about-story-head">
+                <div class="kicker">§ 04 · Principles</div>
+                <h2>How I write.</h2>
+            </div>
+            <article class="sp-about-prose sp-about-narrow" data-pagefind-body>
+                <p>Everything on this site is my own opinion. It isn't the official position of Your.Online or of any company I invest in or advise.</p>
+                <p>
+                    I have a stake in a lot of what I write about. I work at Your.Online, invest through Emilia Capital, and sit on several boards. When a post
+                    touches a company I'm tied to, I say so in the post.
+                </p>
+                <p>
+                    I use AI tools, including Claude, ChatGPT and Muse, for research, editing, and code. The arguments and opinions are mine, and I read and
+                    approve every word before it's published.
+                </p>
+                <p>When I get something wrong, I correct it and say what changed.</p>
+            </article>
+        </section>
+
+        <section class="sp-about-story" id="ask">
+            <div class="sp-about-story-head">
+                <div class="kicker">§ 05 · Ask me</div>
+                <h2>Ask, don't search.</h2>
+            </div>
+            <article class="sp-about-prose sp-about-narrow" data-pagefind-body>
+                <p>
+                    Don't want to read 20 years of posts to find an answer? <a href="/ask-joost/">Ask Joost</a> answers questions based on what I've written here,
+                    with links to the posts it used.
+                </p>
+                <p>
+                    AI agents can do the same through my MCP server at <code>https://joost.blog/mcp</code>. Add it to Claude, Cursor or any other MCP client to
+                    ask questions about my writing and get my latest posts.
+                </p>
+            </article>
+        </section>
+
+        <section class="sp-about-social">
+            <div class="sp-about-social-head">
+                <div class="kicker">§ 06 · Connect</div>
+                <h3>Find me online.</h3>
+            </div>
+            <div class="sp-about-social-grid">
+                {
+                    [
+                        { n: 'GitHub', h: '@jdevalk', url: 'https://github.com/jdevalk' },
+                        { n: 'LinkedIn', h: 'in/jdevalk', url: 'https://www.linkedin.com/in/jdevalk/' },
+                        { n: 'Bluesky', h: '@joost.blog', url: 'https://bsky.app/profile/joost.blog' },
+                        { n: 'Mastodon', h: '@joost@joost.net', url: 'https://joost.net/@joost' },
+                        { n: 'Threads', h: '@joostdevalk', url: 'https://www.threads.net/@joostdevalk' },
+                        { n: 'X', h: '@jdevalk', url: 'https://x.com/jdevalk' },
+                        { n: 'YouTube', h: 'jdevalk', url: 'https://www.youtube.com/user/jdevalk' },
+                        { n: 'Instagram', h: '@joostdevalk', url: 'https://www.instagram.com/joostdevalk' },
+                        { n: 'Facebook', h: 'jdevalk', url: 'https://www.facebook.com/jdevalk' },
+                        { n: 'WordPress', h: 'joostdevalk', url: 'https://profiles.wordpress.org/joostdevalk' },
+                        { n: 'Wikipedia', h: 'Joost de Valk', url: 'https://en.wikipedia.org/wiki/Joost_de_Valk' }
+                    ].map(({ n, h, url }) => (
+                        <a href={url} class="sp-about-social-card" target="_blank" rel="noopener noreferrer">
+                            <div class="n">{n}</div>
+                            <div class="h">{h}</div>
+                            <div class="arr">&rarr;</div>
+                        </a>
+                    ))
+                }
+            </div>
         </section>
 
         <section class="sp-about-build">
             <div class="sp-about-build-grid">
                 <div>
-                    <div class="kicker">§ 04 · Code</div>
+                    <div class="kicker">§ 07 · Code</div>
                     <h2>What I build.</h2>
                     <p>From WordPress plugins to SaaS products, I'm always working on something. See all my current projects on my code page.</p>
                 </div>

@@ -2867,6 +2867,24 @@
     color: var(--dusk);
     border-bottom: 1px solid color-mix(in srgb, var(--dusk) 40%, transparent);
 }
+.sp-about-story--alt {
+    background: var(--parchment-2);
+}
+.sp-about-narrow {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+.sp-about-prose code {
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+}
+.sp-about-timeline .e a {
+    color: var(--ink);
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 30%, transparent);
+}
+.sp-about-timeline .e a:hover {
+    color: var(--dusk);
+}
 .sp-about-timeline {
     position: sticky;
     top: 32px;
@@ -3062,6 +3080,47 @@
 }
 .sp-about-speaking-foot a {
     color: var(--dusk);
+}
+.sp-about-kit {
+    max-width: 1280px;
+    margin: 64px auto 0;
+}
+.sp-about-kit h3 {
+    font-family: var(--font-display);
+    font-weight: var(--weight-display);
+    font-size: 40px;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0 0 16px;
+    color: var(--ink);
+}
+.sp-about-kit p {
+    font-family: var(--font-text);
+    font-weight: var(--weight-text);
+    font-size: 18px;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 58ch;
+}
+.sp-about-kit a {
+    color: var(--dusk);
+    border-bottom: 1px solid color-mix(in srgb, var(--dusk) 40%, transparent);
+}
+.sp-about-kit-lede {
+    margin-bottom: 32px !important;
+}
+.sp-about-kit-bio {
+    border-top: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    padding-top: 14px;
+    margin-top: 20px;
+}
+.sp-about-kit-bio .m-lbl {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dusk);
+    margin-bottom: 10px;
 }
 
 .sp-about-build {
