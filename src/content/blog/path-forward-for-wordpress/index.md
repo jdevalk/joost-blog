@@ -14,7 +14,7 @@ Since then, a lot has happened. Today, I want to share what came next and where 
 
 ### The moment the ecosystem shifted
 
-In October, Sarah Savage [published a post introducing AspirePress](https://aspirepress.org/a-vision-for-aspirepress-and-a-community-run-org-mirror/), a community-run mirror of the WordPress.org plugin and theme repositories. That post was a spark. It showed what was technically possible, and voiced what many of us had been saying in smaller rooms for years: the ecosystem needed options.
+In October, Sarah Savage [published a post introducing AspirePress](https://web.archive.org/web/20250607193442/https://aspirepress.org/a-vision-for-aspirepress-and-a-community-run-org-mirror/), a community-run mirror of the WordPress.org plugin and theme repositories. That post was a spark. It showed what was technically possible, and voiced what many of us had been saying in smaller rooms for years: the ecosystem needed options.
 
 Then, in early December, twenty core contributors [wrote an open letter](https://www.therepository.email/wordpress-contributors-and-community-leaders-call-for-governance-reform-in-rare-open-letter) calling for governance reform in WordPress. These weren’t newcomers. They were committers, team leads, people who had spent years helping build the platform. Their message added weight to the concerns many had been feeling in private.
 

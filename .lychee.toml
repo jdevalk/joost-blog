@@ -39,6 +39,8 @@ exclude = [
     "core\\.trac\\.wordpress\\.org",
     "meta\\.trac\\.wordpress\\.org",
     "docs\\.astro\\.build",
+    "adobe\\.com",
+    "linkedin\\.com",
 
     # Invalid SSL certs
     "fewertags\\.com",
@@ -59,3 +61,9 @@ exclude = [
 ]
 
 exclude_all_private = true
+
+# GitHub throttles anonymous requests for /blob/ file pages (503/429), even
+# when the file exists. Check the raw file instead, which isn't throttled.
+remap = [
+    "https://github\\.com/([^/]+)/([^/]+)/blob/([^#]+).* https://raw.githubusercontent.com/$1/$2/$3",
+]
