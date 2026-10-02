@@ -3,10 +3,11 @@ name: Link Check
 on:
   push:
     branches: [main]
-    paths: ['src/content/**/*.md', 'src/content/**/*.mdx']
+    paths: ['src/content/**/*.md', 'src/content/**/*.mdx', '.lychee.toml', '.github/workflows/link-check.yml']
   pull_request:
     branches: [main]
-    paths: ['src/content/**/*.md', 'src/content/**/*.mdx']
+    paths: ['src/content/**/*.md', 'src/content/**/*.mdx', '.lychee.toml', '.github/workflows/link-check.yml']
+  workflow_dispatch:
   schedule:
     - cron: '0 9 * * 1'
 
