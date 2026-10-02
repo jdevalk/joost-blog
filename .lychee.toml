@@ -6,12 +6,15 @@ exclude_path = []
 # Treat 403/401/429 as acceptable (sites blocking bots, rate limiting)
 accept = ["100..=429"]
 
-# Give slow hosts more slack before failing. Some valid links resolve fine in a
+# Give slow hosts more slack before failing. Some valid links (e.g. the
+# elar.urfu.ru academic repository and wpgovernance.com) resolve fine in a
 # browser but are slow or intermittently unreachable from GitHub runners, so
-# retry before giving up.
+# retry before giving up, and don't fail the run on timeouts alone. Real
+# errors (404s, DNS failures, 5xx responses) still fail it.
 timeout = 30
 max_retries = 5
 retry_wait_time = 2
+accept_timeouts = true
 
 # Skip URLs that are known-flaky, dead, or are internal paths that no longer exist
 exclude = [
@@ -22,8 +25,6 @@ exclude = [
     "d1wqtxts1xzle7\\.cloudfront\\.net",
     "dl\\.acm\\.org",
     "myscp\\.onlinelibrary\\.wiley\\.com",
-    # Reachable from Europe, but times out from GitHub's runners even with retries
-    "elar\\.urfu\\.ru",
 
     # Social platforms that block or rate-limit bots
     "unsplash\\.com",
