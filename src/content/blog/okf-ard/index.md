@@ -54,16 +54,20 @@ The pragmatic fix is to do both. Every entry now carries both field names with t
 }
 ```
 
-Both specs require consumers to ignore keys they do not recognise, so the dual-field entry validates under either reading. Early adoption sometimes means carrying two spellings of the same field until the base spec and the layer built on it line up.
+Both specs require consumers to ignore keys they do not recognise, so the dual-field entry validates under either reading. Early adoption sometimes means carrying two spellings of the same field. ARD v0.91 has since settled the split — `type` is the canonical field name (§4.2) — but the base spec still says `mediaType`, so I keep emitting both.
 
 ## The gap nobody registered
 
 The OKF bundle entry exposes a real hole. There is no registered media type for an OKF bundle, so I had to invent one: `application/okf-bundle+gzip`, shipped as a single documented constant marked interim. A catalog can list the bundle, but without a blessed type a consumer cannot recognise it as OKF without opening it. Every publisher will invent a different string, and they will never converge.
 
-So I did the ecosystem-citizen thing and filed the fix in both places, offering the live bundle as a reference adopter: [one issue on OKF](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/111) to define and register the type, and [one on ARD](https://github.com/ards-project/ard-spec/issues/27) to recognise it, which also flagged the `type` versus `mediaType` split. Being an early adopter is not only implementing the draft. It is finding the gap the draft left and pushing it back upstream.
+So I did the ecosystem-citizen thing and filed the fix in both places, offering the live bundle as a reference adopter: [one issue on OKF](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/111) to define and register the type, and [one on ARD](https://github.com/ards-project/ard-spec/issues/27) to recognise it, which also flagged the `type` versus `mediaType` split. The ARD half is now closed: v0.91 recognises `application/okf-bundle+gzip` (it passes `conformance-test` with 0 warnings) and documents `okf:` as a worked `@context` extension example. The OKF-side registration is still open. Being an early adopter is not only implementing the draft. It is finding the gap the draft left and pushing it back upstream.
 
 ## Optional, on purpose
 
 [specification.website](https://specification.website) is my platform-agnostic spec of what a good website ships, and it grades every feature it documents as required, recommended, optional, or avoid. Both new spec pages, [ARD](https://specification.website/spec/agent-readiness/agentic-resource-discovery/) and [OKF](https://specification.website/spec/agent-readiness/okf-bundle/), are rated optional, not recommended. They are v0.9 drafts that can still move, and the site's rule is to adopt early but rate honestly. This blog runs ARD too, on top of [the rest of its agent-ready plumbing](/agent-ready/), with a `did:web:joost.blog` identity tied to [my Bluesky account](https://bsky.app/profile/joost.blog), but that is a story for another day.
 
 Two overlapping, half-coordinated standards in a single week is not a scandal. It is the normal texture of a layer that is still forming. The useful response is not to wait for the dust to settle. It is to compose what is already there, ship it where people can see it, and file what is missing.
+
+---
+
+**Update, October 17, 2026:** The side note resolved itself. [ARD v0.91](https://github.com/ards-project/ard-spec) made `type` the canonical field name (§4.2), settling the `type` versus `mediaType` split this post described — I still emit both, because the base ai-catalog spec says `mediaType`. And [the ARD issue](https://github.com/ards-project/ard-spec/issues/27) is closed: `application/okf-bundle+gzip` passes `conformance-test` with 0 warnings, and `okf:` is a worked `@context` extension example in §5.3.1. The [OKF-side registration](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/111) is still open.
