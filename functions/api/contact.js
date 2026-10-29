@@ -100,14 +100,14 @@ export async function onRequestPost(context) {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${apiKey}`,
+				'x-lettermint-token': apiKey,
 			},
 			body: JSON.stringify({
 				from: fromEmail,
-				to: recipientEmail,
+				to: [recipientEmail],
 				subject: emailSubject,
 				text: emailBody,
-				replyTo: email,
+				reply_to: [email],
 			}),
 		});
 
