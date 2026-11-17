@@ -20,6 +20,7 @@ I absolutely love GitHub Actions and have been using them more and more for seve
 
 * [Good-looking GitHub profile pages](/good-looking-github-profile-pages/)
 * [How to create a healthy GitHub repository](/healthy-github-repository/)
+* [Preview and sync your plugin readme with GitHub Actions](/plugin-readme-actions/)
 
 ## PHP
 
