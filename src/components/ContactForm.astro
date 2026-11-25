@@ -1,5 +1,5 @@
 ---
-
+import TurnstileWidget from './TurnstileWidget.astro';
 ---
 
 <form id="contact-form" class="not-prose mt-6 mb-10 space-y-5" novalidate>
@@ -53,6 +53,8 @@
             placeholder="Your message..."></textarea>
     </div>
 
+    <TurnstileWidget />
+
     <div>
         <button
             type="submit"
@@ -101,6 +103,11 @@
             return;
         }
 
+        if (!new FormData(form).get('cf-turnstile-response')) {
+            showStatus('Please wait for the spam check to finish, then try again.', 'error');
+            return;
+        }
+
         // Show loading state
         submitBtn.disabled = true;
         submitText.textContent = 'Sending...';
@@ -126,6 +133,8 @@
         } catch {
             showStatus('Failed to send message. Please try again later.', 'error');
         } finally {
+            // A Turnstile token only works once, so get a new one.
+            (window as any).turnstile?.reset();
             submitBtn.disabled = false;
             submitText.textContent = 'Send Message';
             submitSpinner.classList.add('hidden');

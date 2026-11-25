@@ -1,0 +1,13 @@
+---
+// Cloudflare Turnstile widget for the contact form. Place it inside the
+// <form>: Turnstile adds a hidden `cf-turnstile-response` field there, so the
+// token travels with the rest of the form data. `functions/api/contact.js`
+// checks that token against siteverify before it sends any email.
+//
+// The site key is public. In development it is Cloudflare's test key that
+// always passes, because the real widget only allows joost.blog.
+const SITE_KEY = import.meta.env.DEV ? '1x00000000000000000000AA' : '0x4AAAAAAAkBe1X-iZPn4t2u';
+---
+
+<div class="cf-turnstile" data-sitekey={SITE_KEY} data-action="contact" data-theme="auto" data-size="flexible"></div>
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

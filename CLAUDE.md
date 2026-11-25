@@ -175,6 +175,7 @@ curl "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/analytics_eng
 - The recipient must be a verified destination address in the account (Email Service → Email Routing → Destination Addresses). Sends to verified destination addresses are free and do not count toward the sending quota.
 - The visitor's address goes in `reply_to`, never in `from` or `to`.
 - The API returns HTTP 200 with `success: true` even when the recipient bounces, so the function also checks `result.delivered` / `result.queued`.
+- Spam protection is a honeypot field, a three-second timestamp check and Cloudflare Turnstile. `src/components/TurnstileWidget.astro` renders the widget in both contact forms (`src/pages/contact-me.astro` and `src/components/ContactForm.astro`); the function verifies the `cf-turnstile-response` token against `siteverify` before sending. The widget is the existing "joost.blog" Turnstile widget, which only allows `joost.blog`, so the component uses Cloudflare's always-pass test site key in development. `astro dev` does not run Pages Functions, so the endpoint itself is only testable with `wrangler pages dev` or after a deploy.
 
 Environment variables on the Pages project (Production):
 
@@ -182,6 +183,7 @@ Environment variables on the Pages project (Production):
 - `CF_EMAIL_TOKEN` — secret; user API token "joost.blog contact form (Email Sending)" with only **Account → Email Sending → Write** on this account.
 - `CONTACT_FROM_EMAIL` — `contact@forms.joost.blog`.
 - `RECIPIENT_EMAIL` — the verified destination address.
+- `TURNSTILE_SECRET_KEY` — secret; the secret key of the "joost.blog" Turnstile widget.
 
 ## Cloudflare credentials
 

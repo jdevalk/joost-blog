@@ -88,11 +88,38 @@ export async function onRequestPost(context) {
 		const apiToken = env.CF_EMAIL_TOKEN;
 		const fromEmail = env.CONTACT_FROM_EMAIL;
 		const recipientEmail = env.RECIPIENT_EMAIL;
+		const turnstileSecret = env.TURNSTILE_SECRET_KEY;
 
-		if (!accountId || !apiToken || !fromEmail || !recipientEmail) {
+		if (!accountId || !apiToken || !fromEmail || !recipientEmail || !turnstileSecret) {
 			console.error('Missing email configuration environment variables');
 			return new Response(JSON.stringify({ error: 'Contact form is not configured. Please try another contact method.' }), {
 				status: 500,
+				headers: corsHeaders,
+			});
+		}
+
+		// Check the Turnstile token from the form with Cloudflare. This has to
+		// happen here, on the server: a bot can post to this endpoint without
+		// ever loading the form. A token is valid once, for five minutes.
+		const turnstileToken = (formData.get('cf-turnstile-response') || '').toString();
+		const turnstileResult = turnstileToken
+			? await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						secret: turnstileSecret,
+						response: turnstileToken,
+						remoteip: request.headers.get('CF-Connecting-IP') || undefined,
+					}),
+				})
+					.then((r) => r.json())
+					.catch(() => null)
+			: null;
+
+		if (!turnstileResult?.success) {
+			console.error('Turnstile check failed:', JSON.stringify(turnstileResult?.['error-codes'] ?? 'no token'));
+			return new Response(JSON.stringify({ error: 'The spam check failed. Please reload the page and try again.' }), {
+				status: 400,
 				headers: corsHeaders,
 			});
 		}

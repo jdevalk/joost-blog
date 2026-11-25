@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SchemaGraph from '../components/SchemaGraph.astro';
+import TurnstileWidget from '../components/TurnstileWidget.astro';
 import type { SchemaPageContext } from '../utils/schema';
 import { canonicalUrl } from '../utils/schema/constants';
 
@@ -84,6 +85,10 @@ const pageContext: SchemaPageContext = {
                         <textarea id="message" name="message" required rows="8" placeholder="Write as much as you want…"></textarea>
                     </label>
 
+                    <div style="margin-bottom:16px">
+                        <TurnstileWidget />
+                    </div>
+
                     <div
                         id="form-status"
                         role="status"
@@ -166,6 +171,11 @@ const pageContext: SchemaPageContext = {
                 return;
             }
 
+            if (!new FormData(form).get('cf-turnstile-response')) {
+                showStatus('Please wait for the spam check to finish, then try again.', 'error');
+                return;
+            }
+
             submitBtn.disabled = true;
             submitText.textContent = 'Sending…';
             statusDiv.style.display = 'none';
@@ -185,6 +195,8 @@ const pageContext: SchemaPageContext = {
             } catch {
                 showStatus('Failed to send message. Please try again later.', 'error');
             } finally {
+                // A Turnstile token only works once, so get a new one.
+                (window as any).turnstile?.reset();
                 submitBtn.disabled = false;
                 submitText.textContent = 'Send message →';
             }
