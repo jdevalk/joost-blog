@@ -1441,6 +1441,21 @@
     color: var(--terracotta);
     border-bottom: 1px solid color-mix(in srgb, var(--terracotta) 50%, transparent);
 }
+/* A callout inside a post spans the full text column, like the rule above an
+   h2, and reads at the size of the text around it. */
+.sp-prose .sp-callout {
+    max-width: none;
+}
+.sp-prose .sp-callout p {
+    max-width: none;
+    font-size: 20px;
+}
+.sp-prose .sp-callout .lbl {
+    font-size: 13px;
+}
+.sp-prose .sp-callout a code {
+    color: inherit;
+}
 
 /* Marginalia */
 .sp-post-margin {
