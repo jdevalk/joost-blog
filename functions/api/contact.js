@@ -80,12 +80,16 @@ export async function onRequestPost(context) {
 			await env.RATE_LIMIT.put(key, count.toString(), { expirationTtl: 3600 });
 		}
 
-		// Send email via Lettermint API
-		const apiKey = env.LETTERMINT_API_KEY;
-		const fromEmail = env.FROM_EMAIL;
+		// Send email via the Cloudflare Email Service REST API. Pages Functions
+		// have no `send_email` binding, so this goes over HTTPS with a token
+		// that only has the Email Sending permission. Sends to a verified
+		// destination address (RECIPIENT_EMAIL) are free on every plan.
+		const accountId = env.CF_ACCOUNT_ID;
+		const apiToken = env.CF_EMAIL_TOKEN;
+		const fromEmail = env.CONTACT_FROM_EMAIL;
 		const recipientEmail = env.RECIPIENT_EMAIL;
 
-		if (!apiKey || !fromEmail || !recipientEmail) {
+		if (!accountId || !apiToken || !fromEmail || !recipientEmail) {
 			console.error('Missing email configuration environment variables');
 			return new Response(JSON.stringify({ error: 'Contact form is not configured. Please try another contact method.' }), {
 				status: 500,
@@ -96,24 +100,28 @@ export async function onRequestPost(context) {
 		const emailSubject = `joost.blog contact: ${subject || 'No subject'}`;
 		const emailBody = `Name: ${name}\nEmail: ${email}\nSubject: ${subject || 'No subject'}\n\nMessage:\n${message}`;
 
-		const emailResponse = await fetch('https://api.lettermint.co/v1/send', {
+		const emailResponse = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/email/sending/send`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'x-lettermint-token': apiKey,
+				Authorization: `Bearer ${apiToken}`,
 			},
 			body: JSON.stringify({
-				from: fromEmail,
-				to: [recipientEmail],
+				from: { address: fromEmail, name: 'joost.blog contact form' },
+				to: recipientEmail,
+				reply_to: email,
 				subject: emailSubject,
 				text: emailBody,
-				reply_to: [email],
 			}),
 		});
 
-		if (!emailResponse.ok) {
-			const errorText = await emailResponse.text();
-			console.error('Lettermint API error:', emailResponse.status, errorText);
+		// The API answers 200 with `success: true` even when the recipient
+		// bounced, so the per-recipient result has to be checked as well.
+		const emailResult = await emailResponse.json().catch(() => null);
+		const accepted = [...(emailResult?.result?.delivered ?? []), ...(emailResult?.result?.queued ?? [])];
+
+		if (!emailResponse.ok || !emailResult?.success || accepted.length === 0) {
+			console.error('Cloudflare Email Service error:', emailResponse.status, JSON.stringify(emailResult));
 			return new Response(JSON.stringify({ error: 'Failed to send message. Please try again later.' }), {
 				status: 500,
 				headers: corsHeaders,

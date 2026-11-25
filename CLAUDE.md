@@ -167,6 +167,22 @@ curl "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/analytics_eng
   --data "SELECT blob1 AS surface, blob2 AS action, SUM(_sample_interval) AS hits FROM ask_log WHERE timestamp > NOW() - INTERVAL '1' DAY GROUP BY surface, action ORDER BY hits DESC"
 ```
 
+## Contact form email
+
+`functions/api/contact.js` sends contact form submissions through the Cloudflare Email Service REST API (`POST /accounts/{account_id}/email/sending/send`). Pages Functions do not support the `send_email` binding, so the function authenticates with an API token instead.
+
+- The sender is `contact@forms.joost.blog`. `forms.joost.blog` is onboarded as an Email Sending subdomain, which only adds DNS records under that subdomain (`cf-bounce` MX/SPF, DKIM, DMARC). The apex keeps its Google Workspace MX, SPF and DMARC records; do not enable Email Routing on the apex, because that requires replacing the MX records.
+- The recipient must be a verified destination address in the account (Email Service → Email Routing → Destination Addresses). Sends to verified destination addresses are free and do not count toward the sending quota.
+- The visitor's address goes in `reply_to`, never in `from` or `to`.
+- The API returns HTTP 200 with `success: true` even when the recipient bounces, so the function also checks `result.delivered` / `result.queued`.
+
+Environment variables on the Pages project (Production):
+
+- `CF_ACCOUNT_ID` — shared with the stats dashboard.
+- `CF_EMAIL_TOKEN` — secret; user API token "joost.blog contact form (Email Sending)" with only **Account → Email Sending → Write** on this account.
+- `CONTACT_FROM_EMAIL` — `contact@forms.joost.blog`.
+- `RECIPIENT_EMAIL` — the verified destination address.
+
 ## Cloudflare credentials
 
 Scripts that hit Cloudflare's API (`generate-nlweb-index.mjs`, `generate-featured-images.mjs`) read `CF_ACCOUNT_ID` and `CF_API_TOKEN` from `.env`. The npm scripts pass `--env-file-if-exists=.env` to Node so nothing needs manual loading.
